@@ -1,0 +1,347 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { MarketingHeader } from "@/components/marketing/marketing-header";
+import { MarketingFooter } from "@/components/marketing/marketing-footer";
+import { useRevealAnimation } from "@/hooks/use-reveal-animation";
+import { 
+  Search, 
+  BookOpen, 
+  FileText, 
+  CreditCard, 
+  Settings, 
+  HelpCircle, 
+  ArrowRight,
+  ChevronRight,
+  User,
+  Building2,
+  Smartphone
+} from "lucide-react";
+
+const categories = [
+  {
+    name: "Getting Started",
+    icon: BookOpen,
+    description: "Set up your account and create your first invoice",
+    articles: [
+      { title: "Creating your Plaen account", slug: "creating-account", readTime: "2 min" },
+      { title: "Personal vs Business setup", slug: "account-types", readTime: "3 min" },
+      { title: "Setting up payment methods", slug: "payment-setup", readTime: "4 min" },
+      { title: "Your first invoice", slug: "first-invoice", readTime: "5 min" },
+    ]
+  },
+  {
+    name: "Creating Invoices",
+    icon: FileText,
+    description: "Everything about building professional invoices",
+    articles: [
+      { title: "Invoice builder walkthrough", slug: "invoice-builder", readTime: "6 min" },
+      { title: "Adding items and calculating totals", slug: "items-totals", readTime: "3 min" },
+      { title: "Setting due dates and terms", slug: "due-dates", readTime: "2 min" },
+      { title: "Dual currency invoicing", slug: "dual-currency", readTime: "4 min" },
+      { title: "Saving and managing drafts", slug: "drafts", readTime: "3 min" },
+    ]
+  },
+  {
+    name: "Payments & Processing",
+    icon: CreditCard,
+    description: "How payments work and managing transactions",
+    articles: [
+      { title: "Mobile money payments", slug: "mobile-money", readTime: "5 min" },
+      { title: "Bank transfer setup", slug: "bank-transfers", readTime: "4 min" },
+      { title: "Cryptocurrency payments", slug: "crypto-payments", readTime: "6 min" },
+      { title: "Payment confirmations and receipts", slug: "receipts", readTime: "3 min" },
+      { title: "Handling payment issues", slug: "payment-issues", readTime: "5 min" },
+    ]
+  },
+  {
+    name: "Account Settings",
+    icon: Settings,
+    description: "Manage your profile and preferences",
+    articles: [
+      { title: "Updating your profile", slug: "update-profile", readTime: "2 min" },
+      { title: "Company branding and logo", slug: "branding", readTime: "4 min" },
+      { title: "Tax settings and compliance", slug: "tax-settings", readTime: "5 min" },
+      { title: "Currency preferences", slug: "currency-settings", readTime: "2 min" },
+    ]
+  }
+];
+
+const popularArticles = [
+  {
+    title: "How to get paid faster with mobile money",
+    description: "Learn why mobile money payments are processed faster than traditional methods",
+    category: "Payments",
+    readTime: "5 min",
+    slug: "mobile-money-faster",
+    popular: true
+  },
+  {
+    title: "Creating professional invoices as a freelancer",
+    description: "Best practices for freelancers to create invoices that look professional",
+    category: "Getting Started",
+    readTime: "7 min",
+    slug: "freelancer-invoices",
+    popular: true
+  },
+  {
+    title: "Understanding dual currency invoicing",
+    description: "When and how to use GHS and USD on the same invoice",
+    category: "Creating Invoices",
+    readTime: "4 min",
+    slug: "dual-currency-guide",
+    popular: true
+  },
+  {
+    title: "Setting up MTN Mobile Money for business",
+    description: "Step-by-step guide to accepting MTN Mobile Money payments",
+    category: "Payments",
+    readTime: "6 min",
+    slug: "mtn-setup",
+    popular: true
+  }
+];
+
+export default function HelpPage() {
+  const year = new Date().getFullYear();
+  const [searchQuery, setSearchQuery] = useState("");
+  useRevealAnimation();
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
+
+  return (
+    <>
+      <MarketingHeader />
+      <div className="relative min-h-screen bg-white text-black">
+        <div className="pointer-events-none absolute inset-0 -z-10">
+          <div
+            className="absolute left-1/2 top-[-20%] h-[420px] w-[480px] -translate-x-1/2 rounded-full bg-[radial-gradient(circle_at_top,rgba(0,0,0,0.14),transparent_60%)] blur-3xl"
+            style={{ animation: "floatBlob 18s ease-in-out infinite" }}
+          />
+        </div>
+
+        <main>
+          {/* Hero Section */}
+          <section
+            data-animate="fade-up"
+            className="mx-auto flex max-w-6xl flex-col items-center gap-8 px-6 pb-16 pt-20 text-center"
+          >
+            <span className="inline-flex items-center gap-2 rounded-full border border-gray-200 px-4 py-1 text-xs uppercase tracking-[0.35em] text-gray-500">
+              <HelpCircle className="h-3 w-3" />
+              Help Center
+            </span>
+            <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">
+              How can we help you?
+            </h1>
+            <p className="max-w-2xl text-lg leading-7 text-gray-700">
+              Find answers to common questions, step-by-step guides, and best practices for using Plaen.
+            </p>
+
+            {/* Search Bar */}
+            <div className="relative w-full max-w-lg">
+              <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400" />
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search for help articles..."
+                className="w-full rounded-full border border-gray-200 bg-white py-4 pl-12 pr-4 text-sm transition focus:border-black focus:outline-none focus:ring-2 focus:ring-black/5"
+              />
+            </div>
+          </section>
+
+          {/* Quick Actions */}
+          <section className="border-t border-gray-200 bg-white/80 py-12" data-animate="fade-up">
+            <div className="mx-auto max-w-6xl px-6">
+              <div className="grid gap-6 md:grid-cols-3">
+                <Link href="/help/getting-started">
+                  <div className="group relative flex h-full cursor-pointer flex-col overflow-hidden rounded-2xl border border-gray-200 bg-gray-50/50 p-6 shadow-[0_8px_30px_rgba(15,15,15,0.06)] transition hover:-translate-y-1 hover:border-black/20 hover:shadow-[0_16px_40px_rgba(15,15,15,0.1)]">
+                    <div className="absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                      <div className="absolute -right-8 top-4 h-20 w-20 rounded-full bg-gradient-to-br from-black/5 to-transparent blur-xl" />
+                    </div>
+                    <div className="relative mb-4 flex h-12 w-12 items-center justify-center rounded-xl border border-gray-200 bg-white transition group-hover:border-gray-300 group-hover:bg-gray-50 group-hover:scale-105">
+                      <User className="h-6 w-6 text-gray-700 transition group-hover:text-gray-700" />
+                    </div>
+                    <h3 className="mb-2 text-lg font-semibold text-black group-hover:text-gray-700">I'm new to Plaen</h3>
+                    <p className="mb-4 flex-1 text-sm text-gray-700 leading-relaxed">Get started with account setup and your first invoice</p>
+                    {/* Progress visualization */}
+                    <div className="mb-4 flex gap-1">
+                      {[1, 2, 3, 4].map((step, i) => (
+                        <div key={step} className="flex-1 h-1 rounded-full bg-gray-200 overflow-hidden">
+                          <div 
+                            className="h-full bg-gradient-to-r from-gray-400 to-gray-600 transition-all duration-700 group-hover:w-full"
+                            style={{ width: i === 0 ? '100%' : '0%' }}
+                          />
+                        </div>
+                      ))}
+                    </div>
+                    <div className="flex items-center text-sm font-medium text-gray-700 group-hover:text-gray-700">
+                      Start here <ArrowRight className="ml-1 h-4 w-4 transition group-hover:translate-x-1" />
+                    </div>
+                  </div>
+                </Link>
+
+                <Link href="/help/payments">
+                  <div className="group relative flex h-full cursor-pointer flex-col overflow-hidden rounded-2xl border border-gray-200 bg-gray-50/50 p-6 shadow-[0_8px_30px_rgba(15,15,15,0.06)] transition hover:-translate-y-1 hover:border-black/20 hover:shadow-[0_16px_40px_rgba(15,15,15,0.1)]">
+                    <div className="absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                      <div className="absolute -right-8 top-4 h-20 w-20 rounded-full bg-gradient-to-br from-black/5 to-transparent blur-xl" />
+                    </div>
+                    <div className="relative mb-4 flex h-12 w-12 items-center justify-center rounded-xl border border-gray-200 bg-white transition group-hover:border-gray-300 group-hover:bg-gray-50 group-hover:scale-105">
+                      <Smartphone className="h-6 w-6 text-gray-700 transition group-hover:text-gray-700" />
+                    </div>
+                    <h3 className="mb-2 text-lg font-semibold text-black group-hover:text-gray-700">Payment questions</h3>
+                    <p className="mb-4 flex-1 text-sm text-gray-700 leading-relaxed">Learn about mobile money, bank transfers, and crypto</p>
+                    {/* Payment method indicators */}
+                    <div className="mb-4 flex items-center gap-2">
+                      <div className="flex -space-x-1">
+                        <div className="h-6 w-6 rounded-full bg-gray-300 border-2 border-white shadow-sm" />
+                        <div className="h-6 w-6 rounded-full bg-gray-400 border-2 border-white shadow-sm" />
+                        <div className="h-6 w-6 rounded-full bg-gray-500 border-2 border-white shadow-sm" />
+                      </div>
+                      <span className="text-xs text-gray-500">3 payment methods</span>
+                    </div>
+                    <div className="flex items-center text-sm font-medium text-gray-700 group-hover:text-gray-700">
+                      Explore payments <ArrowRight className="ml-1 h-4 w-4 transition group-hover:translate-x-1" />
+                    </div>
+                  </div>
+                </Link>
+
+                <Link href="/contact">
+                  <div className="group relative flex h-full cursor-pointer flex-col overflow-hidden rounded-2xl border border-gray-200 bg-gray-50/50 p-6 shadow-[0_8px_30px_rgba(15,15,15,0.06)] transition hover:-translate-y-1 hover:border-black/20 hover:shadow-[0_16px_40px_rgba(15,15,15,0.1)]">
+                    <div className="absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                      <div className="absolute -right-8 top-4 h-20 w-20 rounded-full bg-gradient-to-br from-black/5 to-transparent blur-xl" />
+                    </div>
+                    <div className="relative mb-4 flex h-12 w-12 items-center justify-center rounded-xl border border-gray-200 bg-white transition group-hover:border-gray-300 group-hover:bg-gray-50 group-hover:scale-105">
+                      <HelpCircle className="h-6 w-6 text-gray-700 transition group-hover:text-gray-700" />
+                    </div>
+                    <h3 className="mb-2 text-lg font-semibold text-black group-hover:text-gray-700">Still need help?</h3>
+                    <p className="mb-4 flex-1 text-sm text-gray-700 leading-relaxed">Contact our support team directly</p>
+                    {/* Response time indicator */}
+                    <div className="mb-4 flex items-center gap-2 text-xs text-gray-500">
+                      <div className="flex items-center gap-1">
+                        <div className="h-2 w-2 rounded-full bg-gray-400 animate-pulse" />
+                        <span>Online now</span>
+                      </div>
+                      <div className="h-3 w-px bg-gray-300" />
+                      <span>&lt; 2h response</span>
+                    </div>
+                    <div className="flex items-center text-sm font-medium text-gray-700 group-hover:text-gray-700">
+                      Get support <ArrowRight className="ml-1 h-4 w-4 transition group-hover:translate-x-1" />
+                    </div>
+                  </div>
+                </Link>
+              </div>
+            </div>
+          </section>
+
+          {/* Popular Articles */}
+          <section className="bg-white py-16" data-animate="fade-up">
+            <div className="mx-auto max-w-6xl px-6">
+              <h2 className="mb-8 text-2xl font-semibold text-black">Popular articles</h2>
+              <div className="grid gap-6 md:grid-cols-2">
+                {popularArticles.map((article) => (
+                  <Link key={article.slug} href={`/help/${article.slug}`}>
+                    <article className="group flex h-full cursor-pointer flex-col rounded-2xl border border-gray-200 bg-white p-6 transition hover:-translate-y-1 hover:border-black/20 hover:shadow-lg">
+                      <div className="mb-3 flex items-center gap-3">
+                        <span className="rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-700">
+                          {article.category}
+                        </span>
+                        <span className="text-xs text-gray-500">{article.readTime}</span>
+                      </div>
+                      <h3 className="mb-2 text-lg font-semibold text-black group-hover:text-gray-700">
+                        {article.title}
+                      </h3>
+                      <p className="mb-4 flex-1 text-sm text-gray-700">{article.description}</p>
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm font-medium text-gray-500">Read article</span>
+                        <ArrowRight className="h-4 w-4 text-gray-400 transition group-hover:translate-x-1 group-hover:text-black" />
+                      </div>
+                    </article>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          {/* All Categories */}
+          <section className="border-t border-gray-200 bg-gray-50 py-16" data-animate="fade-up">
+            <div className="mx-auto max-w-6xl px-6">
+              <h2 className="mb-8 text-2xl font-semibold text-black">Browse by category</h2>
+              <div className="grid gap-8 lg:grid-cols-2">
+                {categories.map((category) => {
+                  const Icon = category.icon;
+                  return (
+                    <div key={category.name} className="rounded-3xl border border-gray-200 bg-white p-8 shadow-[0_16px_60px_rgba(15,15,15,0.05)]">
+                      <div className="mb-6 flex items-center gap-4">
+                        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gray-100">
+                          <Icon className="h-6 w-6 text-gray-700" />
+                        </div>
+                        <div>
+                          <h3 className="text-xl font-semibold text-black">{category.name}</h3>
+                          <p className="text-sm text-gray-700">{category.description}</p>
+                        </div>
+                      </div>
+                      <ul className="space-y-3">
+                        {category.articles.map((article) => (
+                          <li key={article.slug}>
+                            <Link href={`/help/${article.slug}`}>
+                              <div className="group flex items-center justify-between rounded-lg border border-gray-200 bg-gray-50 p-3 transition hover:border-gray-300 hover:bg-white hover:shadow-sm">
+                                <div className="flex items-center gap-3">
+                                  <ChevronRight className="h-4 w-4 text-gray-400 transition group-hover:translate-x-1 group-hover:text-black" />
+                                  <span className="text-sm font-medium text-black group-hover:text-gray-700">
+                                    {article.title}
+                                  </span>
+                                </div>
+                                <span className="text-xs text-gray-500">{article.readTime}</span>
+                              </div>
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </section>
+
+          {/* Contact CTA */}
+          <section className="border-t border-gray-200 bg-white py-16" data-animate="fade-up">
+            <div className="mx-auto max-w-4xl px-6 text-center">
+              <div className="rounded-3xl border border-gray-200 bg-gradient-to-br from-gray-50 to-white p-12 shadow-[0_24px_80px_rgba(15,15,15,0.08)]">
+                <h2 className="mb-4 text-2xl font-semibold text-black">
+                  Didn't find what you're looking for?
+                </h2>
+                <p className="mb-8 text-lg text-gray-700">
+                  Our support team is here to help you get the most out of Plaen.
+                </p>
+                <div className="flex flex-wrap justify-center gap-4">
+                  <Link href="/onboarding">
+                    <Button size="lg" className="bg-black text-white transition hover:bg-gray-900">
+                      Get started free
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </Button>
+                  </Link>
+                  <Link href="/contact">
+                    <Button size="lg" variant="outline" className="border-gray-200 text-black transition hover:border-black hover:bg-gray-50">
+                      Contact support
+                    </Button>
+                  </Link>
+                </div>
+                <p className="mt-4 text-sm text-gray-500">
+                  We typically respond within 24 hours
+                </p>
+              </div>
+            </div>
+          </section>
+        </main>
+
+        <MarketingFooter year={year} />
+      </div>
+    </>
+  );
+}
