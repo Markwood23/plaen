@@ -1,24 +1,17 @@
-"use client";
-
-import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { MarketingHeader } from "@/components/marketing/marketing-header";
 import { MarketingFooter } from "@/components/marketing/marketing-footer";
-import { useRevealAnimation } from "@/hooks/use-reveal-animation";
+import { PageEffects } from "@/components/marketing/home-page-effects";
 import { ArrowRight, Building2, Globe2, Heart, Users } from "lucide-react";
 import Link from "next/link";
 
 export default function AboutPage() {
   const year = new Date().getFullYear();
-  useRevealAnimation();
-
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }, []);
 
   return (
     <>
       <MarketingHeader />
+      <PageEffects resetScroll />
       <div className="relative min-h-screen bg-white text-black">
         <div className="pointer-events-none absolute inset-0 -z-10">
           <div
@@ -105,15 +98,15 @@ export default function AboutPage() {
                   Join the growing community of professionals who trust Plaen for their invoicing needs. No setup fees, no hidden costs.
                 </p>
                 <div className="flex flex-wrap justify-center gap-4">
-                  <Link href="/onboarding">
+                  <Link href="/contact">
                     <Button size="lg" className="bg-black text-white transition hover:bg-gray-900">
-                      Get started free
+                      Talk to our team
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </Button>
                   </Link>
-                  <Link href="/contact">
+                  <Link href="/pricing">
                     <Button size="lg" variant="outline" className="border-gray-200 text-black transition hover:border-black hover:bg-gray-50">
-                      Contact us
+                      View pricing
                     </Button>
                   </Link>
                 </div>

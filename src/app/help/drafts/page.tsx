@@ -1,8 +1,6 @@
-"use client";
-
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, FileText, Save, ArrowRight, Clock, Edit3, Trash2 } from "lucide-react";
+import { ArrowLeft, FileText, Save, ArrowRight, Clock } from "lucide-react";
 import { MarketingHeader } from "@/components/marketing/marketing-header";
 import { MarketingFooter } from "@/components/marketing/marketing-footer";
 

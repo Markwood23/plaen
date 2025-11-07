@@ -1,5 +1,3 @@
-"use client";
-
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, CheckCircle, FileText, Users, Zap, ArrowRight } from "lucide-react";
@@ -109,7 +107,7 @@ export default function GettingStartedPage() {
                 <p className="text-lg leading-8 text-gray-700 mb-8">Follow these three simple steps to start accepting payments with Plaen:</p>
 
                 <div className="not-prose mt-12 space-y-12">
-                  {steps.map((step, index) => (
+                  {steps.map((step) => (
                     <div key={step.number} className="flex gap-8">
                       <div className="flex-shrink-0">
                         <div className="flex h-12 w-12 items-center justify-center rounded-full bg-black text-white font-semibold">
@@ -160,9 +158,9 @@ export default function GettingStartedPage() {
                 </p>
 
                 <div className="not-prose mt-12 flex flex-col gap-4 sm:flex-row">
-                  <Link href="/onboarding">
+                  <Link href="/contact">
                     <Button size="lg" className="bg-black text-white hover:bg-gray-900">
-                      Start free trial
+                      Talk to our team
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </Button>
                   </Link>

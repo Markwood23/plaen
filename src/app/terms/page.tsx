@@ -1,23 +1,16 @@
-"use client";
-
-import { useEffect } from "react";
 import { MarketingHeader } from "@/components/marketing/marketing-header";
 import { MarketingFooter } from "@/components/marketing/marketing-footer";
-import { useRevealAnimation } from "@/hooks/use-reveal-animation";
+import { PageEffects } from "@/components/marketing/home-page-effects";
 import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { FileText, Calendar } from "lucide-react";
 
 export default function TermsOfServicePage() {
   const year = new Date().getFullYear();
-  useRevealAnimation();
-
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }, []);
 
   return (
     <>
       <MarketingHeader />
+      <PageEffects resetScroll />
       <div className="relative min-h-screen bg-white text-black">
         {/* Floating Gradients */}
         <div className="pointer-events-none absolute inset-0 -z-10">
@@ -338,13 +331,6 @@ export default function TermsOfServicePage() {
             </div>
           </section>
         </main>
-
-        <style jsx>{`
-          @keyframes floatBlob {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(180deg); }
-          }
-        `}</style>
 
         <MarketingFooter year={year} />
       </div>

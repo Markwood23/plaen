@@ -1,5 +1,3 @@
-"use client";
-
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, CheckCircle, Smartphone, Clock, Shield, Globe, ArrowRight } from "lucide-react";
@@ -125,7 +123,7 @@ export default function MobileMoneyPage() {
                 </h2>
 
                 <div className="not-prose grid gap-8 sm:grid-cols-2 mb-16">
-                  {advantages.map((advantage, index) => {
+                  {advantages.map((advantage) => {
                     const Icon = advantage.icon;
                     return (
                       <div key={advantage.title} className="border-l-4 border-gray-200 pl-6">
@@ -149,7 +147,7 @@ export default function MobileMoneyPage() {
                 </p>
 
                 <div className="not-prose space-y-12">
-                  {mobileMoneyProviders.map((provider, index) => (
+                  {mobileMoneyProviders.map((provider) => (
                     <div key={provider.name} className="border-l-4 border-gray-200 pl-8">
                       <div className="mb-6">
                         <h3 className="text-2xl font-semibold text-black mb-2">{provider.name}</h3>
@@ -310,9 +308,9 @@ export default function MobileMoneyPage() {
                 </p>
 
                 <div className="not-prose mt-16 flex flex-col gap-4 sm:flex-row">
-                  <Link href="/onboarding">
+                  <Link href="/contact">
                     <Button size="lg" className="bg-black text-white hover:bg-gray-900">
-                      Set up mobile money
+                      Talk to our team
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </Button>
                   </Link>

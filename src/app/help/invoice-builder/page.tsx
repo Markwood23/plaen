@@ -1,8 +1,6 @@
-"use client";
-
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, FileText, Edit3, Plus, ArrowRight, Layers, Calculator, Eye, CheckCircle, XCircle } from "lucide-react";
+import { ArrowLeft, FileText, Edit3, ArrowRight, Layers, Calculator, CheckCircle, XCircle } from "lucide-react";
 import { MarketingHeader } from "@/components/marketing/marketing-header";
 import { MarketingFooter } from "@/components/marketing/marketing-footer";
 
@@ -323,9 +321,9 @@ export default function InvoiceBuilderPage() {
                 </ul>
 
                 <div className="not-prose mt-12 flex flex-col gap-4 sm:flex-row">
-                  <Link href="/onboarding">
+                  <Link href="/contact">
                     <Button size="lg">
-                      Try the invoice builder
+                      Talk to our team
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </Button>
                   </Link>

@@ -1,10 +1,7 @@
-"use client";
-
-import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { MarketingHeader } from "@/components/marketing/marketing-header";
 import { MarketingFooter } from "@/components/marketing/marketing-footer";
-import { useRevealAnimation } from "@/hooks/use-reveal-animation";
+import { PageEffects } from "@/components/marketing/home-page-effects";
 import { BadgeCheck, CreditCard, RefreshCcw, Shield, TrendingUp } from "lucide-react";
 
 const pricingTiers = [
@@ -74,15 +71,11 @@ const faqs = [
 
 export default function PricingPage() {
   const year = new Date().getFullYear();
-  useRevealAnimation();
-
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }, []);
 
   return (
     <>
       <MarketingHeader />
+      <PageEffects resetScroll />
       <div className="relative min-h-screen bg-white text-black">
         <div className="pointer-events-none absolute inset-0 -z-10">
           <div
@@ -94,13 +87,6 @@ export default function PricingPage() {
             style={{ animation: "floatBlob 24s ease-in-out infinite", animationDelay: "-8s" }}
           />
         </div>
-
-        <style jsx>{`
-          @keyframes floatBlob {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(180deg); }
-          }
-        `}</style>
 
       <main>
         <section

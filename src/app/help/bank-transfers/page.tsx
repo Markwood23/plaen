@@ -1,8 +1,6 @@
-"use client";
-
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, CheckCircle, Building2, Shield, Clock, AlertCircle, ArrowRight } from "lucide-react";
+import { ArrowLeft, CheckCircle, AlertCircle, ArrowRight } from "lucide-react";
 import { MarketingHeader } from "@/components/marketing/marketing-header";
 import { MarketingFooter } from "@/components/marketing/marketing-footer";
 
@@ -94,7 +92,7 @@ export default function BankTransfersPage() {
                 </h2>
 
                 <div className="not-prose space-y-12">
-                  {transferTypes.map((transfer, index) => (
+                  {transferTypes.map((transfer) => (
                     <div key={transfer.name} className="border-l-4 border-gray-200 pl-8">
                       <h3 className="text-2xl font-semibold text-black mb-4">{transfer.name}</h3>
                       <p className="text-lg leading-7 text-gray-700 mb-6">{transfer.description}</p>
@@ -241,9 +239,9 @@ export default function BankTransfersPage() {
                 </p>
 
                 <div className="not-prose mt-16 flex flex-col gap-4 sm:flex-row">
-                  <Link href="/onboarding">
+                  <Link href="/contact">
                     <Button size="lg" className="bg-black text-white hover:bg-gray-900">
-                      Set up bank transfers
+                      Talk to our team
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </Button>
                   </Link>

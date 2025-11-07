@@ -1,29 +1,22 @@
-"use client";
-
-import { useEffect } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { MarketingHeader } from "@/components/marketing/marketing-header";
 import { MarketingFooter } from "@/components/marketing/marketing-footer";
-import { useRevealAnimation } from "@/hooks/use-reveal-animation";
+import { PageEffects } from "@/components/marketing/home-page-effects";
 import {
   ArrowRight,
   BadgeCheck,
-  BarChart3,
   Bitcoin,
-  Boxes,
   Building2,
   Clock,
   Eye,
   FileCheck2,
   FileText,
   History,
-  Receipt,
   Settings2,
   Share2,
   Smartphone,
   TrendingUp,
-  Workflow,
 } from "lucide-react";
 
 const steps = [
@@ -79,15 +72,11 @@ const features = [
 
 export default function HowItWorksPage() {
   const year = new Date().getFullYear();
-  useRevealAnimation();
-
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }, []);
 
   return (
     <>
       <MarketingHeader />
+      <PageEffects resetScroll />
       <div className="min-h-screen bg-white text-black">
         <main className="relative">
           {/* Hero Section with Patterns */}
@@ -122,9 +111,9 @@ export default function HowItWorksPage() {
             Plaen gives you a complete workspace for financial interactions. Whether you're a freelancer or a business, the flow is the same: choose your setup, build your invoice, send and get paid.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
-            <Link href="/onboarding">
+            <Link href="/contact">
               <Button size="lg" className="bg-black px-8 text-white transition hover:bg-gray-900">
-                Get started
+                Talk to our team
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </Link>
@@ -286,15 +275,15 @@ export default function HowItWorksPage() {
                     Whether you're sending your first invoice or your hundredth, Plaen gives you the workspace to do it with confidence. No formal business required.
                   </p>
                   <div className="flex flex-col gap-4 sm:flex-row">
-                    <Link href="/onboarding">
+                    <Link href="/contact">
                       <Button size="lg" className="bg-black text-white transition hover:bg-gray-900">
-                        Get started free
+                        Talk with our team
                         <ArrowRight className="ml-2 h-4 w-4" />
                       </Button>
                     </Link>
-                    <Link href="/contact">
+                    <Link href="/pricing">
                       <Button size="lg" variant="outline" className="border-gray-200 text-black transition hover:border-black hover:bg-gray-50">
-                        Contact sales
+                        Explore pricing
                       </Button>
                     </Link>
                   </div>

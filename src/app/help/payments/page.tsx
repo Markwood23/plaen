@@ -1,5 +1,3 @@
-"use client";
-
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, CheckCircle, CreditCard, Smartphone, Bitcoin, Building2, ArrowRight } from "lucide-react";
@@ -112,7 +110,7 @@ export default function PaymentsPage() {
                 </h2>
                 
                 <div className="not-prose space-y-12">
-                  {paymentMethods.map((method, index) => {
+                  {paymentMethods.map((method) => {
                     const Icon = method.icon;
                     return (
                       <div key={method.name} className="border-l-4 border-gray-200 pl-8">
@@ -205,9 +203,9 @@ export default function PaymentsPage() {
                 </p>
 
                 <div className="not-prose mt-16 flex flex-col gap-4 sm:flex-row">
-                  <Link href="/onboarding">
+                  <Link href="/contact">
                     <Button size="lg" className="bg-black text-white hover:bg-gray-900">
-                      Set up payments
+                      Talk to our team
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </Button>
                   </Link>

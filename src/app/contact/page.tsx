@@ -1,47 +1,16 @@
-"use client";
-
-import { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
 import { MarketingHeader } from "@/components/marketing/marketing-header";
 import { MarketingFooter } from "@/components/marketing/marketing-footer";
-import { useRevealAnimation } from "@/hooks/use-reveal-animation";
-import { Mail, MessageSquare, Send } from "lucide-react";
+import { PageEffects } from "@/components/marketing/home-page-effects";
+import { ContactForm } from "@/components/contact/contact-form";
+import { Mail, MessageSquare } from "lucide-react";
 
 export default function ContactPage() {
   const year = new Date().getFullYear();
-  useRevealAnimation();
-
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }, []);
-
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    message: "",
-  });
-
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSubmitted, setIsSubmitted] = useState(false);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    
-    // Simulate form submission
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    setIsSubmitted(true);
-    setIsSubmitting(false);
-    setFormData({ name: "", email: "", message: "" });
-    
-    // Reset success message after 3 seconds
-    setTimeout(() => setIsSubmitted(false), 3000);
-  };
 
   return (
     <>
       <MarketingHeader />
+      <PageEffects resetScroll />
       <div className="relative min-h-screen bg-white text-black">
         <div className="pointer-events-none absolute inset-0 -z-10">
           <div
@@ -126,76 +95,7 @@ export default function ContactPage() {
 
                 {/* Contact Form */}
                 <div className="rounded-3xl border border-gray-200 bg-white p-8 shadow-[0_24px_80px_rgba(15,15,15,0.08)]">
-                  <form onSubmit={handleSubmit} className="space-y-6">
-                    <div>
-                      <label htmlFor="name" className="block text-sm font-medium text-gray-700">
-                        Name
-                      </label>
-                      <input
-                        type="text"
-                        id="name"
-                        value={formData.name}
-                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        className="mt-2 block w-full rounded-lg border border-gray-200 px-4 py-3 text-sm transition focus:border-black focus:outline-none focus:ring-1 focus:ring-black"
-                        placeholder="Your name"
-                        required
-                      />
-                    </div>
-
-                    <div>
-                      <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                        Email
-                      </label>
-                      <input
-                        type="email"
-                        id="email"
-                        value={formData.email}
-                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        className="mt-2 block w-full rounded-lg border border-gray-200 px-4 py-3 text-sm transition focus:border-black focus:outline-none focus:ring-1 focus:ring-black"
-                        placeholder="you@example.com"
-                        required
-                      />
-                    </div>
-
-                    <div>
-                      <label htmlFor="message" className="block text-sm font-medium text-gray-700">
-                        Message
-                      </label>
-                      <textarea
-                        id="message"
-                        value={formData.message}
-                        onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                        rows={6}
-                        className="mt-2 block w-full rounded-lg border border-gray-200 px-4 py-3 text-sm transition focus:border-black focus:outline-none focus:ring-1 focus:ring-black"
-                        placeholder="Tell us how we can help..."
-                        required
-                      />
-                    </div>
-
-                    {isSubmitted && (
-                      <div className="rounded-lg bg-green-50 border border-green-200 p-3 text-center">
-                        <p className="text-sm font-medium text-green-800">
-                          Message sent! We'll get back to you within 24 hours.
-                        </p>
-                      </div>
-                    )}
-
-                    <Button
-                      type="submit"
-                      size="lg"
-                      className="w-full bg-black text-white transition hover:bg-gray-900 disabled:opacity-50"
-                      disabled={isSubmitting}
-                    >
-                      {isSubmitting ? (
-                        "Sending..."
-                      ) : (
-                        <>
-                          Send message
-                          <Send className="ml-2 h-4 w-4" />
-                        </>
-                      )}
-                    </Button>
-                  </form>
+                  <ContactForm />
                 </div>
               </div>
             </div>

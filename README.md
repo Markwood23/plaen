@@ -61,10 +61,11 @@ Plaen's design language is neutral and deliberate:
 src/
 ├── app/                    # Next.js App Router pages
 │   ├── page.tsx           # Homepage with brand messaging
-│   ├── dashboard/         # Invoice dashboard with table
-│   ├── onboarding/        # Personal vs Business setup
-│   ├── invoices/new/      # Invoice builder interface
-│   └── invoice/[id]/      # Public shareable invoice page
+│   ├── about/             # Company mission and numbers
+│   ├── blog/              # Articles and insights
+│   ├── contact/           # Contact form and details
+│   ├── help/              # Help center articles
+│   └── how-it-works/      # Product overview flow
 ├── components/ui/         # shadcn/ui components
 ├── lib/
 │   └── mock-data.ts      # TypeScript types and mock data
@@ -74,10 +75,11 @@ src/
 ## Key Pages
 
 - **`/`** — Homepage with Plaen branding and messaging
-- **`/onboarding`** — Smart onboarding flow (Personal vs Business)
-- **`/dashboard`** — Invoice management with search/filter
-- **`/invoices/new`** — Clean invoice builder interface
-- **`/invoice/[id]`** — Public invoice view with payment options
+- **`/about`** — Company story and metrics
+- **`/blog`** — Articles on invoicing best practices
+- **`/contact`** — Get in touch with the team
+- **`/help`** — Detailed support documentation
+- **`/how-it-works`** — Step-by-step product walkthrough
 
 ## Mock Data
 

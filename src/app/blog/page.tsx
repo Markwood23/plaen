@@ -1,15 +1,9 @@
-"use client";
-
-import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { MarketingHeader } from "@/components/marketing/marketing-header";
 import { MarketingFooter } from "@/components/marketing/marketing-footer";
-import { useRevealAnimation } from "@/hooks/use-reveal-animation";
+import { PageEffects } from "@/components/marketing/home-page-effects";
 import {
-  Calendar,
-  ArrowLeft,
   ArrowRight,
   BookOpen,
   TrendingUp,
@@ -19,6 +13,8 @@ import {
   Filter,
   Clock,
 } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { BlogArticleGrid, type BlogPost } from "@/components/blog/blog-article-grid";
 
 const categories = [
   { name: "All", slug: "all", count: 12 },
@@ -125,43 +121,19 @@ const blogPosts = [
 
 export default function BlogPage() {
   const year = new Date().getFullYear();
-  useRevealAnimation();
-  const [currentPage, setCurrentPage] = useState(1);
-
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }, []);
-
   const featuredPosts = blogPosts.filter((post) => post.featured);
   const regularPosts = blogPosts.filter((post) => !post.featured);
   const primaryFeatured = featuredPosts[0];
   const secondaryFeatured = featuredPosts.slice(1);
-  const orderedPosts = [...regularPosts].sort(
-    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
+  const orderedPosts: BlogPost[] = [...regularPosts].sort(
+    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
   );
   const trendingPosts = orderedPosts.slice(0, 3);
-  const pageSize = 3;
-  const totalPages = Math.max(1, Math.ceil(orderedPosts.length / pageSize));
-  const activePage = Math.min(currentPage, totalPages);
-  const paginatedPosts = orderedPosts.slice(
-    (activePage - 1) * pageSize,
-    activePage * pageSize,
-  );
-  const startIndex = orderedPosts.length === 0 ? 0 : (activePage - 1) * pageSize + 1;
-  const endIndex = (activePage - 1) * pageSize + paginatedPosts.length;
-  const pageNumbers = orderedPosts.length > 0
-    ? Array.from({ length: totalPages }, (_, index) => index + 1)
-    : [];
-
-  useEffect(() => {
-    if (currentPage !== activePage) {
-      setCurrentPage(activePage);
-    }
-  }, [activePage, currentPage]);
 
   return (
     <>
       <MarketingHeader />
+      <PageEffects resetScroll />
       <div className="relative min-h-screen bg-white text-black">
         <div className="pointer-events-none absolute inset-0 -z-10">
           <div
@@ -267,17 +239,17 @@ export default function BlogPage() {
               <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
                 <div className="flex flex-wrap gap-3">
                   {categories.map((category) => (
-                    <button
+                    <span
                       key={category.slug}
                       className={`rounded-full border px-5 py-2 text-sm font-medium transition ${
                         category.slug === "all"
                           ? "border-black bg-black text-white"
-                          : "border-gray-200 bg-white text-gray-600 hover:border-black/40 hover:text-black"
+                          : "border-gray-200 bg-white text-gray-600"
                       }`}
                     >
                       {category.name}
                       <span className="ml-2 text-xs text-gray-500">{category.count}</span>
-                    </button>
+                    </span>
                   ))}
                 </div>
                 <div className="flex w-full flex-col gap-3 sm:flex-row sm:items-center lg:w-auto">
@@ -406,105 +378,7 @@ export default function BlogPage() {
             </div>
           </section>
 
-          {/* Articles grid */}
-          <section className="border-t border-gray-200 bg-white py-20" data-animate="fade-up">
-            <div className="mx-auto max-w-6xl px-6">
-              <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-                <div>
-                  <h2 className="text-2xl font-semibold text-black">Latest research and tutorials</h2>
-                  <p className="max-w-2xl text-sm leading-6 text-gray-600">
-                    Fresh perspectives on offer-based billing, currency management, and the systems founders use to keep receivables predictable.
-                  </p>
-                </div>
-                <Link href="/pricing" className="text-sm text-gray-600 hover:text-black">
-                  See platform features
-                </Link>
-              </div>
-
-              <div className="mt-12 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-                {paginatedPosts.map((post) => (
-                  <Link key={post.id} href={`/blog/${post.id}`}>
-                    <article className="group flex h-full flex-col overflow-hidden rounded-2xl border border-gray-200 bg-gray-50/80 transition hover:-translate-y-1 hover:border-black/30">
-                      <div className="relative aspect-[3/2] bg-gradient-to-br from-gray-100 to-gray-200">
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent" />
-                        <div className="absolute left-4 top-4 inline-flex items-center gap-2 rounded-full border border-gray-200 bg-white/80 px-3 py-1 text-[11px] uppercase tracking-[0.3em] text-gray-500">
-                          {post.category}
-                        </div>
-                        <div className="absolute bottom-4 left-4 flex items-center gap-2 text-xs text-gray-500">
-                          <Calendar className="h-3 w-3" />
-                          {new Date(post.date).toLocaleDateString("en-US", {
-                            month: "short",
-                            day: "numeric",
-                          })}
-                        </div>
-                      </div>
-                      <div className="flex flex-1 flex-col gap-4 p-6">
-                        <h3 className="text-lg font-semibold text-black group-hover:text-gray-700">{post.title}</h3>
-                        <p className="flex-1 text-sm leading-6 text-gray-700 line-clamp-3">{post.excerpt}</p>
-                        <div className="flex items-center justify-between border-t border-gray-200 pt-4 text-xs text-gray-500">
-                          <span>{post.author}</span>
-                          <span>
-                            {post.readTime}
-                          </span>
-                        </div>
-                      </div>
-                    </article>
-                  </Link>
-                ))}
-              </div>
-
-              <div className="mt-12 flex items-center justify-between rounded-2xl border border-gray-200 bg-gray-50/60 px-6 py-5 text-sm text-gray-600">
-                <span>
-                  {orderedPosts.length === 0
-                    ? "No stories yet"
-                    : `Showing ${startIndex}-${endIndex} of ${orderedPosts.length} stories`}
-                </span>
-                <div className="flex items-center gap-2">
-                  <button
-                    type="button"
-                    onClick={() => setCurrentPage((page) => Math.max(1, page - 1))}
-                    className={`flex h-9 w-9 items-center justify-center rounded-full border text-sm font-medium transition ${
-                      activePage === 1
-                        ? "cursor-not-allowed border-gray-200 text-gray-300"
-                        : "border-gray-200 text-gray-600 hover:border-black hover:text-black"
-                    }`}
-                    disabled={activePage === 1}
-                    aria-label="Previous page"
-                  >
-                    <ArrowLeft className="h-4 w-4" />
-                  </button>
-                  {pageNumbers.map((pageNumber) => (
-                    <button
-                      type="button"
-                      key={pageNumber}
-                      onClick={() => setCurrentPage(pageNumber)}
-                      className={`h-9 w-9 rounded-full border text-sm font-medium transition ${
-                        pageNumber === activePage
-                          ? "border-black bg-black text-white"
-                          : "border-gray-200 text-gray-600 hover:border-black hover:text-black"
-                      }`}
-                      aria-label={`Go to page ${pageNumber}`}
-                    >
-                      {pageNumber}
-                    </button>
-                  ))}
-                  <button
-                    type="button"
-                    onClick={() => setCurrentPage((page) => Math.min(totalPages, page + 1))}
-                    className={`flex h-9 w-9 items-center justify-center rounded-full border text-sm font-medium transition ${
-                      activePage === totalPages
-                        ? "cursor-not-allowed border-gray-200 text-gray-300"
-                        : "border-gray-200 text-gray-600 hover:border-black hover:text-black"
-                    }`}
-                    disabled={activePage === totalPages}
-                    aria-label="Next page"
-                  >
-                    <ArrowRight className="h-4 w-4" />
-                  </button>
-                </div>
-              </div>
-            </div>
-          </section>
+          <BlogArticleGrid orderedPosts={orderedPosts} pageSize={3} />
 
           {/* Newsletter */}
           <section className="border-t border-gray-200 bg-white py-20" data-animate="fade-up">

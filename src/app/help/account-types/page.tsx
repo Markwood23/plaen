@@ -1,8 +1,6 @@
-"use client";
-
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Building2, User, Users, CheckCircle, ArrowRight, Briefcase } from "lucide-react";
+import { ArrowLeft, Building2, User, CheckCircle, ArrowRight, Briefcase } from "lucide-react";
 import { MarketingHeader } from "@/components/marketing/marketing-header";
 import { MarketingFooter } from "@/components/marketing/marketing-footer";
 
@@ -197,9 +195,9 @@ export default function AccountTypesPage() {
                 </ol>
 
                 <div className="not-prose mt-12 flex flex-col gap-4 sm:flex-row">
-                  <Link href="/onboarding">
+                  <Link href="/contact">
                     <Button size="lg">
-                      Create your account
+                      Talk to our team
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </Button>
                   </Link>

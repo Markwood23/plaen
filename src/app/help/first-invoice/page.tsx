@@ -1,5 +1,3 @@
-"use client";
-
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, FileText, Plus, Send, ArrowRight, CheckCircle, Eye } from "lucide-react";
@@ -271,9 +269,9 @@ export default function FirstInvoicePage() {
                 </ul>
 
                 <div className="not-prose mt-12 flex flex-col gap-4 sm:flex-row">
-                  <Link href="/onboarding">
+                  <Link href="/contact">
                     <Button size="lg">
-                      Create your first invoice
+                      Talk to our team
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </Button>
                   </Link>

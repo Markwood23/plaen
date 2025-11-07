@@ -1,8 +1,6 @@
-"use client";
-
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Smartphone, Clock, TrendingUp, ArrowRight, CheckCircle, Zap } from "lucide-react";
+import { ArrowLeft, Smartphone, TrendingUp, ArrowRight, Zap } from "lucide-react";
 import { MarketingHeader } from "@/components/marketing/marketing-header";
 import { MarketingFooter } from "@/components/marketing/marketing-footer";
 

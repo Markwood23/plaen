@@ -1,10 +1,7 @@
-"use client";
-
-import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { MarketingHeader } from "@/components/marketing/marketing-header";
 import { MarketingFooter } from "@/components/marketing/marketing-footer";
-import { useRevealAnimation } from "@/hooks/use-reveal-animation";
+import { PageEffects } from "@/components/marketing/home-page-effects";
 import { Star, Quote, ArrowRight, Building2, User, TrendingUp } from "lucide-react";
 import Link from "next/link";
 
@@ -110,11 +107,6 @@ const stats = [
 
 export default function TestimonialsPage() {
   const year = new Date().getFullYear();
-  useRevealAnimation();
-
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }, []);
 
   const featuredTestimonials = testimonials.filter(t => t.featured);
   const regularTestimonials = testimonials.filter(t => !t.featured);
@@ -122,6 +114,7 @@ export default function TestimonialsPage() {
   return (
     <>
       <MarketingHeader />
+      <PageEffects resetScroll />
       <div className="relative min-h-screen bg-white text-black">
         <div className="pointer-events-none absolute inset-0 -z-10">
           <div
@@ -152,7 +145,7 @@ export default function TestimonialsPage() {
           <section className="border-t border-gray-200 bg-white/80 py-12" data-animate="fade-up">
             <div className="mx-auto max-w-6xl px-6">
               <div className="grid gap-8 md:grid-cols-4">
-                {stats.map((stat, index) => {
+                {stats.map((stat) => {
                   const Icon = stat.icon;
                   return (
                     <div key={stat.label} className="text-center">
@@ -307,9 +300,9 @@ export default function TestimonialsPage() {
                   Experience the same professional invoicing and faster payments that our users love.
                 </p>
                 <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
-                  <Link href="/onboarding">
+                  <Link href="/contact">
                     <Button size="lg" className="bg-black text-white transition hover:bg-gray-900">
-                      Get started free
+                      Talk to our team
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </Button>
                   </Link>
@@ -320,7 +313,7 @@ export default function TestimonialsPage() {
                   </Link>
                 </div>
                 <p className="mt-4 text-sm text-gray-500">
-                  No credit card required • Set up in under 3 minutes
+                  We typically reply within one business day
                 </p>
               </div>
             </div>

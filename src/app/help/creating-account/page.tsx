@@ -1,8 +1,6 @@
-"use client";
-
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, CheckCircle, Mail, Shield, User, ArrowRight } from "lucide-react";
+import { ArrowLeft, User, ArrowRight } from "lucide-react";
 import { MarketingHeader } from "@/components/marketing/marketing-header";
 import { MarketingFooter } from "@/components/marketing/marketing-footer";
 
@@ -56,10 +54,10 @@ export default function CreatingAccountPage() {
 
                 <h2 className="text-2xl font-semibold text-black mt-16 mb-8">Step-by-step account creation</h2>
 
-                <h3 className="text-xl font-semibold text-black mt-12 mb-6">1. Visit the signup page</h3>
+                <h3 className="text-xl font-semibold text-black mt-12 mb-6">1. Request access</h3>
                 <p className="text-lg leading-8 text-gray-700 mb-8">
-                  Go to <a href="/onboarding" className="text-black font-medium hover:underline">plaen.com/onboarding</a> or click "Get Started Free" 
-                  from our homepage. You'll be taken to our secure signup form.
+                  Go to <a href="/contact" className="text-black font-medium hover:underline">plaen.com/contact</a> or click "Contact Team" 
+                  from our homepage. Share a few details about your business and we'll set up your workspace.
                 </p>
 
                 <h3>2. Choose your account type</h3>
@@ -140,9 +138,9 @@ export default function CreatingAccountPage() {
                 </ul>
 
                 <div className="not-prose mt-12 flex flex-col gap-4 sm:flex-row">
-                  <Link href="/onboarding">
+                  <Link href="/contact">
                     <Button size="lg">
-                      Create your account
+                      Talk to our team
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </Button>
                   </Link>

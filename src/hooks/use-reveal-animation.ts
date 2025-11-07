@@ -30,5 +30,5 @@ export function useRevealAnimation(options?: IntersectionObserverInit) {
     });
 
     return () => observer.disconnect();
-  }, [options?.rootMargin, options?.threshold]);
+  }, [options]);
 }

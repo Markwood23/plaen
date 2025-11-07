@@ -1,8 +1,6 @@
-"use client";
-
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Calculator, DollarSign, ArrowRight, RefreshCw, TrendingUp } from "lucide-react";
+import { ArrowLeft, Calculator, ArrowRight } from "lucide-react";
 import { MarketingHeader } from "@/components/marketing/marketing-header";
 import { MarketingFooter } from "@/components/marketing/marketing-footer";
 

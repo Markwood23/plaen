@@ -3,16 +3,13 @@
 @layer utilities {
   @keyframes floatBlob {
     0% {
-      transform: translate3d(0, 0, 0) scale(1);
+      transform: translateY(0) rotate(0deg);
     }
-    33% {
-      transform: translate3d(20px, -10px, 0) scale(1.05);
-    }
-    66% {
-      transform: translate3d(-12px, 14px, 0) scale(0.98);
+    50% {
+      transform: translateY(-20px) rotate(180deg);
     }
     100% {
-      transform: translate3d(0, 0, 0) scale(1);
+      transform: translateY(0) rotate(360deg);
     }
   }
 

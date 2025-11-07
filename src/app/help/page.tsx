@@ -1,13 +1,10 @@
-"use client";
-
-import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { MarketingHeader } from "@/components/marketing/marketing-header";
 import { MarketingFooter } from "@/components/marketing/marketing-footer";
-import { useRevealAnimation } from "@/hooks/use-reveal-animation";
+import { PageEffects } from "@/components/marketing/home-page-effects";
+import { HelpSearch, type HelpArticleSummary } from "@/components/help/help-search";
 import { 
-  Search, 
   BookOpen, 
   FileText, 
   CreditCard, 
@@ -16,7 +13,6 @@ import {
   ArrowRight,
   ChevronRight,
   User,
-  Building2,
   Smartphone
 } from "lucide-react";
 
@@ -104,18 +100,45 @@ const popularArticles = [
   }
 ];
 
+const helpArticles: HelpArticleSummary[] = (() => {
+  const map = new Map<string, HelpArticleSummary>();
+
+  popularArticles.forEach((article) => {
+    map.set(article.slug, {
+      title: article.title,
+      slug: article.slug,
+      category: article.category,
+      readTime: article.readTime,
+      description: article.description,
+      isPopular: article.popular,
+    });
+  });
+
+  categories.forEach((category) => {
+    category.articles.forEach((article) => {
+      const existing = map.get(article.slug);
+      const merged: HelpArticleSummary = {
+        title: article.title,
+        slug: article.slug,
+        category: category.name,
+        readTime: article.readTime,
+        description: existing?.description,
+        isPopular: existing?.isPopular,
+      };
+      map.set(article.slug, merged);
+    });
+  });
+
+  return Array.from(map.values()).sort((a, b) => a.title.localeCompare(b.title));
+})();
+
 export default function HelpPage() {
   const year = new Date().getFullYear();
-  const [searchQuery, setSearchQuery] = useState("");
-  useRevealAnimation();
-
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }, []);
 
   return (
     <>
       <MarketingHeader />
+      <PageEffects resetScroll />
       <div className="relative min-h-screen bg-white text-black">
         <div className="pointer-events-none absolute inset-0 -z-10">
           <div
@@ -141,17 +164,7 @@ export default function HelpPage() {
               Find answers to common questions, step-by-step guides, and best practices for using Plaen.
             </p>
 
-            {/* Search Bar */}
-            <div className="relative w-full max-w-lg">
-              <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400" />
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search for help articles..."
-                className="w-full rounded-full border border-gray-200 bg-white py-4 pl-12 pr-4 text-sm transition focus:border-black focus:outline-none focus:ring-2 focus:ring-black/5"
-              />
-            </div>
+            <HelpSearch articles={helpArticles} />
           </section>
 
           {/* Quick Actions */}
@@ -320,9 +333,9 @@ export default function HelpPage() {
                   Our support team is here to help you get the most out of Plaen.
                 </p>
                 <div className="flex flex-wrap justify-center gap-4">
-                  <Link href="/onboarding">
+                  <Link href="/contact">
                     <Button size="lg" className="bg-black text-white transition hover:bg-gray-900">
-                      Get started free
+                      Talk to our team
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </Button>
                   </Link>

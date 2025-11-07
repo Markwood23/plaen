@@ -1,5 +1,3 @@
-"use client";
-
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, CheckCircle, Bitcoin, Shield, Zap, Globe, AlertTriangle, ArrowRight } from "lucide-react";
@@ -125,7 +123,7 @@ export default function CryptoPaymentsPage() {
                 </h2>
 
                 <div className="not-prose grid gap-8 sm:grid-cols-2 mb-16">
-                  {advantages.map((advantage, index) => {
+                  {advantages.map((advantage) => {
                     const Icon = advantage.icon;
                     return (
                       <div key={advantage.title} className="border-l-4 border-gray-200 pl-6">
@@ -149,7 +147,7 @@ export default function CryptoPaymentsPage() {
                 </p>
 
                 <div className="not-prose space-y-12">
-                  {supportedCryptos.map((crypto, index) => (
+                  {supportedCryptos.map((crypto) => (
                     <div key={crypto.name} className="border-l-4 border-gray-200 pl-8">
                       <div className="flex items-start gap-4 mb-6">
                         <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gray-100 text-xl font-bold text-gray-700">
@@ -295,9 +293,9 @@ export default function CryptoPaymentsPage() {
                 </p>
 
                 <div className="not-prose mt-16 flex flex-col gap-4 sm:flex-row">
-                  <Link href="/onboarding">
+                  <Link href="/contact">
                     <Button size="lg" className="bg-black text-white hover:bg-gray-900">
-                      Set up crypto payments
+                      Talk to our team
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </Button>
                   </Link>

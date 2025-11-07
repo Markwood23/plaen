@@ -1,57 +1,9 @@
-"use client";
-
-import { useEffect } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Activity, ArrowRight, CheckCircle2, FileText, Globe2, Lock, Shield, Smartphone, Sparkles, TimerReset, TrendingUp, Zap } from "lucide-react";
+import { Activity, ArrowRight, CheckCircle2, FileText, Globe2, Lock, Shield, Smartphone, Sparkles, TimerReset, TrendingUp } from "lucide-react";
 import { MarketingHeader } from "@/components/marketing/marketing-header";
 import { MarketingFooter } from "@/components/marketing/marketing-footer";
-import { useRevealAnimation } from "@/hooks/use-reveal-animation";
-
-const featureHighlights = [
-  {
-    label: "Professional Structure",
-    description:
-      "Create verifiable invoices and payment records with the same clarity as any global company—no formal business required.",
-    icon: Shield,
-    badge: null,
-  },
-  {
-    label: "Invoice Builder",
-    description:
-      "A quiet, black-and-white interface where every field is clearly spaced. Add items, see totals update in real time, preview instantly.",
-    icon: FileText,
-    badge: null,
-  },
-  {
-    label: "No Login to Pay",
-    description:
-      "Recipients open a secure link, review the invoice, and complete payment through mobile money, bank transfer, or crypto.",
-    icon: Smartphone,
-    badge: null,
-  },
-  {
-    label: "Real-Time Updates",
-    description:
-      "See totals calculate as you type. Every change is instant. Preview exactly what your client will see before sending.",
-    icon: Activity,
-    badge: null,
-  },
-  {
-    label: "Automatic Records",
-    description:
-      "Every payment generates a timestamped receipt. Your documentation stays organized without manual updates.",
-    icon: CheckCircle2,
-    badge: null,
-  },
-  {
-    label: "Works Everywhere",
-    description:
-      "Access your workspace from any device. Mobile, desktop, or tablet—your invoices and records are always available.",
-    icon: Globe2,
-    badge: null,
-  },
-];
+import { HomePageEffects } from "@/components/marketing/home-page-effects";
 
 const modules = [
   {
@@ -124,24 +76,10 @@ const trustedBrands = [
 
 export default function Home() {
   const year = new Date().getFullYear();
-  useRevealAnimation();
-
-  useEffect(() => {
-    const { hash } = window.location;
-    if (hash) {
-      const element = document.querySelector(hash);
-      if (element) {
-        requestAnimationFrame(() => {
-          element.scrollIntoView({ behavior: "smooth", block: "start" });
-        });
-      }
-    } else {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-  }, []);
 
   return (
     <>
+      <HomePageEffects />
       <MarketingHeader />
       <div className="relative min-h-screen bg-white text-black">
         {/* Ambient gradients */}
@@ -160,13 +98,6 @@ export default function Home() {
           />
         </div>
 
-        <style jsx>{`
-          @keyframes floatBlob {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(180deg); }
-          }
-        `}</style>
-
       <main>
         {/* Hero */}
         <section
@@ -184,9 +115,9 @@ export default function Home() {
               Plaen is a neutral platform where structure and design meet everyday practicality. Whether you're a business, freelancer, or individual, Plaen brings clarity to the act of invoicing and payment—giving you the same confidence as any global company.
             </p>
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-start">
-              <Link href="/onboarding">
+              <Link href="/contact">
                 <Button size="lg" className="group px-8">
-                  Get started
+                  Talk to our team
                   <ArrowRight className="ml-2 h-4 w-4 transition group-hover:translate-x-1" />
                 </Button>
               </Link>
@@ -612,9 +543,9 @@ export default function Home() {
               It doesn't matter if you have a company or simply want to send a professional invoice for a one-time project. Plaen gives you the structure and design language to do it with confidence.
             </p>
             <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
-              <Link href="/onboarding">
+              <Link href="/contact">
                 <Button size="lg" className="group bg-white px-8 text-black transition hover:bg-gray-100">
-                  Start for free
+                  Talk with our team
                   <ArrowRight className="ml-2 h-4 w-4 transition group-hover:translate-x-1" />
                 </Button>
               </Link>
