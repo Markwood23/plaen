@@ -1,8 +1,8 @@
-import { Button } from "@/components/ui/button";
+import { SmartButton } from "@/components/ui/smart-button";
 import { MarketingHeader } from "@/components/marketing/marketing-header";
 import { MarketingFooter } from "@/components/marketing/marketing-footer";
 import { PageEffects } from "@/components/marketing/home-page-effects";
-import { ArrowRight, Building2, Globe2, Heart, Users } from "lucide-react";
+import { Building2, Globe2, Heart, Users } from "lucide-react";
 import Link from "next/link";
 
 export default function AboutPage() {
@@ -99,15 +99,14 @@ export default function AboutPage() {
                 </p>
                 <div className="flex flex-wrap justify-center gap-4">
                   <Link href="/contact">
-                    <Button size="lg" className="bg-black text-white transition hover:bg-gray-900">
+                    <SmartButton size="lg" className="bg-black text-white transition hover:bg-gray-900">
                       Talk to our team
-                      <ArrowRight className="ml-2 h-4 w-4" />
-                    </Button>
+                    </SmartButton>
                   </Link>
                   <Link href="/pricing">
-                    <Button size="lg" variant="outline" className="border-gray-200 text-black transition hover:border-black hover:bg-gray-50">
+                    <SmartButton size="lg" variant="outline" className="border-gray-200 text-black transition hover:border-black hover:bg-gray-50">
                       View pricing
-                    </Button>
+                    </SmartButton>
                   </Link>
                 </div>
               </div>

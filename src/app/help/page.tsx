@@ -151,7 +151,7 @@ export default function HelpPage() {
           {/* Hero Section */}
           <section
             data-animate="fade-up"
-            className="mx-auto flex max-w-6xl flex-col items-center gap-8 px-6 pb-16 pt-20 text-center"
+            className="relative z-30 mx-auto flex max-w-6xl flex-col items-center gap-8 px-6 pb-16 pt-20 text-center"
           >
             <span className="inline-flex items-center gap-2 rounded-full border border-gray-200 px-4 py-1 text-xs uppercase tracking-[0.35em] text-gray-500">
               <HelpCircle className="h-3 w-3" />
@@ -168,7 +168,7 @@ export default function HelpPage() {
           </section>
 
           {/* Quick Actions */}
-          <section className="border-t border-gray-200 bg-white/80 py-12" data-animate="fade-up">
+          <section className="relative z-10 border-t border-gray-200 bg-white/80 py-12" data-animate="fade-up">
             <div className="mx-auto max-w-6xl px-6">
               <div className="grid gap-6 md:grid-cols-3">
                 <Link href="/help/getting-started">

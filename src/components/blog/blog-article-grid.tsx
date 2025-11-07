@@ -12,6 +12,9 @@ export type BlogPost = {
   date: string;
   category: string;
   readTime: string;
+  tags?: string[];
+  featured?: boolean;
+  image?: string;
 };
 
 interface BlogArticleGridProps {
@@ -30,6 +33,10 @@ function computePaginationBoundaries(totalItems: number, pageSize: number, curre
 export function BlogArticleGrid({ orderedPosts, pageSize = 3 }: BlogArticleGridProps) {
   const totalPages = useMemo(() => Math.max(1, Math.ceil(orderedPosts.length / pageSize)), [orderedPosts.length, pageSize]);
   const [currentPage, setCurrentPage] = useState(1);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [orderedPosts]);
 
   useEffect(() => {
     setCurrentPage((prev) => Math.min(prev, totalPages));

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { SmartButton } from "@/components/ui/smart-button";
 import { Activity, ArrowRight, CheckCircle2, FileText, Globe2, Lock, Shield, Smartphone, Sparkles, TimerReset, TrendingUp } from "lucide-react";
 import { MarketingHeader } from "@/components/marketing/marketing-header";
 import { MarketingFooter } from "@/components/marketing/marketing-footer";
@@ -116,15 +117,14 @@ export default function Home() {
             </p>
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-start">
               <Link href="/contact">
-                <Button size="lg" className="group px-8">
+                <SmartButton size="lg" className="group px-8">
                   Talk to our team
-                  <ArrowRight className="ml-2 h-4 w-4 transition group-hover:translate-x-1" />
-                </Button>
+                </SmartButton>
               </Link>
               <Link href="/how-it-works">
-                <Button size="lg" variant="outline" className="border-gray-200 px-8 text-black transition hover:border-black hover:bg-gray-50">
+                <SmartButton size="lg" variant="outline" className="border-gray-200 px-8 text-black transition hover:border-black hover:bg-gray-50">
                   See demo
-                </Button>
+                </SmartButton>
               </Link>
             </div>
 
@@ -544,15 +544,14 @@ export default function Home() {
             </p>
             <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
               <Link href="/contact">
-                <Button size="lg" className="group bg-white px-8 text-black transition hover:bg-gray-100">
+                <SmartButton size="lg" className="group bg-white px-8 text-black transition hover:bg-gray-100">
                   Talk with our team
-                  <ArrowRight className="ml-2 h-4 w-4 transition group-hover:translate-x-1" />
-                </Button>
+                </SmartButton>
               </Link>
               <Link href="/how-it-works">
-                <Button size="lg" variant="outline" className="border-white bg-transparent px-8 text-white transition hover:bg-white/10 hover:border-white">
+                <SmartButton size="lg" variant="outline" className="border-white bg-transparent px-8 text-white transition hover:bg-white/10 hover:border-white">
                   See demo
-                </Button>
+                </SmartButton>
               </Link>
             </div>
           </div>

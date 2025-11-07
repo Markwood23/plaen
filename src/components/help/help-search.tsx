@@ -35,7 +35,7 @@ export function HelpSearch({ articles }: HelpSearchProps) {
   }, [articles, query]);
 
   return (
-    <div className="relative w-full max-w-lg mx-auto">
+  <div className="relative z-20 mx-auto w-full max-w-lg text-left">
       <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400" />
       <input
         type="text"
@@ -47,7 +47,7 @@ export function HelpSearch({ articles }: HelpSearchProps) {
       />
 
       {query.trim().length > 0 && (
-        <div className="absolute left-0 right-0 top-[calc(100%+0.75rem)] z-10 space-y-2 rounded-3xl border border-gray-200 bg-white p-4 shadow-[0_16px_40px_rgba(15,15,15,0.08)]">
+  <div className="absolute left-0 right-0 top-[calc(100%+0.75rem)] z-50 space-y-2 rounded-3xl border border-gray-200 bg-white p-4 text-left shadow-[0_16px_40px_rgba(15,15,15,0.08)]">
           {filteredArticles.length === 0 ? (
             <p className="text-sm text-gray-500">No articles match “{query.trim()}”.</p>
           ) : (
