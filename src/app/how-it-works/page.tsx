@@ -18,6 +18,7 @@ import {
   Smartphone,
   TrendingUp,
 } from "lucide-react";
+import { Pillars } from "@/components/marketing/pillars";
 
 const steps = [
   {
@@ -105,10 +106,10 @@ export default function HowItWorksPage() {
             How it Works
           </span>
           <h1 className="max-w-3xl text-4xl font-semibold tracking-tight sm:text-5xl">
-            From setup to payment in three simple steps.
+            A narrative-driven flow from draft to receipt.
           </h1>
           <p className="max-w-2xl text-lg leading-7 text-gray-600">
-            Plaen gives you a complete workspace for financial interactions. Whether you're a freelancer or a business, the flow is the same: choose your setup, build your invoice, send and get paid.
+            Each stage reinforces legitimacy and clarity: structure your profile, compose with live feedback, attach meaning, share a frictionless link, and keep contextual finance notes alongside verifiable receipts.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
             <Link href="/contact">
@@ -121,7 +122,7 @@ export default function HowItWorksPage() {
           </div>
         </section>
 
-        <section className="bg-white/75 py-20" data-animate="fade-up">
+        <section className="bg-white/75 py-20" data-animate="fade-up" aria-labelledby="how-flow">
           <div className="mx-auto grid max-w-6xl gap-6 px-6 md:grid-cols-3">
             {steps.map((step) => {
               const Icon = step.icon;
@@ -145,6 +146,8 @@ export default function HowItWorksPage() {
         </section>
 
         {/* Why Plaen Section */}
+        <Pillars subtle heading="Three pillars behind the flow" />
+
         <section className="border-t border-gray-200 bg-gradient-to-b from-white to-gray-50 py-24" data-animate="fade-up">
           <div className="mx-auto max-w-6xl px-6">
             <div className="space-y-4 text-center">
@@ -152,10 +155,10 @@ export default function HowItWorksPage() {
                 Why Plaen
               </span>
               <h2 className="mx-auto max-w-3xl text-3xl font-semibold tracking-tight text-black sm:text-4xl">
-                Structure shouldn't require a registered business.
+                Professional structure + human context.
               </h2>
               <p className="mx-auto max-w-2xl text-base text-gray-600">
-                Freelancers and individuals deserve the same professional tools as global companies. Plaen removes the barriers.
+                Independent operators deserve legitimacy. Plaen pairs format, flow, and finance notes so every payment tells a durable story.
               </p>
             </div>
 
@@ -183,9 +186,9 @@ export default function HowItWorksPage() {
                 <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-gray-100 transition group-hover:bg-black">
                   <Settings2 className="h-5 w-5 text-gray-600 transition group-hover:text-white" />
                 </div>
-                <h3 className="font-semibold text-black">No Business Required</h3>
+                <h3 className="font-semibold text-black">Official by Design</h3>
                 <p className="text-sm leading-6 text-gray-600">
-                  Freelancers and individuals can create professional invoices without formal business registration.
+                  Operate with clarity and trust—professional output without needing formal incorporation.
                 </p>
               </div>
 
@@ -193,9 +196,9 @@ export default function HowItWorksPage() {
                 <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-gray-100 transition group-hover:bg-black">
                   <Smartphone className="h-5 w-5 text-gray-600 transition group-hover:text-white" />
                 </div>
-                <h3 className="font-semibold text-black">No Account to Pay</h3>
+                <h3 className="font-semibold text-black">Frictionless Access</h3>
                 <p className="text-sm leading-6 text-gray-600">
-                  Your clients don't need to sign up. They receive a link, review, and pay—simple and transparent.
+                  Recipients review structured context and pay through local methods—no signup barrier, no cognitive load.
                 </p>
               </div>
 
@@ -203,9 +206,9 @@ export default function HowItWorksPage() {
                 <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-gray-100 transition group-hover:bg-black">
                   <Share2 className="h-5 w-5 text-gray-600 transition group-hover:text-white" />
                 </div>
-                <h3 className="font-semibold text-black">African-First</h3>
+                <h3 className="font-semibold text-black">Context Layers</h3>
                 <p className="text-sm leading-6 text-gray-600">
-                  Built for African payment methods: Mobile Money, bank transfers, and crypto—all in one workspace.
+                  Finance notes, documentation attachments, and payment timelines keep everything auditable and human.
                 </p>
               </div>
             </div>

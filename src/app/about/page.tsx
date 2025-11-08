@@ -3,6 +3,7 @@ import { MarketingHeader } from "@/components/marketing/marketing-header";
 import { MarketingFooter } from "@/components/marketing/marketing-footer";
 import { PageEffects } from "@/components/marketing/home-page-effects";
 import { Building2, Globe2, Heart, Users } from "lucide-react";
+import { Pillars } from "@/components/marketing/pillars";
 import Link from "next/link";
 
 export default function AboutPage() {
@@ -33,22 +34,24 @@ export default function AboutPage() {
               About Plaen
             </span>
             <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">
-              Structure, made accessible.
+              Money + Meaning. Official by Design.
             </h1>
             <p className="max-w-2xl text-lg leading-7 text-gray-600">
-              We believe professional financial tools shouldn't require formal business registration. Plaen democratizes access to structure—for freelancers, individuals, and businesses alike.
+              Plaen pairs professional structure with human context. Anyone can operate with legitimacy—freelancers, individuals, and businesses—while keeping finance notes beside every invoice and payment.
             </p>
           </section>
+
+          <Pillars subtle heading="Our narrative" />
 
           <section className="border-t border-gray-200 bg-white/80 py-20" data-animate="fade-up">
             <div className="mx-auto max-w-6xl px-6">
               <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
                 <div className="space-y-6">
                   <h2 className="text-3xl font-semibold tracking-tight text-black sm:text-4xl">
-                    Built for the African market
+                    Official flows for African operators
                   </h2>
                   <p className="text-base leading-7 text-gray-600">
-                    Plaen was designed with African payment methods and business practices in mind. From mobile money to crypto, we support the payment methods that matter in our markets.
+                    Plaen is designed around regional reality: mobile money, bank transfer, and crypto. We combine local payment access with global-grade, official-by-design documents and context.
                   </p>
                   <div className="grid gap-4 sm:grid-cols-2">
                     <div className="flex items-center gap-3 rounded-lg border border-gray-200 bg-white p-4">
@@ -73,7 +76,7 @@ export default function AboutPage() {
                 <div className="rounded-3xl border border-gray-200 bg-gradient-to-br from-gray-50 to-white p-8 shadow-[0_24px_80px_rgba(15,15,15,0.08)]">
                   <blockquote className="space-y-4">
                     <p className="text-lg leading-8 text-gray-700 italic">
-                      "We wanted to create a platform that feels as professional as the global tools, but works with the payment methods and business realities of African markets."
+                      "We’re building a calm workspace where payments carry meaning. Professional output by default, with finance notes that keep every decision and receipt in context."
                     </p>
                     <footer className="flex items-center gap-4">
                       <div className="h-12 w-12 rounded-full bg-gray-200" />
@@ -92,10 +95,10 @@ export default function AboutPage() {
             <div className="mx-auto max-w-6xl px-6 text-center">
               <div className="space-y-6">
                 <h2 className="text-3xl font-semibold tracking-tight text-black sm:text-4xl">
-                  Ready to experience Plaen?
+                  Ready to operate Official by Design?
                 </h2>
                 <p className="mx-auto max-w-2xl text-base leading-7 text-gray-600">
-                  Join the growing community of professionals who trust Plaen for their invoicing needs. No setup fees, no hidden costs.
+                  Join operators attaching Money + Meaning to every invoice. Start free, keep the calm surface, and add context as you grow.
                 </p>
                 <div className="flex flex-wrap justify-center gap-4">
                   <Link href="/contact">

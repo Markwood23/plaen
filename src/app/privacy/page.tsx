@@ -45,7 +45,7 @@ export default function PrivacyPolicyPage() {
               </div>
 
               <h1 className="mb-4 text-4xl font-semibold tracking-tight text-black sm:text-5xl">
-                Privacy Policy
+                Privacy Policy & Data Context
               </h1>
 
               <div className="flex items-center gap-4 text-sm text-gray-500">
@@ -64,9 +64,9 @@ export default function PrivacyPolicyPage() {
               <div className="prose prose-lg prose-gray max-w-none" data-animate="fade-up">
                 
                 <div className="bg-blue-50 border border-blue-200 rounded-2xl p-6 mb-8">
-                  <h2 className="text-lg font-semibold text-blue-900 mb-3">Your Privacy Matters</h2>
+                  <h2 className="text-lg font-semibold text-blue-900 mb-3">Your Privacy Matters to Narrative Integrity</h2>
                   <p className="text-blue-800 text-sm leading-6">
-                    At Plaen, we are committed to protecting your privacy and ensuring the security of your personal information. This Privacy Policy explains how we collect, use, and protect your data when you use our invoicing and payment services.
+                    We protect the context you add to financial interactions—finance notes, invoice metadata, payment records—so Money + Meaning remains secure. This policy explains how we handle data while preserving Official by Design principles.
                   </p>
                 </div>
 

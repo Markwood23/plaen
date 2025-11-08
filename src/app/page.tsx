@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { SmartButton } from "@/components/ui/smart-button";
 import { Activity, ArrowRight, CheckCircle2, FileText, Globe2, Lock, Shield, Smartphone, Sparkles, TimerReset, TrendingUp } from "lucide-react";
+import { Pillars } from "@/components/marketing/pillars";
 import { MarketingHeader } from "@/components/marketing/marketing-header";
 import { MarketingFooter } from "@/components/marketing/marketing-footer";
 import { HomePageEffects } from "@/components/marketing/home-page-effects";
@@ -240,13 +241,16 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Feature Highlights */}
+        {/* Product Narrative Pillars */}
+        <Pillars heading="Money + Meaning, Official by Design, Finance Notes" />
+
+        {/* Feature Highlights (legacy feature framing kept, now follows narrative) */}
         <section id="product" className="border-t border-gray-100 bg-white/80 py-20" data-animate="fade-up">
           <div className="mx-auto max-w-5xl space-y-12 px-6">
             <div className="space-y-4 text-center">
-              <h2 className="text-3xl font-semibold tracking-tight text-black sm:text-4xl">Democratizing Access to Structure</h2>
+              <h2 className="text-3xl font-semibold tracking-tight text-black sm:text-4xl">Structure with human context</h2>
               <p className="mx-auto max-w-2xl text-base text-gray-600">
-                Professionalism isn't limited by access or scale. Plaen removes the barriers.
+                Each invoice couples financial clarity with meaning—why, for whom, and under what terms—so payments become durable records.
               </p>
             </div>
 
@@ -262,9 +266,9 @@ export default function Home() {
                     <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-gray-200 bg-white transition group-hover:border-black group-hover:bg-black">
                       <Shield className="h-5 w-5 text-gray-600 transition group-hover:text-white" />
                     </div>
-                    <h3 className="text-lg font-semibold text-black">Professional Structure</h3>
+                    <h3 className="text-lg font-semibold text-black">Official by Design</h3>
                     <p className="text-sm leading-6 text-gray-600">
-                      Create verifiable invoices and payment records with the same clarity as any global company—no formal business required.
+                      Operate with global-grade clarity even without a registered entity. Plaen gives you legitimacy through format, flow, and consistency.
                     </p>
                     {/* Visual mockup area */}
                     <div className="mt-6 flex items-center gap-3 rounded-xl border border-gray-200 bg-white p-4">
@@ -287,9 +291,9 @@ export default function Home() {
                     <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-gray-200 bg-white transition group-hover:border-black group-hover:bg-black">
                       <FileText className="h-5 w-5 text-gray-600 transition group-hover:text-white" />
                     </div>
-                    <h3 className="text-lg font-semibold text-black">Invoice Builder</h3>
+                    <h3 className="text-lg font-semibold text-black">Calm Invoice Builder</h3>
                     <p className="text-sm leading-6 text-gray-600">
-                      A quiet, black-and-white interface where every field is clearly spaced.
+                      A monochrome surface engineered for focus. Totals, taxes, context notes—updated instantly without visual noise.
                     </p>
                     {/* Visual mockup area */}
                     <div className="mt-6 space-y-2">
@@ -311,9 +315,9 @@ export default function Home() {
                     <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-gray-200 bg-white transition group-hover:border-black group-hover:bg-black">
                       <Smartphone className="h-5 w-5 text-gray-600 transition group-hover:text-white" />
                     </div>
-                    <h3 className="text-lg font-semibold text-black">No Login to Pay</h3>
+                    <h3 className="text-lg font-semibold text-black">Frictionless Payment Access</h3>
                     <p className="text-sm leading-6 text-gray-600">
-                      Recipients open a secure link, review the invoice, and complete payment.
+                      Recipients open a secure link, review structured context, and complete payment—no account barrier, no confusion.
                     </p>
                     {/* Visual mockup area */}
                     <div className="mt-6 flex items-center justify-center rounded-xl border border-gray-200 bg-white p-6">
@@ -333,9 +337,9 @@ export default function Home() {
                     <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-gray-200 bg-white transition group-hover:border-black group-hover:bg-black">
                       <Activity className="h-5 w-5 text-gray-600 transition group-hover:text-white" />
                     </div>
-                    <h3 className="text-lg font-semibold text-black">Real-Time Updates</h3>
+                    <h3 className="text-lg font-semibold text-black">Live Composition Feedback</h3>
                     <p className="text-sm leading-6 text-gray-600">
-                      See totals calculate as you type. Every change is instant. Preview exactly what your client will see before sending.
+                      Totals, previews, and context sync as you type—reducing errors and reinforcing trust before sending.
                     </p>
                     {/* Visual mockup area */}
                     <div className="mt-6 flex items-center gap-4 rounded-xl border border-gray-200 bg-white p-4">
@@ -362,9 +366,9 @@ export default function Home() {
                     <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-gray-200 bg-white transition group-hover:border-black group-hover:bg-black">
                       <CheckCircle2 className="h-5 w-5 text-gray-600 transition group-hover:text-white" />
                     </div>
-                    <h3 className="text-lg font-semibold text-black">Automatic Records</h3>
+                    <h3 className="text-lg font-semibold text-black">Finance Notes & Receipts</h3>
                     <p className="text-sm leading-6 text-gray-600">
-                      Every payment generates a timestamped receipt. Your documentation stays organized without manual updates.
+                      Each payment triggers a verifiable receipt and keeps contextual notes attached—building a searchable narrative over time.
                     </p>
                     {/* Visual mockup area */}
                     <div className="mt-6 space-y-2">
@@ -386,9 +390,9 @@ export default function Home() {
                     <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-gray-200 bg-white transition group-hover:border-black group-hover:bg-black">
                       <Globe2 className="h-5 w-5 text-gray-600 transition group-hover:text-white" />
                     </div>
-                    <h3 className="text-lg font-semibold text-black">Works Everywhere</h3>
+                    <h3 className="text-lg font-semibold text-black">Device-Agnostic Workspace</h3>
                     <p className="text-sm leading-6 text-gray-600">
-                      Access your workspace from any device. Mobile, desktop, or tablet—your invoices and records are always available.
+                      Access structured financial context anywhere—mobile, desktop, or tablet—without losing fidelity.
                     </p>
                     {/* Visual mockup area */}
                     <div className="mt-6 flex items-center justify-center gap-4 rounded-xl border border-gray-200 bg-white p-4">

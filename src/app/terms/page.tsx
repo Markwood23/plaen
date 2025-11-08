@@ -45,7 +45,7 @@ export default function TermsOfServicePage() {
               </div>
 
               <h1 className="mb-4 text-4xl font-semibold tracking-tight text-black sm:text-5xl">
-                Terms of Service
+                Terms of Service — Official by Design
               </h1>
 
               <div className="flex items-center gap-4 text-sm text-gray-500">
@@ -66,7 +66,7 @@ export default function TermsOfServicePage() {
                 <div className="bg-blue-50 border border-blue-200 rounded-2xl p-6 mb-8">
                   <h2 className="text-lg font-semibold text-blue-900 mb-3">Agreement Overview</h2>
                   <p className="text-blue-800 text-sm leading-6">
-                    These Terms of Service govern your use of Plaen's invoicing and payment platform. By creating an account or using our services, you agree to be bound by these terms. Please read them carefully.
+                    These Terms govern a platform built on professional structure and human context. By using Plaen, you agree to operate with legitimacy and respect for the context attached to financial records.
                   </p>
                 </div>
 

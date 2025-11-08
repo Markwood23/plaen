@@ -32,10 +32,10 @@ export default function ContactPage() {
               Contact
             </span>
             <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">
-              Let's talk about your invoicing needs.
+              Move toward Money + Meaning.
             </h1>
             <p className="max-w-2xl text-lg leading-7 text-gray-600">
-              Have questions? Need support? Want to share feedback? We're here to help you get the most out of Plaen.
+              Ask about structure, legitimacy, or finance notes. We help you attach context to payments and operate Official by Design.
             </p>
           </section>
 

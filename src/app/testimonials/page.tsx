@@ -134,10 +134,10 @@ export default function TestimonialsPage() {
               Customer Stories
             </span>
             <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">
-              Trusted by professionals across Africa
+              Trusted by operators who work Official by Design
             </h1>
             <p className="max-w-2xl text-lg leading-7 text-gray-600">
-              From freelancers to growing businesses, see how Plaen is transforming the way professionals handle invoicing and payments.
+              Hear how freelancers and teams attach context to payments with finance notes, present professionally, and get paid with less friction.
             </p>
           </section>
 

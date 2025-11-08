@@ -15,6 +15,7 @@ import {
   User,
   Smartphone
 } from "lucide-react";
+import { Pillars } from "@/components/marketing/pillars";
 
 const categories = [
   {
@@ -158,10 +159,10 @@ export default function HelpPage() {
               Help Center
             </span>
             <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">
-              How can we help you?
+              Support for structure + context.
             </h1>
             <p className="max-w-2xl text-lg leading-7 text-gray-700">
-              Find answers to common questions, step-by-step guides, and best practices for using Plaen.
+              Explore guides on building official invoices, attaching finance notes, and enabling frictionless payments—so every transaction retains its meaning.
             </p>
 
             <HelpSearch articles={helpArticles} />
@@ -251,6 +252,8 @@ export default function HelpPage() {
             </div>
           </section>
 
+          <Pillars subtle heading="Why our help exists" />
+
           {/* Popular Articles */}
           <section className="bg-white py-16" data-animate="fade-up">
             <div className="mx-auto max-w-6xl px-6">
@@ -327,10 +330,10 @@ export default function HelpPage() {
             <div className="mx-auto max-w-4xl px-6 text-center">
               <div className="rounded-3xl border border-gray-200 bg-gradient-to-br from-gray-50 to-white p-12 shadow-[0_24px_80px_rgba(15,15,15,0.08)]">
                 <h2 className="mb-4 text-2xl font-semibold text-black">
-                  Didn't find what you're looking for?
+                  Need deeper narrative context?
                 </h2>
                 <p className="mb-8 text-lg text-gray-700">
-                  Our support team is here to help you get the most out of Plaen.
+                  Ask us how to apply Money + Meaning and Finance Notes to your workflow—we’ll guide structure without friction.
                 </p>
                 <div className="flex flex-wrap justify-center gap-4">
                   <Link href="/contact">

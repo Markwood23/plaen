@@ -5,6 +5,7 @@ import { MarketingHeader } from "@/components/marketing/marketing-header";
 import { MarketingFooter } from "@/components/marketing/marketing-footer";
 import { PageEffects } from "@/components/marketing/home-page-effects";
 import { ArrowRight, BookOpen, Users, Clock } from "lucide-react";
+import { Pillars } from "@/components/marketing/pillars";
 import type { BlogPost } from "@/components/blog/blog-article-grid";
 import { BlogInteractiveSection } from "@/components/blog/blog-interactive-section";
 
@@ -145,10 +146,10 @@ export default function BlogPage() {
                 </div>
                 <div className="space-y-6">
                   <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">
-                    Build smarter billing workflows
+                    Stories on Money + Meaning & Official work
                   </h1>
                   <p className="max-w-2xl text-lg leading-8 text-gray-700">
-                    Actionable essays, playbooks, and founder stories on invoicing, payments, and keeping cash flow predictable. Every article is built for African teams running modern businesses.
+                    Field notes on clean invoice design, payment behavior, attaching context, and building trust without bureaucracy. Written for African operators and global-facing independents.
                   </p>
                 </div>
                 <div className="flex flex-wrap gap-4">
@@ -231,6 +232,8 @@ export default function BlogPage() {
             secondaryFeatured={secondaryFeatured}
             trendingPosts={trendingPosts}
           />
+
+          <Pillars subtle heading="What we write about" />
 
           {/* Newsletter */}
           <section className="border-t border-gray-200 bg-white py-20" data-animate="fade-up">

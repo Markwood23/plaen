@@ -97,10 +97,10 @@ export default function PricingPage() {
             Pricing
           </span>
           <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">
-            Structure should be free to start.
+            Official by Design starts free.
           </h1>
           <p className="max-w-2xl text-lg leading-7 text-gray-600">
-            Plaen is free for all users to create and send invoices. You only pay transaction fees when you get paid—fair and transparent.
+            Create and send unlimited invoices with human context. Pay only transaction fees when you get paid—fair, transparent, and ready for growth.
           </p>
         </section>
 
@@ -155,10 +155,10 @@ export default function PricingPage() {
                 Value breakdown
               </span>
               <h2 className="text-3xl font-semibold tracking-tight text-black sm:text-4xl">
-                Every plan keeps Plaen’s monochrome calm.
+                Money + Meaning at every tier.
               </h2>
               <p className="text-sm leading-6 text-gray-600">
-                Whether you stay free or graduate to Ops, Plaen’s surface stays the same: focused, structured, and ready for payers who expect professionalism.
+                Free keeps you official from day one. Future plans add collaboration and analytics—without changing Plaen’s calm, monochrome surface.
               </p>
               <ul className="space-y-3 text-sm text-gray-600">
                 <li className="flex items-center gap-2">
