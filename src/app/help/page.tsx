@@ -137,6 +137,7 @@ export default function HelpPage() {
 
   return (
     <>
+      {/* Default SEO from layout applies; Help content uses narrative-aligned headings */}
       <MarketingHeader />
       <PageEffects resetScroll />
       <div className="relative min-h-screen bg-white text-black">

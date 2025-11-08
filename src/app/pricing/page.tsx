@@ -74,6 +74,7 @@ export default function PricingPage() {
 
   return (
     <>
+      {/* Page-level SEO could override title/description if needed; defaults already narrative-aligned */}
       <MarketingHeader />
       <PageEffects resetScroll />
       <div className="relative min-h-screen bg-white text-black">

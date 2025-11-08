@@ -81,6 +81,8 @@ export default function Home() {
 
   return (
     <>
+      {/* Page SEO */}
+      {/* Next.js App Router will use layout metadata; keeping page content narrative-aligned */}
       <HomePageEffects />
       <MarketingHeader />
       <div className="relative min-h-screen bg-white text-black">

@@ -135,6 +135,7 @@ export default function BlogPage() {
         </div>
 
         <main>
+          {/* SEO: Blog narrative coverage handled via layout defaults; consider dynamic OG image per post in future */}
           {/* Hero */}
           <section data-animate="fade-up" className="mx-auto max-w-6xl px-6 pb-24 pt-20">
             <div className="grid items-center gap-16 lg:grid-cols-[1.15fr,0.85fr]">

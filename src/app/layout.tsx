@@ -18,26 +18,38 @@ const inter = Inter({
 // });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://plaen.app"),
   title: {
-    default: "Plaen - Structure, made accessible",
-    template: "%s | Plaen"
+    default: "Plaen — Process money with context",
+    template: "%s | Plaen",
   },
-  description: "A clean, modern workspace for financial interactions. Create professional invoices and get paid with mobile money, bank transfers, and crypto.",
-  keywords: ["invoicing", "payments", "mobile money", "africa", "freelancer", "business"],
+  description:
+    "Process money with context. Official by Design invoicing, frictionless paylinks, tamper‑evident receipts, and Finance Notes & Docs.",
+  keywords: [
+    "invoicing",
+    "payments",
+    "mobile money",
+    "africa",
+    "official by design",
+    "finance notes",
+    "paylinks",
+  ],
   authors: [{ name: "Plaen Team" }],
   creator: "Plaen",
   openGraph: {
     type: "website",
     locale: "en_US",
     url: "https://plaen.app",
-    title: "Plaen - Structure, made accessible",
-    description: "A clean, modern workspace for financial interactions. Create professional invoices and get paid.",
+    title: "Plaen — Process money with context",
+    description:
+      "Official by Design invoicing, frictionless paylinks, tamper‑evident receipts, and Finance Notes & Docs.",
     siteName: "Plaen",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Plaen - Structure, made accessible",
-    description: "A clean, modern workspace for financial interactions. Create professional invoices and get paid.",
+    title: "Plaen — Process money with context",
+    description:
+      "Official by Design invoicing, frictionless paylinks, tamper‑evident receipts, and Finance Notes & Docs.",
     creator: "@plaenapp",
   },
   robots: {
