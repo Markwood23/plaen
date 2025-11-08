@@ -145,10 +145,10 @@ export default function BlogPage() {
                 </div>
                 <div className="space-y-6">
                   <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">
-                    Stories on Money + Meaning & Official work
+                    Field notes on making transfers official.
                   </h1>
                   <p className="max-w-2xl text-lg leading-8 text-gray-700">
-                    Field notes on clean invoice design, payment behavior, attaching context, and building trust without bureaucracy. Written for African operators and global-facing independents.
+                    Essays and guides covering Money + Meaning, frictionless paylinks, Africa‑first rails, tamper‑evident receipts, and using Finance Notes & Docs to build a durable finance memory.
                   </p>
                 </div>
                 <div className="flex flex-wrap gap-4">
@@ -240,22 +240,22 @@ export default function BlogPage() {
               <div className="grid gap-10 rounded-3xl border border-gray-200 bg-gray-50/80 p-12 shadow-[0_24px_90px_rgba(15,15,15,0.08)] backdrop-blur-sm md:grid-cols-[1.4fr,1fr]">
                 <div className="space-y-6">
                   <span className="text-xs uppercase tracking-[0.35em] text-gray-500">newsletter</span>
-                  <h2 className="text-3xl font-semibold text-black">Stay ahead with Plaen research</h2>
+                  <h2 className="text-3xl font-semibold text-black">Monthly context delivery</h2>
                   <p className="text-base leading-7 text-gray-700">
-                    Join operators receiving our monthly field notes on pricing incentives, receivables automation, and how scaling teams stay liquid.
+                    One calm email: practical tactics for documented transfers, on‑time rate improvements (≤3 days rule), and evolving Finance Notes into narrative reports.
                   </p>
                   <ul className="space-y-3 text-sm leading-6 text-gray-600">
                     <li className="flex items-start gap-2">
                       <span className="mt-1 h-1.5 w-1.5 rounded-full bg-gray-500" />
-                      Templates and scripts straight from Plaen advisors
+                      Playbooks for attaching meaning to everyday transfers
                     </li>
                     <li className="flex items-start gap-2">
                       <span className="mt-1 h-1.5 w-1.5 rounded-full bg-gray-500" />
-                      Currency and policy updates relevant to Ghanaian founders
+                      On‑time rate tactics and paylink conversion insights
                     </li>
                     <li className="flex items-start gap-2">
                       <span className="mt-1 h-1.5 w-1.5 rounded-full bg-gray-500" />
-                      Zero spam, one email each month
+                      Zero spam. One email. Durable value.
                     </li>
                   </ul>
                 </div>

@@ -521,8 +521,8 @@ export default function Home() {
           </div>
         </section>
 
-        {/* CTA */}
-        <section id="pricing" className="relative overflow-hidden border-t border-gray-100 bg-gray-900 py-24 text-white" data-animate="fade-up">
+  {/* CTA */}
+  <section id="pricing" className="relative overflow-hidden border-t border-gray-100 bg-gray-900 py-24 text-white" data-animate="fade-up">
           {/* Background Pattern */}
           <div className="pointer-events-none absolute inset-0">
             {/* Grid Pattern */}
@@ -538,23 +538,23 @@ export default function Home() {
 
           <div className="relative mx-auto max-w-4xl space-y-10 px-6 text-center">
             <span className="inline-flex items-center justify-center gap-2 rounded-full border border-white/20 px-4 py-1 text-xs uppercase tracking-[0.3em] text-white/70">
-              Built for everyone
+              Make it official
             </span>
             <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">
-              Structure shouldn't require a registered business.
+              Money + Meaning starts here.
             </h2>
             <p className="mx-auto max-w-2xl text-base text-white/70">
-              It doesn't matter if you have a company or simply want to send a professional invoice for a one-time project. Plaen gives you the structure and design language to do it with confidence.
+              Send, request, or document a transfer in seconds. Get a hosted receipt page and PDF with a tamper‑evident snapshot. Share links; recipients don’t need an account.
             </p>
             <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
               <Link href="/contact">
                 <SmartButton size="lg" className="group bg-white px-8 text-black transition hover:bg-gray-100">
-                  Talk with our team
+                  Make this transfer official
                 </SmartButton>
               </Link>
               <Link href="/how-it-works">
                 <SmartButton size="lg" variant="outline" className="border-white bg-transparent px-8 text-white transition hover:bg-white/10 hover:border-white">
-                  See demo
+                  See how it works
                 </SmartButton>
               </Link>
             </div>
