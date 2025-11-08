@@ -18,7 +18,6 @@ import {
   Smartphone,
   TrendingUp,
 } from "lucide-react";
-import { Pillars } from "@/components/marketing/pillars";
 
 const steps = [
   {
@@ -145,8 +144,7 @@ export default function HowItWorksPage() {
           </div>
         </section>
 
-        {/* Why Plaen Section */}
-        <Pillars subtle heading="Three pillars behind the flow" />
+  {/* Removed duplicate Pillars to reduce repetition; narrative woven into sections below */}
 
         <section className="border-t border-gray-200 bg-gradient-to-b from-white to-gray-50 py-24" data-animate="fade-up">
           <div className="mx-auto max-w-6xl px-6">

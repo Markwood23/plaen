@@ -15,7 +15,6 @@ import {
   User,
   Smartphone
 } from "lucide-react";
-import { Pillars } from "@/components/marketing/pillars";
 
 const categories = [
   {
@@ -252,7 +251,7 @@ export default function HelpPage() {
             </div>
           </section>
 
-          <Pillars subtle heading="Why our help exists" />
+          {/* Removed pillars to avoid repetition; help content focuses on execution of the narrative */}
 
           {/* Popular Articles */}
           <section className="bg-white py-16" data-animate="fade-up">

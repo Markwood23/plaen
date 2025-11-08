@@ -108,13 +108,13 @@ export default function Home() {
         >
           <div className="max-w-xl space-y-8">
             <span className="inline-flex items-center gap-2 rounded-full border border-gray-200 px-4 py-1 text-xs uppercase tracking-[0.3em] text-gray-500">
-              <Sparkles className="h-3 w-3" /> Structure, made accessible
+              <Sparkles className="h-3 w-3" /> Money + Meaning
             </span>
             <h1 className="text-4xl font-semibold tracking-tight text-black sm:text-5xl lg:text-6xl">
-              A clean, modern workspace for financial interactions.
+              Process money with context.
             </h1>
             <p className="text-lg leading-7 text-gray-600 sm:text-xl">
-              Plaen is a neutral platform where structure and design meet everyday practicality. Whether you're a business, freelancer, or individual, Plaen brings clarity to the act of invoicing and payment—giving you the same confidence as any global company.
+              Every send or receive becomes a clean, verifiable record—who, what, why—shareable as a focused link or PDF. Structure arrives first; Finance Notes & Docs build the narrative over time.
             </p>
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-start">
               <Link href="/contact">
@@ -241,8 +241,8 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Product Narrative Pillars */}
-        <Pillars heading="Money + Meaning, Official by Design, Finance Notes" />
+  {/* Product Narrative Pillars */}
+  <Pillars heading="Five product pillars" />
 
         {/* Feature Highlights (legacy feature framing kept, now follows narrative) */}
         <section id="product" className="border-t border-gray-100 bg-white/80 py-20" data-animate="fade-up">
@@ -411,9 +411,9 @@ export default function Home() {
         <section id="modules" className="border-t border-gray-100 bg-gray-50 py-24" data-animate="fade-up">
           <div className="mx-auto flex max-w-6xl flex-col gap-12 px-6 lg:flex-row">
             <div className="max-w-sm space-y-6">
-              <h2 className="text-3xl font-semibold tracking-tight text-black">Design elegance meets practical function.</h2>
+              <h2 className="text-3xl font-semibold tracking-tight text-black">Calm surface. Durable records.</h2>
               <p className="text-base leading-7 text-gray-600">
-                The experience feels as deliberate as Linear, as calm as Notion, and as clear as Stripe. Every interaction—from creation to confirmation—feels smooth, transparent, and human.
+                A monochrome, low‑noise interface guides you from context capture to receipt—fast, deliberate, human. No clutter; just official output ready to share or search.
               </p>
               <div className="flex flex-col gap-2 text-sm text-gray-600">
                 <span className="flex items-center gap-2">
@@ -457,10 +457,10 @@ export default function Home() {
                 Flow intelligence
               </span>
               <h2 className="text-3xl font-semibold tracking-tight text-black sm:text-4xl">
-                From draft to receipt in a composed timeline.
+                Draft → Context → Receipt in seconds.
               </h2>
               <p className="text-base leading-7 text-gray-600">
-                Each stage activates the right Plaen module—so your team can move from data capture to cash collection without losing context.
+                Capture purpose and items, compose with live feedback, share frictionless links or document‑only records, and accumulate Finance Notes & Docs—your finance memory.
               </p>
             </div>
 

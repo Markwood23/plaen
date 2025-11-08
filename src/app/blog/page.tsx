@@ -5,7 +5,6 @@ import { MarketingHeader } from "@/components/marketing/marketing-header";
 import { MarketingFooter } from "@/components/marketing/marketing-footer";
 import { PageEffects } from "@/components/marketing/home-page-effects";
 import { ArrowRight, BookOpen, Users, Clock } from "lucide-react";
-import { Pillars } from "@/components/marketing/pillars";
 import type { BlogPost } from "@/components/blog/blog-article-grid";
 import { BlogInteractiveSection } from "@/components/blog/blog-interactive-section";
 
@@ -233,7 +232,7 @@ export default function BlogPage() {
             trendingPosts={trendingPosts}
           />
 
-          <Pillars subtle heading="What we write about" />
+          {/* Removed pillars here to avoid duplication; blog content itself expresses the narrative */}
 
           {/* Newsletter */}
           <section className="border-t border-gray-200 bg-white py-20" data-animate="fade-up">

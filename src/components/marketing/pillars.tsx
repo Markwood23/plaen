@@ -1,4 +1,4 @@
-import { BadgeCheck, NotebookPen, ScrollText } from "lucide-react";
+import { BadgeCheck, NotebookPen, ScrollText, Share2, Globe2, LayoutDashboard } from "lucide-react";
 
 type Pillar = {
   title: string;
@@ -10,20 +10,32 @@ const pillars: Pillar[] = [
   {
     title: "Money + Meaning",
     copy:
-      "Attach purpose to payments. Pair clean invoices with context—who, why, and terms—so money tells a story, not just a number.",
+      "Every send/receive carries who/what/why. Clean, verifiable records you can share, search, and trust.",
     icon: ScrollText,
   },
   {
     title: "Official by Design",
     copy:
-      "Be taken seriously without a registered company. Plaen gives you verifiable, professional documents and flows by default.",
+      "Receipts feel precise and trustworthy—calm UI, black/white/soft gray, clear hierarchy—no company registration required.",
     icon: BadgeCheck,
   },
   {
-    title: "Finance Notes",
+    title: "Frictionless to Share & Pay",
     copy:
-      "Keep lightweight notes next to every invoice and payment: decisions, receipts, context. Searchable, shareable, human.",
-    icon: NotebookPen,
+      "Share via WhatsApp or email. Recipients don’t need accounts; links open to focused, secure pages.",
+    icon: Share2,
+  },
+  {
+    title: "Africa‑first rails, global taste",
+    copy:
+      "Works with cash, Mobile Money, bank, card via partners—and a document‑only mode when you just need the record.",
+    icon: Globe2,
+  },
+  {
+    title: "Finance OS on top",
+    copy:
+      "Once structured, Plaen surfaces cashflow, categories, budgets, and Finance Notes & Docs for narrative reporting.",
+    icon: LayoutDashboard,
   },
 ];
 
