@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { Analytics } from "@vercel/analytics/react";
 
 // Interface font - Inter as specified in Plaen brand document
 const inter = Inter({
@@ -65,10 +66,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${inter.variable} antialiased overflow-x-hidden`}
-      >
+      <body className={`${inter.variable} antialiased overflow-x-hidden`}>
         {children}
+        <Analytics />
       </body>
     </html>
   );
