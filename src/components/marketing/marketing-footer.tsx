@@ -3,7 +3,7 @@ import Link from "next/link";
 export function MarketingFooter({ year }: { year: number }) {
   return (
     <footer className="border-t border-gray-200 bg-white">
-      <div className="mx-auto max-w-6xl px-6 py-16">
+      <div className="mx-auto max-w-6xl px-6 py-12 md:py-16">
         {/* Main Footer Content */}
         <div className="grid gap-12 lg:grid-cols-12">
           {/* Brand Column */}
@@ -124,7 +124,7 @@ export function MarketingFooter({ year }: { year: number }) {
         </div>
 
         {/* Bottom Bar */}
-        <div className="mt-12 flex flex-col items-start justify-between gap-4 border-t border-gray-200 pt-8 text-sm text-gray-500 md:flex-row md:items-center">
+        <div className="mt-8 md:mt-12 flex flex-col items-start justify-between gap-4 border-t border-gray-200 pt-6 md:pt-8 text-sm text-gray-500 md:flex-row md:items-center">
           <p>© {year} Plaen. All rights reserved.</p>
           <div className="flex gap-6">
             <Link href="/privacy" className="transition hover:text-black">

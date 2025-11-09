@@ -20,7 +20,7 @@ const inter = Inter({
 export const metadata: Metadata = {
   metadataBase: new URL("https://plaen.app"),
   title: {
-    default: "Plaen — Process money with context",
+    default: "Plaen | Process money with context",
     template: "%s | Plaen",
   },
   description:
@@ -40,14 +40,14 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: "https://plaen.app",
-    title: "Plaen — Process money with context",
+  title: "Plaen | Process money with context",
     description:
       "Official by Design invoicing, frictionless paylinks, tamper‑evident receipts, and Finance Notes & Docs.",
     siteName: "Plaen",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Plaen — Process money with context",
+  title: "Plaen | Process money with context",
     description:
       "Official by Design invoicing, frictionless paylinks, tamper‑evident receipts, and Finance Notes & Docs.",
     creator: "@plaenapp",
@@ -66,7 +66,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${inter.variable} antialiased`}
+        className={`${inter.variable} antialiased overflow-x-hidden`}
       >
         {children}
       </body>
