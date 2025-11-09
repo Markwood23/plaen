@@ -1,8 +1,10 @@
-import { Button } from "@/components/ui/button";
+import { SmartButton } from "@/components/ui/smart-button";
 import { MarketingHeader } from "@/components/marketing/marketing-header";
 import { MarketingFooter } from "@/components/marketing/marketing-footer";
 import { PageEffects } from "@/components/marketing/home-page-effects";
 import { BadgeCheck, CreditCard, RefreshCcw, Shield, TrendingUp } from "lucide-react";
+import Link from "next/link";
+import { IconFrame } from "@/components/ui/icon-frame";
 
 const pricingTiers = [
   {
@@ -65,7 +67,7 @@ const faqs = [
   {
     question: "When are Pro and Teams features available?",
     answer:
-      "We're building these features based on user feedback. Join the waitlist to be notified when they launch.",
+      "We're shipping Pro (analytics, custom branding, advanced Finance Notes) and Teams (shared client library, roles & permissions, workspace insights) in staged releases. We prioritise what active users request most. Join the waitlist to influence order and get early access invites.",
   },
 ];
 
@@ -121,7 +123,7 @@ export default function PricingPage() {
                 )}
                 <div className="flex items-center justify-between">
                   <h3 className="text-xl font-semibold text-black">{tier.name}</h3>
-                  <BadgeCheck className={`h-5 w-5 ${tier.highlighted ? "text-black" : "text-gray-400"}`} />
+                  <IconFrame icon={BadgeCheck} size="sm" variant={tier.highlighted ? "solid" : "subtle"} />
                 </div>
                 <p className="mt-3 text-sm leading-6 text-gray-600">{tier.description}</p>
                 <div className="mt-6 flex items-baseline gap-1 text-3xl font-semibold text-black">
@@ -131,19 +133,37 @@ export default function PricingPage() {
                 <ul className="mt-6 space-y-2 text-sm text-gray-600">
                   {tier.features.map((feature) => (
                     <li key={feature} className="flex items-center gap-2">
-                      <Shield className="h-4 w-4 text-gray-400" />
+                      <IconFrame icon={Shield} size="sm" variant="plain" tone="muted" />
                       {feature}
                     </li>
                   ))}
                 </ul>
-                <Button
-                  size="lg"
-                  className={`mt-8 w-full ${
-                    tier.highlighted ? "bg-black text-white hover:bg-gray-900" : "border border-gray-200 bg-white text-black hover:border-black hover:bg-gray-50"
-                  }`}
-                >
-                  {tier.highlighted ? "Get started free" : tier.price === "$0" ? "Get started free" : "Join waitlist"}
-                </Button>
+                {tier.highlighted ? (
+                  <SmartButton
+                    size="lg"
+                    className="mt-8 w-full bg-black text-white hover:bg-gray-900"
+                  >
+                    Get started free
+                  </SmartButton>
+                ) : tier.price === "$0" ? (
+                  <SmartButton
+                    size="lg"
+                    variant="outline"
+                    className="mt-8 w-full border border-gray-200 bg-white text-black hover:border-black hover:bg-gray-50"
+                  >
+                    Get started free
+                  </SmartButton>
+                ) : (
+                  <Link href="/contact?topic=waitlist" className="block mt-8">
+                    <SmartButton
+                      size="lg"
+                      variant="outline"
+                      className="w-full border border-gray-200 bg-white text-black hover:border-black hover:bg-gray-50"
+                    >
+                      Join waitlist
+                    </SmartButton>
+                  </Link>
+                )}
               </article>
             ))}
           </div>
@@ -163,13 +183,13 @@ export default function PricingPage() {
               </p>
               <ul className="space-y-3 text-sm text-gray-600">
                 <li className="flex items-center gap-2">
-                  <CreditCard className="h-4 w-4 text-gray-400" /> Local payments routed via trusted providers
+                  <IconFrame icon={CreditCard} size="sm" variant="plain" tone="muted" /> Local payments routed via trusted providers
                 </li>
                 <li className="flex items-center gap-2">
-                  <TrendingUp className="h-4 w-4 text-gray-400" /> Analytics that surface payment health trends
+                  <IconFrame icon={TrendingUp} size="sm" variant="plain" tone="muted" /> Analytics that surface payment health trends
                 </li>
                 <li className="flex items-center gap-2">
-                  <RefreshCcw className="h-4 w-4 text-gray-400" /> Smooth upgrades with zero downtime for payers
+                  <IconFrame icon={RefreshCcw} size="sm" variant="plain" tone="muted" /> Smooth upgrades with zero downtime for payers
                 </li>
               </ul>
             </div>

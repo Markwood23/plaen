@@ -1,20 +1,21 @@
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import { SmartButton } from "@/components/ui/smart-button";
 import { MarketingHeader } from "@/components/marketing/marketing-header";
 import { MarketingFooter } from "@/components/marketing/marketing-footer";
 import { PageEffects } from "@/components/marketing/home-page-effects";
 import { HelpSearch, type HelpArticleSummary } from "@/components/help/help-search";
-import { 
-  BookOpen, 
-  FileText, 
-  CreditCard, 
-  Settings, 
-  HelpCircle, 
+import {
+  BookOpen,
+  FileText,
+  CreditCard,
+  Settings,
+  HelpCircle,
   ArrowRight,
   ChevronRight,
   User,
-  Smartphone
+  Smartphone,
 } from "lucide-react";
+import { IconFrame } from "@/components/ui/icon-frame";
 
 const categories = [
   {
@@ -155,8 +156,7 @@ export default function HelpPage() {
             className="relative z-30 mx-auto flex max-w-6xl flex-col items-center gap-8 px-6 pb-16 pt-20 text-center"
           >
             <span className="inline-flex items-center gap-2 rounded-full border border-gray-200 px-4 py-1 text-xs uppercase tracking-[0.35em] text-gray-500">
-              <HelpCircle className="h-3 w-3" />
-              Help Center
+              <IconFrame icon={HelpCircle} size="sm" variant="plain" /> Help Center
             </span>
             <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">
               Support for structure + context.
@@ -177,9 +177,7 @@ export default function HelpPage() {
                     <div className="absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                       <div className="absolute -right-8 top-4 h-20 w-20 rounded-full bg-gradient-to-br from-black/5 to-transparent blur-xl" />
                     </div>
-                    <div className="relative mb-4 flex h-12 w-12 items-center justify-center rounded-xl border border-gray-200 bg-white transition group-hover:border-gray-300 group-hover:bg-gray-50 group-hover:scale-105">
-                      <User className="h-6 w-6 text-gray-700 transition group-hover:text-gray-700" />
-                    </div>
+                      <IconFrame icon={User} size="md" variant="subtle" className="relative mb-4 transition group-hover:bg-black group-hover:border-black group-hover:text-white group-hover:scale-105" />
                     <h3 className="mb-2 text-lg font-semibold text-black group-hover:text-gray-700">I'm new to Plaen</h3>
                     <p className="mb-4 flex-1 text-sm text-gray-700 leading-relaxed">Get started with account setup and your first invoice</p>
                     {/* Progress visualization */}
@@ -204,9 +202,7 @@ export default function HelpPage() {
                     <div className="absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                       <div className="absolute -right-8 top-4 h-20 w-20 rounded-full bg-gradient-to-br from-black/5 to-transparent blur-xl" />
                     </div>
-                    <div className="relative mb-4 flex h-12 w-12 items-center justify-center rounded-xl border border-gray-200 bg-white transition group-hover:border-gray-300 group-hover:bg-gray-50 group-hover:scale-105">
-                      <Smartphone className="h-6 w-6 text-gray-700 transition group-hover:text-gray-700" />
-                    </div>
+                    <IconFrame icon={Smartphone} size="md" variant="subtle" className="relative mb-4 transition group-hover:bg-black group-hover:border-black group-hover:text-white group-hover:scale-105" />
                     <h3 className="mb-2 text-lg font-semibold text-black group-hover:text-gray-700">Payment questions</h3>
                     <p className="mb-4 flex-1 text-sm text-gray-700 leading-relaxed">Learn about mobile money, bank transfers, and crypto</p>
                     {/* Payment method indicators */}
@@ -229,9 +225,7 @@ export default function HelpPage() {
                     <div className="absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                       <div className="absolute -right-8 top-4 h-20 w-20 rounded-full bg-gradient-to-br from-black/5 to-transparent blur-xl" />
                     </div>
-                    <div className="relative mb-4 flex h-12 w-12 items-center justify-center rounded-xl border border-gray-200 bg-white transition group-hover:border-gray-300 group-hover:bg-gray-50 group-hover:scale-105">
-                      <HelpCircle className="h-6 w-6 text-gray-700 transition group-hover:text-gray-700" />
-                    </div>
+                    <IconFrame icon={HelpCircle} size="md" variant="subtle" className="relative mb-4 transition group-hover:bg-black group-hover:border-black group-hover:text-white group-hover:scale-105" />
                     <h3 className="mb-2 text-lg font-semibold text-black group-hover:text-gray-700">Still need help?</h3>
                     <p className="mb-4 flex-1 text-sm text-gray-700 leading-relaxed">Contact our support team directly</p>
                     {/* Response time indicator */}
@@ -293,9 +287,7 @@ export default function HelpPage() {
                   return (
                     <div key={category.name} className="rounded-3xl border border-gray-200 bg-white p-8 shadow-[0_16px_60px_rgba(15,15,15,0.05)]">
                       <div className="mb-6 flex items-center gap-4">
-                        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gray-100">
-                          <Icon className="h-6 w-6 text-gray-700" />
-                        </div>
+                        <IconFrame icon={Icon} size="md" variant="subtle" />
                         <div>
                           <h3 className="text-xl font-semibold text-black">{category.name}</h3>
                           <p className="text-sm text-gray-700">{category.description}</p>
@@ -337,15 +329,14 @@ export default function HelpPage() {
                 </p>
                 <div className="flex flex-wrap justify-center gap-4">
                   <Link href="/contact">
-                    <Button size="lg" className="bg-black text-white transition hover:bg-gray-900">
+                    <SmartButton size="lg" className="bg-black text-white transition hover:bg-gray-900">
                       Talk to our team
-                      <ArrowRight className="ml-2 h-4 w-4" />
-                    </Button>
+                    </SmartButton>
                   </Link>
                   <Link href="/contact">
-                    <Button size="lg" variant="outline" className="border-gray-200 text-black transition hover:border-black hover:bg-gray-50">
+                    <SmartButton size="lg" variant="outline" className="border-gray-200 text-black transition hover:border-black hover:bg-gray-50">
                       Contact support
-                    </Button>
+                    </SmartButton>
                   </Link>
                 </div>
                 <p className="mt-4 text-sm text-gray-500">

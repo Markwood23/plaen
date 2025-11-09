@@ -1,19 +1,19 @@
-import { Button } from "@/components/ui/button";
+import { SmartButton } from "@/components/ui/smart-button";
 import { MarketingHeader } from "@/components/marketing/marketing-header";
 import { MarketingFooter } from "@/components/marketing/marketing-footer";
 import { PageEffects } from "@/components/marketing/home-page-effects";
-import { Star, Quote, ArrowRight, Building2, User, TrendingUp } from "lucide-react";
+import { Star, Quote, Building2, User, TrendingUp } from "lucide-react";
+import { IconFrame } from "@/components/ui/icon-frame";
 import Link from "next/link";
 
 const testimonials = [
   {
     id: 1,
     name: "Kwame Asante",
-    role: "Freelance Designer",
+    rating: 5,
     company: "Independent",
     type: "freelancer",
     avatar: "/testimonials/kwame.jpg",
-    rating: 5,
     quote: "Plaen changed how I handle invoicing. My clients love the clean interface and I get paid 40% faster since switching to mobile money payments.",
     metrics: {
       label: "Faster payments",
@@ -24,11 +24,10 @@ const testimonials = [
   {
     id: 2,
     name: "Ama Osei",
-    role: "CEO",
+    rating: 4,
     company: "TechFlow Solutions",
     type: "business",
     avatar: "/testimonials/ama.jpg",
-    rating: 5,
     quote: "We needed professional invoicing without the complexity. Plaen delivers exactly that - clean, structured, and our clients take us more seriously.",
     metrics: {
       label: "Client satisfaction",
@@ -43,7 +42,7 @@ const testimonials = [
     company: "Mensah & Associates",
     type: "business",
     avatar: "/testimonials/david.jpg",
-    rating: 5,
+    rating: 3,
     quote: "The dual currency feature is perfect for our international clients. We can invoice in GHS and USD seamlessly.",
     metrics: {
       label: "International clients",
@@ -54,11 +53,10 @@ const testimonials = [
   {
     id: 4,
     name: "Sarah Adjei",
-    role: "Web Developer",
+    rating: 4,
     company: "Freelancer",
     type: "freelancer",
     avatar: "/testimonials/sarah.jpg",
-    rating: 5,
     quote: "Before Plaen, I was using Word documents for invoices. Now my clients see me as a real professional. The mobile money integration is a game-changer.",
     metrics: {
       label: "Professional image",
@@ -69,11 +67,10 @@ const testimonials = [
   {
     id: 5,
     name: "Michael Appiah",
-    role: "Creative Director",
+    rating: 5,
     company: "Pixel Studios",
     type: "business",
     avatar: "/testimonials/michael.jpg",
-    rating: 5,
     quote: "Our payment process was a mess before Plaen. Now everything is automated, professional, and our cash flow has improved dramatically.",
     metrics: {
       label: "Cash flow improvement",
@@ -84,11 +81,10 @@ const testimonials = [
   {
     id: 6,
     name: "Efua Boateng",
-    role: "Content Creator",
+    rating: 4,
     company: "Independent",
     type: "freelancer",
     avatar: "/testimonials/efua.jpg",
-    rating: 5,
     quote: "I love that my clients don't need to create accounts to pay. The secure link system is brilliant and removes so much friction.",
     metrics: {
       label: "Payment completion",
@@ -130,8 +126,7 @@ export default function TestimonialsPage() {
             className="mx-auto flex max-w-6xl flex-col items-center gap-8 px-6 pb-16 pt-20 text-center"
           >
             <span className="inline-flex items-center gap-2 rounded-full border border-gray-200 px-4 py-1 text-xs uppercase tracking-[0.35em] text-gray-500">
-              <Star className="h-3 w-3" />
-              Customer Stories
+              <IconFrame icon={Star} size="sm" variant="plain" /> Customer Stories
             </span>
             <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">
               Trusted by operators who work Official by Design
@@ -149,10 +144,8 @@ export default function TestimonialsPage() {
                   const Icon = stat.icon;
                   return (
                     <div key={stat.label} className="text-center">
-                      <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-gray-100">
-                        <Icon className="h-8 w-8 text-gray-600" />
-                      </div>
-                      <div className="text-3xl font-bold text-black">{stat.value}</div>
+                      <IconFrame icon={Icon} size="lg" variant="subtle" />
+                      <div className="mt-4 text-3xl font-bold text-black">{stat.value}</div>
                       <div className="text-sm text-gray-600">{stat.label}</div>
                     </div>
                   );
@@ -197,9 +190,12 @@ export default function TestimonialsPage() {
                             <div className="text-sm text-gray-600">
                               {testimonial.role} • {testimonial.company}
                             </div>
-                            <div className="mt-1 flex items-center gap-1">
-                              {[...Array(testimonial.rating)].map((_, i) => (
-                                <Star key={i} className="h-4 w-4 fill-black text-black transition group-hover:scale-105" style={{ animationDelay: `${i * 100}ms` }} />
+                            <div className="mt-1 flex items-center gap-1" aria-label={`Rating: ${testimonial.rating} out of 5`}>
+                              {[...Array(5)].map((_, i) => (
+                                <Star
+                                  key={i}
+                                  className={`h-4 w-4 transition group-hover:scale-105 ${i < testimonial.rating ? 'fill-black text-black' : 'text-gray-300'}`}
+                                />
                               ))}
                             </div>
                           </div>
@@ -264,9 +260,9 @@ export default function TestimonialsPage() {
                       </div>
                     </div>
                     
-                    <div className="mb-3 flex items-center gap-1">
-                      {[...Array(testimonial.rating)].map((_, i) => (
-                        <Star key={i} className="h-4 w-4 fill-black text-black" />
+                    <div className="mb-3 flex items-center gap-1" aria-label={`Rating: ${testimonial.rating} out of 5`}>
+                      {[...Array(5)].map((_, i) => (
+                        <Star key={i} className={`h-4 w-4 ${i < testimonial.rating ? 'fill-black text-black' : 'text-gray-300'}`} />
                       ))}
                     </div>
                     
@@ -301,15 +297,14 @@ export default function TestimonialsPage() {
                 </p>
                 <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
                   <Link href="/contact">
-                    <Button size="lg" className="bg-black text-white transition hover:bg-gray-900">
+                    <SmartButton size="lg" className="bg-black text-white transition hover:bg-gray-900">
                       Talk to our team
-                      <ArrowRight className="ml-2 h-4 w-4" />
-                    </Button>
+                    </SmartButton>
                   </Link>
                   <Link href="/pricing">
-                    <Button size="lg" variant="outline" className="border-gray-200 text-black transition hover:border-black hover:bg-gray-50">
+                    <SmartButton size="lg" variant="outline" className="border-gray-200 text-black transition hover:border-black hover:bg-gray-50">
                       View pricing
-                    </Button>
+                    </SmartButton>
                   </Link>
                 </div>
                 <p className="mt-4 text-sm text-gray-500">

@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { SmartButton } from "@/components/ui/smart-button";
 import { Activity, ArrowRight, CheckCircle2, FileText, Globe2, Lock, Shield, Smartphone, Sparkles, TimerReset, TrendingUp } from "lucide-react";
+import { IconFrame } from "@/components/ui/icon-frame";
 import { Pillars } from "@/components/marketing/pillars";
 import { MarketingHeader } from "@/components/marketing/marketing-header";
 import { MarketingFooter } from "@/components/marketing/marketing-footer";
@@ -110,7 +111,7 @@ export default function Home() {
         >
           <div className="max-w-xl space-y-8">
             <span className="inline-flex items-center gap-2 rounded-full border border-gray-200 px-4 py-1 text-xs uppercase tracking-[0.3em] text-gray-500">
-              <Sparkles className="h-3 w-3" /> Money + Meaning
+              <IconFrame icon={Sparkles} size="sm" variant="plain" /> Money + Meaning
             </span>
             <h1 className="text-4xl font-semibold tracking-tight text-black sm:text-5xl lg:text-6xl">
               Process money with context.
@@ -145,9 +146,7 @@ export default function Home() {
                     </div>
                     <div className="flex items-center justify-between">
                       <p className="text-xs uppercase tracking-[0.35em] text-gray-500">{stat.label}</p>
-                      <span className="flex h-10 w-10 items-center justify-center rounded-full border border-gray-200 bg-white/80 text-gray-700 shadow-inner">
-                        <Icon className="h-4 w-4" />
-                      </span>
+                      <IconFrame icon={Icon} size="md" variant="subtle" />
                     </div>
                     <p className="mt-6 text-3xl font-semibold text-black">{stat.value}</p>
                     <p className="mt-2 text-xs text-gray-500">{stat.detail}</p>
@@ -265,9 +264,7 @@ export default function Home() {
                     <div className="absolute -right-12 top-8 h-32 w-32 rounded-full bg-gradient-to-br from-black/5 to-transparent blur-2xl" />
                   </div>
                   <div className="relative space-y-4">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-gray-200 bg-white transition group-hover:border-black group-hover:bg-black">
-                      <Shield className="h-5 w-5 text-gray-600 transition group-hover:text-white" />
-                    </div>
+                    <IconFrame icon={Shield} size="md" variant="subtle" className="transition group-hover:bg-black group-hover:border-black group-hover:text-white" />
                     <h3 className="text-lg font-semibold text-black">Official by Design</h3>
                     <p className="text-sm leading-6 text-gray-600">
                       Operate with global-grade clarity even without a registered entity. Plaen gives you legitimacy through format, flow, and consistency.
@@ -290,9 +287,7 @@ export default function Home() {
                     <div className="absolute -right-12 top-8 h-32 w-32 rounded-full bg-gradient-to-br from-black/5 to-transparent blur-2xl" />
                   </div>
                   <div className="relative space-y-4">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-gray-200 bg-white transition group-hover:border-black group-hover:bg-black">
-                      <FileText className="h-5 w-5 text-gray-600 transition group-hover:text-white" />
-                    </div>
+                    <IconFrame icon={FileText} size="md" variant="subtle" className="transition group-hover:bg-black group-hover:border-black group-hover:text-white" />
                     <h3 className="text-lg font-semibold text-black">Calm Invoice Builder</h3>
                     <p className="text-sm leading-6 text-gray-600">
                       A monochrome surface engineered for focus. Totals, taxes, context notes—updated instantly without visual noise.
@@ -314,9 +309,7 @@ export default function Home() {
                     <div className="absolute -right-12 top-8 h-32 w-32 rounded-full bg-gradient-to-br from-black/5 to-transparent blur-2xl" />
                   </div>
                   <div className="relative space-y-4">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-gray-200 bg-white transition group-hover:border-black group-hover:bg-black">
-                      <Smartphone className="h-5 w-5 text-gray-600 transition group-hover:text-white" />
-                    </div>
+                    <IconFrame icon={Smartphone} size="md" variant="subtle" className="transition group-hover:bg-black group-hover:border-black group-hover:text-white" />
                     <h3 className="text-lg font-semibold text-black">Frictionless Payment Access</h3>
                     <p className="text-sm leading-6 text-gray-600">
                       Recipients open a secure link, review structured context, and complete payment—no account barrier, no confusion.
@@ -336,9 +329,7 @@ export default function Home() {
                     <div className="absolute -right-12 top-8 h-32 w-32 rounded-full bg-gradient-to-br from-black/5 to-transparent blur-2xl" />
                   </div>
                   <div className="relative space-y-4">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-gray-200 bg-white transition group-hover:border-black group-hover:bg-black">
-                      <Activity className="h-5 w-5 text-gray-600 transition group-hover:text-white" />
-                    </div>
+                    <IconFrame icon={Activity} size="md" variant="subtle" className="transition group-hover:bg-black group-hover:border-black group-hover:text-white" />
                     <h3 className="text-lg font-semibold text-black">Live Composition Feedback</h3>
                     <p className="text-sm leading-6 text-gray-600">
                       Totals, previews, and context sync as you type—reducing errors and reinforcing trust before sending.
@@ -365,9 +356,7 @@ export default function Home() {
                     <div className="absolute -right-12 top-8 h-32 w-32 rounded-full bg-gradient-to-br from-black/5 to-transparent blur-2xl" />
                   </div>
                   <div className="relative space-y-4">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-gray-200 bg-white transition group-hover:border-black group-hover:bg-black">
-                      <CheckCircle2 className="h-5 w-5 text-gray-600 transition group-hover:text-white" />
-                    </div>
+                    <IconFrame icon={CheckCircle2} size="md" variant="subtle" className="transition group-hover:bg-black group-hover:border-black group-hover:text-white" />
                     <h3 className="text-lg font-semibold text-black">Finance Notes & Receipts</h3>
                     <p className="text-sm leading-6 text-gray-600">
                       Each payment triggers a verifiable receipt and keeps contextual notes attached—building a searchable narrative over time.
@@ -389,9 +378,7 @@ export default function Home() {
                     <div className="absolute -right-12 top-8 h-32 w-32 rounded-full bg-gradient-to-br from-black/5 to-transparent blur-2xl" />
                   </div>
                   <div className="relative space-y-4">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-gray-200 bg-white transition group-hover:border-black group-hover:bg-black">
-                      <Globe2 className="h-5 w-5 text-gray-600 transition group-hover:text-white" />
-                    </div>
+                    <IconFrame icon={Globe2} size="md" variant="subtle" className="transition group-hover:bg-black group-hover:border-black group-hover:text-white" />
                     <h3 className="text-lg font-semibold text-black">Device-Agnostic Workspace</h3>
                     <p className="text-sm leading-6 text-gray-600">
                       Access structured financial context anywhere—mobile, desktop, or tablet—without losing fidelity.
