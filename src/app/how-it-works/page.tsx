@@ -34,7 +34,7 @@ const steps = [
   {
     title: "Send & Get Paid",
     description:
-      "Share via link, email, or WhatsApp. Recipients don't need an account—they open a secure link, review, and pay through mobile money, bank, or crypto.",
+      "Share via link, email, or WhatsApp. Recipients don't need an account. They open a secure link, review, and pay through mobile money, bank, or crypto.",
     icon: Share2,
   },
 ];
@@ -42,7 +42,7 @@ const steps = [
 const features = [
   {
     heading: "No Account Needed to Pay",
-    copy: "Your clients receive a clean, secure link. They review the invoice and complete payment—no signup, no friction.",
+  copy: "Your clients receive a clean, secure link. They review the invoice and complete payment with no signup and no friction.",
     bullets: [
       { text: "Mobile Money (MTN, AirtelTigo, M-Pesa)", icon: Smartphone },
       { text: "Bank Transfer", icon: Building2 },
@@ -110,7 +110,7 @@ export default function HowItWorksPage() {
             Each stage reinforces legitimacy and clarity: structure your profile, compose with live feedback, attach meaning, share a frictionless link, and keep contextual finance notes alongside verifiable receipts.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
-            <Link href="/contact">
+            <Link href="/coming-soon">
               <SmartButton size="lg" className="bg-black px-8 text-white transition hover:bg-gray-900">
                 Talk to our team
               </SmartButton>
@@ -182,9 +182,9 @@ export default function HowItWorksPage() {
                 <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-gray-100 transition group-hover:bg-black">
                   <Settings2 className="h-5 w-5 text-gray-600 transition group-hover:text-white" />
                 </div>
-                <h3 className="font-semibold text-black">Official by Design</h3>
+                <h3 className="font-semibold text-black">Built-in Professionalism</h3>
                 <p className="text-sm leading-6 text-gray-600">
-                  Operate with clarity and trust—professional output without needing formal incorporation.
+                  Operate with clarity and trust. Professional output without needing formal incorporation.
                 </p>
               </div>
 
@@ -194,7 +194,7 @@ export default function HowItWorksPage() {
                 </div>
                 <h3 className="font-semibold text-black">Frictionless Access</h3>
                 <p className="text-sm leading-6 text-gray-600">
-                  Recipients review structured context and pay through local methods—no signup barrier, no cognitive load.
+                  Recipients review structured context and pay through local methods with no signup barrier and no cognitive load.
                 </p>
               </div>
 
@@ -274,12 +274,12 @@ export default function HowItWorksPage() {
                     Whether you're sending your first invoice or your hundredth, Plaen gives you the workspace to do it with confidence. No formal business required.
                   </p>
                   <div className="flex flex-col gap-4 sm:flex-row">
-                    <Link href="/contact">
+                    <Link href="/coming-soon">
                       <SmartButton size="lg" className="bg-black text-white transition hover:bg-gray-900">
                         Talk with our team
                       </SmartButton>
                     </Link>
-                    <Link href="/pricing">
+                    <Link href="/coming-soon">
                       <SmartButton size="lg" variant="outline" className="border-gray-200 text-black transition hover:border-black hover:bg-gray-50">
                         Explore pricing
                       </SmartButton>

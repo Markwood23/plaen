@@ -153,16 +153,20 @@ export default function BlogPage() {
                   </p>
                 </div>
                 <div className="flex flex-wrap gap-4">
-                  <SmartButton size="lg" className="rounded-full bg-black px-6 text-white hover:bg-gray-900">
-                    Explore articles
-                  </SmartButton>
-                  <SmartButton
-                    size="lg"
-                    variant="outline"
-                    className="rounded-full border-gray-300 bg-white px-6 text-gray-700 hover:border-black hover:text-black"
-                  >
-                    Download invoicing guide
-                  </SmartButton>
+                  <Link href="/coming-soon">
+                    <SmartButton size="lg" className="rounded-full bg-black px-6 text-white hover:bg-gray-900">
+                      Explore articles
+                    </SmartButton>
+                  </Link>
+                  <Link href="/coming-soon">
+                    <SmartButton
+                      size="lg"
+                      variant="outline"
+                      className="rounded-full border-gray-300 bg-white px-6 text-gray-700 hover:border-black hover:text-black"
+                    >
+                      Download invoicing guide
+                    </SmartButton>
+                  </Link>
                 </div>
                 <div className="grid gap-6 rounded-3xl border border-gray-200 bg-white/70 p-8 shadow-[0_24px_80px_rgba(15,15,15,0.07)] backdrop-blur-sm sm:grid-cols-2 lg:grid-cols-3">
                   {stats.map((stat) => {
@@ -266,9 +270,11 @@ export default function BlogPage() {
                     placeholder="you@company.com"
                     className="rounded-xl border-gray-200 bg-white px-4 py-3 text-sm text-gray-700 focus:border-black focus:ring-black"
                   />
-                  <SmartButton className="rounded-xl bg-black py-3 text-white hover:bg-gray-900">
-                    Subscribe now
-                  </SmartButton>
+                  <Link href="/coming-soon">
+                    <SmartButton className="rounded-xl bg-black py-3 text-white hover:bg-gray-900">
+                      Subscribe now
+                    </SmartButton>
+                  </Link>
                   <p className="text-xs text-gray-500">You can unsubscribe at any time.</p>
                 </div>
               </div>

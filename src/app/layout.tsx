@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     template: "%s | Plaen",
   },
   description:
-    "Process money with context. Official by Design invoicing, frictionless paylinks, tamper‑evident receipts, and Finance Notes & Docs.",
+    "Process money with context. Clean invoicing, frictionless paylinks, tamper‑evident receipts, and Finance Notes & Docs.",
   keywords: [
     "invoicing",
     "payments",
@@ -42,14 +42,14 @@ export const metadata: Metadata = {
     url: "https://plaen.app",
   title: "Plaen | Process money with context",
     description:
-      "Official by Design invoicing, frictionless paylinks, tamper‑evident receipts, and Finance Notes & Docs.",
+  "Clean invoicing, frictionless paylinks, tamper‑evident receipts, and Finance Notes & Docs.",
     siteName: "Plaen",
   },
   twitter: {
     card: "summary_large_image",
   title: "Plaen | Process money with context",
     description:
-      "Official by Design invoicing, frictionless paylinks, tamper‑evident receipts, and Finance Notes & Docs.",
+  "Clean invoicing, frictionless paylinks, tamper‑evident receipts, and Finance Notes & Docs.",
     creator: "@plaenapp",
   },
   robots: {

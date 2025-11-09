@@ -162,7 +162,7 @@ export default function HelpPage() {
               Support for structure + context.
             </h1>
             <p className="max-w-2xl text-lg leading-7 text-gray-700">
-              Explore guides on building official invoices, attaching finance notes, and enabling frictionless payments—so every transaction retains its meaning.
+              Explore guides on building official invoices, attaching finance notes, and enabling frictionless payments so every transaction retains its meaning.
             </p>
 
             <HelpSearch articles={helpArticles} />
@@ -325,17 +325,17 @@ export default function HelpPage() {
                   Need deeper narrative context?
                 </h2>
                 <p className="mb-8 text-lg text-gray-700">
-                  Ask us how to apply Money + Meaning and Finance Notes to your workflow—we’ll guide structure without friction.
+                  Ask us how to apply Money + Meaning and Finance Notes to your workflow. We’ll guide structure without friction.
                 </p>
                 <div className="flex flex-wrap justify-center gap-4">
-                  <Link href="/contact">
+                  <Link href="/coming-soon">
                     <SmartButton size="lg" className="bg-black text-white transition hover:bg-gray-900">
-                      Talk to our team
+                      Coming soon
                     </SmartButton>
                   </Link>
-                  <Link href="/contact">
+                  <Link href="/coming-soon">
                     <SmartButton size="lg" variant="outline" className="border-gray-200 text-black transition hover:border-black hover:bg-gray-50">
-                      Contact support
+                      Learn more
                     </SmartButton>
                   </Link>
                 </div>

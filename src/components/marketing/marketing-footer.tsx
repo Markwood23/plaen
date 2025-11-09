@@ -12,7 +12,7 @@ export function MarketingFooter({ year }: { year: number }) {
               plæn.
             </Link>
             <p className="text-sm leading-6 text-gray-600">
-              Professional structure + human context. Money + Meaning, Official by Design, and Finance Notes in one calm workspace.
+              Professional structure + human context. Money + Meaning and Finance Notes in one calm workspace.
             </p>
           </div>
 

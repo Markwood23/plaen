@@ -100,10 +100,10 @@ export default function PricingPage() {
             Pricing
           </span>
           <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">
-            Official by Design starts free.
+            Built-in professionalism starts free.
           </h1>
           <p className="max-w-2xl text-lg leading-7 text-gray-600">
-            Create and send unlimited invoices with human context. Pay only transaction fees when you get paid—fair, transparent, and ready for growth.
+            Create and send unlimited invoices with human context. Pay only transaction fees when you get paid. Fair, transparent, and ready for growth.
           </p>
         </section>
 
@@ -138,32 +138,14 @@ export default function PricingPage() {
                     </li>
                   ))}
                 </ul>
-                {tier.highlighted ? (
+                <Link href="/coming-soon" className="block mt-8">
                   <SmartButton
                     size="lg"
-                    className="mt-8 w-full bg-black text-white hover:bg-gray-900"
+                    className="w-full bg-black text-white hover:bg-gray-900"
                   >
-                    Get started free
+                    Coming soon
                   </SmartButton>
-                ) : tier.price === "$0" ? (
-                  <SmartButton
-                    size="lg"
-                    variant="outline"
-                    className="mt-8 w-full border border-gray-200 bg-white text-black hover:border-black hover:bg-gray-50"
-                  >
-                    Get started free
-                  </SmartButton>
-                ) : (
-                  <Link href="/contact?topic=waitlist" className="block mt-8">
-                    <SmartButton
-                      size="lg"
-                      variant="outline"
-                      className="w-full border border-gray-200 bg-white text-black hover:border-black hover:bg-gray-50"
-                    >
-                      Join waitlist
-                    </SmartButton>
-                  </Link>
-                )}
+                </Link>
               </article>
             ))}
           </div>
@@ -179,7 +161,7 @@ export default function PricingPage() {
                 Money + Meaning at every tier.
               </h2>
               <p className="text-sm leading-6 text-gray-600">
-                Free keeps you official from day one. Future plans add collaboration and analytics—without changing Plaen’s calm, monochrome surface.
+                Free keeps you official from day one. Future plans add collaboration and analytics without changing Plaen’s calm, monochrome surface.
               </p>
               <ul className="space-y-3 text-sm text-gray-600">
                 <li className="flex items-center gap-2">

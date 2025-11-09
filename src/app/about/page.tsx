@@ -34,10 +34,10 @@ export default function AboutPage() {
               About Plaen
             </span>
             <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">
-              Money + Meaning. Official by Design.
+              Money + Meaning. Built-in Professionalism.
             </h1>
             <p className="max-w-2xl text-lg leading-7 text-gray-600">
-              Plaen pairs professional structure with human context. Anyone can operate with legitimacy—freelancers, individuals, and businesses—while keeping finance notes beside every invoice and payment.
+              Plaen pairs professional structure with human context. Anyone can operate with legitimacy: freelancers, individuals, and businesses, while keeping finance notes beside every invoice and payment.
             </p>
           </section>
 
@@ -95,18 +95,18 @@ export default function AboutPage() {
             <div className="mx-auto max-w-6xl px-6 text-center">
               <div className="space-y-6">
                 <h2 className="text-3xl font-semibold tracking-tight text-black sm:text-4xl">
-                  Ready to operate Official by Design?
+                  Ready to operate with built-in professionalism?
                 </h2>
                 <p className="mx-auto max-w-2xl text-base leading-7 text-gray-600">
                   Join operators attaching Money + Meaning to every invoice. Start free, keep the calm surface, and add context as you grow.
                 </p>
                 <div className="flex flex-wrap justify-center gap-4">
-                  <Link href="/contact">
+                  <Link href="/coming-soon">
                     <SmartButton size="lg" className="bg-black text-white transition hover:bg-gray-900">
                       Talk to our team
                     </SmartButton>
                   </Link>
-                  <Link href="/pricing">
+                  <Link href="/coming-soon">
                     <SmartButton size="lg" variant="outline" className="border-gray-200 text-black transition hover:border-black hover:bg-gray-50">
                       View pricing
                     </SmartButton>

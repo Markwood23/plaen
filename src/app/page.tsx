@@ -21,7 +21,7 @@ const modules = [
   },
   {
     title: "Send & Get Paid",
-    copy: "Share via link, email, or WhatsApp. Recipients don't need an account—they open a secure link, review, and pay through mobile money, bank, or crypto.",
+  copy: "Share via link, email, or WhatsApp. Recipients don't need an account. They open a secure link, review, and pay through mobile money, bank, or crypto.",
     badge: "Smooth & transparent",
   },
 ];
@@ -41,20 +41,13 @@ const stats = [
     icon: TimerReset,
     accent: "bg-gradient-to-r from-gray-900/90 to-gray-600",
   },
-  {
-    label: "Platform uptime",
-    value: "99.95%",
-    detail: "Mocked reliability",
-    icon: Activity,
-    accent: "bg-gradient-to-r from-gray-900 to-gray-500",
-  },
 ];
 
 const steps = [
   {
     title: "Capture context",
     description:
-      "Import a client or create inline. Choose personal or business sender details—Plaen keeps both on hand.",
+      "Import a client or create inline. Choose personal or business sender details. Plaen keeps both on hand.",
   },
   {
     title: "Compose & preview",
@@ -86,9 +79,9 @@ export default function Home() {
       {/* Next.js App Router will use layout metadata; keeping page content narrative-aligned */}
       <HomePageEffects />
       <MarketingHeader />
-      <div className="relative min-h-screen bg-white text-black">
-        {/* Ambient gradients */}
-        <div className="pointer-events-none absolute inset-0 -z-10">
+  <div className="relative min-h-screen bg-white text-black overflow-x-hidden">
+  {/* Ambient gradients (clip overflow to avoid extra page height) */}
+  <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
           <div
             className="absolute left-1/2 top-[-20%] h-[420px] w-[480px] -translate-x-1/2 rounded-full bg-[radial-gradient(circle_at_top,rgba(0,0,0,0.08),transparent_60%)] blur-3xl"
             style={{ animation: "floatBlob 18s ease-in-out infinite" }}
@@ -107,7 +100,7 @@ export default function Home() {
         {/* Hero */}
         <section
           data-animate="fade-up"
-          className="relative mx-auto flex max-w-6xl flex-col gap-14 px-6 pb-24 pt-20 lg:flex-row lg:items-center"
+          className="relative mx-auto flex max-w-6xl flex-col gap-14 px-4 sm:px-6 pb-24 pt-20 lg:flex-row lg:items-center"
         >
           <div className="max-w-xl space-y-8">
             <span className="inline-flex items-center gap-2 rounded-full border border-gray-200 px-4 py-1 text-xs uppercase tracking-[0.3em] text-gray-500">
@@ -117,36 +110,36 @@ export default function Home() {
               Process money with context.
             </h1>
             <p className="text-lg leading-7 text-gray-600 sm:text-xl">
-              Every send or receive becomes a clean, verifiable record—who, what, why—shareable as a focused link or PDF. Structure arrives first; Finance Notes & Docs build the narrative over time.
+              Every send or receive becomes a clean, verifiable record (who, what, why), shareable as a focused link or PDF. Structure arrives first; Finance Notes & Docs build the narrative over time.
             </p>
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-start">
-              <Link href="/contact">
+              <Link href="/coming-soon">
                 <SmartButton size="lg" className="group px-8">
                   Talk to our team
                 </SmartButton>
               </Link>
-              <Link href="/how-it-works">
+              <Link href="/coming-soon">
                 <SmartButton size="lg" variant="outline" className="border-gray-200 px-8 text-black transition hover:border-black hover:bg-gray-50">
                   See demo
                 </SmartButton>
               </Link>
             </div>
 
-            <div className="grid gap-4 sm:grid-cols-3" data-animate="fade-up">
+            <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-[repeat(auto-fit,minmax(240px,1fr))] gap-5 sm:gap-6" data-animate="fade-up">
               {stats.map((stat, index) => {
                 const Icon = stat.icon;
                 return (
                   <div
                     key={stat.label}
-                    className="group relative overflow-hidden rounded-3xl border border-gray-200 bg-white/85 p-5 shadow-[0_30px_90px_rgba(15,15,15,0.12)] transition-all hover:-translate-y-2 hover:border-black/80"
+                    className="group relative overflow-hidden rounded-3xl border border-gray-200 bg-white/85 p-6 shadow-[0_30px_90px_rgba(15,15,15,0.12)] transition-all hover:-translate-y-2 hover:border-black/80"
                     style={{ animation: `cardRise 0.9s ease ${index * 0.08}s both` }}
                   >
                     <div className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
                       <div className={`absolute -right-16 top-8 h-36 w-36 rounded-full blur-3xl ${stat.accent}`} />
                     </div>
-                    <div className="flex items-center justify-between">
-                      <p className="text-xs uppercase tracking-[0.35em] text-gray-500">{stat.label}</p>
-                      <IconFrame icon={Icon} size="md" variant="subtle" />
+                    <div className="flex items-start justify-between">
+                      <p className="text-[11px] leading-4 uppercase tracking-[0.3em] text-gray-500">{stat.label}</p>
+                      <IconFrame icon={Icon} size="sm" variant="subtle" className="self-start" />
                     </div>
                     <p className="mt-6 text-3xl font-semibold text-black">{stat.value}</p>
                     <p className="mt-2 text-xs text-gray-500">{stat.detail}</p>
@@ -203,8 +196,8 @@ export default function Home() {
                 <span className="flex items-center gap-2 text-gray-500">
                   <TrendingUp className="h-4 w-4" /> Instant reconciliation
                 </span>
-                <Button size="sm" className="bg-black text-white hover:bg-gray-900">
-                  Send invoice
+                <Button asChild size="sm" className="bg-black text-white hover:bg-gray-900">
+                  <Link href="/coming-soon">Send invoice</Link>
                 </Button>
               </div>
             </div>
@@ -227,11 +220,11 @@ export default function Home() {
         </section>
 
         {/* Marquee */}
-        <section className="border-y border-gray-200 bg-white/70 py-6" data-animate="fade-up">
+  <section className="border-y border-gray-200 bg-white/70 py-6" data-animate="fade-up">
           <div className="relative mx-auto max-w-6xl overflow-hidden">
             <div className="pointer-events-none absolute left-0 top-0 h-full w-12 bg-gradient-to-r from-white via-white/70 to-transparent" />
             <div className="pointer-events-none absolute right-0 top-0 h-full w-12 bg-gradient-to-l from-white via-white/70 to-transparent" />
-            <div className="flex gap-12 whitespace-nowrap text-sm font-medium uppercase tracking-[0.4em] text-gray-500" style={{ animation: "marquee 24s linear infinite" }}>
+            <div className="flex gap-10 whitespace-nowrap text-xs sm:text-sm font-medium uppercase tracking-[0.35em] text-gray-500" style={{ animation: "marquee 10s linear infinite" }}>
               {trustedBrands.concat(trustedBrands).map((brand, index) => (
                 <span key={`${brand}-${index}`} className="inline-flex items-center gap-3">
                   {brand}
@@ -251,7 +244,7 @@ export default function Home() {
             <div className="space-y-4 text-center">
               <h2 className="text-3xl font-semibold tracking-tight text-black sm:text-4xl">Structure with human context</h2>
               <p className="mx-auto max-w-2xl text-base text-gray-600">
-                Each invoice couples financial clarity with meaning—why, for whom, and under what terms—so payments become durable records.
+                Each invoice couples financial clarity with meaning (why, for whom, and under what terms) so payments become durable records.
               </p>
             </div>
 
@@ -265,7 +258,7 @@ export default function Home() {
                   </div>
                   <div className="relative space-y-4">
                     <IconFrame icon={Shield} size="md" variant="subtle" className="transition group-hover:bg-black group-hover:border-black group-hover:text-white" />
-                    <h3 className="text-lg font-semibold text-black">Official by Design</h3>
+                    <h3 className="text-lg font-semibold text-black">Built-in Professionalism</h3>
                     <p className="text-sm leading-6 text-gray-600">
                       Operate with global-grade clarity even without a registered entity. Plaen gives you legitimacy through format, flow, and consistency.
                     </p>
@@ -290,7 +283,7 @@ export default function Home() {
                     <IconFrame icon={FileText} size="md" variant="subtle" className="transition group-hover:bg-black group-hover:border-black group-hover:text-white" />
                     <h3 className="text-lg font-semibold text-black">Calm Invoice Builder</h3>
                     <p className="text-sm leading-6 text-gray-600">
-                      A monochrome surface engineered for focus. Totals, taxes, context notes—updated instantly without visual noise.
+                      A monochrome surface engineered for focus. Totals, taxes, context notes update instantly without visual noise.
                     </p>
                     {/* Visual mockup area */}
                     <div className="mt-6 space-y-2">
@@ -312,7 +305,7 @@ export default function Home() {
                     <IconFrame icon={Smartphone} size="md" variant="subtle" className="transition group-hover:bg-black group-hover:border-black group-hover:text-white" />
                     <h3 className="text-lg font-semibold text-black">Frictionless Payment Access</h3>
                     <p className="text-sm leading-6 text-gray-600">
-                      Recipients open a secure link, review structured context, and complete payment—no account barrier, no confusion.
+                      Recipients open a secure link, review structured context, and complete payment with no account barrier and no confusion.
                     </p>
                     {/* Visual mockup area */}
                     <div className="mt-6 flex items-center justify-center rounded-xl border border-gray-200 bg-white p-6">
@@ -332,7 +325,7 @@ export default function Home() {
                     <IconFrame icon={Activity} size="md" variant="subtle" className="transition group-hover:bg-black group-hover:border-black group-hover:text-white" />
                     <h3 className="text-lg font-semibold text-black">Live Composition Feedback</h3>
                     <p className="text-sm leading-6 text-gray-600">
-                      Totals, previews, and context sync as you type—reducing errors and reinforcing trust before sending.
+                      Totals, previews, and context sync as you type, reducing errors and reinforcing trust before sending.
                     </p>
                     {/* Visual mockup area */}
                     <div className="mt-6 flex items-center gap-4 rounded-xl border border-gray-200 bg-white p-4">
@@ -359,7 +352,7 @@ export default function Home() {
                     <IconFrame icon={CheckCircle2} size="md" variant="subtle" className="transition group-hover:bg-black group-hover:border-black group-hover:text-white" />
                     <h3 className="text-lg font-semibold text-black">Finance Notes & Receipts</h3>
                     <p className="text-sm leading-6 text-gray-600">
-                      Each payment triggers a verifiable receipt and keeps contextual notes attached—building a searchable narrative over time.
+                      Each payment triggers a verifiable receipt and keeps contextual notes attached, building a searchable narrative over time.
                     </p>
                     {/* Visual mockup area */}
                     <div className="mt-6 space-y-2">
@@ -381,7 +374,7 @@ export default function Home() {
                     <IconFrame icon={Globe2} size="md" variant="subtle" className="transition group-hover:bg-black group-hover:border-black group-hover:text-white" />
                     <h3 className="text-lg font-semibold text-black">Device-Agnostic Workspace</h3>
                     <p className="text-sm leading-6 text-gray-600">
-                      Access structured financial context anywhere—mobile, desktop, or tablet—without losing fidelity.
+                      Access structured financial context on mobile, desktop, or tablet without losing fidelity.
                     </p>
                     {/* Visual mockup area */}
                     <div className="mt-6 flex items-center justify-center gap-4 rounded-xl border border-gray-200 bg-white p-4">
@@ -402,7 +395,7 @@ export default function Home() {
             <div className="max-w-sm space-y-6">
               <h2 className="text-3xl font-semibold tracking-tight text-black">Calm surface. Durable records.</h2>
               <p className="text-base leading-7 text-gray-600">
-                A monochrome, low‑noise interface guides you from context capture to receipt—fast, deliberate, human. No clutter; just official output ready to share or search.
+                A monochrome, low noise interface guides you from context capture to receipt: fast, deliberate, human. No clutter; just official output ready to share or search.
               </p>
               <div className="flex flex-col gap-2 text-sm text-gray-600">
                 <span className="flex items-center gap-2">
@@ -449,7 +442,7 @@ export default function Home() {
                 Draft → Context → Receipt in seconds.
               </h2>
               <p className="text-base leading-7 text-gray-600">
-                Capture purpose and items, compose with live feedback, share frictionless links or document‑only records, and accumulate Finance Notes & Docs—your finance memory.
+                Capture purpose and items, compose with live feedback, share frictionless links or document only records, and accumulate Finance Notes & Docs: your finance memory.
               </p>
             </div>
 
@@ -533,15 +526,15 @@ export default function Home() {
               Money + Meaning starts here.
             </h2>
             <p className="mx-auto max-w-2xl text-base text-white/70">
-              Send, request, or document a transfer in seconds. Get a hosted receipt page and PDF with a tamper‑evident snapshot. Share links; recipients don’t need an account.
+              Send, request, or document a transfer in seconds. Get a hosted receipt page and PDF with a tamper evident snapshot. Share links; recipients don’t need an account.
             </p>
             <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
-              <Link href="/contact">
+              <Link href="/coming-soon">
                 <SmartButton size="lg" className="group bg-white px-8 text-black transition hover:bg-gray-100">
                   Make this transfer official
                 </SmartButton>
               </Link>
-              <Link href="/how-it-works">
+              <Link href="/coming-soon">
                 <SmartButton size="lg" variant="outline" className="border-white bg-transparent px-8 text-white transition hover:bg-white/10 hover:border-white">
                   See how it works
                 </SmartButton>

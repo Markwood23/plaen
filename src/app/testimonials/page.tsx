@@ -28,7 +28,7 @@ const testimonials = [
     company: "TechFlow Solutions",
     type: "business",
     avatar: "/testimonials/ama.jpg",
-    quote: "We needed professional invoicing without the complexity. Plaen delivers exactly that - clean, structured, and our clients take us more seriously.",
+  quote: "We needed professional invoicing without the complexity. Plaen delivers exactly that: clean, structured, and our clients take us more seriously.",
     metrics: {
       label: "Client satisfaction",
       value: "95%"
@@ -129,7 +129,7 @@ export default function TestimonialsPage() {
               <IconFrame icon={Star} size="sm" variant="plain" /> Customer Stories
             </span>
             <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">
-              Trusted by operators who work Official by Design
+              Trusted by operators who value clarity
             </h1>
             <p className="max-w-2xl text-lg leading-7 text-gray-600">
               Hear how freelancers and teams attach context to payments with finance notes, present professionally, and get paid with less friction.
@@ -296,14 +296,14 @@ export default function TestimonialsPage() {
                   Experience the same professional invoicing and faster payments that our users love.
                 </p>
                 <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
-                  <Link href="/contact">
+                  <Link href="/coming-soon">
                     <SmartButton size="lg" className="bg-black text-white transition hover:bg-gray-900">
-                      Talk to our team
+                      Coming soon
                     </SmartButton>
                   </Link>
-                  <Link href="/pricing">
+                  <Link href="/coming-soon">
                     <SmartButton size="lg" variant="outline" className="border-gray-200 text-black transition hover:border-black hover:bg-gray-50">
-                      View pricing
+                      Learn more
                     </SmartButton>
                   </Link>
                 </div>

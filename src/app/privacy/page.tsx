@@ -66,7 +66,7 @@ export default function PrivacyPolicyPage() {
                 <div className="bg-blue-50 border border-blue-200 rounded-2xl p-6 mb-8">
                   <h2 className="text-lg font-semibold text-blue-900 mb-3">Your Privacy Matters to Narrative Integrity</h2>
                   <p className="text-blue-800 text-sm leading-6">
-                    We protect the context you add to financial interactions—finance notes, invoice metadata, payment records—so Money + Meaning remains secure. This policy explains how we handle data while preserving Official by Design principles.
+                    We protect the context you add to financial interactions—finance notes, invoice metadata, payment records—so Money + Meaning remains secure. This policy explains how we handle data while preserving professional, trustworthy output.
                   </p>
                 </div>
 

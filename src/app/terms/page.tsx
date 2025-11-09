@@ -45,7 +45,7 @@ export default function TermsOfServicePage() {
               </div>
 
               <h1 className="mb-4 text-4xl font-semibold tracking-tight text-black sm:text-5xl">
-                Terms of Service — Official by Design
+                Terms of Service — Professional, clear, and trustworthy
               </h1>
 
               <div className="flex items-center gap-4 text-sm text-gray-500">
