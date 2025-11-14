@@ -225,3 +225,219 @@
     color: #111827;
   }
 }
+
+/* Brand color adjustments
+   Ensure all usages of Tailwind's "black" utilities resolve to the brand black #212121.
+   This is a lightweight override without changing Tailwind config.
+*/
+@layer utilities {
+  .text-black { color: #212121 !important; }
+  .bg-black { background-color: #212121 !important; }
+  .border-black { border-color: #212121 !important; }
+  .fill-black { fill: #212121 !important; }
+  .stroke-black { stroke: #212121 !important; }
+
+  /* Common variants used across the site */
+  .hover\:bg-black:hover { background-color: #212121 !important; }
+  .hover\:border-black:hover { border-color: #212121 !important; }
+  .hover\:text-black:hover { color: #212121 !important; }
+  .group:hover .group-hover\:bg-black { background-color: #212121 !important; }
+  .group:hover .group-hover\:text-black { color: #212121 !important; }
+  .group:hover .group-hover\:border-black { border-color: #212121 !important; }
+
+  /* Opacity variants seen in codebase */
+  .bg-black\/90 { background-color: rgb(33 33 33 / 0.9) !important; }
+  .border-black\/80 { border-color: rgb(33 33 33 / 0.8) !important; }
+}
+
+/* React Day Picker - Grayscale Override - Force all blue to grayscale */
+
+/* Kill all default background styles but NOT text color */
+.rdp {
+  font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif !important;
+}
+
+/* Day buttons base */
+.rdp-day_button {
+  font-size: 14px !important;
+  border-radius: 6px !important;
+}
+
+/* Month/year text */
+.rdp-caption_label,
+.rdp-weekday,
+.rdp-nav_button {
+  color: #212121 !important;
+  font-weight: 500 !important;
+}
+
+/* Regular days - default color (non-selected) */
+.rdp-day_button:not([aria-selected="true"]):not([data-range-start="true"]):not([data-range-end="true"]) {
+  color: #212121 !important;
+}
+
+/* SELECTED DAYS - Must come AFTER base styles to override */
+button[aria-selected="true"],
+.rdp button[aria-selected="true"],
+.rdp-day_button[aria-selected="true"],
+.rdp-day_button[data-selected="true"],
+.rdp .rdp-day_button[aria-selected="true"],
+.rdp .rdp-day_button[data-selected="true"],
+.rdp-day_button[data-range-start="true"],
+.rdp-day_button[data-range-end="true"],
+.rdp .rdp-day_button[data-range-start="true"],
+.rdp .rdp-day_button[data-range-end="true"],
+.rdp [aria-selected="true"],
+.rdp [data-range-start="true"],
+.rdp [data-range-end="true"] {
+  background-color: #212121 !important;
+  color: #FFFFFF !important;
+  font-weight: 500 !important;
+}
+
+/* Text inside selected buttons - force white */
+button[aria-selected="true"],
+button[aria-selected="true"] *,
+.rdp button[aria-selected="true"],
+.rdp button[aria-selected="true"] *,
+.rdp-day_button[aria-selected="true"],
+.rdp-day_button[aria-selected="true"] *,
+.rdp-day_button[data-range-start="true"],
+.rdp-day_button[data-range-start="true"] *,
+.rdp-day_button[data-range-end="true"],
+.rdp-day_button[data-range-end="true"] *,
+.rdp [aria-selected="true"],
+.rdp [aria-selected="true"] *,
+.rdp [data-range-start="true"],
+.rdp [data-range-start="true"] *,
+.rdp [data-range-end="true"],
+.rdp [data-range-end="true"] * {
+  color: #FFFFFF !important;
+}
+
+/* Hover state for selected */
+.rdp-day_button[aria-selected="true"]:hover,
+.rdp .rdp-day_button[aria-selected="true"]:hover,
+.rdp-day_button[data-range-start="true"]:hover,
+.rdp-day_button[data-range-end="true"]:hover {
+  background-color: #212121 !important;
+  color: #FFFFFF !important;
+}
+
+/* Hover state for selected children */
+.rdp-day_button[aria-selected="true"]:hover *,
+.rdp-day_button[data-range-start="true"]:hover *,
+.rdp-day_button[data-range-end="true"]:hover * {
+  color: #FFFFFF !important;
+}
+
+/* Today indicator - remove blue, use gray */
+.rdp-day_button[data-today="true"]:not([aria-selected="true"]):not([data-range-start="true"]):not([data-range-end="true"]),
+.rdp .rdp-day_button[data-today="true"]:not([aria-selected="true"]):not([data-range-start="true"]):not([data-range-end="true"]) {
+  background-color: #F9F9F9 !important;
+  color: #212121 !important;
+  font-weight: 600 !important;
+}
+
+/* Hover state for regular days */
+.rdp-day_button:hover:not([aria-selected="true"]):not([data-range-start="true"]):not([data-range-end="true"]),
+.rdp .rdp-day_button:hover:not([aria-selected="true"]):not([data-range-start="true"]):not([data-range-end="true"]) {
+  background-color: #F9F9F9 !important;
+  color: #212121 !important;
+}
+
+/* Range middle days */
+.rdp-day_button[data-range-middle="true"]:not([data-range-start="true"]):not([data-range-end="true"]),
+.rdp .rdp-day_button[data-range-middle="true"]:not([data-range-start="true"]):not([data-range-end="true"]),
+.rdp-range_middle,
+.rdp-day_range_middle,
+.rdp .rdp-range_middle,
+.rdp .rdp-day_range_middle {
+  background-color: #F9F9F9 !important;
+  color: #212121 !important;
+}
+
+/* Force any element with range in between to be gray */
+.rdp [data-selected-range="true"],
+.rdp [class*="range"]:not([aria-selected="true"]):not([data-range-start="true"]):not([data-range-end="true"]) {
+  background-color: #F9F9F9 !important;
+  color: #212121 !important;
+}
+
+/* Focus states - remove blue ring */
+.rdp-day_button:focus-visible,
+.rdp .rdp-day_button:focus-visible {
+  outline: 2px solid #212121 !important;
+  outline-offset: 2px !important;
+}
+
+/* Navigation buttons */
+.rdp-nav_button:hover {
+  background-color: #F9F9F9 !important;
+}
+
+/* Disabled/outside days */
+.rdp-day_button:disabled,
+.rdp-day_button[data-outside="true"] {
+  color: #9ca3af !important;
+  opacity: 0.5 !important;
+}
+
+/* Remove any default blue from the component */
+.rdp-root,
+.rdp {
+  --rdp-accent-color: #212121 !important;
+  --rdp-background-color: #F9F9F9 !important;
+}
+
+/* Plaen scoped calendar overrides (higher specificity) */
+.plaen-calendar .rdp-day_selected .rdp-day_button,
+.plaen-calendar .rdp-day_range_start .rdp-day_button,
+.plaen-calendar .rdp-day_range_end .rdp-day_button,
+.plaen-calendar .rdp-day_button[aria-selected="true"],
+.plaen-calendar .rdp-day_button[data-range-start="true"],
+.plaen-calendar .rdp-day_button[data-range-end="true"] {
+  background-color: #212121 !important;
+  color: #FFFFFF !important;
+}
+
+/* Handle case where aria-selected / range markers are on parent .rdp-day element */
+.plaen-calendar .rdp-day[aria-selected="true"] .rdp-day_button,
+.plaen-calendar .rdp-day[data-selected="true"] .rdp-day_button,
+.plaen-calendar .rdp-day[data-range-start="true"] .rdp-day_button,
+.plaen-calendar .rdp-day[data-range-end="true"] .rdp-day_button {
+  background-color: #212121 !important;
+  color: #FFFFFF !important;
+}
+
+/* Range middle (part of selection but not start/end) force gray even if aria-selected present */
+.plaen-calendar .rdp-day[aria-selected="true"]:not([data-range-start="true"]):not([data-range-end="true"]) .rdp-day_button,
+.plaen-calendar .rdp-day_button[aria-selected="true"]:not([data-range-start="true"]):not([data-range-end="true"]) {
+  background-color: #F9F9F9 !important;
+  color: #212121 !important;
+}
+
+.plaen-calendar .rdp-day[aria-selected="true"] .rdp-day_button:hover,
+.plaen-calendar .rdp-day[data-range-start="true"] .rdp-day_button:hover,
+.plaen-calendar .rdp-day[data-range-end="true"] .rdp-day_button:hover {
+  background-color: #212121 !important;
+  color: #FFFFFF !important;
+}
+
+.plaen-calendar .rdp-day_range_middle .rdp-day_button,
+.plaen-calendar .rdp-day_button[data-range-middle="true"] {
+  background-color: #F9F9F9 !important;
+  color: #212121 !important;
+}
+
+.plaen-calendar .rdp-day_today:not(.rdp-day_selected) .rdp-day_button,
+.plaen-calendar .rdp-day_button[data-today="true"]:not([aria-selected="true"]) {
+  background-color: #F9F9F9 !important;
+  color: #212121 !important;
+  font-weight: 600 !important;
+}
+
+.plaen-calendar .rdp-day_button:focus-visible {
+  outline: 2px solid #212121 !important;
+  outline-offset: 2px !important;
+}

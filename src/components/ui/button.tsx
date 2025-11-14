@@ -9,11 +9,11 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "relative overflow-hidden backdrop-blur-md bg-gradient-to-r from-gray-900/90 via-black/95 to-gray-900/90 border border-black/20 text-white shadow-2xl hover:shadow-[0_20px_40px_rgba(0,0,0,0.4)] hover:from-black/95 hover:to-gray-800/95 hover:border-black/40 focus-visible:ring-black/20 transform hover:scale-[1.02] active:scale-[0.98] before:absolute before:inset-0 before:bg-gradient-to-r before:from-black/0 before:via-black/10 before:to-black/0 before:opacity-0 hover:before:opacity-100 before:transition-opacity",
+        default: "relative overflow-hidden backdrop-blur-md bg-[#212121] border border-[#212121]/20 text-white shadow-2xl hover:shadow-[0_20px_40px_rgba(33,33,33,0.4)] hover:bg-[#212121]/90 hover:border-[#212121]/40 focus-visible:ring-[#212121]/20 transform hover:scale-[1.02] active:scale-[0.98]",
         destructive:
           "bg-destructive text-white hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60",
         outline:
-          "border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50",
+          "border border-[#EBECE7] bg-background shadow-xs hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50",
         secondary:
           "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         ghost:

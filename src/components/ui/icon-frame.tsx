@@ -36,12 +36,14 @@ export function IconFrame({
   return (
     <span
       className={cn(
-        "relative inline-flex items-center justify-center rounded-full border transition-colors", // base
+        // base: perfect circle, never shrinks, keeps icon centered
+        "relative inline-flex aspect-square shrink-0 items-center justify-center rounded-full border leading-none overflow-hidden transition-colors", // base
         variant === "plain" && "border-transparent",
         variant === "subtle" && "border-gray-200 bg-gray-100/70",
         variant === "solid" && "border-black bg-black",
         tone === "muted" && variant !== "solid" && "bg-gray-50",
         s.wrapper,
+        s.padding,
         className
       )}
       {...rest}
