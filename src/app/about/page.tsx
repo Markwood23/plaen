@@ -1,4 +1,5 @@
 import { SmartButton } from "@/components/ui/smart-button";
+import { Badge } from "@/components/ui/badge";
 import { MarketingHeader } from "@/components/marketing/marketing-header";
 import { MarketingFooter } from "@/components/marketing/marketing-footer";
 import { PageEffects } from "@/components/marketing/home-page-effects";
@@ -30,9 +31,9 @@ export default function AboutPage() {
             data-animate="fade-up"
             className="mx-auto flex max-w-5xl flex-col items-center gap-8 px-6 pb-24 pt-20 text-center"
           >
-            <span className="inline-flex items-center gap-2 rounded-full border border-gray-200 px-4 py-1 text-xs uppercase tracking-[0.35em] text-gray-500">
+            <Badge variant="outline" className="rounded-full border-gray-200 px-4 py-1 text-xs uppercase tracking-[0.35em] text-gray-500">
               About Plaen
-            </span>
+            </Badge>
             <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">
               Money + Meaning. Built-in Professionalism.
             </h1>
@@ -54,29 +55,29 @@ export default function AboutPage() {
                     Plaen is designed around regional reality: mobile money, bank transfer, and crypto. We combine local payment access with global-grade, official-by-design documents and context.
                   </p>
                   <div className="grid gap-4 sm:grid-cols-2">
-                    <div className="flex items-center gap-3 rounded-lg border border-gray-200 bg-white p-4">
+                    <div className="flex items-center gap-3 rounded-2xl bg-gray-50 p-4 transition hover:bg-gray-100">
                       <Globe2 className="h-5 w-5 text-gray-600" />
                       <span className="text-sm font-medium text-black">5+ currencies supported</span>
                     </div>
-                    <div className="flex items-center gap-3 rounded-lg border border-gray-200 bg-white p-4">
+                    <div className="flex items-center gap-3 rounded-2xl bg-gray-50 p-4 transition hover:bg-gray-100">
                       <Users className="h-5 w-5 text-gray-600" />
                       <span className="text-sm font-medium text-black">Personal & business</span>
                     </div>
-                    <div className="flex items-center gap-3 rounded-lg border border-gray-200 bg-white p-4">
+                    <div className="flex items-center gap-3 rounded-2xl bg-gray-50 p-4 transition hover:bg-gray-100">
                       <Building2 className="h-5 w-5 text-gray-600" />
                       <span className="text-sm font-medium text-black">No registration required</span>
                     </div>
-                    <div className="flex items-center gap-3 rounded-lg border border-gray-200 bg-white p-4">
+                    <div className="flex items-center gap-3 rounded-2xl bg-gray-50 p-4 transition hover:bg-gray-100">
                       <Heart className="h-5 w-5 text-gray-600" />
                       <span className="text-sm font-medium text-black">Made with care</span>
                     </div>
                   </div>
                 </div>
                 
-                <div className="rounded-3xl border border-gray-200 bg-gradient-to-br from-gray-50 to-white p-8 shadow-[0_24px_80px_rgba(15,15,15,0.08)]">
+                <div className="rounded-3xl bg-gray-50 p-8">
                   <blockquote className="space-y-4">
                     <p className="text-lg leading-8 text-gray-700 italic">
-                      "We’re building a calm workspace where payments carry meaning. Professional output by default, with finance notes that keep every decision and receipt in context."
+                      "We're building a calm workspace where payments carry meaning. Professional output by default, with finance notes that keep every decision and receipt in context."
                     </p>
                     <footer className="flex items-center gap-4">
                       <div className="h-12 w-12 rounded-full bg-gray-200" />
@@ -101,12 +102,12 @@ export default function AboutPage() {
                   Join operators attaching Money + Meaning to every invoice. Start free, keep the calm surface, and add context as you grow.
                 </p>
                 <div className="flex flex-wrap justify-center gap-4">
-                  <Link href="/coming-soon">
-                    <SmartButton size="lg" className="bg-black text-white transition hover:bg-gray-900">
+                  <Link href="/contact">
+                    <SmartButton size="lg">
                       Talk to our team
                     </SmartButton>
                   </Link>
-                  <Link href="/coming-soon">
+                  <Link href="/pricing">
                     <SmartButton size="lg" variant="outline" className="border-gray-200 text-black transition hover:border-black hover:bg-gray-50">
                       View pricing
                     </SmartButton>

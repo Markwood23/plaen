@@ -9,6 +9,7 @@ const supportedCryptos = [
     name: "Bitcoin (BTC)",
     description: "The world's first and most trusted cryptocurrency, perfect for large transactions and long-term value storage.",
     icon: "₿",
+    color: "#F59E0B", // Orange
     features: [
       "Highest liquidity and acceptance",
       "Proven track record since 2009", 
@@ -20,6 +21,7 @@ const supportedCryptos = [
     name: "USD Coin (USDC)",
     description: "A stable cryptocurrency pegged to the US Dollar, providing price stability and predictable value.",
     icon: "$",
+    color: "#059669", // Green
     features: [
       "Price stable (pegged to USD)",
       "Fast and cheap transfers",
@@ -31,6 +33,7 @@ const supportedCryptos = [
     name: "Ethereum (ETH)",
     description: "The second-largest cryptocurrency with smart contract capabilities and broad ecosystem support.",
     icon: "Ξ",
+    color: "#7C3AED", // Purple
     features: [
       "Smart contract functionality",
       "Large developer ecosystem",
@@ -44,22 +47,26 @@ const advantages = [
   {
     title: "Global Payments",
     description: "Accept payments from anywhere in the world without traditional banking restrictions or currency conversion fees.",
-    icon: Globe
+    icon: Globe,
+    color: "#1877F2", // Blue
   },
   {
     title: "Fast Settlement",
     description: "Receive payments in minutes rather than days, with transactions confirmed on the blockchain in real-time.",
-    icon: Zap
+    icon: Zap,
+    color: "#F59E0B", // Orange
   },
   {
     title: "Lower Fees",
     description: "Cryptocurrency payments typically cost 1-3% compared to 3-5% for traditional payment methods.",
-    icon: Bitcoin
+    icon: Bitcoin,
+    color: "#059669", // Green
   },
   {
     title: "Enhanced Security",
     description: "Blockchain technology provides cryptographic security and immutable transaction records.",
-    icon: Shield
+    icon: Shield,
+    color: "#7C3AED", // Purple
   }
 ];
 
@@ -126,9 +133,16 @@ export default function CryptoPaymentsPage() {
                   {advantages.map((advantage) => {
                     const Icon = advantage.icon;
                     return (
-                      <div key={advantage.title} className="border-l-4 border-gray-200 pl-6">
+                      <div 
+                        key={advantage.title} 
+                        className="border-l-4 pl-6"
+                        style={{ borderColor: advantage.color }}
+                      >
                         <div className="flex items-center gap-3 mb-3">
-                          <Icon className="h-6 w-6 text-gray-700" />
+                          <Icon 
+                            className="h-6 w-6" 
+                            style={{ color: advantage.color }}
+                          />
                           <h3 className="text-xl font-semibold text-black">{advantage.title}</h3>
                         </div>
                         <p className="text-gray-700 leading-7">{advantage.description}</p>
@@ -148,9 +162,16 @@ export default function CryptoPaymentsPage() {
 
                 <div className="not-prose space-y-12">
                   {supportedCryptos.map((crypto) => (
-                    <div key={crypto.name} className="border-l-4 border-gray-200 pl-8">
+                    <div 
+                      key={crypto.name} 
+                      className="border-l-4 pl-8"
+                      style={{ borderColor: crypto.color }}
+                    >
                       <div className="flex items-start gap-4 mb-6">
-                        <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gray-100 text-xl font-bold text-gray-700">
+                        <div 
+                          className="flex h-12 w-12 items-center justify-center rounded-xl text-xl font-bold text-white"
+                          style={{ backgroundColor: crypto.color }}
+                        >
                           {crypto.icon}
                         </div>
                         <div>
@@ -163,7 +184,10 @@ export default function CryptoPaymentsPage() {
                         <div className="space-y-3">
                           {crypto.features.map((feature, i) => (
                             <div key={i} className="flex items-center gap-3">
-                              <CheckCircle className="h-4 w-4 text-gray-500 flex-shrink-0" />
+                              <CheckCircle 
+                                className="h-4 w-4 flex-shrink-0" 
+                                style={{ color: crypto.color }}
+                              />
                               <span className="text-gray-700">{feature}</span>
                             </div>
                           ))}
@@ -288,13 +312,13 @@ export default function CryptoPaymentsPage() {
                 <p className="text-lg leading-8 text-gray-700 mb-8">
                   Setting up cryptocurrency payments can seem complex at first, but our support team is here 
                   to guide you through the process. Contact us through the chat widget or email us at 
-                  <a href="mailto:support@plaen.com" className="text-black underline"> support@plaen.com</a> 
+                  <a href="mailto:support@plaen.tech" className="text-black underline"> support@plaen.tech</a> 
                   for personalized assistance.
                 </p>
 
                 <div className="not-prose mt-16 flex flex-col gap-4 sm:flex-row">
                   <Link href="/contact">
-                    <Button size="lg" className="bg-black text-white hover:bg-gray-900">
+                    <Button size="lg">
                       Talk to our team
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </Button>

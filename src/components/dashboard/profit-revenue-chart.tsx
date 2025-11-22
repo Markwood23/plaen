@@ -1,19 +1,19 @@
 'use client';
 import React, { useState } from 'react';
-import { ComposedChart, Line, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { LineChart, Line, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { Calendar } from 'lucide-react';
 
 export default function ProfitRevenueChart() {
   const [timeframe, setTimeframe] = useState('weekly');
 
   const data = [
-    { month: 'Sep', revenue: 28000, profit: 38000 },
-    { month: 'Oct', revenue: 35000, profit: 42000 },
-    { month: 'Nov', revenue: 48000, profit: 36000 },
-    { month: 'Dec', revenue: 55000, profit: 50000 },
-    { month: 'Jan', revenue: 62000, profit: 58000 },
-    { month: 'Feb', revenue: 54000, profit: 45000 },
-    { month: 'Mar', revenue: 45000, profit: 38000 }
+    { month: 'Sep', revenue: 25000, profit: 42000 },
+    { month: 'Oct', revenue: 32000, profit: 35000 },
+    { month: 'Nov', revenue: 52000, profit: 30000 },
+    { month: 'Dec', revenue: 58000, profit: 55000 },
+    { month: 'Jan', revenue: 65000, profit: 62000 },
+    { month: 'Feb', revenue: 58000, profit: 48000 },
+    { month: 'Mar', revenue: 42000, profit: 40000 }
   ];
 
   const CustomTooltip = ({ active, payload }: any) => {
@@ -37,7 +37,7 @@ export default function ProfitRevenueChart() {
     <div className="w-full">
       <div className="relative">
           <ResponsiveContainer width="100%" height={420}>
-            <ComposedChart
+            <LineChart
               data={data}
               margin={{ top: 30, right: 40, left: 80, bottom: 60 }}
             >
@@ -50,20 +50,20 @@ export default function ProfitRevenueChart() {
                   </feMerge>
                 </filter>
                 <linearGradient id="revenueGradient" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#F9F9F9" stopOpacity={1}/>
-                  <stop offset="50%" stopColor="#F9F9F9" stopOpacity={0.85}/>
-                  <stop offset="100%" stopColor="#F9F9F9" stopOpacity={0}/>
+                  <stop offset="0%" stopColor="#000000" stopOpacity={0.5}/>
+                  <stop offset="50%" stopColor="#000000" stopOpacity={0.15}/>
+                  <stop offset="100%" stopColor="#000000" stopOpacity={0}/>
                 </linearGradient>
                 <linearGradient id="profitGradient" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#F9F9F9" stopOpacity={1}/>
-                  <stop offset="50%" stopColor="#F9F9F9" stopOpacity={0.8}/>
-                  <stop offset="100%" stopColor="#F9F9F9" stopOpacity={0}/>
+                  <stop offset="0%" stopColor="#9ca3af" stopOpacity={0.4}/>
+                  <stop offset="50%" stopColor="#9ca3af" stopOpacity={0.12}/>
+                  <stop offset="100%" stopColor="#9ca3af" stopOpacity={0}/>
                 </linearGradient>
               </defs>
               
               <CartesianGrid 
                 strokeDasharray="0" 
-                stroke="#EBECE7" 
+                stroke="#f3f4f6" 
                 vertical={false}
                 strokeWidth={1.5}
               />
@@ -72,21 +72,21 @@ export default function ProfitRevenueChart() {
                 dataKey="month" 
                 axisLine={false}
                 tickLine={false}
-                tick={{ fill: '#949494', fontSize: 14, fontWeight: 500 }}
+                tick={{ fill: '#9ca3af', fontSize: 14, fontWeight: 500 }}
                 dy={12}
                 padding={{ left: 20, right: 20 }}
                 label={{ 
                   value: 'Months', 
                   position: 'insideBottom', 
                   offset: -35,
-                  style: { fill: '#949494', fontSize: 13, fontWeight: 600 }
+                  style: { fill: '#6b7280', fontSize: 13, fontWeight: 600 }
                 }}
               />
               
               <YAxis 
                 axisLine={false}
                 tickLine={false}
-                tick={{ fill: '#949494', fontSize: 13, fontWeight: 500 }}
+                tick={{ fill: '#9ca3af', fontSize: 13, fontWeight: 500 }}
                 tickFormatter={formatYAxis}
                 domain={[0, 80000]}
                 ticks={[20000, 40000, 60000, 80000]}
@@ -96,7 +96,7 @@ export default function ProfitRevenueChart() {
                   angle: -90, 
                   position: 'insideLeft',
                   offset: -50,
-                  style: { fill: '#949494', fontSize: 13, fontWeight: 600, textAnchor: 'middle' }
+                  style: { fill: '#6b7280', fontSize: 13, fontWeight: 600, textAnchor: 'middle' }
                 }}
               />
               
@@ -113,7 +113,7 @@ export default function ProfitRevenueChart() {
               
               {/* Profit area gradient (gray) - behind */}
               <Area
-                type="natural"
+                type="monotone"
                 dataKey="profit"
                 stroke="none"
                 fill="url(#profitGradient)"
@@ -121,7 +121,7 @@ export default function ProfitRevenueChart() {
               
               {/* Revenue area gradient (black) - in front */}
               <Area
-                type="natural"
+                type="monotone"
                 dataKey="revenue"
                 stroke="none"
                 fill="url(#revenueGradient)"
@@ -129,59 +129,57 @@ export default function ProfitRevenueChart() {
               
               {/* Profit line (gray) - behind */}
               <Line 
-                type="natural" 
+                type="monotone" 
                 dataKey="profit" 
-                stroke="#949494" 
+                stroke="#9ca3af" 
                 strokeWidth={3.5}
                 dot={false}
                 activeDot={{ 
                   r: 7, 
-                  fill: '#949494', 
+                  fill: '#9ca3af', 
                   strokeWidth: 4,
                   stroke: '#ffffff',
                   style: { filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.1))' }
                 }}
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                tension={0.4}
               />
               
               {/* Revenue line (black) - in front */}
               <Line 
-                type="natural" 
+                type="monotone" 
                 dataKey="revenue" 
-                stroke="#212121" 
+                stroke="#000000" 
                 strokeWidth={3.5}
                 dot={false}
                 activeDot={{ 
                   r: 8, 
-                  fill: '#212121', 
+                  fill: '#000000', 
                   strokeWidth: 5,
                   stroke: '#ffffff',
                   style: { filter: 'drop-shadow(0 3px 6px rgba(0,0,0,0.15))' }
                 }}
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                tension={0.5}
               />
-            </ComposedChart>
+            </LineChart>
           </ResponsiveContainer>
 
           {/* Enhanced Legend */}
-          <div className="flex justify-center gap-10 mt-8 pt-6 border-t border-[#EBECE7]">
+          <div className="flex justify-center gap-10 mt-8 pt-6 border-t border-gray-100">
             <div className="flex items-center gap-3 group cursor-pointer">
               <div className="relative">
-                <div className="w-2.5 h-2.5 rounded-full bg-[#212121] group-hover:scale-110 transition-transform duration-200"></div>
-                <div className="absolute inset-0 w-2.5 h-2.5 rounded-full bg-[#212121] opacity-20 blur-sm"></div>
+                <div className="w-2.5 h-2.5 rounded-full bg-black group-hover:scale-110 transition-transform duration-200"></div>
+                <div className="absolute inset-0 w-2.5 h-2.5 rounded-full bg-black opacity-20 blur-sm"></div>
               </div>
-              <span className="text-sm font-medium text-[#212121] group-hover:text-[#212121]/80 transition-colors">Revenue</span>
+              <span className="text-sm font-semibold text-gray-900 group-hover:text-black transition-colors">Revenue</span>
             </div>
             <div className="flex items-center gap-3 group cursor-pointer">
               <div className="relative">
-                <div className="w-2.5 h-2.5 rounded-full bg-[#949494] group-hover:scale-110 transition-transform duration-200"></div>
-                <div className="absolute inset-0 w-2.5 h-2.5 rounded-full bg-[#949494] opacity-20 blur-sm"></div>
+                <div className="w-2.5 h-2.5 rounded-full bg-gray-400 group-hover:scale-110 transition-transform duration-200"></div>
+                <div className="absolute inset-0 w-2.5 h-2.5 rounded-full bg-gray-400 opacity-20 blur-sm"></div>
               </div>
-              <span className="text-sm font-medium text-[#212121] group-hover:text-[#212121]/80 transition-colors">Profit</span>
+              <span className="text-sm font-semibold text-gray-900 group-hover:text-black transition-colors">Profit</span>
           </div>
         </div>
       </div>

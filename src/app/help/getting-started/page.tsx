@@ -154,12 +154,12 @@ export default function GettingStartedPage() {
                 <p>
                   If you run into any issues or have questions, our support team is here to help. 
                   You can reach us through the chat widget in the bottom right corner of your screen, 
-                  or send us an email at <a href="mailto:support@plaen.com">support@plaen.com</a>.
+                  or send us an email at <a href="mailto:support@plaen.tech">support@plaen.tech</a>.
                 </p>
 
                 <div className="not-prose mt-12 flex flex-col gap-4 sm:flex-row">
                   <Link href="/contact">
-                    <Button size="lg" className="bg-black text-white hover:bg-gray-900">
+                    <Button size="lg">
                       Talk to our team
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </Button>

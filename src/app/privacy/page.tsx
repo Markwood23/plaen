@@ -254,14 +254,14 @@ export default function PrivacyPolicyPage() {
                     <div>
                       <h4 className="font-semibold text-black mb-2">General Inquiries</h4>
                       <p className="text-sm text-gray-700">
-                        Email: privacy@plaen.app<br/>
+                        Email: privacy@plaen.tech<br/>
                         Response time: 48 hours
                       </p>
                     </div>
                     <div>
                       <h4 className="font-semibold text-black mb-2">Data Protection Officer</h4>
                       <p className="text-sm text-gray-700">
-                        Email: dpo@plaen.app<br/>
+                        Email: dpo@plaen.tech<br/>
                         For data rights requests
                       </p>
                     </div>

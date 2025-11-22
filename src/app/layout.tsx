@@ -1,22 +1,23 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Plus_Jakarta_Sans, Outfit } from "next/font/google";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/react";
 
-// Interface font - Inter as specified in Plaen brand document
-const inter = Inter({
-  variable: "--font-inter",
+// Interface font - Plus Jakarta Sans for UI/dashboard
+const plusJakarta = Plus_Jakarta_Sans({
+  variable: "--font-jakarta",
   subsets: ["latin"],
   display: "swap",
+  weight: ["400", "500", "600", "700"],
 });
 
-// Brand font - Aeonik (using system fallback for development)
-// TODO: Replace with actual Aeonik font files for production
-// For now using geometric sans fallback that matches Aeonik's characteristics
-// const aeonik = localFont({
-//   src: "./fonts/aeonik.woff2",
-//   variable: "--font-aeonik",
-// });
+// Display font - Outfit for marketing/headers
+const outfit = Outfit({
+  variable: "--font-outfit",
+  subsets: ["latin"],
+  display: "swap",
+  weight: ["400", "500", "600", "700"],
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://plaen.app"),
@@ -66,7 +67,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.variable} antialiased overflow-x-hidden`}>
+      <body className={`${plusJakarta.variable} ${outfit.variable} antialiased overflow-x-hidden`}>
         {children}
         <Analytics />
       </body>

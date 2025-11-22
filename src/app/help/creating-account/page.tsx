@@ -56,7 +56,7 @@ export default function CreatingAccountPage() {
 
                 <h3 className="text-xl font-semibold text-black mt-12 mb-6">1. Request access</h3>
                 <p className="text-lg leading-8 text-gray-700 mb-8">
-                  Go to <a href="/contact" className="text-black font-medium hover:underline">plaen.com/contact</a> or click "Contact Team" 
+                  Go to <a href="/contact" className="text-black font-medium hover:underline">plaen.tech/contact</a> or click "Contact Team" 
                   from our homepage. Share a few details about your business and we'll set up your workspace.
                 </p>
 

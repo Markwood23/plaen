@@ -1,22 +1,23 @@
-import { SmartButton } from "@/components/ui/smart-button";
+"use client";
+
+import { useEffect } from "react";
+import { Button } from "@/components/ui/button";
 import { MarketingHeader } from "@/components/marketing/marketing-header";
 import { MarketingFooter } from "@/components/marketing/marketing-footer";
-import { PageEffects } from "@/components/marketing/home-page-effects";
+import { useRevealAnimation } from "@/hooks/use-reveal-animation";
 import { BadgeCheck, CreditCard, RefreshCcw, Shield, TrendingUp } from "lucide-react";
-import Link from "next/link";
-import { IconFrame } from "@/components/ui/icon-frame";
 
 const pricingTiers = [
   {
     name: "Free",
     price: "$0",
     cadence: "forever",
-    description: "Create and send unlimited official invoices. Pay only when you get paid.",
+    description: "Create and send unlimited invoices. Pay only when you get paid.",
     features: [
       "Unlimited invoices",
       "All payment methods",
-      "Tamper‑evident receipts",
-      "Finance Notes & Docs",
+      "Automatic receipts",
+      "Documentation timeline",
     ],
     highlighted: true,
   },
@@ -67,26 +68,29 @@ const faqs = [
   {
     question: "When are Pro and Teams features available?",
     answer:
-      "We're shipping Pro (analytics, custom branding, advanced Finance Notes) and Teams (shared client library, roles & permissions, workspace insights) in staged releases. We prioritise what active users request most. Join the waitlist to influence order and get early access invites.",
+      "We're building these features based on user feedback. Join the waitlist to be notified when they launch.",
   },
 ];
 
 export default function PricingPage() {
   const year = new Date().getFullYear();
+  useRevealAnimation();
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
 
   return (
     <>
-      {/* Page-level SEO could override title/description if needed; defaults already narrative-aligned */}
       <MarketingHeader />
-      <PageEffects resetScroll />
       <div className="relative min-h-screen bg-white text-black">
         <div className="pointer-events-none absolute inset-0 -z-10">
           <div
-            className="absolute left-1/2 top-[-20%] h-[420px] w-[480px] -translate-x-1/2 rounded-full bg-[radial-gradient(circle_at_top,rgba(0,0,0,0.06),transparent_60%)] blur-3xl"
+            className="absolute left-1/2 top-[-20%] h-[420px] w-[480px] -translate-x-1/2 rounded-full bg-[radial-gradient(circle_at_top,rgba(0,0,0,0.14),transparent_60%)] blur-3xl"
             style={{ animation: "floatBlob 18s ease-in-out infinite" }}
           />
           <div
-            className="absolute right-[-10%] top-1/3 h-[360px] w-[360px] rounded-full bg-[radial-gradient(circle_at_center,rgba(0,0,0,0.04),transparent_70%)] blur-3xl"
+            className="absolute right-[-10%] top-1/3 h-[360px] w-[360px] rounded-full bg-[radial-gradient(circle_at_center,rgba(0,0,0,0.08),transparent_70%)] blur-3xl"
             style={{ animation: "floatBlob 24s ease-in-out infinite", animationDelay: "-8s" }}
           />
         </div>
@@ -100,10 +104,10 @@ export default function PricingPage() {
             Pricing
           </span>
           <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">
-            Built-in professionalism starts free.
+            Structure should be free to start.
           </h1>
           <p className="max-w-2xl text-lg leading-7 text-gray-600">
-            Create and send unlimited invoices with human context. Pay only transaction fees when you get paid. Fair, transparent, and ready for growth.
+            Plaen is free for all users to create and send invoices. You only pay transaction fees when you get paid—fair and transparent.
           </p>
         </section>
 
@@ -123,7 +127,7 @@ export default function PricingPage() {
                 )}
                 <div className="flex items-center justify-between">
                   <h3 className="text-xl font-semibold text-black">{tier.name}</h3>
-                  <IconFrame icon={BadgeCheck} size="sm" variant={tier.highlighted ? "solid" : "subtle"} />
+                  <BadgeCheck className={`h-5 w-5 ${tier.highlighted ? "text-[#1877F2]" : "text-gray-400"}`} />
                 </div>
                 <p className="mt-3 text-sm leading-6 text-gray-600">{tier.description}</p>
                 <div className="mt-6 flex items-baseline gap-1 text-3xl font-semibold text-black">
@@ -133,19 +137,19 @@ export default function PricingPage() {
                 <ul className="mt-6 space-y-2 text-sm text-gray-600">
                   {tier.features.map((feature) => (
                     <li key={feature} className="flex items-center gap-2">
-                      <IconFrame icon={Shield} size="sm" variant="plain" tone="muted" />
+                      <Shield className="h-4 w-4 text-[#059669]" />
                       {feature}
                     </li>
                   ))}
                 </ul>
-                <Link href="/coming-soon" className="block mt-8">
-                  <SmartButton
-                    size="lg"
-                    className="w-full bg-black text-white hover:bg-gray-900"
-                  >
-                    Coming soon
-                  </SmartButton>
-                </Link>
+                <Button
+                  size="lg"
+                  className={`mt-8 w-full ${
+                    tier.highlighted ? "bg-black text-white hover:bg-gray-900" : "border border-gray-200 bg-white text-black hover:border-black hover:bg-gray-50"
+                  }`}
+                >
+                  {tier.highlighted ? "Start Ops plan" : tier.price === "$0" ? "Launch now" : "Talk to Plaen"}
+                </Button>
               </article>
             ))}
           </div>
@@ -158,20 +162,20 @@ export default function PricingPage() {
                 Value breakdown
               </span>
               <h2 className="text-3xl font-semibold tracking-tight text-black sm:text-4xl">
-                Money + Meaning at every tier.
+                Every plan keeps Plaen’s monochrome calm.
               </h2>
               <p className="text-sm leading-6 text-gray-600">
-                Free keeps you official from day one. Future plans add collaboration and analytics without changing Plaen’s calm, monochrome surface.
+                Whether you stay free or graduate to Ops, Plaen’s surface stays the same: focused, structured, and ready for payers who expect professionalism.
               </p>
               <ul className="space-y-3 text-sm text-gray-600">
                 <li className="flex items-center gap-2">
-                  <IconFrame icon={CreditCard} size="sm" variant="plain" tone="muted" /> Local payments routed via trusted providers
+                  <CreditCard className="h-4 w-4 text-[#1877F2]" /> Local payments routed via trusted providers
                 </li>
                 <li className="flex items-center gap-2">
-                  <IconFrame icon={TrendingUp} size="sm" variant="plain" tone="muted" /> Analytics that surface payment health trends
+                  <TrendingUp className="h-4 w-4 text-[#059669]" /> Analytics that surface payment health trends
                 </li>
                 <li className="flex items-center gap-2">
-                  <IconFrame icon={RefreshCcw} size="sm" variant="plain" tone="muted" /> Smooth upgrades with zero downtime for payers
+                  <RefreshCcw className="h-4 w-4 text-[#7C3AED]" /> Smooth upgrades with zero downtime for payers
                 </li>
               </ul>
             </div>

@@ -15,26 +15,22 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import {
-  Receipt,
-  Users,
-  CreditCard,
-  FileText,
-  Inbox,
-  PieChart,
-  Layers,
-  User,
-  Settings,
-  Headphones,
-  Menu,
-  LogOut,
-} from "lucide-react";
-import type { LucideIcon } from "lucide-react";
-import { DashboardIcon } from "@/components/icons/dashboard-icon";
-import { InvoiceIcon } from "@/components/icons/invoice-icon";
-import { ContactsIcon } from "@/components/icons/contacts-icon";
-import { PaymentsIcon } from "@/components/icons/payments-icon";
-import { NotesIcon } from "@/components/icons/notes-icon";
-import { InboxIcon } from "@/components/icons/inbox-icon";
+  LayoutGridIcon,
+  Invoice03Icon,
+  UserGroupIcon,
+  CreditCardIcon,
+  File02Icon,
+  FileEditIcon,
+  Settings02Icon,
+  CustomerServiceIcon,
+  Menu01Icon,
+  Logout03Icon,
+  Add01Icon,
+  UserIcon,
+  Search01Icon,
+  Notification03Icon,
+  InformationCircleIcon,
+} from "hugeicons-react";
 
 export default function WorkspaceLayout({
   children,
@@ -44,127 +40,196 @@ export default function WorkspaceLayout({
   const pathname = usePathname();
   const nav = {
     main: [
-      { href: "/dashboard", label: "Dashboard", icon: DashboardIcon },
-      { href: "/invoices", label: "Invoices", icon: InvoiceIcon },
-      { href: "/coming-soon", label: "Contacts", icon: ContactsIcon },
-      { href: "/payments", label: "Payments", icon: PaymentsIcon },
-      { href: "/coming-soon", label: "Notes", icon: NotesIcon },
-      { href: "/coming-soon", label: "Inbox", icon: InboxIcon },
-    ],
-    business: [
-      { href: "/coming-soon", label: "Reports", icon: PieChart },
-      { href: "/coming-soon", label: "Teams", icon: Layers },
+      { href: "/dashboard", label: "Dashboard", icon: LayoutGridIcon },
+      { href: "/invoices", label: "Invoices", icon: Invoice03Icon },
+      { href: "/contacts", label: "Contacts", icon: UserGroupIcon },
+      { href: "/payments", label: "Payments", icon: CreditCardIcon },
+      { href: "/receipts", label: "Receipts", icon: File02Icon },
+      { href: "/notes", label: "Finance Notes & Docs", icon: FileEditIcon },
     ],
     account: [
-      { href: "/coming-soon", label: "Profile", icon: User },
-      { href: "/coming-soon", label: "Settings", icon: Settings },
-      { href: "/coming-soon", label: "Support", icon: Headphones },
+      { href: "/settings", label: "Settings", icon: Settings02Icon },
+      { href: "/support", label: "Support", icon: CustomerServiceIcon },
     ],
   } as const;
 
   return (
-    <div className="min-h-screen bg-white text-[#212121] flex overflow-hidden">
+    <div className="min-h-screen bg-white flex overflow-hidden" style={{ color: '#2D2D2D' }}>
       {/* Desktop sidebar */}
-      <aside className="hidden md:flex w-64 shrink-0 flex-col border-r border-[#EBECE7] bg-white h-screen">
-        <div className="h-14 px-4 flex items-center border-b border-[#EBECE7]">
-          <Link href="/" className="flex items-center gap-2">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M3 3H12V12H3V3Z" fill="currentColor"/>
-              <path d="M14 3H21L17.5 12H14V3Z" fill="currentColor"/>
-              <path d="M12 14H21V21H12V14Z" fill="currentColor"/>
-            </svg>
-            <span className="font-semibold tracking-tight">Plaen</span>
+      <aside className="hidden md:flex w-64 shrink-0 flex-col bg-white h-screen" style={{ borderRight: '1px solid #E4E6EB' }}>
+        <div className="h-16 px-6 flex items-center" style={{ borderBottom: '1px solid #E4E6EB' }}>
+          <Link href="/" className="flex items-center gap-2.5 group">
+            <div className="relative">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="transition-transform group-hover:scale-110">
+                <path d="M3 3H12V12H3V3Z" fill="#1877F2"/>
+                <path d="M14 3H21L17.5 12H14V3Z" fill="#1877F2"/>
+                <path d="M12 14H21V21H12V14Z" fill="#1877F2"/>
+              </svg>
+            </div>
+            <span style={{ fontWeight: 700, fontSize: '18px' }} className="tracking-tight group-hover:text-[#1877F2] transition-colors">Plaen</span>
           </Link>
         </div>
-        <nav className="flex-1 p-2 space-y-10 overflow-y-auto">
-          <div className="mt-8">
-            <div className="px-3 pb-3 text-[10px] font-medium uppercase tracking-wide text-[#949494]">
+        <nav className="flex-1 p-3 space-y-8 overflow-y-auto">
+          <div className="mt-6">
+            <div className="px-3 pb-2 text-xs uppercase tracking-wider" style={{ color: '#B0B3B8', fontWeight: 600, letterSpacing: '0.05em' }}>
               Main Menu
             </div>
-            <div className="space-y-1">
+            <div className="space-y-0.5">
               {nav.main.map((item) => (
                 <Link
                   key={`${item.href}-${item.label}`}
                   href={item.href}
                   className={cn(
-                    "group flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors",
+                    "group flex items-center gap-3 rounded-xl px-3 py-2.5 text-base transition-all relative overflow-hidden",
                     pathname.startsWith(item.href)
-                      ? "bg-[#F9F9F9] text-gray-900"
-                      : "hover:bg-gray-100 text-[#949494]"
+                      ? "shadow-sm"
+                      : "hover:bg-[rgba(240,242,245,0.5)]"
                   )}
+                  style={
+                    pathname.startsWith(item.href)
+                      ? { 
+                          backgroundColor: 'rgba(24, 119, 242, 0.08)', 
+                          color: '#1877F2', 
+                          fontWeight: 600,
+                          borderLeft: '3px solid #1877F2'
+                        }
+                      : { color: '#65676B', fontWeight: 500 }
+                  }
                 >
-                  <item.icon className="h-5 w-5 shrink-0" />
+                  <item.icon className={cn(
+                    "h-5 w-5 shrink-0 transition-transform",
+                    pathname.startsWith(item.href) ? "" : "group-hover:scale-110"
+                  )} />
                   <span className="truncate">{item.label}</span>
+                  {!pathname.startsWith(item.href) && (
+                    <div className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" style={{ background: 'linear-gradient(90deg, transparent, rgba(24, 119, 242, 0.02))' }} />
+                  )}
                 </Link>
               ))}
             </div>
           </div>
           <div>
-            <div className="px-3 pb-3 text-[10px] font-medium uppercase tracking-wide text-[#949494]">
-              Business
-            </div>
-            <div className="space-y-1">
-              {nav.business.map((item) => (
-                <Link
-                  key={`${item.href}-${item.label}`}
-                  href={item.href}
-                  className={cn(
-                    "group flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors",
-                    pathname.startsWith(item.href)
-                      ? "bg-[#F9F9F9] text-gray-900"
-                      : "hover:bg-gray-100 text-[#949494]"
-                  )}
-                >
-                  <item.icon className="h-5 w-5 shrink-0" />
-                  <span className="truncate">{item.label}</span>
-                </Link>
-              ))}
-            </div>
-          </div>
-          <div>
-            <div className="px-3 pb-3 text-[10px] font-medium uppercase tracking-wide text-[#949494]">
+            <div className="px-3 pb-2 text-xs uppercase tracking-wider" style={{ color: '#B0B3B8', fontWeight: 600, letterSpacing: '0.05em' }}>
               Account
             </div>
-            <div className="space-y-1">
+            <div className="space-y-0.5">
               {nav.account.map((item) => (
                 <Link
                   key={`${item.href}-${item.label}`}
                   href={item.href}
                   className={cn(
-                    "group flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors",
+                    "group flex items-center gap-3 rounded-xl px-3 py-2.5 text-base transition-all relative overflow-hidden",
                     pathname.startsWith(item.href)
-                      ? "bg-[#F9F9F9] text-gray-900"
-                      : "hover:bg-gray-100 text-[#949494]"
+                      ? "shadow-sm"
+                      : "hover:bg-[rgba(240,242,245,0.5)]"
                   )}
+                  style={
+                    pathname.startsWith(item.href)
+                      ? { 
+                          backgroundColor: 'rgba(24, 119, 242, 0.08)', 
+                          color: '#1877F2', 
+                          fontWeight: 600,
+                          borderLeft: '3px solid #1877F2'
+                        }
+                      : { color: '#65676B', fontWeight: 500 }
+                  }
                 >
-                  <item.icon className="h-5 w-5 shrink-0" />
+                  <item.icon className={cn(
+                    "h-5 w-5 shrink-0 transition-transform",
+                    pathname.startsWith(item.href) ? "" : "group-hover:scale-110"
+                  )} />
                   <span className="truncate">{item.label}</span>
+                  {!pathname.startsWith(item.href) && (
+                    <div className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" style={{ background: 'linear-gradient(90deg, transparent, rgba(24, 119, 242, 0.02))' }} />
+                  )}
                 </Link>
               ))}
             </div>
           </div>
         </nav>
-        <div className="p-4 border-t border-[#EBECE7] text-xs text-[#949494]">v0</div>
+        <div className="p-4 flex items-center justify-between" style={{ borderTop: '1px solid #E4E6EB' }}>
+          <div className="text-sm" style={{ color: '#B0B3B8', fontWeight: 500 }}>
+            <div className="font-semibold" style={{ color: '#2D2D2D' }}>Plaen Free</div>
+            <div className="text-xs">Version 1.0.0</div>
+          </div>
+          <Link 
+            href="/pricing" 
+            className="text-sm font-semibold px-3 py-1.5 rounded-full transition-all hover:scale-105"
+            style={{ backgroundColor: 'rgba(24, 119, 242, 0.08)', color: '#1877F2' }}
+          >
+            Upgrade
+          </Link>
+        </div>
       </aside>
 
       {/* Main column */}
       <div className="flex-1 min-w-0 flex flex-col h-screen">
         {/* Topbar */}
-        <header className="h-14 border-b border-[#EBECE7] flex items-center gap-3 px-4 shrink-0">
+        <header className="h-16 flex items-center gap-4 px-6 shrink-0 backdrop-blur-sm" style={{ borderBottom: '1px solid #E4E6EB', backgroundColor: 'rgba(255, 255, 255, 0.95)' }}>
           {/* Mobile: menu trigger */}
           <div className="md:hidden">
             <MobileNav nav={nav} pathname={pathname} />
           </div>
-          {/* Brand on mobile, section on desktop */}
-          <div className="font-medium md:font-semibold">
-            <span className="md:hidden">Plaen</span>
-            <span className="hidden md:inline">Workspace</span>
+          
+          {/* Search - more prominent */}
+          <div className="flex-1 max-w-2xl">
+            <div className="relative group">
+              <Search01Icon 
+                size={18}
+                className="absolute left-4 top-1/2 -translate-y-1/2 transition-colors" 
+                style={{ color: '#B0B3B8' }} 
+              />
+              <Input 
+                placeholder="Search invoices, contacts, payments..." 
+                className="h-11 pl-11 pr-4 rounded-2xl border-2 transition-all focus:border-[#1877F2] focus:shadow-lg" 
+                style={{ 
+                  backgroundColor: 'rgba(247, 249, 250, 0.8)', 
+                  border: '2px solid #E4E6EB',
+                  color: '#2D2D2D',
+                  fontWeight: 500
+                }}
+              />
+              <div className="absolute right-3 top-1/2 -translate-y-1/2 hidden md:flex items-center gap-1">
+                <kbd className="px-2 py-0.5 rounded text-xs font-semibold" style={{ backgroundColor: 'rgba(0,0,0,0.05)', color: '#B0B3B8' }}>⌘</kbd>
+                <kbd className="px-2 py-0.5 rounded text-xs font-semibold" style={{ backgroundColor: 'rgba(0,0,0,0.05)', color: '#B0B3B8' }}>K</kbd>
+              </div>
+            </div>
           </div>
-          {/* Search (md+) */}
-          <div className="hidden md:flex ml-4 w-full max-w-md">
-            <Input placeholder="Search invoices, customers…" className="h-9" />
-          </div>
-          <div className="ml-auto flex items-center gap-3">
+          
+          {/* Right side actions */}
+          <div className="ml-auto flex items-center gap-2">
+            {/* Quick Actions */}
+            <Link 
+              href="/invoices/new"
+              className="hidden lg:flex items-center gap-2 px-4 py-2 rounded-full font-semibold text-base transition-all hover:scale-105 hover:shadow-md"
+              style={{ backgroundColor: '#1877F2', color: 'white' }}
+            >
+              <Add01Icon size={16} />
+              New Invoice
+            </Link>
+            
+            {/* Notifications */}
+            <button 
+              className="relative h-10 w-10 rounded-full flex items-center justify-center transition-all hover:bg-[rgba(240,242,245,0.8)] hover:scale-105"
+              aria-label="Notifications"
+            >
+              <Notification03Icon size={20} style={{ color: '#2D2D2D' }} />
+              {/* Notification badge */}
+              <span className="absolute top-1.5 right-1.5 h-2 w-2 rounded-full" style={{ backgroundColor: '#EF4444' }}>
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75" style={{ backgroundColor: '#EF4444' }} />
+              </span>
+            </button>
+            
+            {/* Help */}
+            <button 
+              className="h-10 w-10 rounded-full flex items-center justify-center transition-all hover:bg-[rgba(240,242,245,0.8)] hover:scale-105"
+              aria-label="Help"
+            >
+              <InformationCircleIcon size={20} style={{ color: '#2D2D2D' }} />
+            </button>
+            
+            <div className="h-8 w-px mx-1" style={{ backgroundColor: '#E4E6EB' }} />
+            
             <UserMenu />
           </div>
         </header>
@@ -179,9 +244,8 @@ function MobileNav({
   pathname,
 }: {
   nav: {
-    main: ReadonlyArray<{ href: string; label: string; icon: LucideIcon }>;
-    business: ReadonlyArray<{ href: string; label: string; icon: LucideIcon }>;
-    account: ReadonlyArray<{ href: string; label: string; icon: LucideIcon }>;
+    main: ReadonlyArray<{ href: string; label: string; icon: any }>;
+    account: ReadonlyArray<{ href: string; label: string; icon: any }>;
   };
   pathname: string;
 }) {
@@ -190,44 +254,56 @@ function MobileNav({
       <SheetTrigger asChild>
         <button
           aria-label="Open navigation"
-          className="inline-flex items-center justify-center rounded-md border border-[#EBECE7] px-2.5 py-2 hover:bg-gray-50"
+          className="inline-flex items-center justify-center rounded-xl px-2.5 py-2 transition-all hover:bg-[rgba(240,242,245,0.8)] hover:scale-105"
+          style={{ border: '1px solid #E4E6EB' }}
         >
-          <Menu className="h-5 w-5" />
+          <Menu01Icon size={20} />
         </button>
       </SheetTrigger>
-      <SheetContent side="left" className="p-0">
-        <div className="h-14 px-4 flex items-center border-b border-[#EBECE7]">
-          <Link href="/" className="flex items-center gap-2">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M3 3H12V12H3V3Z" fill="currentColor"/>
-              <path d="M14 3H21L17.5 12H14V3Z" fill="currentColor"/>
-              <path d="M12 14H21V21H12V14Z" fill="currentColor"/>
+      <SheetContent side="left" className="p-0 w-72" style={{ backgroundColor: 'white' }}>
+        <div className="h-16 px-5 flex items-center" style={{ borderBottom: '1px solid #E4E6EB' }}>
+          <Link href="/" className="flex items-center gap-2 group transition-all hover:opacity-80">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="transition-transform group-hover:scale-110">
+              <path d="M3 3H12V12H3V3Z" fill="#1877F2"/>
+              <path d="M14 3H21L17.5 12H14V3Z" fill="#1877F2"/>
+              <path d="M12 14H21V21H12V14Z" fill="#1877F2"/>
             </svg>
-            <span className="font-semibold tracking-tight">Plaen</span>
+            <span style={{ fontWeight: 700, fontSize: '18px', color: '#1877F2' }} className="tracking-tight transition-colors hover:text-[#1877F2]">Plaen</span>
           </Link>
         </div>
-        <nav className="p-2 space-y-6">
-          {[['Main Menu', nav.main], ['Business', nav.business], ['Account', nav.account]].map(([label, items]) => (
+        <nav className="p-3 space-y-6 overflow-y-auto h-[calc(100vh-64px)]">
+          {[['Main Menu', nav.main], ['Account', nav.account]].map(([label, items]) => (
             <div key={label as string}>
-              <div className="px-3 pb-1 text-[10px] font-medium uppercase tracking-wide text-[#949494]">
+              <div className="px-3 pb-2 text-xs uppercase tracking-wider" style={{ color: '#B0B3B8', fontWeight: 600, letterSpacing: '0.05em' }}>
                 {label as string}
               </div>
               <div className="space-y-1">
-                {(items as { href: string; label: string; icon: LucideIcon }[]).map((item) => (
-                  <Link
-                    key={`${item.href}-${item.label}`}
-                    href={item.href}
-                    className={cn(
-                      "flex items-center gap-3 rounded-lg px-3 py-2 text-sm",
-                      pathname.startsWith(item.href)
-                        ? "bg-[#F9F9F9] text-gray-900"
-                        : "hover:bg-gray-100 text-[#949494]"
-                    )}
-                  >
-                    <item.icon className="h-5 w-5 shrink-0" />
-                    <span className="truncate">{item.label}</span>
-                  </Link>
-                ))}
+                {(items as { href: string; label: string; icon: any }[]).map((item) => {
+                  const isActive = pathname.startsWith(item.href);
+                  return (
+                    <Link
+                      key={`${item.href}-${item.label}`}
+                      href={item.href}
+                      className="group relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-base transition-all overflow-hidden"
+                      style={
+                        isActive
+                          ? { 
+                              backgroundColor: 'rgba(24, 119, 242, 0.08)', 
+                              color: '#1877F2', 
+                              fontWeight: 600,
+                              borderLeft: '3px solid #1877F2',
+                              paddingLeft: '9px',
+                              boxShadow: '0 1px 3px rgba(24, 119, 242, 0.1)'
+                            }
+                          : { color: '#65676B', fontWeight: 500 }
+                      }
+                    >
+                      <div className="absolute inset-0 bg-gradient-to-r from-[rgba(24,119,242,0.03)] to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                      <item.icon size={20} className="shrink-0 relative z-10 transition-transform group-hover:scale-110" />
+                      <span className="truncate relative z-10">{item.label}</span>
+                    </Link>
+                  );
+                })}
               </div>
             </div>
           ))}
@@ -248,24 +324,53 @@ function UserMenu() {
           </Avatar>
         </button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-56">
-        <DropdownMenuLabel>Signed in as
-          <div className="font-medium">you@plaen.app</div>
+      <DropdownMenuContent align="end" className="rounded-2xl w-56 p-2" style={{ boxShadow: '0 4px 16px rgba(0, 0, 0, 0.1)' }}>
+        <DropdownMenuLabel className="px-3 py-2">Signed in as
+          <div className="font-medium">you@plaen.tech</div>
         </DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem asChild>
-          <Link href="/coming-soon">Profile</Link>
+        <DropdownMenuSeparator className="my-1" />
+        <DropdownMenuItem asChild className="gap-3 rounded-xl p-3 cursor-pointer group transition-all hover:bg-[rgba(24,119,242,0.04)]">
+          <Link href="/workspace/profile" className="flex items-center">
+            <div 
+              className="h-8 w-8 rounded-full flex items-center justify-center transition-all"
+              style={{ backgroundColor: 'rgba(24, 119, 242, 0.08)' }}
+            >
+              <UserIcon size={16} style={{ color: '#1877F2' }} />
+            </div>
+            <span className="text-base font-medium group-hover:text-[#1877F2] transition-all" style={{ color: '#2D2D2D' }}>Profile</span>
+          </Link>
         </DropdownMenuItem>
-        <DropdownMenuItem asChild>
-          <Link href="/coming-soon">Billing</Link>
+        <DropdownMenuItem asChild className="gap-3 rounded-xl p-3 cursor-pointer group transition-all hover:bg-[rgba(24,119,242,0.04)]">
+          <Link href="/workspace/billing" className="flex items-center">
+            <div 
+              className="h-8 w-8 rounded-full flex items-center justify-center transition-all"
+              style={{ backgroundColor: 'rgba(5, 150, 105, 0.08)' }}
+            >
+              <CreditCardIcon size={16} style={{ color: '#059669' }} />
+            </div>
+            <span className="text-base font-medium group-hover:text-[#1877F2] transition-all" style={{ color: '#2D2D2D' }}>Billing</span>
+          </Link>
         </DropdownMenuItem>
-        <DropdownMenuItem asChild>
-          <Link href="/coming-soon">Settings</Link>
+        <DropdownMenuItem asChild className="gap-3 rounded-xl p-3 cursor-pointer group transition-all hover:bg-[rgba(24,119,242,0.04)]">
+          <Link href="/workspace/settings" className="flex items-center">
+            <div 
+              className="h-8 w-8 rounded-full flex items-center justify-center transition-all"
+              style={{ backgroundColor: 'rgba(124, 58, 237, 0.08)' }}
+            >
+              <Settings02Icon size={16} style={{ color: '#7C3AED' }} />
+            </div>
+            <span className="text-base font-medium group-hover:text-[#1877F2] transition-all" style={{ color: '#2D2D2D' }}>Settings</span>
+          </Link>
         </DropdownMenuItem>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem className="text-red-600">
-          <LogOut className="h-4 w-4" />
-          <span>Log out</span>
+        <DropdownMenuSeparator className="my-2" />
+        <DropdownMenuItem className="gap-3 rounded-xl p-3 cursor-pointer group transition-all hover:bg-red-50">
+          <div 
+            className="h-8 w-8 rounded-full flex items-center justify-center transition-all"
+            style={{ backgroundColor: 'rgba(220, 38, 38, 0.08)' }}
+          >
+            <Logout03Icon size={16} style={{ color: '#DC2626' }} />
+          </div>
+          <span className="text-base font-medium group-hover:text-red-600 transition-all" style={{ color: '#DC2626' }}>Log out</span>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

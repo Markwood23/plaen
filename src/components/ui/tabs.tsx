@@ -26,9 +26,10 @@ function TabsList({
     <TabsPrimitive.List
       data-slot="tabs-list"
       className={cn(
-        "bg-muted text-muted-foreground inline-flex h-9 w-fit items-center justify-center rounded-lg p-[3px]",
+        "rounded-full px-3 py-2 flex items-center gap-2 w-fit",
         className
       )}
+      style={{ backgroundColor: 'rgba(247, 249, 250, 0.5)' }}
       {...props}
     />
   )
@@ -38,14 +39,48 @@ function TabsTrigger({
   className,
   ...props
 }: React.ComponentProps<typeof TabsPrimitive.Trigger>) {
+  const [isHovered, setIsHovered] = React.useState(false);
+  
   return (
     <TabsPrimitive.Trigger
       data-slot="tabs-trigger"
       className={cn(
-        "data-[state=active]:bg-background dark:data-[state=active]:text-foreground focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:outline-ring dark:data-[state=active]:border-input dark:data-[state=active]:bg-input/30 text-foreground dark:text-muted-foreground inline-flex h-[calc(100%-1px)] flex-1 items-center justify-center gap-1.5 rounded-md border border-transparent px-2 py-1 text-sm font-medium whitespace-nowrap transition-[color,box-shadow] focus-visible:ring-[3px] focus-visible:outline-1 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:shadow-sm [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+        "rounded-full px-5 h-9 text-sm font-normal transition-all inline-flex items-center justify-center gap-1.5 whitespace-nowrap disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-3.5",
         className
       )}
-      {...props}
+      style={{
+        backgroundColor: 'transparent',
+        color: '#2D2D2D',
+      }}
+      onMouseEnter={(e) => {
+        setIsHovered(true);
+        if (e.currentTarget.getAttribute('data-state') !== 'active') {
+          e.currentTarget.style.backgroundColor = 'rgba(24, 119, 242, 0.04)';
+          e.currentTarget.style.color = '#1877F2';
+        }
+      }}
+      onMouseLeave={(e) => {
+        setIsHovered(false);
+        if (e.currentTarget.getAttribute('data-state') !== 'active') {
+          e.currentTarget.style.backgroundColor = 'transparent';
+          e.currentTarget.style.color = '#2D2D2D';
+        }
+      }}
+      {...(props as any)}
+      ref={(el: HTMLButtonElement | null) => {
+        if (el) {
+          const isActive = el.getAttribute('data-state') === 'active';
+          if (isActive) {
+            el.style.backgroundColor = 'rgba(24, 119, 242, 0.08)';
+            el.style.color = '#1877F2';
+            el.style.fontWeight = '500';
+          } else if (!isHovered) {
+            el.style.backgroundColor = 'transparent';
+            el.style.color = '#2D2D2D';
+            el.style.fontWeight = '400';
+          }
+        }
+      }}
     />
   )
 }

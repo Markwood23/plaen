@@ -296,14 +296,14 @@ export default function TestimonialsPage() {
                   Experience the same professional invoicing and faster payments that our users love.
                 </p>
                 <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
-                  <Link href="/coming-soon">
-                    <SmartButton size="lg" className="bg-black text-white transition hover:bg-gray-900">
-                      Coming soon
+                  <Link href="/signup">
+                    <SmartButton size="lg">
+                      Start for free
                     </SmartButton>
                   </Link>
-                  <Link href="/coming-soon">
+                  <Link href="/contact">
                     <SmartButton size="lg" variant="outline" className="border-gray-200 text-black transition hover:border-black hover:bg-gray-50">
-                      Learn more
+                      Talk to Plaen
                     </SmartButton>
                   </Link>
                 </div>

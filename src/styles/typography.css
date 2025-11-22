@@ -1,0 +1,192 @@
+/**
+ * Plaen Typography System
+ * Uses Outfit font family for marketing/display and Plus Jakarta Sans for UI
+ * Modern, rounded, clean aesthetic with better readability
+ */
+
+/* Base Typography Classes */
+.font-jakarta {
+  font-family: var(--font-jakarta), -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.font-outfit {
+  font-family: var(--font-outfit), -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+/* 
+ * Font Usage Strategy:
+ * - Outfit: Marketing pages, payment amounts, invoice headers (prominent display)
+ * - Plus Jakarta Sans: UI elements, forms, tables, body text (functional interface)
+ */
+
+/* Hierarchical Text Styles - No color dependency */
+
+/* Display - Hero sections */
+.text-display {
+  font-family: var(--font-outfit), -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 3rem; /* 48px */
+  line-height: 1.1;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+/* Heading 1 - Page titles */
+.text-h1 {
+  font-family: var(--font-outfit), -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 2rem; /* 32px */
+  line-height: 1.2;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+/* Heading 2 - Section headers */
+.text-h2 {
+  font-family: var(--font-outfit), -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 1.5rem; /* 24px */
+  line-height: 1.3;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+/* Heading 3 - Subsections */
+.text-h3 {
+  font-family: var(--font-outfit), -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 1.25rem; /* 20px */
+  line-height: 1.4;
+  font-weight: 600;
+}
+
+/* Heading 4 - Small headers */
+.text-h4 {
+  font-family: var(--font-outfit), -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 1.125rem; /* 18px */
+  line-height: 1.4;
+  font-weight: 600;
+}
+
+/* Body Large - Emphasis text */
+.text-body-lg {
+  font-family: var(--font-jakarta), -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 1.125rem; /* 18px */
+  line-height: 1.6;
+  font-weight: 500;
+}
+
+/* Body - Default text */
+.text-body {
+  font-size: 1rem; /* 16px */
+  line-height: 1.6;
+  font-weight: 500;
+}
+
+/* Body Small - Secondary text */
+.text-body-sm {
+  font-size: 0.875rem; /* 14px */
+  line-height: 1.5;
+  font-weight: 500;
+}
+
+/* Caption - Metadata, hints */
+.text-caption {
+  font-size: 0.75rem; /* 12px */
+  line-height: 1.4;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Label - Form labels, small headers */
+.text-label {
+  font-size: 1rem; /* 16px */
+  line-height: 1.4;
+  font-weight: 700;
+}
+
+/* Mono - Numbers, codes */
+.text-mono {
+  font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+  font-size: 0.875rem;
+  line-height: 1.4;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+/* Emphasis Variants - Using weight and style, not color */
+.text-emphasis {
+  font-weight: 700;
+}
+
+.text-subtle {
+  font-weight: 500;
+  opacity: 0.7;
+}
+
+.text-muted {
+  font-weight: 500;
+  opacity: 0.5;
+}
+
+/* Responsive Typography */
+@media (max-width: 640px) {
+  .text-display {
+    font-size: 2.25rem; /* 36px */
+  }
+  
+  .text-h1 {
+    font-size: 1.75rem; /* 28px */
+  }
+  
+  .text-h2 {
+    font-size: 1.375rem; /* 22px */
+  }
+}
+
+/* Payment Page Specific */
+.pay-page-header {
+  font-family: var(--font-outfit), -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 1.75rem;
+  line-height: 1.2;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.pay-section-header {
+  font-family: var(--font-outfit), -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 1rem; /* 16px */
+  line-height: 1.4;
+  font-weight: 700;
+  letter-spacing: 0;
+  margin-bottom: 1rem;
+}
+
+.pay-amount {
+  font-family: var(--font-outfit), -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 2rem;
+  line-height: 1.2;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.pay-amount-sm {
+  font-family: var(--font-outfit), -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 1.125rem;
+  line-height: 1.3;
+  font-weight: 700;
+}
+
+/* Utility Classes */
+.truncate-2 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+}
+
+.truncate-3 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+}

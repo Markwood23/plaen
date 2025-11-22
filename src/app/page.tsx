@@ -1,28 +1,32 @@
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
 import { SmartButton } from "@/components/ui/smart-button";
-import { Activity, ArrowRight, CheckCircle2, FileText, Globe2, Lock, Shield, Smartphone, Sparkles, TimerReset, TrendingUp } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Activity, ArrowRight, CheckCircle2, FileText, Globe2, Lock, Shield, Smartphone, Sparkles, TimerReset } from "lucide-react";
 import { IconFrame } from "@/components/ui/icon-frame";
 import { Pillars } from "@/components/marketing/pillars";
 import { MarketingHeader } from "@/components/marketing/marketing-header";
 import { MarketingFooter } from "@/components/marketing/marketing-footer";
 import { HomePageEffects } from "@/components/marketing/home-page-effects";
+import { DashboardPreview } from "@/components/marketing/dashboard-preview";
 
 const modules = [
   {
     title: "Personal or Business",
     copy: "Choose your setup. Freelancers add their name and payout method. Companies add branding, logo, and tax details. Your information automatically populates future invoices.",
     badge: "Tailored onboarding",
+    color: "#1877F2", // Blue
   },
   {
     title: "Invoice Builder",
     copy: "A quiet, black-and-white interface. Add items, quantities, and rates. See totals update in real time. Preview a clean, ready-to-share document in one click.",
     badge: "The heart of Plaen",
+    color: "#059669", // Green
   },
   {
     title: "Send & Get Paid",
   copy: "Share via link, email, or WhatsApp. Recipients don't need an account. They open a secure link, review, and pay through mobile money, bank, or crypto.",
     badge: "Smooth & transparent",
+    color: "#7C3AED", // Purple
   },
 ];
 
@@ -48,16 +52,19 @@ const steps = [
     title: "Capture context",
     description:
       "Import a client or create inline. Choose personal or business sender details. Plaen keeps both on hand.",
+    color: "#1877F2", // Blue
   },
   {
     title: "Compose & preview",
     description:
       "Add line items, taxes, and notes. Toggle dual currency, attach documentation, and preview the public invoice instantly.",
+    color: "#059669", // Green
   },
   {
     title: "Share & track",
     description:
       "Send a focused payment page. Track opens, enable automatic reminders, and generate receipts the moment funds land.",
+    color: "#F59E0B", // Orange
   },
 ];
 
@@ -103,26 +110,34 @@ export default function Home() {
           className="relative mx-auto flex max-w-6xl flex-col gap-14 px-4 sm:px-6 pb-24 pt-20 lg:flex-row lg:items-center"
         >
           <div className="max-w-xl space-y-8">
-            <span className="inline-flex items-center gap-2 rounded-full border border-gray-200 px-4 py-1 text-xs uppercase tracking-[0.3em] text-gray-500">
-              <IconFrame icon={Sparkles} size="sm" variant="plain" /> Money + Meaning
-            </span>
+            <Badge variant="outline" className="rounded-full border-gray-200 px-4 py-1 text-xs uppercase tracking-[0.3em] text-gray-500">
+              <IconFrame icon={Sparkles} size="sm" variant="plain" /> Structured invoicing + AR
+            </Badge>
             <h1 className="text-4xl font-semibold tracking-tight text-black sm:text-5xl lg:text-6xl">
-              Process money with context.
+              Calm finance surface for invoices, AR, and payment notes.
             </h1>
             <p className="text-lg leading-7 text-gray-600 sm:text-xl">
-              Every send or receive becomes a clean, verifiable record (who, what, why), shareable as a focused link or PDF. Structure arrives first; Finance Notes & Docs build the narrative over time.
+              Compose dual-currency invoices, share protected payment pages, and keep verified receipts in one workspace.
             </p>
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-start">
-              <Link href="/coming-soon">
+              <Link href="/signup">
                 <SmartButton size="lg" className="group px-8">
-                  Talk to our team
+                  Create free account
                 </SmartButton>
               </Link>
-              <Link href="/coming-soon">
+              <Link href="/contact">
                 <SmartButton size="lg" variant="outline" className="border-gray-200 px-8 text-black transition hover:border-black hover:bg-gray-50">
-                  See demo
+                  Talk to Plaen
                 </SmartButton>
               </Link>
+            </div>
+            <div className="space-y-3 text-sm text-gray-600">
+              <p className="flex items-center gap-2">
+                <CheckCircle2 className="h-4 w-4 text-[#059669]" /> Mobile money, bank transfer, USD, and crypto from one link
+              </p>
+              <p className="flex items-center gap-2">
+                <Lock className="h-4 w-4 text-gray-400" /> Tamper-evident receipts with Finance Notes & Docs
+              </p>
             </div>
 
             <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-[repeat(auto-fit,minmax(240px,1fr))] gap-5 sm:gap-6" data-animate="fade-up">
@@ -154,68 +169,7 @@ export default function Home() {
           </div>
 
           <div className="relative hidden flex-1 justify-center lg:flex" data-animate="fade-up">
-            <div className="relative w-full max-w-md rounded-3xl border border-gray-200 bg-white p-6 shadow-[0_30px_120px_rgba(15,15,15,0.12)]">
-              <div className="mb-6 flex items-center justify-between text-sm text-gray-500">
-                <span className="font-medium text-black">Invoice preview</span>
-                <span className="inline-flex items-center gap-1 text-xs text-gray-500">
-                  <Shield className="h-4 w-4" /> Protected link
-                </span>
-              </div>
-              <div className="space-y-4">
-                <div className="flex items-center justify-between rounded-xl border border-gray-100 bg-gray-50 p-4">
-                  <div>
-                    <p className="text-sm text-gray-500">Amount due</p>
-                    <p className="text-2xl font-semibold text-black">GHS 8,437.50</p>
-                  </div>
-                  <span className="rounded-full border border-gray-200 px-3 py-1 text-xs text-gray-600">Due in 6 days</span>
-                </div>
-                <div className="rounded-xl border border-gray-100 p-4">
-                  <p className="text-sm font-medium text-black">Payment options</p>
-                  <div className="mt-3 grid gap-3">
-                    {["Mobile money", "Bank transfer", "Card / Crypto"].map((method) => (
-                      <div
-                        key={method}
-                        className="flex items-center justify-between rounded-lg border border-gray-100 bg-white px-3 py-2 text-sm text-gray-600 transition hover:border-gray-300"
-                      >
-                        {method}
-                        <CheckCircle2 className="h-4 w-4 text-gray-400" />
-                      </div>
-                    ))}
-                  </div>
-                </div>
-                <div className="rounded-xl border border-gray-100 p-4">
-                  <p className="text-sm font-medium text-black">Activity</p>
-                  <ul className="mt-3 space-y-2 text-sm text-gray-600">
-                    <li>Invoice viewed • 2 minutes ago</li>
-                    <li>Reminder scheduled • Due date +3</li>
-                    <li>Receipt queued on payment</li>
-                  </ul>
-                </div>
-              </div>
-              <div className="mt-6 flex items-center justify-between rounded-xl border border-gray-100 bg-gray-50 px-4 py-3 text-sm text-gray-600">
-                <span className="flex items-center gap-2 text-gray-500">
-                  <TrendingUp className="h-4 w-4" /> Instant reconciliation
-                </span>
-                <Button asChild size="sm" className="bg-black text-white hover:bg-gray-900">
-                  <Link href="/coming-soon">Send invoice</Link>
-                </Button>
-              </div>
-            </div>
-
-            <div className="absolute -right-8 -top-10 hidden w-56 rotate-3 rounded-3xl border border-gray-100 bg-white/90 p-4 shadow-xl lg:block">
-              <p className="text-xs uppercase tracking-wide text-gray-500">Reminder cadence</p>
-              <div className="mt-3 space-y-2 text-sm text-gray-600">
-                <p className="flex items-center justify-between">
-                  3 days before <span className="text-gray-400">Scheduled</span>
-                </p>
-                <p className="flex items-center justify-between">
-                  On due date <span className="text-gray-400">Scheduled</span>
-                </p>
-                <p className="flex items-center justify-between">
-                  7 days after <span className="text-gray-400">Draft</span>
-                </p>
-              </div>
-            </div>
+            <DashboardPreview />
           </div>
         </section>
 
@@ -239,7 +193,7 @@ export default function Home() {
   <Pillars heading="Five product pillars" />
 
         {/* Feature Highlights (legacy feature framing kept, now follows narrative) */}
-        <section id="product" className="border-t border-gray-100 bg-white/80 py-20" data-animate="fade-up">
+        <section id="product" className="border-t border-gray-100 bg-gradient-to-b from-white to-blue-50/30 py-20" data-animate="fade-up">
           <div className="mx-auto max-w-5xl space-y-12 px-6">
             <div className="space-y-4 text-center">
               <h2 className="text-3xl font-semibold tracking-tight text-black sm:text-4xl">Structure with human context</h2>
@@ -257,7 +211,7 @@ export default function Home() {
                     <div className="absolute -right-12 top-8 h-32 w-32 rounded-full bg-gradient-to-br from-black/5 to-transparent blur-2xl" />
                   </div>
                   <div className="relative space-y-4">
-                    <IconFrame icon={Shield} size="md" variant="subtle" className="transition group-hover:bg-black group-hover:border-black group-hover:text-white" />
+                    <IconFrame icon={Shield} size="md" variant="subtle" className="transition bg-[#1877F2]/10 border-[#1877F2]/20 group-hover:bg-[#1877F2] group-hover:border-[#1877F2] group-hover:text-white" />
                     <h3 className="text-lg font-semibold text-black">Built-in Professionalism</h3>
                     <p className="text-sm leading-6 text-gray-600">
                       Operate with global-grade clarity even without a registered entity. Plaen gives you legitimacy through format, flow, and consistency.
@@ -280,7 +234,7 @@ export default function Home() {
                     <div className="absolute -right-12 top-8 h-32 w-32 rounded-full bg-gradient-to-br from-black/5 to-transparent blur-2xl" />
                   </div>
                   <div className="relative space-y-4">
-                    <IconFrame icon={FileText} size="md" variant="subtle" className="transition group-hover:bg-black group-hover:border-black group-hover:text-white" />
+                    <IconFrame icon={FileText} size="md" variant="subtle" className="transition bg-[#059669]/10 border-[#059669]/20 group-hover:bg-[#059669] group-hover:border-[#059669] group-hover:text-white" />
                     <h3 className="text-lg font-semibold text-black">Calm Invoice Builder</h3>
                     <p className="text-sm leading-6 text-gray-600">
                       A monochrome surface engineered for focus. Totals, taxes, context notes update instantly without visual noise.
@@ -302,7 +256,7 @@ export default function Home() {
                     <div className="absolute -right-12 top-8 h-32 w-32 rounded-full bg-gradient-to-br from-black/5 to-transparent blur-2xl" />
                   </div>
                   <div className="relative space-y-4">
-                    <IconFrame icon={Smartphone} size="md" variant="subtle" className="transition group-hover:bg-black group-hover:border-black group-hover:text-white" />
+                    <IconFrame icon={Smartphone} size="md" variant="subtle" className="transition bg-[#7C3AED]/10 border-[#7C3AED]/20 group-hover:bg-[#7C3AED] group-hover:border-[#7C3AED] group-hover:text-white" />
                     <h3 className="text-lg font-semibold text-black">Frictionless Payment Access</h3>
                     <p className="text-sm leading-6 text-gray-600">
                       Recipients open a secure link, review structured context, and complete payment with no account barrier and no confusion.
@@ -322,7 +276,7 @@ export default function Home() {
                     <div className="absolute -right-12 top-8 h-32 w-32 rounded-full bg-gradient-to-br from-black/5 to-transparent blur-2xl" />
                   </div>
                   <div className="relative space-y-4">
-                    <IconFrame icon={Activity} size="md" variant="subtle" className="transition group-hover:bg-black group-hover:border-black group-hover:text-white" />
+                    <IconFrame icon={Activity} size="md" variant="subtle" className="transition bg-[#F59E0B]/10 border-[#F59E0B]/20 group-hover:bg-[#F59E0B] group-hover:border-[#F59E0B] group-hover:text-white" />
                     <h3 className="text-lg font-semibold text-black">Live Composition Feedback</h3>
                     <p className="text-sm leading-6 text-gray-600">
                       Totals, previews, and context sync as you type, reducing errors and reinforcing trust before sending.
@@ -349,7 +303,7 @@ export default function Home() {
                     <div className="absolute -right-12 top-8 h-32 w-32 rounded-full bg-gradient-to-br from-black/5 to-transparent blur-2xl" />
                   </div>
                   <div className="relative space-y-4">
-                    <IconFrame icon={CheckCircle2} size="md" variant="subtle" className="transition group-hover:bg-black group-hover:border-black group-hover:text-white" />
+                    <IconFrame icon={CheckCircle2} size="md" variant="subtle" className="transition bg-[#059669]/10 border-[#059669]/20 group-hover:bg-[#059669] group-hover:border-[#059669] group-hover:text-white" />
                     <h3 className="text-lg font-semibold text-black">Finance Notes & Receipts</h3>
                     <p className="text-sm leading-6 text-gray-600">
                       Each payment triggers a verifiable receipt and keeps contextual notes attached, building a searchable narrative over time.
@@ -371,7 +325,7 @@ export default function Home() {
                     <div className="absolute -right-12 top-8 h-32 w-32 rounded-full bg-gradient-to-br from-black/5 to-transparent blur-2xl" />
                   </div>
                   <div className="relative space-y-4">
-                    <IconFrame icon={Globe2} size="md" variant="subtle" className="transition group-hover:bg-black group-hover:border-black group-hover:text-white" />
+                    <IconFrame icon={Globe2} size="md" variant="subtle" className="transition bg-[#1877F2]/10 border-[#1877F2]/20 group-hover:bg-[#1877F2] group-hover:border-[#1877F2] group-hover:text-white" />
                     <h3 className="text-lg font-semibold text-black">Device-Agnostic Workspace</h3>
                     <p className="text-sm leading-6 text-gray-600">
                       Access structured financial context on mobile, desktop, or tablet without losing fidelity.
@@ -416,7 +370,14 @@ export default function Home() {
                   key={module.title}
                   className="group relative overflow-hidden rounded-3xl border border-gray-200 bg-white p-6 shadow-[0_24px_80px_rgba(15,15,15,0.08)] transition-transform hover:-translate-y-2"
                 >
-                  <span className="inline-flex items-center rounded-full border border-gray-200 px-3 py-1 text-xs uppercase tracking-[0.3em] text-gray-500">
+                  <span 
+                    className="inline-flex items-center rounded-full border px-3 py-1 text-xs uppercase tracking-[0.3em] font-medium"
+                    style={{
+                      backgroundColor: `${module.color}10`,
+                      borderColor: `${module.color}30`,
+                      color: module.color,
+                    }}
+                  >
                     {module.badge}
                   </span>
                   <h3 className="mt-4 text-xl font-semibold text-black">{module.title}</h3>
@@ -447,30 +408,46 @@ export default function Home() {
             </div>
 
             <div className="relative flex-1">
-              <div className="absolute left-[1.25rem] top-3 hidden h-[calc(100%-1.5rem)] w-px bg-gradient-to-b from-black via-gray-300 to-transparent lg:block" />
+              <div className="absolute left-[1.25rem] top-3 hidden h-[calc(100%-1.5rem)] w-px bg-gradient-to-b from-[#1877F2] via-[#059669] to-[#F59E0B]/30 lg:block" />
               <ol className="space-y-6">
                 {steps.map((step, index) => (
                   <li
                     key={step.title}
-                    className="relative overflow-hidden rounded-3xl border border-gray-200 bg-white p-6 shadow-[0_20px_70px_rgba(15,15,15,0.08)] transition-all hover:-translate-y-1.5 hover:border-black/80"
+                    className="relative overflow-hidden rounded-3xl border border-gray-200 bg-white p-6 shadow-[0_20px_70px_rgba(15,15,15,0.08)] transition-all hover:-translate-y-1.5 hover:border-gray-300"
                     data-animate="fade-up"
                     style={{ animation: `timelineFade 0.8s ease ${index * 0.12}s both` }}
                   >
-                    <div className="absolute -left-[3.1rem] top-6 hidden h-3 w-3 rounded-full border-4 border-white bg-black lg:block" />
+                    <div 
+                      className="absolute -left-[3.1rem] top-6 hidden h-3 w-3 rounded-full border-4 border-white lg:block" 
+                      style={{ backgroundColor: step.color }}
+                    />
                     <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
                       <div className="flex items-center gap-3">
-                        <span className="flex h-10 w-10 items-center justify-center rounded-full border border-gray-200 bg-gray-50 text-sm font-semibold text-gray-600">
+                        <span 
+                          className="flex h-10 w-10 items-center justify-center rounded-full border text-sm font-semibold"
+                          style={{
+                            backgroundColor: `${step.color}15`,
+                            borderColor: `${step.color}30`,
+                            color: step.color,
+                          }}
+                        >
                           {`0${index + 1}`}
                         </span>
                         <div>
                           <h3 className="text-lg font-semibold text-black">{step.title}</h3>
-                          <p className="mt-1 text-xs uppercase tracking-[0.3em] text-gray-500">
+                          <p 
+                            className="mt-1 text-xs uppercase tracking-[0.3em] font-medium"
+                            style={{ color: step.color }}
+                          >
                             {index === 0 ? "Context" : index === 1 ? "Composition" : "Payment"}
                           </p>
                         </div>
                       </div>
                       <div className="flex items-center gap-2 text-xs font-medium text-gray-500">
-                        <span className="inline-flex h-2 w-2 rounded-full bg-gray-300" />
+                        <span 
+                          className="inline-flex h-2 w-2 rounded-full" 
+                          style={{ backgroundColor: step.color }}
+                        />
                         {index === 0 ? "Personal & business profiles" : index === 1 ? "Templates & dual currency" : "Reminders & receipts"}
                       </div>
                     </div>
@@ -478,21 +455,84 @@ export default function Home() {
                     <div className="mt-6 flex flex-wrap gap-2 text-xs text-gray-500">
                       {index === 0 && (
                         <>
-                          <span className="rounded-full border border-gray-200 px-3 py-1">Clients import</span>
-                          <span className="rounded-full border border-gray-200 px-3 py-1">Sender presets</span>
+                          <span 
+                            className="rounded-full border px-3 py-1 font-medium"
+                            style={{
+                              backgroundColor: `${step.color}08`,
+                              borderColor: `${step.color}20`,
+                              color: step.color,
+                            }}
+                          >
+                            Clients import
+                          </span>
+                          <span 
+                            className="rounded-full border px-3 py-1 font-medium"
+                            style={{
+                              backgroundColor: `${step.color}08`,
+                              borderColor: `${step.color}20`,
+                              color: step.color,
+                            }}
+                          >
+                            Sender presets
+                          </span>
                         </>
                       )}
                       {index === 1 && (
                         <>
-                          <span className="rounded-full border border-gray-200 px-3 py-1">Preview sync</span>
-                          <span className="rounded-full border border-gray-200 px-3 py-1">Documentation</span>
+                          <span 
+                            className="rounded-full border px-3 py-1 font-medium"
+                            style={{
+                              backgroundColor: `${step.color}08`,
+                              borderColor: `${step.color}20`,
+                              color: step.color,
+                            }}
+                          >
+                            Preview sync
+                          </span>
+                          <span 
+                            className="rounded-full border px-3 py-1 font-medium"
+                            style={{
+                              backgroundColor: `${step.color}08`,
+                              borderColor: `${step.color}20`,
+                              color: step.color,
+                            }}
+                          >
+                            Documentation
+                          </span>
                         </>
                       )}
                       {index === 2 && (
                         <>
-                          <span className="rounded-full border border-gray-200 px-3 py-1">Shareable link</span>
-                          <span className="rounded-full border border-gray-200 px-3 py-1">Auto reminders</span>
-                          <span className="rounded-full border border-gray-200 px-3 py-1">Receipt ledger</span>
+                          <span 
+                            className="rounded-full border px-3 py-1 font-medium"
+                            style={{
+                              backgroundColor: `${step.color}08`,
+                              borderColor: `${step.color}20`,
+                              color: step.color,
+                            }}
+                          >
+                            Shareable link
+                          </span>
+                          <span 
+                            className="rounded-full border px-3 py-1 font-medium"
+                            style={{
+                              backgroundColor: `${step.color}08`,
+                              borderColor: `${step.color}20`,
+                              color: step.color,
+                            }}
+                          >
+                            Auto reminders
+                          </span>
+                          <span 
+                            className="rounded-full border px-3 py-1 font-medium"
+                            style={{
+                              backgroundColor: `${step.color}08`,
+                              borderColor: `${step.color}20`,
+                              color: step.color,
+                            }}
+                          >
+                            Receipt ledger
+                          </span>
                         </>
                       )}
                     </div>
@@ -504,7 +544,7 @@ export default function Home() {
         </section>
 
   {/* CTA */}
-  <section id="pricing" className="relative overflow-hidden border-t border-gray-100 bg-gray-900 py-24 text-white" data-animate="fade-up">
+  <section id="pricing" className="relative overflow-hidden border-t border-blue-600/20 bg-[#1877F2] py-24 text-white" data-animate="fade-up">
           {/* Background Pattern */}
           <div className="pointer-events-none absolute inset-0">
             {/* Grid Pattern */}
@@ -529,12 +569,12 @@ export default function Home() {
               Send, request, or document a transfer in seconds. Get a hosted receipt page and PDF with a tamper evident snapshot. Share links; recipients don’t need an account.
             </p>
             <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
-              <Link href="/coming-soon">
+              <Link href="/signup">
                 <SmartButton size="lg" className="group bg-white px-8 text-black transition hover:bg-gray-100">
                   Make this transfer official
                 </SmartButton>
               </Link>
-              <Link href="/coming-soon">
+              <Link href="/how-it-works">
                 <SmartButton size="lg" variant="outline" className="border-white bg-transparent px-8 text-white transition hover:bg-white/10 hover:border-white">
                   See how it works
                 </SmartButton>

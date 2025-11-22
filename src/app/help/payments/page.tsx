@@ -9,6 +9,7 @@ const paymentMethods = [
     name: "Mobile Money",
     description: "Accept payments through MTN, Vodafone, AirtelTigo, and other mobile money services across Africa.",
     icon: Smartphone,
+    color: "#059669", // Green
     features: [
       "Instant payments in seconds",
       "No bank account required for clients", 
@@ -20,6 +21,7 @@ const paymentMethods = [
     name: "Bank Transfers",
     description: "Direct bank-to-bank transfers for traditional banking customers and larger transactions.",
     icon: Building2,
+    color: "#1877F2", // Blue
     features: [
       "Secure bank-grade encryption",
       "Support for local and international transfers",
@@ -31,6 +33,7 @@ const paymentMethods = [
     name: "Cryptocurrency",
     description: "Accept Bitcoin, USDC, and other cryptocurrencies for global, borderless payments.",
     icon: Bitcoin,
+    color: "#F59E0B", // Orange
     features: [
       "Global accessibility",
       "Fast settlement times",
@@ -42,6 +45,7 @@ const paymentMethods = [
     name: "Credit & Debit Cards", 
     description: "Traditional card payments for customers who prefer using Visa, Mastercard, or local cards.",
     icon: CreditCard,
+    color: "#7C3AED", // Purple
     features: [
       "Wide customer acceptance",
       "Instant payment confirmation",
@@ -113,10 +117,17 @@ export default function PaymentsPage() {
                   {paymentMethods.map((method) => {
                     const Icon = method.icon;
                     return (
-                      <div key={method.name} className="border-l-4 border-gray-200 pl-8">
+                      <div 
+                        key={method.name} 
+                        className="border-l-4 pl-8"
+                        style={{ borderColor: method.color }}
+                      >
                         <div className="flex items-start gap-4 mb-6">
-                          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gray-100">
-                            <Icon className="h-6 w-6 text-gray-700" />
+                          <div 
+                            className="flex h-12 w-12 items-center justify-center rounded-xl text-white"
+                            style={{ backgroundColor: method.color }}
+                          >
+                            <Icon className="h-6 w-6" />
                           </div>
                           <div>
                             <h3 className="text-2xl font-semibold text-black mb-3">{method.name}</h3>
@@ -129,7 +140,10 @@ export default function PaymentsPage() {
                           <div className="grid gap-3 sm:grid-cols-2">
                             {method.features.map((feature, i) => (
                               <div key={i} className="flex items-center gap-3">
-                                <CheckCircle className="h-4 w-4 text-gray-500 flex-shrink-0" />
+                                <CheckCircle 
+                                  className="h-4 w-4 flex-shrink-0" 
+                                  style={{ color: method.color }}
+                                />
                                 <span className="text-gray-700">{feature}</span>
                               </div>
                             ))}
@@ -199,12 +213,12 @@ export default function PaymentsPage() {
                 <p className="text-lg leading-8 text-gray-700 mb-8">
                   If you need assistance setting up payment methods or have questions about fees and processing times, 
                   our support team is here to help. You can contact us through the chat widget or email us at 
-                  <a href="mailto:support@plaen.com" className="text-black underline"> support@plaen.com</a>.
+                  <a href="mailto:support@plaen.tech" className="text-black underline"> support@plaen.tech</a>.
                 </p>
 
                 <div className="not-prose mt-16 flex flex-col gap-4 sm:flex-row">
                   <Link href="/contact">
-                    <Button size="lg" className="bg-black text-white hover:bg-gray-900">
+                    <Button size="lg">
                       Talk to our team
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </Button>

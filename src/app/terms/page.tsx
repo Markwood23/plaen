@@ -307,14 +307,14 @@ export default function TermsOfServicePage() {
                     <div>
                       <h4 className="font-semibold text-black mb-2">Legal Inquiries</h4>
                       <p className="text-sm text-gray-700">
-                        Email: legal@plaen.app<br/>
+                        Email: legal@plaen.tech<br/>
                         Subject: Terms of Service Inquiry
                       </p>
                     </div>
                     <div>
                       <h4 className="font-semibold text-black mb-2">General Support</h4>
                       <p className="text-sm text-gray-700">
-                        Email: support@plaen.app<br/>
+                        Email: support@plaen.tech<br/>
                         Phone: +233 (0) 20 123 4567
                       </p>
                     </div>

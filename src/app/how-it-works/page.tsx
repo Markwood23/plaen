@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { SmartButton } from "@/components/ui/smart-button";
+import { Badge } from "@/components/ui/badge";
 import { MarketingHeader } from "@/components/marketing/marketing-header";
 import { MarketingFooter } from "@/components/marketing/marketing-footer";
 import { PageEffects } from "@/components/marketing/home-page-effects";
@@ -24,18 +25,21 @@ const steps = [
     description:
       "Personal or Business. Freelancers add their name and payout method. Companies add branding, logo, and tax details. Your information automatically populates future invoices.",
     icon: Settings2,
+    color: "#1877F2", // Blue
   },
   {
     title: "Build Your Invoice",
     description:
       "A quiet, black-and-white interface. Add items, quantities, and rates. See totals update in real time. Preview a clean, ready-to-share document in one click.",
     icon: FileCheck2,
+    color: "#059669", // Green
   },
   {
     title: "Send & Get Paid",
     description:
       "Share via link, email, or WhatsApp. Recipients don't need an account. They open a secure link, review, and pay through mobile money, bank, or crypto.",
     icon: Share2,
+    color: "#7C3AED", // Purple
   },
 ];
 
@@ -48,6 +52,7 @@ const features = [
       { text: "Bank Transfer", icon: Building2 },
       { text: "Crypto Payments", icon: Bitcoin },
     ],
+    color: "#1877F2", // Blue
   },
   {
     heading: "Real-Time Updates",
@@ -57,6 +62,7 @@ const features = [
       { text: "Clean preview mode", icon: Eye },
       { text: "Professional formatting", icon: FileCheck2 },
     ],
+    color: "#059669", // Green
   },
   {
     heading: "Automatic Records",
@@ -66,6 +72,7 @@ const features = [
       { text: "Payment timeline", icon: History },
       { text: "Verifiable records", icon: BadgeCheck },
     ],
+    color: "#F59E0B", // Orange
   },
 ];
 
@@ -100,9 +107,9 @@ export default function HowItWorksPage() {
             </div>
 
             <div className="relative z-10 mx-auto flex max-w-6xl flex-col items-center gap-8 px-6 pb-24 pt-20 text-center" data-animate="fade-up">
-          <span className="inline-flex items-center gap-2 rounded-full border border-gray-200 px-4 py-1 text-xs uppercase tracking-[0.35em] text-gray-500">
+          <Badge variant="outline" className="rounded-full border-gray-200 px-4 py-1 text-xs uppercase tracking-[0.35em] text-gray-500">
             How it Works
-          </span>
+          </Badge>
           <h1 className="max-w-3xl text-4xl font-semibold tracking-tight sm:text-5xl">
             A narrative-driven flow from draft to receipt.
           </h1>
@@ -110,9 +117,14 @@ export default function HowItWorksPage() {
             Each stage reinforces legitimacy and clarity: structure your profile, compose with live feedback, attach meaning, share a frictionless link, and keep contextual finance notes alongside verifiable receipts.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
-            <Link href="/coming-soon">
-              <SmartButton size="lg" className="bg-black px-8 text-white transition hover:bg-gray-900">
+            <Link href="/contact">
+              <SmartButton size="lg" className="px-8">
                 Talk to our team
+              </SmartButton>
+            </Link>
+            <Link href="/signup">
+              <SmartButton size="lg" variant="outline" className="border-gray-200 px-8 text-black transition hover:border-black hover:bg-gray-50">
+                Create account
               </SmartButton>
             </Link>
           </div>
@@ -126,16 +138,27 @@ export default function HowItWorksPage() {
               return (
                 <article
                   key={step.title}
-                  className="group relative overflow-hidden rounded-3xl border border-gray-200 bg-white p-6 shadow-[0_24px_80px_rgba(15,15,15,0.08)] transition hover:-translate-y-2 hover:border-black/80"
+                  className="group relative overflow-hidden rounded-3xl border border-gray-200 bg-white p-6 shadow-[0_16px_60px_rgba(15,15,15,0.06)] transition-all hover:-translate-y-2"
                 >
                   <div className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
-                    <div className="absolute -right-16 top-10 h-36 w-36 rounded-full bg-gradient-to-br from-black to-gray-500 blur-3xl" />
+                    <div 
+                      className="absolute -right-16 top-10 h-36 w-36 rounded-full blur-3xl" 
+                      style={{
+                        background: `radial-gradient(circle, ${step.color}30 0%, ${step.color}15 50%, transparent 100%)`,
+                      }}
+                    />
                   </div>
-                  <span className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full border border-gray-200 bg-white/80 text-gray-700 shadow-inner">
+                  <span 
+                    className="relative mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full transition group-hover:text-white"
+                    style={{
+                      backgroundColor: `${step.color}10`,
+                      color: step.color,
+                    }}
+                  >
                     <Icon className="h-5 w-5" />
                   </span>
-                  <h3 className="text-lg font-semibold text-black">{step.title}</h3>
-                  <p className="mt-3 text-sm leading-6 text-gray-600">{step.description}</p>
+                  <h3 className="relative text-lg font-semibold text-black">{step.title}</h3>
+                  <p className="relative mt-3 text-sm leading-6 text-gray-600">{step.description}</p>
                 </article>
               );
             })}
@@ -147,9 +170,9 @@ export default function HowItWorksPage() {
         <section className="border-t border-gray-200 bg-gradient-to-b from-white to-gray-50 py-24" data-animate="fade-up">
           <div className="mx-auto max-w-6xl px-6">
             <div className="space-y-4 text-center">
-              <span className="inline-flex items-center gap-2 rounded-full border border-gray-200 px-4 py-1 text-xs font-medium uppercase tracking-[0.35em] text-gray-500">
+              <Badge variant="outline" className="rounded-full border-gray-200 px-4 py-1 text-xs font-medium uppercase tracking-[0.35em] text-gray-500">
                 Why Plaen
-              </span>
+              </Badge>
               <h2 className="mx-auto max-w-3xl text-3xl font-semibold tracking-tight text-black sm:text-4xl">
                 Professional structure + human context.
               </h2>
@@ -160,9 +183,9 @@ export default function HowItWorksPage() {
 
             {/* Video placeholder */}
             <div className="mx-auto mt-12 max-w-3xl">
-              <div className="group relative overflow-hidden rounded-2xl border border-gray-200 bg-gradient-to-br from-gray-50 to-white shadow-[0_24px_80px_rgba(15,15,15,0.08)]">
+              <div className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-gray-50 to-white">
                 <div className="flex aspect-video items-center justify-center">
-                  <div className="flex h-16 w-16 items-center justify-center rounded-full bg-black/90 transition group-hover:scale-110 group-hover:bg-black">
+                  <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#1877F2] transition group-hover:scale-110 group-hover:bg-[#1877F2]/90">
                     <svg className="h-6 w-6 translate-x-0.5 text-white" fill="currentColor" viewBox="0 0 24 24">
                       <path d="M8 5v14l11-7z" />
                     </svg>
@@ -179,8 +202,8 @@ export default function HowItWorksPage() {
             {/* Three solutions */}
             <div className="mt-16 grid gap-8 md:grid-cols-3">
               <div className="group space-y-3 text-center">
-                <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-gray-100 transition group-hover:bg-black">
-                  <Settings2 className="h-5 w-5 text-gray-600 transition group-hover:text-white" />
+                <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#1877F2]/10 transition group-hover:bg-[#1877F2]">
+                  <Settings2 className="h-5 w-5 text-[#1877F2] transition group-hover:text-white" />
                 </div>
                 <h3 className="font-semibold text-black">Built-in Professionalism</h3>
                 <p className="text-sm leading-6 text-gray-600">
@@ -189,8 +212,8 @@ export default function HowItWorksPage() {
               </div>
 
               <div className="group space-y-3 text-center">
-                <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-gray-100 transition group-hover:bg-black">
-                  <Smartphone className="h-5 w-5 text-gray-600 transition group-hover:text-white" />
+                <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#059669]/10 transition group-hover:bg-[#059669]">
+                  <Smartphone className="h-5 w-5 text-[#059669] transition group-hover:text-white" />
                 </div>
                 <h3 className="font-semibold text-black">Frictionless Access</h3>
                 <p className="text-sm leading-6 text-gray-600">
@@ -199,8 +222,8 @@ export default function HowItWorksPage() {
               </div>
 
               <div className="group space-y-3 text-center">
-                <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-gray-100 transition group-hover:bg-black">
-                  <Share2 className="h-5 w-5 text-gray-600 transition group-hover:text-white" />
+                <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#7C3AED]/10 transition group-hover:bg-[#7C3AED]">
+                  <Share2 className="h-5 w-5 text-[#7C3AED] transition group-hover:text-white" />
                 </div>
                 <h3 className="font-semibold text-black">Context Layers</h3>
                 <p className="text-sm leading-6 text-gray-600">
@@ -214,9 +237,9 @@ export default function HowItWorksPage() {
         <section className="border-t border-gray-200 bg-gray-50 py-24" data-animate="fade-up">
           <div className="mx-auto flex max-w-6xl flex-col gap-16 px-6 lg:flex-row">
             <div className="max-w-md space-y-6">
-              <span className="inline-flex items-center gap-2 rounded-full border border-gray-200 px-4 py-1 text-xs uppercase tracking-[0.35em] text-gray-500">
+              <Badge variant="outline" className="rounded-full border-gray-200 px-4 py-1 text-xs uppercase tracking-[0.35em] text-gray-500">
                 What makes it work
-              </span>
+              </Badge>
               <h2 className="text-3xl font-semibold tracking-tight text-black sm:text-4xl">
                 Smooth, transparent, and human.
               </h2>
@@ -230,11 +253,16 @@ export default function HowItWorksPage() {
                 <li
                   key={feature.heading}
                   data-animate="fade-up"
-                  className="rounded-3xl border border-gray-200 bg-white p-6 shadow-[0_20px_70px_rgba(15,15,15,0.08)] transition hover:-translate-y-1.5 hover:border-black/80"
+                  className="rounded-3xl border border-gray-200 bg-white p-6 shadow-[0_20px_70px_rgba(15,15,15,0.08)] transition-all hover:-translate-y-1.5"
                 >
                   <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
                     <div>
-                      <p className="text-xs uppercase tracking-[0.3em] text-gray-500">Feature {index + 1}</p>
+                      <p 
+                        className="text-xs uppercase tracking-[0.3em] font-medium"
+                        style={{ color: feature.color }}
+                      >
+                        Feature {index + 1}
+                      </p>
                       <h3 className="mt-1 text-lg font-semibold text-black">{feature.heading}</h3>
                       <p className="mt-3 text-sm leading-6 text-gray-600">{feature.copy}</p>
                     </div>
@@ -243,7 +271,10 @@ export default function HowItWorksPage() {
                         const Icon = bullet.icon;
                         return (
                           <li key={bullet.text} className="inline-flex items-center justify-center gap-2 lg:justify-end">
-                            <Icon className="h-4 w-4 shrink-0 text-gray-400" />
+                            <Icon 
+                              className="h-4 w-4 shrink-0" 
+                              style={{ color: feature.color }}
+                            />
                             {bullet.text}
                           </li>
                         );
@@ -258,15 +289,15 @@ export default function HowItWorksPage() {
 
         <section className="border-t border-gray-200 bg-gradient-to-b from-white to-gray-50 py-24" data-animate="fade-up">
           <div className="mx-auto max-w-6xl px-6">
-            <div className="group relative overflow-hidden rounded-3xl border border-gray-200 bg-white p-12 shadow-[0_30px_90px_rgba(15,15,15,0.12)] transition-all hover:shadow-[0_40px_110px_rgba(15,15,15,0.16)]">
+            <div className="group relative overflow-hidden rounded-3xl bg-gray-50 p-12 transition-all">
               {/* Subtle gradient overlay */}
               <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-gray-50/50 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
               
               <div className="relative flex flex-col gap-10 lg:flex-row lg:items-center lg:justify-between">
                 <div className="max-w-md space-y-4">
-                  <span className="inline-flex items-center gap-2 rounded-full border border-gray-200 bg-white px-4 py-1.5 text-xs uppercase tracking-[0.35em] text-gray-500 shadow-sm">
+                  <Badge variant="outline" className="rounded-full border-gray-200 bg-white px-4 py-1.5 text-xs uppercase tracking-[0.35em] text-gray-500">
                     Ready to start
-                  </span>
+                  </Badge>
                   <h3 className="text-3xl font-semibold tracking-tight text-black sm:text-4xl">
                     Professional structure for everyone.
                   </h3>
@@ -274,12 +305,12 @@ export default function HowItWorksPage() {
                     Whether you're sending your first invoice or your hundredth, Plaen gives you the workspace to do it with confidence. No formal business required.
                   </p>
                   <div className="flex flex-col gap-4 sm:flex-row">
-                    <Link href="/coming-soon">
-                      <SmartButton size="lg" className="bg-black text-white transition hover:bg-gray-900">
+                    <Link href="/contact">
+                      <SmartButton size="lg">
                         Talk with our team
                       </SmartButton>
                     </Link>
-                    <Link href="/coming-soon">
+                    <Link href="/pricing">
                       <SmartButton size="lg" variant="outline" className="border-gray-200 text-black transition hover:border-black hover:bg-gray-50">
                         Explore pricing
                       </SmartButton>
@@ -306,8 +337,11 @@ export default function HowItWorksPage() {
                       {[40, 65, 45, 80, 60, 75, 55, 70, 50, 85, 65, 75].map((height, i) => (
                         <div
                           key={i}
-                          className="group/bar flex-1 rounded-t-sm bg-gradient-to-t from-black to-black/70 transition-all hover:from-black hover:to-black/90"
-                          style={{ height: `${height}%` }}
+                          className="group/bar flex-1 rounded-t-sm transition-all"
+                          style={{ 
+                            height: `${height}%`,
+                            background: `linear-gradient(to top, #1877F2, #1877F2CC)`,
+                          }}
                         />
                       ))}
                     </div>

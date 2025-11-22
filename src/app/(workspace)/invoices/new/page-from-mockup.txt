@@ -1,0 +1,805 @@
+"use client";
+
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { 
+  ArrowLeft, 
+  Plus, 
+  Trash2, 
+  Save, 
+  Send,
+  Building2,
+  FileText,
+  Calendar as CalendarIcon,
+  User,
+  FileText as InvoiceIcon,
+  CreditCard,
+  Info
+} from "lucide-react";
+import Link from "next/link";
+import { useState } from "react";
+
+export default function MinimalMockup() {
+  const [template, setTemplate] = useState("standard");
+
+  return (
+    <div className="min-h-screen bg-white">
+      {/* Sticky Header - Minimal */}
+      <div className="sticky top-0 z-10 bg-white/80 backdrop-blur-md border-b border-[#EBECE7]">
+        <div className="max-w-5xl mx-auto px-8 py-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <Button variant="ghost" size="sm" asChild className="gap-2 -ml-2">
+                <Link href="/invoices">
+                  <ArrowLeft className="h-4 w-4" />
+                  Back
+                </Link>
+              </Button>
+              <div className="text-xs text-[#949494]">
+                Invoices / <span className="text-[#212121]">New Invoice</span>
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              <Button variant="ghost" size="sm">
+                <Save className="h-3.5 w-3.5 mr-1.5" />
+                Save Draft
+              </Button>
+              <Button size="sm" className="bg-[#212121] hover:bg-[#212121]/90">
+                <Send className="h-3.5 w-3.5 mr-1.5" />
+                Send Invoice
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Main Content - No cards, pure spacing */}
+      <div className="max-w-6xl mx-auto px-8 py-12">
+        
+        {/* Page Title */}
+        <div className="mb-12">
+          <h1 className="text-4xl font-semibold text-[#212121] mb-2">New Invoice</h1>
+          <p className="text-[#949494]">Create and send a professional invoice to your client</p>
+        </div>
+
+        {/* Tabs Navigation - Redesigned */}
+        <Tabs defaultValue="details" className="w-full">
+          <div className="border-b border-[#EBECE7] mb-10">
+            <TabsList className="bg-transparent border-none p-0 h-auto gap-1">
+              <TabsTrigger 
+                value="details" 
+                className="data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-[#212121] rounded-none px-6 py-3 gap-2"
+              >
+                <InvoiceIcon className="h-4 w-4" />
+                Invoice Details
+              </TabsTrigger>
+              <TabsTrigger 
+                value="parties" 
+                className="data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-[#212121] rounded-none px-6 py-3 gap-2"
+              >
+                <User className="h-4 w-4" />
+                Parties
+              </TabsTrigger>
+              <TabsTrigger 
+                value="items" 
+                className="data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-[#212121] rounded-none px-6 py-3 gap-2"
+              >
+                <FileText className="h-4 w-4" />
+                Line Items
+              </TabsTrigger>
+              <TabsTrigger 
+                value="payment" 
+                className="data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-[#212121] rounded-none px-6 py-3 gap-2"
+              >
+                <CreditCard className="h-4 w-4" />
+                Payment & Currency
+              </TabsTrigger>
+              <TabsTrigger 
+                value="additional" 
+                className="data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-[#212121] rounded-none px-6 py-3 gap-2"
+              >
+                <Info className="h-4 w-4" />
+                Additional Info
+              </TabsTrigger>
+            </TabsList>
+          </div>
+
+          {/* Tab 1: Details - Enhanced */}
+          <TabsContent value="details" className="space-y-10 mt-0">
+            {/* Template Selection */}
+            <div>
+              <div className="mb-6 flex items-start justify-between">
+                <div>
+                  <h2 className="text-lg font-semibold text-[#212121] mb-1">Invoice Template</h2>
+                  <p className="text-sm text-[#949494]">Choose a professional template that matches your brand</p>
+                </div>
+                <div className="w-80">
+                  <Select value={template} onValueChange={setTemplate}>
+                    <SelectTrigger className="border-[#EBECE7] h-auto min-h-[44px] py-2.5">
+                      <SelectValue>
+                        <div className="flex flex-col items-start gap-0.5">
+                          <span className="font-medium text-sm">
+                            {template === "standard" && "Standard"}
+                            {template === "minimal" && "Minimal"}
+                            {template === "professional" && "Professional"}
+                            {template === "modern" && "Modern"}
+                          </span>
+                          <span className="text-xs text-[#949494]">
+                            {template === "standard" && "Classic business format"}
+                            {template === "minimal" && "Clean and simple"}
+                            {template === "professional" && "Corporate style"}
+                            {template === "modern" && "Contemporary design"}
+                          </span>
+                        </div>
+                      </SelectValue>
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="standard">
+                        <div className="flex flex-col items-start gap-0.5 py-1">
+                          <span className="font-medium text-sm">Standard</span>
+                          <span className="text-xs text-[#949494]">Classic business format</span>
+                        </div>
+                      </SelectItem>
+                      <SelectItem value="minimal">
+                        <div className="flex flex-col items-start gap-0.5 py-1">
+                          <span className="font-medium text-sm">Minimal</span>
+                          <span className="text-xs text-[#949494]">Clean and simple</span>
+                        </div>
+                      </SelectItem>
+                      <SelectItem value="professional">
+                        <div className="flex flex-col items-start gap-0.5 py-1">
+                          <span className="font-medium text-sm">Professional</span>
+                          <span className="text-xs text-[#949494]">Corporate style</span>
+                        </div>
+                      </SelectItem>
+                      <SelectItem value="modern">
+                        <div className="flex flex-col items-start gap-0.5 py-1">
+                          <span className="font-medium text-sm">Modern</span>
+                          <span className="text-xs text-[#949494]">Contemporary design</span>
+                        </div>
+                      </SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <p className="text-xs text-[#949494] mt-1.5">Select the layout style for your invoice</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="h-px bg-[#EBECE7]" />
+
+            {/* Invoice Details */}
+            <div>
+              <div className="mb-6">
+                <h2 className="text-lg font-semibold text-[#212121] mb-1">Invoice Information</h2>
+                <p className="text-sm text-[#949494]">Basic details about this invoice</p>
+              </div>
+              <div className="grid grid-cols-2 gap-6">
+                <div>
+                  <Label className="text-sm text-[#212121] font-medium mb-2 block">Invoice Number*</Label>
+                  <Input 
+                    placeholder="INV-001"
+                    className="border-[#EBECE7] h-11 font-mono"
+                  />
+                  <p className="text-xs text-[#949494] mt-1.5">Unique identifier for this invoice</p>
+                </div>
+                <div>
+                  <Label className="text-sm text-[#212121] font-medium mb-2 block">Payment Terms*</Label>
+                  <Select defaultValue="net_30">
+                    <SelectTrigger className="border-[#EBECE7] h-11">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="due_on_receipt">Due on Receipt</SelectItem>
+                      <SelectItem value="net_15">Net 15 days</SelectItem>
+                      <SelectItem value="net_30">Net 30 days</SelectItem>
+                      <SelectItem value="net_60">Net 60 days</SelectItem>
+                      <SelectItem value="net_90">Net 90 days</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <p className="text-xs text-[#949494] mt-1.5">When payment is due</p>
+                </div>
+                <div>
+                  <Label className="text-sm text-[#212121] font-medium mb-2 block">Issue Date*</Label>
+                  <Button 
+                    variant="outline" 
+                    className="w-full h-11 justify-start text-left border-[#EBECE7] font-normal"
+                  >
+                    <CalendarIcon className="mr-2 h-4 w-4 text-[#949494]" />
+                    Nov 16, 2025
+                  </Button>
+                  <p className="text-xs text-[#949494] mt-1.5">Date invoice was created</p>
+                </div>
+                <div>
+                  <Label className="text-sm text-[#212121] font-medium mb-2 block">Due Date*</Label>
+                  <Button 
+                    variant="outline" 
+                    className="w-full h-11 justify-start text-left border-[#EBECE7] font-normal"
+                  >
+                    <CalendarIcon className="mr-2 h-4 w-4 text-[#949494]" />
+                    Dec 16, 2025
+                  </Button>
+                  <p className="text-xs text-[#949494] mt-1.5">Calculated based on payment terms</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="h-px bg-[#EBECE7]" />
+
+            {/* Project Reference */}
+            <div>
+              <div className="mb-6">
+                <h2 className="text-lg font-semibold text-[#212121] mb-1">Project Information</h2>
+                <p className="text-sm text-[#949494]">Link this invoice to a specific project or category (optional)</p>
+              </div>
+              <div className="grid grid-cols-2 gap-6">
+                <div>
+                  <Label className="text-sm text-[#212121] font-medium mb-2 block">Project Name</Label>
+                  <Input 
+                    placeholder="e.g., Website Redesign Q4 2025"
+                    className="border-[#EBECE7] h-11"
+                  />
+                </div>
+                <div>
+                  <Label className="text-sm text-[#212121] font-medium mb-2 block">Project Reference/ID</Label>
+                  <Input 
+                    placeholder="e.g., PROJ-2025-042"
+                    className="border-[#EBECE7] h-11"
+                  />
+                </div>
+                <div>
+                  <Label className="text-sm text-[#212121] font-medium mb-2 block">Purpose/Category</Label>
+                  <Select>
+                    <SelectTrigger className="border-[#EBECE7] h-11">
+                      <SelectValue placeholder="Select category" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="consulting">Consulting Services</SelectItem>
+                      <SelectItem value="design">Design & Creative</SelectItem>
+                      <SelectItem value="development">Development</SelectItem>
+                      <SelectItem value="marketing">Marketing & Advertising</SelectItem>
+                      <SelectItem value="maintenance">Maintenance & Support</SelectItem>
+                      <SelectItem value="product">Product Sales</SelectItem>
+                      <SelectItem value="other">Other</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <Label className="text-sm text-[#212121] font-medium mb-2 block">Purchase Order (PO) Number</Label>
+                  <Input 
+                    placeholder="Client's PO number if applicable"
+                    className="border-[#EBECE7] h-11"
+                  />
+                </div>
+              </div>
+            </div>
+          </TabsContent>
+
+          {/* Tab 2: Parties - Enhanced */}
+          <TabsContent value="parties" className="space-y-10 mt-0">
+            <div className="grid grid-cols-2 gap-12">
+              {/* From */}
+              <div>
+                <div className="mb-6">
+                  <h2 className="text-lg font-semibold text-[#212121] mb-1">From (Your Business)</h2>
+                  <p className="text-sm text-[#949494]">Your business details that will appear on the invoice</p>
+                </div>
+                <div className="space-y-4">
+                  <div>
+                    <Label className="text-sm text-[#212121] font-medium mb-2 block">Business/Individual Name*</Label>
+                    <Input 
+                      placeholder="Your Business Name"
+                      className="border-[#EBECE7] h-11"
+                    />
+                  </div>
+                  <div>
+                    <Label className="text-sm text-[#212121] font-medium mb-2 block">Email Address*</Label>
+                    <Input 
+                      placeholder="your@business.com"
+                      type="email"
+                      className="border-[#EBECE7] h-11"
+                    />
+                  </div>
+                  <div>
+                    <Label className="text-sm text-[#212121] font-medium mb-2 block">Phone Number</Label>
+                    <Input 
+                      placeholder="+233 XX XXX XXXX"
+                      className="border-[#EBECE7] h-11"
+                    />
+                  </div>
+                  <div>
+                    <Label className="text-sm text-[#212121] font-medium mb-2 block">Business Address</Label>
+                    <Textarea 
+                      placeholder="Street Address&#10;City, Region&#10;Country"
+                      className="border-[#EBECE7] resize-none"
+                      rows={4}
+                    />
+                  </div>
+                  <div>
+                    <Label className="text-sm text-[#212121] font-medium mb-2 block">Tax/VAT Number</Label>
+                    <Input 
+                      placeholder="Optional - if applicable"
+                      className="border-[#EBECE7] h-11"
+                    />
+                  </div>
+                  <div>
+                    <Label className="text-sm text-[#212121] font-medium mb-2 block">Website</Label>
+                    <Input 
+                      placeholder="www.yourbusiness.com"
+                      className="border-[#EBECE7] h-11"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Bill To */}
+              <div>
+                <div className="mb-6">
+                  <h2 className="text-lg font-semibold text-[#212121] mb-1">Bill To (Customer)</h2>
+                  <p className="text-sm text-[#949494]">Client or customer information for billing</p>
+                </div>
+                <div className="space-y-4">
+                  <div>
+                    <Label className="text-sm text-[#212121] font-medium mb-2 block">Customer Name*</Label>
+                    <Input 
+                      placeholder="Client Full Name or Contact Person"
+                      className="border-[#EBECE7] h-11"
+                    />
+                  </div>
+                  <div>
+                    <Label className="text-sm text-[#212121] font-medium mb-2 block">Email Address*</Label>
+                    <Input 
+                      placeholder="client@company.com"
+                      type="email"
+                      className="border-[#EBECE7] h-11"
+                    />
+                    <p className="text-xs text-[#949494] mt-1.5">Invoice will be sent to this email</p>
+                  </div>
+                  <div>
+                    <Label className="text-sm text-[#212121] font-medium mb-2 block">Company/Organization</Label>
+                    <Input 
+                      placeholder="Client Company Name"
+                      className="border-[#EBECE7] h-11"
+                    />
+                  </div>
+                  <div>
+                    <Label className="text-sm text-[#212121] font-medium mb-2 block">Phone Number</Label>
+                    <Input 
+                      placeholder="+233 XX XXX XXXX"
+                      className="border-[#EBECE7] h-11"
+                    />
+                  </div>
+                  <div>
+                    <Label className="text-sm text-[#212121] font-medium mb-2 block">Billing Address</Label>
+                    <Textarea 
+                      placeholder="Street Address&#10;City, Region&#10;Country"
+                      className="border-[#EBECE7] resize-none"
+                      rows={4}
+                    />
+                  </div>
+                  <div>
+                    <Label className="text-sm text-[#212121] font-medium mb-2 block">Customer Notes</Label>
+                    <Input 
+                      placeholder="e.g., Billing Department, Account #12345"
+                      className="border-[#EBECE7] h-11"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </TabsContent>
+
+          {/* Tab 3: Line Items - Enhanced */}
+          <TabsContent value="items" className="space-y-10 mt-0">
+            <div>
+              <div className="flex items-center justify-between mb-6">
+                <div>
+                  <h2 className="text-lg font-semibold text-[#212121]">Line Items</h2>
+                  <p className="text-sm text-[#949494] mt-1">Add products or services with detailed pricing</p>
+                </div>
+                <Button variant="default" size="sm" className="gap-1.5 bg-[#212121] hover:bg-[#212121]/90">
+                  <Plus className="h-4 w-4" />
+                  Add Line Item
+                </Button>
+              </div>
+              
+              {/* Enhanced Table */}
+              <div className="space-y-4">
+                <div className="grid grid-cols-12 gap-4 pb-3 border-b-2 border-[#212121]">
+                  <div className="col-span-4">
+                    <Label className="text-xs text-[#949494] font-semibold uppercase tracking-wide">Description</Label>
+                  </div>
+                  <div className="col-span-2">
+                    <Label className="text-xs text-[#949494] font-semibold uppercase tracking-wide">Quantity</Label>
+                  </div>
+                  <div className="col-span-2">
+                    <Label className="text-xs text-[#949494] font-semibold uppercase tracking-wide">Unit Price</Label>
+                  </div>
+                  <div className="col-span-1">
+                    <Label className="text-xs text-[#949494] font-semibold uppercase tracking-wide">Tax %</Label>
+                  </div>
+                  <div className="col-span-2">
+                    <Label className="text-xs text-[#949494] font-semibold uppercase tracking-wide">Discount</Label>
+                  </div>
+                  <div className="col-span-1">
+                    <Label className="text-xs text-[#949494] font-semibold uppercase tracking-wide text-right block">Amount</Label>
+                  </div>
+                </div>
+
+                {/* Line Item Rows */}
+                {[1, 2].map((item) => (
+                  <div key={item} className="grid grid-cols-12 gap-4 items-start py-4 border-b border-[#EBECE7]">
+                    <div className="col-span-4">
+                      <Input 
+                        placeholder="Service or product description"
+                        className="border-[#EBECE7] h-11 mb-2"
+                      />
+                      <Textarea 
+                        placeholder="Additional details (optional)"
+                        className="border-[#EBECE7] resize-none text-xs"
+                        rows={2}
+                      />
+                    </div>
+                    <div className="col-span-2">
+                      <Input 
+                        type="number"
+                        defaultValue="1"
+                        className="border-[#EBECE7] h-11"
+                      />
+                    </div>
+                    <div className="col-span-2">
+                      <Input 
+                        type="number"
+                        placeholder="0.00"
+                        className="border-[#EBECE7] h-11"
+                      />
+                    </div>
+                    <div className="col-span-1">
+                      <Input 
+                        type="number"
+                        defaultValue="0"
+                        placeholder="%"
+                        className="border-[#EBECE7] h-11"
+                      />
+                    </div>
+                    <div className="col-span-2">
+                      <div className="flex gap-2">
+                        <Input 
+                          type="number"
+                          defaultValue="0"
+                          placeholder="0"
+                          className="border-[#EBECE7] h-11 flex-1"
+                        />
+                        <Select defaultValue="percent">
+                          <SelectTrigger className="border-[#EBECE7] h-11 w-16">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="percent">%</SelectItem>
+                            <SelectItem value="fixed">₵</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
+                    <div className="col-span-1 flex items-center justify-between h-11">
+                      <div className="text-right w-full">
+                        <p className="text-sm font-semibold text-[#212121]">₵0.00</p>
+                      </div>
+                      <Button variant="ghost" size="sm" className="h-8 w-8 p-0 -mr-2">
+                        <Trash2 className="h-4 w-4 text-[#949494] hover:text-red-600" />
+                      </Button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="h-px bg-[#EBECE7]" />
+
+            {/* Totals Summary */}
+            <div>
+              <div className="flex justify-end">
+                <div className="w-[450px] space-y-4">
+                  <div className="space-y-3">
+                    <div className="flex justify-between py-2">
+                      <span className="text-sm text-[#949494]">Subtotal</span>
+                      <span className="text-sm font-medium text-[#212121]">₵0.00</span>
+                    </div>
+                    <div className="flex justify-between py-2">
+                      <span className="text-sm text-[#949494]">Total Tax</span>
+                      <span className="text-sm font-medium text-[#212121]">₵0.00</span>
+                    </div>
+                    <div className="flex justify-between py-2">
+                      <span className="text-sm text-[#949494]">Total Discount</span>
+                      <span className="text-sm font-medium text-green-600">-₵0.00</span>
+                    </div>
+                  </div>
+                  <div className="h-px bg-[#EBECE7]" />
+                  <div className="flex justify-between py-3 bg-[#FAFAFA] px-4 rounded-lg">
+                    <span className="text-lg font-semibold text-[#212121]">Total Amount</span>
+                    <span className="text-lg font-bold text-[#212121]">₵0.00</span>
+                  </div>
+                  <p className="text-xs text-[#949494] text-right">Amount due by Dec 16, 2025</p>
+                </div>
+              </div>
+            </div>
+          </TabsContent>
+
+          {/* Tab 4: Payment - Enhanced */}
+          <TabsContent value="payment" className="space-y-10 mt-0">
+            <div>
+              <div className="mb-6">
+                <h2 className="text-lg font-semibold text-[#212121] mb-1">Accepted Payment Methods</h2>
+                <p className="text-sm text-[#949494]">Select all payment methods you accept for this invoice</p>
+              </div>
+              <div className="grid grid-cols-3 gap-4">
+                {[
+                  { id: 'mtn', name: 'MTN Mobile Money', desc: 'Pay via MTN MoMo' },
+                  { id: 'vodafone', name: 'Vodafone Cash', desc: 'Pay via Vodafone' },
+                  { id: 'airtel', name: 'AirtelTigo Money', desc: 'Pay via AirtelTigo' },
+                  { id: 'bank', name: 'Bank Transfer', desc: 'Direct bank payment' },
+                  { id: 'card', name: 'Card Payment', desc: 'Credit/Debit card' },
+                  { id: 'crypto', name: 'Cryptocurrency', desc: 'Bitcoin, USDT, etc.' },
+                  { id: 'paypal', name: 'PayPal', desc: 'PayPal account' },
+                  { id: 'cash', name: 'Cash', desc: 'Cash payment' },
+                  { id: 'cheque', name: 'Cheque', desc: 'Bank cheque' }
+                ].map((method) => (
+                  <label
+                    key={method.id}
+                    className="flex items-start gap-3 p-4 rounded-lg border-2 border-[#EBECE7] hover:border-[#949494] cursor-pointer transition-all"
+                  >
+                    <input 
+                      type="checkbox" 
+                      className="rounded border-[#EBECE7] text-[#212121] mt-1"
+                      defaultChecked={method.id === 'mtn' || method.id === 'bank'}
+                    />
+                    <div>
+                      <p className="text-sm font-medium text-[#212121]">{method.name}</p>
+                      <p className="text-xs text-[#949494] mt-0.5">{method.desc}</p>
+                    </div>
+                  </label>
+                ))}
+              </div>
+            </div>
+
+            <div className="h-px bg-[#EBECE7]" />
+
+            <div>
+              <div className="mb-6">
+                <h2 className="text-lg font-semibold text-[#212121] mb-1">Currency Settings</h2>
+                <p className="text-sm text-[#949494]">Configure primary and optional secondary currency</p>
+              </div>
+              <div className="grid grid-cols-2 gap-6">
+                <div>
+                  <Label className="text-sm text-[#212121] font-medium mb-2 block">Primary Currency*</Label>
+                  <Select defaultValue="ghs">
+                    <SelectTrigger className="border-[#EBECE7] h-11">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="ghs">GHS (₵) - Ghana Cedi</SelectItem>
+                      <SelectItem value="usd">USD ($) - US Dollar</SelectItem>
+                      <SelectItem value="eur">EUR (€) - Euro</SelectItem>
+                      <SelectItem value="gbp">GBP (£) - British Pound</SelectItem>
+                      <SelectItem value="ngn">NGN (₦) - Nigerian Naira</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <p className="text-xs text-[#949494] mt-1.5">Main currency for this invoice</p>
+                </div>
+                <div>
+                  <Label className="text-sm text-[#212121] font-medium mb-2 block">Secondary Currency</Label>
+                  <Select>
+                    <SelectTrigger className="border-[#EBECE7] h-11">
+                      <SelectValue placeholder="None (optional)" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="none">None</SelectItem>
+                      <SelectItem value="usd">USD ($) - US Dollar</SelectItem>
+                      <SelectItem value="eur">EUR (€) - Euro</SelectItem>
+                      <SelectItem value="gbp">GBP (£) - British Pound</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <p className="text-xs text-[#949494] mt-1.5">Show amounts in dual currency</p>
+                </div>
+                <div>
+                  <Label className="text-sm text-[#212121] font-medium mb-2 block">Exchange Rate (if dual currency)</Label>
+                  <Input 
+                    type="number"
+                    placeholder="e.g., 12.50"
+                    className="border-[#EBECE7] h-11"
+                  />
+                </div>
+                <div>
+                  <Label className="text-sm text-[#212121] font-medium mb-2 block">Exchange Rate Date</Label>
+                  <Button 
+                    variant="outline" 
+                    className="w-full h-11 justify-start text-left border-[#EBECE7] font-normal"
+                  >
+                    <CalendarIcon className="mr-2 h-4 w-4 text-[#949494]" />
+                    Nov 16, 2025
+                  </Button>
+                </div>
+              </div>
+            </div>
+
+            <div className="h-px bg-[#EBECE7]" />
+
+            <div>
+              <div className="mb-6">
+                <h2 className="text-lg font-semibold text-[#212121] mb-1">Payment Reminders</h2>
+                <p className="text-sm text-[#949494]">Automatically send payment reminders to customer</p>
+              </div>
+              <div className="space-y-4">
+                <label className="flex items-start gap-3 p-4 rounded-lg border border-[#EBECE7]">
+                  <input type="checkbox" className="rounded border-[#EBECE7] text-[#212121] mt-1" />
+                  <div>
+                    <p className="text-sm font-medium text-[#212121]">Send reminder 7 days before due date</p>
+                    <p className="text-xs text-[#949494] mt-0.5">Gentle reminder email</p>
+                  </div>
+                </label>
+                <label className="flex items-start gap-3 p-4 rounded-lg border border-[#EBECE7]">
+                  <input type="checkbox" className="rounded border-[#EBECE7] text-[#212121] mt-1" defaultChecked />
+                  <div>
+                    <p className="text-sm font-medium text-[#212121]">Send reminder on due date</p>
+                    <p className="text-xs text-[#949494] mt-0.5">Payment due notification</p>
+                  </div>
+                </label>
+                <label className="flex items-start gap-3 p-4 rounded-lg border border-[#EBECE7]">
+                  <input type="checkbox" className="rounded border-[#EBECE7] text-[#212121] mt-1" />
+                  <div>
+                    <p className="text-sm font-medium text-[#212121]">Send reminder 3 days after due date</p>
+                    <p className="text-xs text-[#949494] mt-0.5">Overdue payment notice</p>
+                  </div>
+                </label>
+              </div>
+            </div>
+          </TabsContent>
+
+          {/* Tab 5: Additional - Enhanced */}
+          <TabsContent value="additional" className="space-y-10 mt-0">
+            <div>
+              <div className="mb-6">
+                <h2 className="text-lg font-semibold text-[#212121] mb-1">Notes & Instructions</h2>
+                <p className="text-sm text-[#949494]">Add custom notes or payment instructions for your client</p>
+              </div>
+              <div className="space-y-6">
+                <div>
+                  <Label className="text-sm text-[#212121] font-medium mb-2 block">Invoice Notes</Label>
+                  <Textarea 
+                    placeholder="Add any additional notes, thank you message, or special instructions...&#10;&#10;Example: Thank you for your business! Please include invoice number in payment reference."
+                    className="border-[#EBECE7] resize-none"
+                    rows={5}
+                  />
+                </div>
+                <div>
+                  <Label className="text-sm text-[#212121] font-medium mb-2 block">Payment Instructions</Label>
+                  <Textarea 
+                    placeholder="Specific payment instructions for this invoice...&#10;&#10;Example: Bank Name: ABC Bank&#10;Account Number: 1234567890&#10;Account Name: Your Business Name"
+                    className="border-[#EBECE7] resize-none"
+                    rows={5}
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="h-px bg-[#EBECE7]" />
+
+            <div>
+              <div className="mb-6">
+                <h2 className="text-lg font-semibold text-[#212121] mb-1">Terms & Conditions</h2>
+                <p className="text-sm text-[#949494]">Standard terms that will appear on the invoice</p>
+              </div>
+              <Textarea 
+                placeholder="Enter your standard terms and conditions...&#10;&#10;Example:&#10;1. Payment is due within 30 days of invoice date&#10;2. Late payments may incur additional fees&#10;3. All prices are in Ghana Cedis (GHS)&#10;4. Goods remain property of seller until full payment"
+                className="border-[#EBECE7] resize-none"
+                rows={8}
+              />
+            </div>
+
+            <div className="h-px bg-[#EBECE7]" />
+
+            <div>
+              <div className="mb-6">
+                <h2 className="text-lg font-semibold text-[#212121] mb-1">Payment Policies</h2>
+                <p className="text-sm text-[#949494]">Configure early payment discounts and late payment fees</p>
+              </div>
+              <div className="space-y-6">
+                <div>
+                  <Label className="text-sm text-[#212121] font-medium mb-3 block">Early Payment Discount</Label>
+                  <div className="grid grid-cols-3 gap-4">
+                    <div>
+                      <Label className="text-xs text-[#949494] mb-2 block">Discount Type</Label>
+                      <Select>
+                        <SelectTrigger className="border-[#EBECE7] h-11">
+                          <SelectValue placeholder="None" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="none">No Discount</SelectItem>
+                          <SelectItem value="percentage">Percentage</SelectItem>
+                          <SelectItem value="fixed">Fixed Amount</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div>
+                      <Label className="text-xs text-[#949494] mb-2 block">Discount Amount</Label>
+                      <Input 
+                        type="number"
+                        placeholder="e.g., 5 for 5%"
+                        className="border-[#EBECE7] h-11"
+                      />
+                    </div>
+                    <div>
+                      <Label className="text-xs text-[#949494] mb-2 block">Days Before Due</Label>
+                      <Input 
+                        type="number"
+                        placeholder="e.g., 7 days"
+                        className="border-[#EBECE7] h-11"
+                      />
+                    </div>
+                  </div>
+                  <p className="text-xs text-[#949494] mt-2">Example: 5% discount if paid 7 days before due date</p>
+                </div>
+
+                <div>
+                  <Label className="text-sm text-[#212121] font-medium mb-3 block">Late Payment Fee</Label>
+                  <div className="grid grid-cols-3 gap-4">
+                    <div>
+                      <Label className="text-xs text-[#949494] mb-2 block">Fee Type</Label>
+                      <Select>
+                        <SelectTrigger className="border-[#EBECE7] h-11">
+                          <SelectValue placeholder="None" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="none">No Late Fee</SelectItem>
+                          <SelectItem value="percentage">Percentage</SelectItem>
+                          <SelectItem value="fixed">Fixed Amount</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div>
+                      <Label className="text-xs text-[#949494] mb-2 block">Fee Amount</Label>
+                      <Input 
+                        type="number"
+                        placeholder="e.g., 10 for 10%"
+                        className="border-[#EBECE7] h-11"
+                      />
+                    </div>
+                    <div>
+                      <Label className="text-xs text-[#949494] mb-2 block">Days After Due</Label>
+                      <Input 
+                        type="number"
+                        placeholder="e.g., 7 days"
+                        className="border-[#EBECE7] h-11"
+                      />
+                    </div>
+                  </div>
+                  <p className="text-xs text-[#949494] mt-2">Example: 10% late fee applied 7 days after due date</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="h-px bg-[#EBECE7]" />
+
+            <div>
+              <div className="mb-6">
+                <h2 className="text-lg font-semibold text-[#212121] mb-1">Attachments</h2>
+                <p className="text-sm text-[#949494]">Attach supporting documents to this invoice</p>
+              </div>
+              <div className="border-2 border-dashed border-[#EBECE7] rounded-lg p-8 text-center hover:border-[#949494] transition-colors cursor-pointer">
+                <Plus className="h-8 w-8 text-[#949494] mx-auto mb-3" />
+                <p className="text-sm font-medium text-[#212121] mb-1">Click to upload files</p>
+                <p className="text-xs text-[#949494]">PDF, PNG, JPG up to 10MB each</p>
+              </div>
+            </div>
+          </TabsContent>
+        </Tabs>
+
+        {/* Bottom Padding */}
+        <div className="h-8" />
+      </div>
+    </div>
+  );
+}

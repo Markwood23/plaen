@@ -59,7 +59,7 @@ export default function ComingSoonPage() {
           </div>
           <div className="flex flex-wrap justify-center gap-4">
             <Link href="/">
-              <SmartButton size="lg" className="bg-black text-white hover:bg-gray-900">Return home</SmartButton>
+              <SmartButton size="lg">Return home</SmartButton>
             </Link>
             <Link href="/blog">
               <SmartButton size="lg" variant="outline" className="border-gray-200 text-black hover:border-black hover:bg-gray-50">Read updates</SmartButton>

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { SmartButton } from "@/components/ui/smart-button";
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import { MarketingHeader } from "@/components/marketing/marketing-header";
 import { MarketingFooter } from "@/components/marketing/marketing-footer";
 import { PageEffects } from "@/components/marketing/home-page-effects";
@@ -141,28 +142,27 @@ export default function BlogPage() {
             <div className="grid items-center gap-16 lg:grid-cols-[1.15fr,0.85fr]">
               <div className="flex flex-col gap-8">
                 <div className="inline-flex items-center gap-2 self-start rounded-full border border-gray-200 px-4 py-1 text-xs uppercase tracking-[0.35em] text-gray-500">
-                  <BookOpen className="h-3 w-3" />
-                  Weekly Insights
+                  <BookOpen className="h-3 w-3" /> Weekly insights
                 </div>
                 <div className="space-y-6">
                   <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">
                     Field notes on making transfers official.
                   </h1>
                   <p className="max-w-2xl text-lg leading-8 text-gray-700">
-                    Essays and guides covering Money + Meaning, frictionless paylinks, Africa‑first rails, tamper‑evident receipts, and using Finance Notes & Docs to build a durable finance memory.
+                    Essays and guides covering Money + Meaning, frictionless paylinks, Africa-first rails, tamper-evident receipts, and using Finance Notes & Docs to build a durable finance memory.
                   </p>
                 </div>
                 <div className="flex flex-wrap gap-4">
-                  <Link href="/coming-soon">
-                    <SmartButton size="lg" className="rounded-full bg-black px-6 text-white hover:bg-gray-900">
+                  <Link href="#articles">
+                    <SmartButton size="lg" className="px-6">
                       Explore articles
                     </SmartButton>
                   </Link>
-                  <Link href="/coming-soon">
+                  <Link href="/blog/freelancer-invoice-guide">
                     <SmartButton
                       size="lg"
                       variant="outline"
-                      className="rounded-full border-gray-300 bg-white px-6 text-gray-700 hover:border-black hover:text-black"
+                      className="border-gray-300 bg-white px-6 text-gray-700 hover:border-black hover:text-black"
                     >
                       Download invoicing guide
                     </SmartButton>
@@ -229,13 +229,15 @@ export default function BlogPage() {
             </div>
           </section>
 
-          <BlogInteractiveSection
-            categories={categories}
-            orderedPosts={orderedPosts}
-            primaryFeatured={primaryFeatured}
-            secondaryFeatured={secondaryFeatured}
-            trendingPosts={trendingPosts}
-          />
+          <section id="articles">
+            <BlogInteractiveSection
+              categories={categories}
+              orderedPosts={orderedPosts}
+              primaryFeatured={primaryFeatured}
+              secondaryFeatured={secondaryFeatured}
+              trendingPosts={trendingPosts}
+            />
+          </section>
 
           {/* Removed pillars here to avoid duplication; blog content itself expresses the narrative */}
 
@@ -264,19 +266,18 @@ export default function BlogPage() {
                     </li>
                   </ul>
                 </div>
-                <div className="flex flex-col gap-4">
+                <form className="flex flex-col gap-4" action="#" method="post">
                   <Input
                     type="email"
                     placeholder="you@company.com"
                     className="rounded-xl border-gray-200 bg-white px-4 py-3 text-sm text-gray-700 focus:border-black focus:ring-black"
+                    required
                   />
-                  <Link href="/coming-soon">
-                    <SmartButton className="rounded-xl bg-black py-3 text-white hover:bg-gray-900">
-                      Subscribe now
-                    </SmartButton>
-                  </Link>
+                  <Button type="submit" className="rounded-xl bg-black py-3 text-white hover:bg-gray-900">
+                    Subscribe now
+                  </Button>
                   <p className="text-xs text-gray-500">You can unsubscribe at any time.</p>
-                </div>
+                </form>
               </div>
             </div>
           </section>

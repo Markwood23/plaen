@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "../styles/typography.css";
 
 @layer utilities {
   @keyframes floatBlob {
@@ -68,8 +69,8 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-inter);
-  --font-brand: ui-sans-serif, system-ui, sans-serif; /* Fallback for Aeonik */
+  --font-sans: var(--font-jakarta);
+  --font-display: var(--font-outfit);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -254,7 +255,7 @@
 
 /* Kill all default background styles but NOT text color */
 .rdp {
-  font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif !important;
+  font-family: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif !important;
 }
 
 /* Day buttons base */
@@ -277,7 +278,8 @@
 }
 
 /* SELECTED DAYS - Must come AFTER base styles to override */
-button[aria-selected="true"],
+/* Exclude tabs component from these rules */
+button[aria-selected="true"]:not([data-slot="tabs-trigger"]),
 .rdp button[aria-selected="true"],
 .rdp-day_button[aria-selected="true"],
 .rdp-day_button[data-selected="true"],
@@ -294,10 +296,9 @@ button[aria-selected="true"],
   color: #FFFFFF !important;
   font-weight: 500 !important;
 }
-
-/* Text inside selected buttons - force white */
-button[aria-selected="true"],
-button[aria-selected="true"] *,
+/* Text inside selected buttons - force white - exclude tabs */
+button[aria-selected="true"]:not([data-slot="tabs-trigger"]),
+button[aria-selected="true"]:not([data-slot="tabs-trigger"]) *,
 .rdp button[aria-selected="true"],
 .rdp button[aria-selected="true"] *,
 .rdp-day_button[aria-selected="true"],

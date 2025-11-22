@@ -1,0 +1,619 @@
+"use client";
+
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Search, MoreHorizontal, Mail, Phone, ChevronLeft, ChevronRight, FileText, Edit, Tag, Zap, Clock, TrendingUp } from "lucide-react";
+import Link from "next/link";
+import { useState } from "react";
+import { ContactDetailModal } from "@/components/contacts/contact-detail-modal";
+
+const contactsData = [
+  { 
+    id: 1, 
+    name: "Frank Murlo", 
+    email: "frank.murlo@email.com", 
+    phone: "+233 24 123 4567", 
+    company: "Murlo Industries", 
+    totalInvoices: 12, 
+    totalPaid: "$8,475.69", 
+    status: "Active", 
+    avatar: "",
+    tags: ["VIP", "Corporate"],
+    category: "Corporate",
+    paymentTerms: "Net 30",
+    paymentBehavior: "Fast",
+    notes: "Prefers mobile money payments. Always pays within 2 weeks."
+  },
+  { 
+    id: 2, 
+    name: "Bill Norton", 
+    email: "bill.norton@email.com", 
+    phone: "+233 24 234 5678", 
+    company: "Norton & Co", 
+    totalInvoices: 8, 
+    totalPaid: "$5,477.14", 
+    status: "Active", 
+    avatar: "",
+    tags: ["Regular"],
+    category: "Freelance",
+    paymentTerms: "Net 15",
+    paymentBehavior: "On-time",
+    notes: "Monthly retainer client. Invoices first week of month."
+  },
+  { 
+    id: 3, 
+    name: "Jane Smith", 
+    email: "jane.smith@email.com", 
+    phone: "+233 24 345 6789", 
+    company: "Smith Ventures", 
+    totalInvoices: 15, 
+    totalPaid: "$12,250.00", 
+    status: "Active", 
+    avatar: "",
+    tags: ["VIP"],
+    category: "Corporate",
+    paymentTerms: "Net 30",
+    paymentBehavior: "Fast",
+    notes: "Long-term client since 2023. Excellent payment history."
+  },
+  { 
+    id: 4, 
+    name: "Acme Corp", 
+    email: "contact@acme.com", 
+    phone: "+233 24 456 7890", 
+    company: "Acme Corporation", 
+    totalInvoices: 24, 
+    totalPaid: "$32,200.00", 
+    status: "Active", 
+    avatar: "",
+    tags: ["VIP", "International"],
+    category: "Corporate",
+    paymentTerms: "Net 45",
+    paymentBehavior: "On-time",
+    notes: "Large corporate client. Finance team requires detailed invoices."
+  },
+  { 
+    id: 5, 
+    name: "Sarah Johnson", 
+    email: "sarah.j@email.com", 
+    phone: "+233 24 567 8901", 
+    company: "Johnson LLC", 
+    totalInvoices: 6, 
+    totalPaid: "$4,925.00", 
+    status: "Inactive", 
+    avatar: "",
+    tags: [],
+    category: "Freelance",
+    paymentTerms: "Due on receipt",
+    paymentBehavior: "Slow",
+    notes: "Last project completed 3 months ago. Follow up for new opportunities."
+  },
+  { 
+    id: 6, 
+    name: "Michael Chen", 
+    email: "m.chen@email.com", 
+    phone: "+233 24 678 9012", 
+    company: "Chen Solutions", 
+    totalInvoices: 18, 
+    totalPaid: "$16,680.75", 
+    status: "Active", 
+    avatar: "",
+    tags: ["Tech"],
+    category: "Corporate",
+    paymentTerms: "Net 30",
+    paymentBehavior: "Fast",
+    notes: "Tech startup. Prefers crypto payments. Very responsive."
+  },
+  { 
+    id: 7, 
+    name: "Emma Williams", 
+    email: "emma.w@email.com", 
+    phone: "+233 24 789 0123", 
+    company: "Williams Group", 
+    totalInvoices: 22, 
+    totalPaid: "$23,250.50", 
+    status: "Active", 
+    avatar: "",
+    tags: ["VIP", "Regular"],
+    category: "Corporate",
+    paymentTerms: "Net 30",
+    paymentBehavior: "On-time",
+    notes: "Consistent monthly projects. Send invoice by 25th of each month."
+  },
+  { 
+    id: 8, 
+    name: "Robert Martinez", 
+    email: "robert.m@email.com", 
+    phone: "+233 24 890 1234", 
+    company: "Martinez Inc", 
+    totalInvoices: 4, 
+    totalPaid: "$1,890.00", 
+    status: "Inactive", 
+    avatar: "",
+    tags: ["New"],
+    category: "Freelance",
+    paymentTerms: "Net 15",
+    paymentBehavior: "Slow",
+    notes: "New client. Monitor payment patterns closely."
+  },
+  { 
+    id: 9, 
+    name: "Digital Ventures", 
+    email: "hello@digital.com", 
+    phone: "+233 24 901 2345", 
+    company: "Digital Ventures LLC", 
+    totalInvoices: 30, 
+    totalPaid: "$46,800.00", 
+    status: "Active", 
+    avatar: "",
+    tags: ["VIP", "International", "Tech"],
+    category: "International",
+    paymentTerms: "Net 30",
+    paymentBehavior: "Fast",
+    notes: "Largest client. Weekly projects. Pays via bank transfer."
+  },
+  { 
+    id: 10, 
+    name: "Lisa Anderson", 
+    email: "lisa.a@email.com", 
+    phone: "+233 24 012 3456", 
+    company: "Anderson Co", 
+    totalInvoices: 10, 
+    totalPaid: "$7,500.25", 
+    status: "Active", 
+    avatar: "",
+    tags: ["Regular"],
+    category: "Freelance",
+    paymentTerms: "Net 15",
+    paymentBehavior: "On-time",
+    notes: "Quarterly projects. Prefers detailed project breakdowns."
+  },
+];
+
+export default function ContactsPage() {
+  const [selectedRows, setSelectedRows] = useState<number[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [selectedContact, setSelectedContact] = useState<typeof contactsData[0] | null>(null);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalMode, setModalMode] = useState<"view" | "edit" | "create">("view");
+  const itemsPerPage = 10;
+
+  // Calculate pagination
+  const totalPages = Math.ceil(contactsData.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentContacts = contactsData.slice(startIndex, endIndex);
+
+  // Handle select all
+  const allSelected = currentContacts.length > 0 && selectedRows.length === currentContacts.length && currentContacts.every(contact => selectedRows.includes(contact.id));
+  const someSelected = selectedRows.length > 0 && !allSelected;
+
+  const toggleSelectAll = () => {
+    if (allSelected) {
+      setSelectedRows([]);
+    } else {
+      setSelectedRows(currentContacts.map(contact => contact.id));
+    }
+  };
+
+  const toggleSelectRow = (id: number) => {
+    setSelectedRows(prev => 
+      prev.includes(id) ? prev.filter(rowId => rowId !== id) : [...prev, id]
+    );
+  };
+
+  const getInitials = (name: string) => {
+    return name
+      .split(' ')
+      .map(word => word[0])
+      .join('')
+      .toUpperCase()
+      .slice(0, 2);
+  };
+
+  const openContactModal = (contact: typeof contactsData[0] | null, mode: "view" | "edit" | "create") => {
+    setSelectedContact(contact);
+    setModalMode(mode);
+    setModalOpen(true);
+  };
+
+  const handleSaveContact = (contact: typeof contactsData[0]) => {
+    // In a real app, this would save to backend
+    console.log("Saving contact:", contact);
+    setModalOpen(false);
+  };
+
+  return (
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl tracking-tight" style={{ color: '#2D2D2D', fontWeight: 600 }}>Contacts</h1>
+          <p className="text-sm" style={{ color: '#B0B3B8' }}>Manage your clients and customers</p>
+        </div>
+        <Button 
+          onClick={() => openContactModal(null, "create")}
+          className="rounded-full px-6 py-2.5 h-auto shadow-sm transition-all hover:shadow-md"
+          style={{ backgroundColor: '#1877F2', color: 'white', fontWeight: 500 }}
+        >
+          + New Contact
+        </Button>
+      </div>
+
+      {/* Stats Card */}
+      <div className="rounded-lg p-6" style={{ border: '1px dashed #E4E6EB' }}>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {/* Total Contacts */}
+          <div className="group relative">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="h-10 w-10 rounded-lg flex items-center justify-center shrink-0" style={{ backgroundColor: 'rgba(240, 242, 245, 0.5)' }}>
+                <svg className="h-5 w-5" style={{ color: '#2D2D2D' }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                </svg>
+              </div>
+              <p className="text-sm" style={{ color: '#B0B3B8', fontWeight: 500 }}>Total Contacts</p>
+            </div>
+            <div className="ml-[52px]">
+              <p className="text-3xl tracking-tight" style={{ color: '#2D2D2D', fontWeight: 600 }}>
+                {contactsData.length}
+              </p>
+              <p className="text-xs mt-2 font-normal" style={{ color: '#B0B3B8' }}>All registered contacts</p>
+            </div>
+          </div>
+
+          {/* Active Contacts */}
+          <div className="group relative">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="h-10 w-10 rounded-lg flex items-center justify-center shrink-0" style={{ backgroundColor: 'rgba(240, 242, 245, 0.5)' }}>
+                <svg className="h-5 w-5" style={{ color: '#2D2D2D' }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <p className="text-sm" style={{ color: '#B0B3B8', fontWeight: 500 }}>Active</p>
+            </div>
+            <div className="ml-[52px]">
+              <p className="text-3xl tracking-tight" style={{ color: '#2D2D2D', fontWeight: 600 }}>
+                {contactsData.filter(c => c.status === "Active").length}
+              </p>
+              <p className="text-xs mt-2 font-normal" style={{ color: '#B0B3B8' }}>
+                {Math.round((contactsData.filter(c => c.status === "Active").length / contactsData.length) * 100)}% of total contacts
+              </p>
+            </div>
+          </div>
+
+          {/* Total Invoices */}
+          <div className="group relative">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="h-10 w-10 rounded-lg flex items-center justify-center shrink-0" style={{ backgroundColor: 'rgba(240, 242, 245, 0.5)' }}>
+                <svg className="h-5 w-5" style={{ color: '#2D2D2D' }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+              </div>
+              <p className="text-sm" style={{ color: '#B0B3B8', fontWeight: 500 }}>Total Invoices</p>
+            </div>
+            <div className="ml-[52px]">
+              <p className="text-3xl tracking-tight" style={{ color: '#2D2D2D', fontWeight: 600 }}>
+                {contactsData.reduce((sum, c) => sum + c.totalInvoices, 0)}
+              </p>
+              <p className="text-xs mt-2 font-normal" style={{ color: '#B0B3B8' }}>
+                Avg {Math.round(contactsData.reduce((sum, c) => sum + c.totalInvoices, 0) / contactsData.length)} per contact
+              </p>
+            </div>
+          </div>
+
+          {/* Total Revenue */}
+          <div className="group relative">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="h-10 w-10 rounded-lg flex items-center justify-center shrink-0" style={{ backgroundColor: 'rgba(240, 242, 245, 0.5)' }}>
+                <svg className="h-5 w-5" style={{ color: '#2D2D2D' }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <p className="text-sm" style={{ color: '#B0B3B8', fontWeight: 500 }}>Total Revenue</p>
+            </div>
+            <div className="ml-[52px]">
+              <p className="text-3xl tracking-tight" style={{ color: '#2D2D2D', fontWeight: 600 }}>
+                $159,449<span style={{ color: '#B0B3B8' }}>.33</span>
+              </p>
+              <p className="text-xs mt-2 font-normal" style={{ color: '#B0B3B8' }}>From all contacts</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Search and Filter Card */}
+      <div className="rounded-xl p-6" style={{ border: '1px dashed #E4E6EB', backgroundColor: 'rgba(255, 255, 255, 0.5)' }}>
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-5">
+          {/* Search */}
+          <div className="md:col-span-2">
+            <label htmlFor="search" className="block text-sm mb-2" style={{ color: '#B0B3B8', fontWeight: 500 }}>
+              Search contacts
+            </label>
+            <div className="relative">
+              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4" style={{ color: '#B0B3B8' }} />
+              <Input
+                id="search"
+                type="text"
+                placeholder="Search by name, email, or company"
+                className="pl-10 h-11 rounded-full border-2 focus:border-[#1877F2] transition-colors"
+                style={{ borderColor: '#E4E6EB' }}
+              />
+            </div>
+          </div>
+
+          {/* Category Filter */}
+          <div>
+            <label htmlFor="category" className="block text-sm mb-2" style={{ color: '#B0B3B8', fontWeight: 500 }}>
+              Category
+            </label>
+            <Select defaultValue="all">
+              <SelectTrigger id="category" className="h-11 w-full rounded-full border-2 focus:border-[#1877F2] transition-colors" style={{ borderColor: '#E4E6EB' }}>
+                <SelectValue placeholder="All categories" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All categories</SelectItem>
+                <SelectItem value="corporate">Corporate</SelectItem>
+                <SelectItem value="freelance">Freelance</SelectItem>
+                <SelectItem value="international">International</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          {/* Status Filter */}
+          <div>
+            <label htmlFor="status" className="block text-sm mb-2" style={{ color: '#B0B3B8', fontWeight: 500 }}>
+              Status
+            </label>
+            <Select defaultValue="all">
+              <SelectTrigger id="status" className="h-11 w-full rounded-full border-2 focus:border-[#1877F2] transition-colors" style={{ borderColor: '#E4E6EB' }}>
+                <SelectValue placeholder="All statuses" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All statuses</SelectItem>
+                <SelectItem value="active">Active</SelectItem>
+                <SelectItem value="inactive">Inactive</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+      </div>
+
+      {/* Contacts Table */}
+      <div className="rounded-lg" style={{ border: '1px dashed #E4E6EB' }}>
+        {/* Bulk Actions Bar */}
+        {selectedRows.length > 0 && (
+          <div className="flex items-center justify-between px-4 py-3 rounded-lg mb-4 mx-6 mt-6" style={{ backgroundColor: 'rgba(240, 242, 245, 0.5)' }}>
+            <p className="text-sm" style={{ color: '#2D2D2D' }}>
+              <span style={{ fontWeight: 600 }}>{selectedRows.length}</span> contact{selectedRows.length > 1 ? 's' : ''} selected
+            </p>
+            <div className="flex items-center gap-2">
+              <Button variant="outline" size="sm" className="text-sm">
+                <Mail className="h-4 w-4 mr-1" /> Email
+              </Button>
+              <Button variant="outline" size="sm" className="text-sm">
+                Export
+              </Button>
+              <Button variant="outline" size="sm" className="text-sm text-red-600 hover:text-red-700">
+                Delete
+              </Button>
+            </div>
+          </div>
+        )}
+
+          <Table className="[&_th]:py-4 [&_td]:py-4">
+            <TableHeader>
+              <TableRow>
+                <TableHead className="w-12">
+                  <Checkbox 
+                    checked={allSelected}
+                    onCheckedChange={toggleSelectAll}
+                    aria-label="Select all"
+                    className={someSelected ? "data-[state=checked]:bg-gray-400" : ""}
+                  />
+                </TableHead>
+                <TableHead className="min-w-[180px]">Contact</TableHead>
+                <TableHead className="min-w-[150px]">Email</TableHead>
+                <TableHead className="min-w-[110px]">Phone</TableHead>
+                <TableHead className="min-w-[100px]">Category</TableHead>
+                <TableHead className="min-w-[100px]">Tags</TableHead>
+                <TableHead className="w-[80px]">Terms</TableHead>
+                <TableHead className="w-[90px]">Behavior</TableHead>
+                <TableHead className="w-[150px]">Total Paid</TableHead>
+                <TableHead className="w-[90px]">Status</TableHead>
+                <TableHead className="w-12">Actions</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {currentContacts.map((contact, idx) => (
+                <TableRow key={contact.id} className="cursor-pointer hover:bg-[rgba(240,242,245,0.3)]" onClick={() => openContactModal(contact, "view")}>
+                  <TableCell onClick={(e) => e.stopPropagation()}>
+                    <Checkbox 
+                      checked={selectedRows.includes(contact.id)}
+                      onCheckedChange={() => toggleSelectRow(contact.id)}
+                      aria-label={`Select ${contact.name}`}
+                    />
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex items-center gap-3">
+                      <Avatar className="h-8 w-8 shrink-0">
+                        <AvatarImage src={contact.avatar} alt={contact.name} />
+                        <AvatarFallback className="text-xs border" style={{ backgroundColor: 'rgba(240, 242, 245, 0.5)', color: '#2D2D2D', fontWeight: 500, borderColor: '#E4E6EB' }}>
+                          {getInitials(contact.name)}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div>
+                        <div className="text-sm" style={{ color: '#2D2D2D', fontWeight: 500 }}>{contact.name}</div>
+                        <div className="text-xs" style={{ color: '#B0B3B8' }}>{contact.company}</div>
+                      </div>
+                    </div>
+                  </TableCell>
+                  <TableCell className="text-sm" style={{ color: '#B0B3B8' }}>{contact.email}</TableCell>
+                  <TableCell className="text-sm" style={{ color: '#B0B3B8' }}>{contact.phone}</TableCell>
+                  <TableCell>
+                    <Badge variant="outline" className="text-xs" style={{ color: '#2D2D2D', borderColor: '#E4E6EB', fontWeight: 500 }}>
+                      {contact.category}
+                    </Badge>
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex flex-wrap gap-1">
+                      {contact.tags.map((tag, tagIdx) => (
+                        <Badge 
+                          key={tagIdx} 
+                          className="text-xs"
+                          style={{
+                            backgroundColor: tag === 'VIP' ? '#1877F2' : 
+                              tag === 'New' ? 'rgba(59, 130, 246, 0.1)' :
+                              tag === 'International' ? 'rgba(168, 85, 247, 0.1)' :
+                              tag === 'Tech' ? 'rgba(34, 197, 94, 0.1)' :
+                              'rgba(107, 114, 128, 0.1)',
+                            color: tag === 'VIP' ? 'white' : 
+                              tag === 'New' ? '#3B82F6' :
+                              tag === 'International' ? '#A855F7' :
+                              tag === 'Tech' ? '#22C55E' :
+                              '#6B7280',
+                            borderColor: tag === 'VIP' ? '#1877F2' : 
+                              tag === 'New' ? '#BFDBFE' :
+                              tag === 'International' ? '#E9D5FF' :
+                              tag === 'Tech' ? '#BBF7D0' :
+                              '#E5E7EB',
+                            fontWeight: 500
+                          }}
+                        >
+                          {tag}
+                        </Badge>
+                      ))}
+                    </div>
+                  </TableCell>
+                  <TableCell className="text-xs" style={{ color: '#B0B3B8' }}>{contact.paymentTerms}</TableCell>
+                  <TableCell>
+                    <div className="flex items-center gap-1.5">
+                      {contact.paymentBehavior === 'Fast' && (
+                        <>
+                          <Zap className="h-3.5 w-3.5 text-green-600" />
+                          <span className="text-xs text-green-600" style={{ fontWeight: 500 }}>Fast</span>
+                        </>
+                      )}
+                      {contact.paymentBehavior === 'On-time' && (
+                        <>
+                          <Clock className="h-3.5 w-3.5" style={{ color: '#2D2D2D' }} />
+                          <span className="text-xs" style={{ color: '#2D2D2D', fontWeight: 500 }}>On-time</span>
+                        </>
+                      )}
+                      {contact.paymentBehavior === 'Slow' && (
+                        <>
+                          <TrendingUp className="h-3.5 w-3.5 text-orange-600 rotate-180" />
+                          <span className="text-xs text-orange-600" style={{ fontWeight: 500 }}>Slow</span>
+                        </>
+                      )}
+                    </div>
+                  </TableCell>
+                  <TableCell className="text-sm" style={{ color: '#2D2D2D', fontWeight: 500 }}>{contact.totalPaid}</TableCell>
+                  <TableCell>
+                    {contact.status === "Active" ? (
+                      <Badge className="text-xs" style={{ backgroundColor: '#1877F2', color: 'white', borderColor: '#1877F2', fontWeight: 500 }}>
+                        Active
+                      </Badge>
+                    ) : (
+                      <Badge className="text-xs" style={{ backgroundColor: 'rgba(240, 242, 245, 0.5)', color: '#B0B3B8', borderColor: '#E4E6EB', fontWeight: 500 }}>
+                        Inactive
+                      </Badge>
+                    )}
+                  </TableCell>
+                  <TableCell onClick={(e) => e.stopPropagation()}>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <button className="inline-flex items-center justify-center rounded-md p-1.5 transition-colors hover:bg-[rgba(240,242,245,0.5)]" style={{ color: '#B0B3B8' }}>
+                          <MoreHorizontal className="h-4 w-4" />
+                        </button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DropdownMenuItem asChild>
+                          <Link href="/invoices/new">
+                            <FileText className="h-4 w-4 mr-2" />
+                            Create Invoice
+                          </Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={(e) => {
+                          e.stopPropagation();
+                          openContactModal(contact, "edit");
+                        }}>
+                          <Edit className="h-4 w-4 mr-2" />
+                          Edit Contact
+                        </DropdownMenuItem>
+                        <DropdownMenuItem>
+                          <Mail className="h-4 w-4 mr-2" />
+                          Send Email
+                        </DropdownMenuItem>
+                        <DropdownMenuItem>
+                          <Phone className="h-4 w-4 mr-2" />
+                          Call
+                        </DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem className="text-red-600">Delete</DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+
+        {/* Pagination */}
+        <div className="flex items-center justify-between px-4 py-4" style={{ borderTop: '1px solid #E4E6EB' }}>
+          <p className="text-sm" style={{ color: '#B0B3B8' }}>
+            Showing <span style={{ fontWeight: 500, color: '#2D2D2D' }}>{startIndex + 1}</span> to <span style={{ fontWeight: 500, color: '#2D2D2D' }}>{Math.min(endIndex, contactsData.length)}</span> of{" "}
+            <span style={{ fontWeight: 500, color: '#2D2D2D' }}>{contactsData.length}</span> contacts
+          </p>
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+              disabled={currentPage === 1}
+              className="h-8 w-8 p-0 rounded-full"
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </Button>
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+              <Button
+                key={page}
+                variant={page === currentPage ? "default" : "outline"}
+                size="sm"
+                onClick={() => setCurrentPage(page)}
+                className="h-8 w-8 p-0 rounded-full"
+                style={page === currentPage ? { backgroundColor: '#1877F2', color: 'white' } : {}}
+              >
+                {page}
+              </Button>
+            ))}
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+              disabled={currentPage === totalPages}
+              className="h-8 w-8 p-0 rounded-full"
+            >
+              <ChevronRight className="h-4 w-4" />
+            </Button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+      {/* Contact Detail Modal */}
+      <ContactDetailModal
+        contact={selectedContact}
+        isOpen={modalOpen}
+        onClose={() => setModalOpen(false)}
+        onSave={handleSaveContact}
+        mode={modalMode}
+      />
+    </div>
+  );
+}

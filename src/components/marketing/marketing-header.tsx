@@ -51,9 +51,12 @@ export function MarketingHeader() {
         </nav>
 
         <div className="flex items-center gap-3">
-          <Link href="/contact" className="hidden md:inline-flex">
-            <Button>
-              Contact Team
+          <Button variant="ghost" className="hidden text-sm text-gray-600 hover:bg-gray-50 hover:text-black md:inline-flex">
+            Sign in
+          </Button>
+          <Link href="/onboarding" className="hidden md:inline-flex">
+            <Button className="bg-black text-white transition hover:bg-gray-900">
+              Get started
             </Button>
           </Link>
           <button
@@ -96,9 +99,16 @@ export function MarketingHeader() {
               </nav>
 
               <div className="space-y-2 border-t border-gray-100 p-3">
-                <Link href="/contact" onClick={closeMobile}>
-                  <Button className="w-full text-sm">
-                    Contact Team
+                <Button
+                  variant="ghost"
+                  className="w-full justify-center text-sm text-gray-600 hover:bg-gray-50 hover:text-black"
+                  onClick={closeMobile}
+                >
+                  Sign in
+                </Button>
+                <Link href="/onboarding" onClick={closeMobile}>
+                  <Button className="w-full bg-black text-sm text-white hover:bg-gray-900">
+                    Get started
                   </Button>
                 </Link>
               </div>

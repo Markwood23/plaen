@@ -1,0 +1,746 @@
+"use client";
+
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { 
+  ArrowLeft, 
+  Plus, 
+  Trash2, 
+  Save, 
+  Send,
+  Building2,
+  FileText,
+  Calendar as CalendarIcon,
+  User,
+  FileText as InvoiceIcon,
+  CreditCard,
+  Info
+} from "lucide-react";
+import Link from "next/link";
+import { useState } from "react";
+
+export default function CreateInvoicePage() {
+  const [template, setTemplate] = useState("standard");
+  const [issueDate, setIssueDate] = useState<Date>(new Date());
+  const [issueDateOpen, setIssueDateOpen] = useState(false);
+  const [paymentTerms, setPaymentTerms] = useState("net_30");
+
+  // Calculate due date based on payment terms
+  const calculateDueDate = () => {
+    const terms = parseInt(paymentTerms.replace('net_', '')) || 30;
+    const due = new Date(issueDate);
+    due.setDate(due.getDate() + terms);
+    return due;
+  };
+
+  // Add new line item
+  const addLineItem = () => {
+    const newId = (Math.max(...lineItems.map(item => parseInt(item.id))) + 1).toString();
+    setLineItems([...lineItems, { id: newId, description: "", quantity: 1, unitPrice: 0, tax: 0, discount: 0 }]);
+  };
+
+  // Remove line item
+  const removeLineItem = (id: string) => {
+    if (lineItems.length > 1) {
+      setLineItems(lineItems.filter(item => item.id !== id));
+    }
+  };
+
+  // Update line item
+  const updateLineItem = (id: string, field: keyof LineItem, value: string | number) => {
+    setLineItems(lineItems.map(item => 
+      item.id === id ? { ...item, [field]: value } : item
+    ));
+  };
+
+  // Calculate line item total
+  const calculateLineTotal = (item: LineItem) => {
+    const subtotal = item.quantity * item.unitPrice;
+    const taxAmount = (subtotal * item.tax) / 100;
+    const discountAmount = (subtotal * item.discount) / 100;
+    return subtotal + taxAmount - discountAmount;
+  };
+
+  // Calculate invoice totals
+  const calculateTotals = () => {
+    const subtotal = lineItems.reduce((sum, item) => sum + (item.quantity * item.unitPrice), 0);
+    const totalTax = lineItems.reduce((sum, item) => sum + ((item.quantity * item.unitPrice * item.tax) / 100), 0);
+    const totalDiscount = lineItems.reduce((sum, item) => sum + ((item.quantity * item.unitPrice * item.discount) / 100), 0);
+    const total = subtotal + totalTax - totalDiscount;
+    
+    return {
+      subtotal,
+      totalTax,
+      totalDiscount,
+      total
+    };
+  };
+
+  const totals = calculateTotals();
+
+  // Format currency
+  const formatCurrency = (amount: number) => {
+    return `₵${amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  };
+
+  // Toggle payment method
+  const togglePaymentMethod = (method: string) => {
+    if (paymentMethods.includes(method)) {
+      setPaymentMethods(paymentMethods.filter(m => m !== method));
+    } else {
+      setPaymentMethods([...paymentMethods, method]);
+    }
+  };
+
+  return (
+    <div className="space-y-6 max-w-7xl mx-auto">
+      {/* Back button and breadcrumb */}
+      <div className="flex items-center gap-3">
+        <Button variant="outline" size="sm" asChild className="gap-2">
+          <Link href="/invoices">
+            <ArrowLeft className="h-4 w-4" />
+            Back
+          </Link>
+        </Button>
+        <div className="flex items-center gap-2 text-sm text-[#949494]">
+          <Link href="/invoices" className="hover:text-[#212121] transition-colors">
+            Invoices
+          </Link>
+          <span>/</span>
+          <span className="text-[#212121] font-medium">New Invoice</span>
+        </div>
+      </div>
+
+      {/* Header */}
+      <div className="flex items-start justify-between pb-4 border-b border-[#EBECE7]">
+        <div>
+          <h1 className="text-3xl font-semibold text-[#212121]">Create Invoice</h1>
+          <p className="text-sm text-[#949494] mt-1">Fill in the details below to create a new invoice</p>
+        </div>
+        <div className="flex items-center gap-2">
+          <Button variant="outline" size="sm">
+            <Save className="h-3.5 w-3.5 mr-1.5" />
+            Save Draft
+          </Button>
+          <Button size="sm" className="bg-[#212121] hover:bg-[#212121]/90">
+            <Send className="h-3.5 w-3.5 mr-1.5" />
+            Create & Send
+          </Button>
+        </div>
+      </div>
+
+      {/* Template Selector */}
+      <Card className="border-[#EBECE7]">
+        <CardContent className="py-6">
+          <div className="flex items-center justify-between gap-6">
+            <div className="flex-1">
+              <Label className="text-sm font-medium text-[#212121]">Invoice Template</Label>
+              <p className="text-xs text-[#949494] mt-1">Choose a template for your invoice</p>
+            </div>
+            <Select value={template} onValueChange={setTemplate}>
+              <SelectTrigger className="w-[240px] border-[#EBECE7] h-auto !py-6">
+                <div className="flex items-center gap-3">
+                  <div className="h-8 w-8 rounded-md bg-[#F9F9F9] flex items-center justify-center shrink-0">
+                    {template === "professional" ? (
+                      <Building2 className="h-4 w-4 text-[#212121]" />
+                    ) : (
+                      <FileText className="h-4 w-4 text-[#212121]" />
+                    )}
+                  </div>
+                  <div className="text-left">
+                    <p className="font-medium text-sm">
+                      {template === "standard" && "Standard Invoice"}
+                      {template === "minimal" && "Minimal"}
+                      {template === "professional" && "Professional"}
+                      {template === "modern" && "Modern"}
+                    </p>
+                    <p className="text-xs text-[#949494]">
+                      {template === "standard" && "Classic business format"}
+                      {template === "minimal" && "Clean and simple"}
+                      {template === "professional" && "Corporate style"}
+                      {template === "modern" && "Contemporary design"}
+                    </p>
+                  </div>
+                </div>
+              </SelectTrigger>
+              <SelectContent className="border-[#EBECE7]">
+                <SelectItem value="standard" className="cursor-pointer py-3">
+                  <div className="flex items-center gap-3">
+                    <div className="h-8 w-8 rounded-md bg-[#F9F9F9] flex items-center justify-center shrink-0">
+                      <FileText className="h-4 w-4 text-[#212121]" />
+                    </div>
+                    <div>
+                      <p className="font-medium text-sm">Standard Invoice</p>
+                      <p className="text-xs text-[#949494]">Classic business format</p>
+                    </div>
+                  </div>
+                </SelectItem>
+                <SelectItem value="minimal" className="cursor-pointer py-3">
+                  <div className="flex items-center gap-3">
+                    <div className="h-8 w-8 rounded-md bg-[#F9F9F9] flex items-center justify-center shrink-0">
+                      <FileText className="h-4 w-4 text-[#212121]" />
+                    </div>
+                    <div>
+                      <p className="font-medium text-sm">Minimal</p>
+                      <p className="text-xs text-[#949494]">Clean and simple</p>
+                    </div>
+                  </div>
+                </SelectItem>
+                <SelectItem value="professional" className="cursor-pointer py-3">
+                  <div className="flex items-center gap-3">
+                    <div className="h-8 w-8 rounded-md bg-[#F9F9F9] flex items-center justify-center shrink-0">
+                      <Building2 className="h-4 w-4 text-[#212121]" />
+                    </div>
+                    <div>
+                      <p className="font-medium text-sm">Professional</p>
+                      <p className="text-xs text-[#949494]">Corporate style</p>
+                    </div>
+                  </div>
+                </SelectItem>
+                <SelectItem value="modern" className="cursor-pointer py-3">
+                  <div className="flex items-center gap-3">
+                    <div className="h-8 w-8 rounded-md bg-[#F9F9F9] flex items-center justify-center shrink-0">
+                      <FileText className="h-4 w-4 text-[#212121]" />
+                    </div>
+                    <div>
+                      <p className="font-medium text-sm">Modern</p>
+                      <p className="text-xs text-[#949494]">Contemporary design</p>
+                    </div>
+                  </div>
+                </SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </CardContent>
+      </Card>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Main Content */}
+        <div className="lg:col-span-2 space-y-6">
+          
+          {/* Customer Information */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-lg font-semibold text-[#212121] flex items-center gap-2">
+                <User className="h-5 w-5" />
+                Customer Information
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="customer-name" className="text-sm font-medium text-[#212121]">
+                    Customer Name <span className="text-red-500">*</span>
+                  </Label>
+                  <div className="relative">
+                    <User className="absolute left-3 top-2.5 h-4 w-4 text-[#949494]" />
+                    <Input 
+                      id="customer-name"
+                      placeholder="John Doe" 
+                      className="pl-9"
+                    />
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="customer-company" className="text-sm font-medium text-[#212121]">
+                    Company Name
+                  </Label>
+                  <div className="relative">
+                    <Building2 className="absolute left-3 top-2.5 h-4 w-4 text-[#949494]" />
+                    <Input 
+                      id="customer-company"
+                      placeholder="Acme Corp" 
+                      className="pl-9"
+                    />
+                  </div>
+                </div>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="customer-email" className="text-sm font-medium text-[#212121]">
+                    Email <span className="text-red-500">*</span>
+                  </Label>
+                  <div className="relative">
+                    <Mail className="absolute left-3 top-2.5 h-4 w-4 text-[#949494]" />
+                    <Input 
+                      id="customer-email"
+                      type="email"
+                      placeholder="customer@example.com" 
+                      className="pl-9"
+                    />
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="customer-phone" className="text-sm font-medium text-[#212121]">
+                    Phone Number
+                  </Label>
+                  <div className="relative">
+                    <Phone className="absolute left-3 top-2.5 h-4 w-4 text-[#949494]" />
+                    <Input 
+                      id="customer-phone"
+                      placeholder="+233 24 000 0000" 
+                      className="pl-9"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="customer-address" className="text-sm font-medium text-[#212121]">
+                  Address
+                </Label>
+                <div className="relative">
+                  <MapPin className="absolute left-3 top-2.5 h-4 w-4 text-[#949494]" />
+                  <Input 
+                    id="customer-address"
+                    placeholder="123 Main Street, Accra, Ghana" 
+                    className="pl-9"
+                  />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Line Items */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-lg font-semibold text-[#212121] flex items-center gap-2">
+                <FileText className="h-5 w-5" />
+                Line Items
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {/* Line Items Table */}
+              <div className="border border-[#EBECE7] rounded-lg overflow-hidden">
+                <Table>
+                  <TableHeader>
+                    <TableRow className="bg-[#F9F9F9] border-b border-[#EBECE7] hover:bg-[#F9F9F9]">
+                      <TableHead className="text-left text-xs font-semibold text-[#212121]">Description</TableHead>
+                      <TableHead className="text-center text-xs font-semibold text-[#212121] w-24">Qty</TableHead>
+                      <TableHead className="text-right text-xs font-semibold text-[#212121] w-32">Unit Price</TableHead>
+                      <TableHead className="text-right text-xs font-semibold text-[#212121] w-24">Tax</TableHead>
+                      <TableHead className="text-right text-xs font-semibold text-[#212121] w-24">Discount</TableHead>
+                      <TableHead className="text-right text-xs font-semibold text-[#212121] w-32">Total</TableHead>
+                      <TableHead className="w-12"></TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {lineItems.map((item) => (
+                      <TableRow key={item.id} className="border-b border-[#EBECE7]">
+                        <TableCell>
+                          <Input 
+                            placeholder="Item description"
+                            value={item.description}
+                            onChange={(e) => updateLineItem(item.id, 'description', e.target.value)}
+                            className="border-0 focus-visible:ring-0 px-0"
+                          />
+                        </TableCell>
+                        <TableCell>
+                          <Input 
+                            type="number"
+                            min="1"
+                            value={item.quantity}
+                            onChange={(e) => updateLineItem(item.id, 'quantity', parseFloat(e.target.value) || 0)}
+                            className="border-0 focus-visible:ring-0 text-center px-0"
+                          />
+                        </TableCell>
+                        <TableCell>
+                          <Input 
+                            type="number"
+                            min="0"
+                            step="0.01"
+                            value={item.unitPrice}
+                            onChange={(e) => updateLineItem(item.id, 'unitPrice', parseFloat(e.target.value) || 0)}
+                            className="border-0 focus-visible:ring-0 text-right px-0"
+                          />
+                        </TableCell>
+                        <TableCell>
+                          <div className="flex items-center gap-1">
+                            <Input 
+                              type="number"
+                              min="0"
+                              max="100"
+                              step="0.1"
+                              value={item.tax}
+                              onChange={(e) => updateLineItem(item.id, 'tax', parseFloat(e.target.value) || 0)}
+                              className="border-0 focus-visible:ring-0 text-right px-0"
+                            />
+                            <span className="text-[#949494] text-sm">%</span>
+                          </div>
+                        </TableCell>
+                        <TableCell>
+                          <div className="flex items-center gap-1">
+                            <Input 
+                              type="number"
+                              min="0"
+                              max="100"
+                              step="0.1"
+                              value={item.discount}
+                              onChange={(e) => updateLineItem(item.id, 'discount', parseFloat(e.target.value) || 0)}
+                              className="border-0 focus-visible:ring-0 text-right px-0"
+                            />
+                            <span className="text-[#949494] text-sm">%</span>
+                          </div>
+                        </TableCell>
+                        <TableCell className="text-right text-sm font-medium text-[#212121]">
+                          {formatCurrency(calculateLineTotal(item))}
+                        </TableCell>
+                        <TableCell>
+                          {lineItems.length > 1 && (
+                            <Button 
+                              variant="ghost" 
+                              size="sm" 
+                              onClick={() => removeLineItem(item.id)}
+                              className="h-8 w-8 p-0 text-[#949494] hover:text-red-600"
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          )}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+
+              {/* Add Item Button */}
+              <Button 
+                variant="outline" 
+                size="sm" 
+                onClick={addLineItem}
+                className="w-full"
+              >
+                <Plus className="h-3.5 w-3.5 mr-1.5" />
+                Add Line Item
+              </Button>
+
+              {/* Totals */}
+              <div className="border-t border-[#EBECE7] pt-4 space-y-3">
+                <div className="flex justify-between items-center text-sm">
+                  <span className="text-[#949494]">Subtotal</span>
+                  <span className="font-medium text-[#212121]">{formatCurrency(totals.subtotal)}</span>
+                </div>
+                <div className="flex justify-between items-center text-sm">
+                  <span className="text-[#949494]">Tax</span>
+                  <span className="font-medium text-[#212121]">{formatCurrency(totals.totalTax)}</span>
+                </div>
+                <div className="flex justify-between items-center text-sm">
+                  <span className="text-[#949494]">Discount</span>
+                  <span className="font-medium text-[#212121]">-{formatCurrency(totals.totalDiscount)}</span>
+                </div>
+                <Separator />
+                <div className="flex justify-between items-center">
+                  <span className="text-base font-semibold text-[#212121]">Total</span>
+                  <span className="text-2xl font-bold text-[#212121]">{formatCurrency(totals.total)}</span>
+                </div>
+                {dualCurrency && (
+                  <div className="flex justify-between items-center text-sm">
+                    <span className="text-[#949494]">Estimated in USD</span>
+                    <span className="font-medium text-[#949494]">${(totals.total / 10.9421).toFixed(2)}</span>
+                  </div>
+                )}
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Additional Information */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-lg font-semibold text-[#212121]">Additional Information</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="purpose-category" className="text-sm font-medium text-[#212121]">
+                    Purpose Category
+                  </Label>
+                  <Select defaultValue="services">
+                    <SelectTrigger id="purpose-category">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="services">Services</SelectItem>
+                      <SelectItem value="products">Products</SelectItem>
+                      <SelectItem value="consulting">Consulting</SelectItem>
+                      <SelectItem value="subscription">Subscription</SelectItem>
+                      <SelectItem value="other">Other</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="project-reference" className="text-sm font-medium text-[#212121]">
+                    Project Reference
+                  </Label>
+                  <div className="relative">
+                    <Hash className="absolute left-3 top-2.5 h-4 w-4 text-[#949494]" />
+                    <Input 
+                      id="project-reference"
+                      placeholder="PRJ-2024-001" 
+                      className="pl-9"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="notes" className="text-sm font-medium text-[#212121]">
+                  Notes (visible to customer)
+                </Label>
+                <Textarea 
+                  id="notes"
+                  placeholder="Thank you for your business! Payment is due within 30 days."
+                  rows={3}
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="private-notes" className="text-sm font-medium text-[#212121]">
+                  Private Notes (internal only)
+                </Label>
+                <Textarea 
+                  id="private-notes"
+                  placeholder="Internal notes about this invoice..."
+                  rows={2}
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="terms-conditions" className="text-sm font-medium text-[#212121]">
+                  Terms & Conditions
+                </Label>
+                <Textarea 
+                  id="terms-conditions"
+                  placeholder="Full payment required before final deliverables. Late payments subject to 1.5% monthly fee."
+                  rows={3}
+                />
+              </div>
+            </CardContent>
+          </Card>
+
+        </div>
+
+        {/* Sidebar */}
+        <div className="space-y-6">
+          
+          {/* Invoice Details */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-lg font-semibold text-[#212121]">Invoice Details</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="issue-date" className="text-sm font-medium text-[#212121]">
+                  Issue Date
+                </Label>
+                <Popover open={issueDateOpen} onOpenChange={setIssueDateOpen}>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant="outline"
+                      className={`w-full justify-start text-left font-normal ${!issueDate && "text-[#949494]"}`}
+                    >
+                      <CalendarIcon className="mr-2 h-4 w-4 text-[#949494]" />
+                      {issueDate ? format(issueDate, "MMMM dd, yyyy") : <span>Pick a date</span>}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0" align="start">
+                    <Calendar
+                      mode="single"
+                      selected={issueDate}
+                      onSelect={(date) => {
+                        if (date) {
+                          setIssueDate(date);
+                          setIssueDateOpen(false);
+                        }
+                      }}
+                      initialFocus
+                    />
+                  </PopoverContent>
+                </Popover>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="payment-terms" className="text-sm font-medium text-[#212121]">
+                  Payment Terms
+                </Label>
+                <Select value={paymentTerms} onValueChange={setPaymentTerms}>
+                  <SelectTrigger id="payment-terms">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="net_15">Net 15</SelectItem>
+                    <SelectItem value="net_30">Net 30</SelectItem>
+                    <SelectItem value="net_60">Net 60</SelectItem>
+                    <SelectItem value="net_90">Net 90</SelectItem>
+                    <SelectItem value="due_on_receipt">Due on Receipt</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="space-y-2">
+                <Label className="text-sm font-medium text-[#212121]">
+                  Due Date
+                </Label>
+                <Button
+                  variant="outline"
+                  disabled
+                  className="w-full justify-start text-left font-normal bg-[#F9F9F9]"
+                >
+                  <CalendarIcon className="mr-2 h-4 w-4 text-[#949494]" />
+                  {format(calculateDueDate(), "MMMM dd, yyyy")}
+                </Button>
+                <p className="text-xs text-[#949494]">Automatically calculated from payment terms</p>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Currency Settings */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-lg font-semibold text-[#212121]">Currency Settings</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="flex items-center justify-between">
+                <div className="space-y-0.5">
+                  <Label className="text-sm font-medium text-[#212121]">
+                    Dual Currency
+                  </Label>
+                  <p className="text-xs text-[#949494]">Show amounts in GHS & USD</p>
+                </div>
+                <Switch 
+                  checked={dualCurrency}
+                  onCheckedChange={setDualCurrency}
+                />
+              </div>
+
+              {dualCurrency && (
+                <div className="rounded-lg border border-[#EBECE7] bg-[#F9F9F9] p-3 text-xs">
+                  <div className="font-medium text-[#212121] mb-1">Exchange Rate</div>
+                  <div className="text-[#949494]">1 USD = 10.9421 GHS</div>
+                  <div className="text-[#949494]">Source: Google Finance</div>
+                  <div className="text-[#949494]">As of Nov 14, 2025</div>
+                </div>
+              )}
+
+              <div className="space-y-2">
+                <Label htmlFor="preferred-currency" className="text-sm font-medium text-[#212121]">
+                  Preferred Currency
+                </Label>
+                <Select defaultValue="GHS">
+                  <SelectTrigger id="preferred-currency">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="GHS">GHS (₵)</SelectItem>
+                    <SelectItem value="USD">USD ($)</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Payment Methods */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-lg font-semibold text-[#212121]">Payment Methods</CardTitle>
+              <p className="text-xs text-[#949494] mt-1">Select accepted payment methods</p>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <div className="flex items-center space-x-2">
+                <Checkbox 
+                  id="mtn_momo" 
+                  checked={paymentMethods.includes('mtn_momo')}
+                  onCheckedChange={() => togglePaymentMethod('mtn_momo')}
+                />
+                <Label htmlFor="mtn_momo" className="text-sm font-normal text-[#212121] cursor-pointer">
+                  MTN MoMo
+                </Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <Checkbox 
+                  id="bank_transfer" 
+                  checked={paymentMethods.includes('bank_transfer')}
+                  onCheckedChange={() => togglePaymentMethod('bank_transfer')}
+                />
+                <Label htmlFor="bank_transfer" className="text-sm font-normal text-[#212121] cursor-pointer">
+                  Bank Transfer
+                </Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <Checkbox 
+                  id="card" 
+                  checked={paymentMethods.includes('card')}
+                  onCheckedChange={() => togglePaymentMethod('card')}
+                />
+                <Label htmlFor="card" className="text-sm font-normal text-[#212121] cursor-pointer">
+                  Card Payment
+                </Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <Checkbox 
+                  id="crypto" 
+                  checked={paymentMethods.includes('crypto')}
+                  onCheckedChange={() => togglePaymentMethod('crypto')}
+                />
+                <Label htmlFor="crypto" className="text-sm font-normal text-[#212121] cursor-pointer">
+                  Cryptocurrency
+                </Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <Checkbox 
+                  id="cash" 
+                  checked={paymentMethods.includes('cash')}
+                  onCheckedChange={() => togglePaymentMethod('cash')}
+                />
+                <Label htmlFor="cash" className="text-sm font-normal text-[#212121] cursor-pointer">
+                  Cash
+                </Label>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Payment Policies */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-lg font-semibold text-[#212121]">Payment Policies</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="early-discount" className="text-sm font-medium text-[#212121]">
+                  Early Payment Discount
+                </Label>
+                <div className="relative">
+                  <Percent className="absolute left-3 top-2.5 h-4 w-4 text-[#949494]" />
+                  <Input 
+                    id="early-discount"
+                    placeholder="e.g., 2% if paid within 7 days" 
+                    className="pl-9"
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="late-fee" className="text-sm font-medium text-[#212121]">
+                  Late Fee Policy
+                </Label>
+                <div className="relative">
+                  <Info className="absolute left-3 top-2.5 h-4 w-4 text-[#949494]" />
+                  <Input 
+                    id="late-fee"
+                    placeholder="e.g., 1.5% monthly after 30 days" 
+                    className="pl-9"
+                  />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+        </div>
+      </div>
+    </div>
+  );
+}

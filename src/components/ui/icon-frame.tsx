@@ -39,9 +39,9 @@ export function IconFrame({
         // base: perfect circle, never shrinks, keeps icon centered
         "relative inline-flex aspect-square shrink-0 items-center justify-center rounded-full border leading-none overflow-hidden transition-colors", // base
         variant === "plain" && "border-transparent",
-        variant === "subtle" && "border-gray-200 bg-gray-100/70",
-        variant === "solid" && "border-black bg-black",
-        tone === "muted" && variant !== "solid" && "bg-gray-50",
+        variant === "subtle" && "border-[#E4E6EB] bg-[#F9F9F9]",
+        variant === "solid" && "border-[#212121] bg-[#212121]",
+        tone === "muted" && variant !== "solid" && "bg-[#F9F9F9]",
         s.wrapper,
         s.padding,
         className
@@ -51,7 +51,7 @@ export function IconFrame({
       <Icon
         className={cn(
           s.icon,
-          variant === "solid" ? "text-white" : tone === "muted" ? "text-gray-500" : "text-gray-700"
+          variant === "solid" ? "text-white" : "text-[#2D2D2D]"
         )}
       />
       {pulse && (

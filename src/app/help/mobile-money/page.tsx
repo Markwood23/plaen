@@ -9,6 +9,7 @@ const mobileMoneyProviders = [
     name: "MTN Mobile Money",
     countries: ["Ghana", "Nigeria", "Uganda", "Rwanda"],
     description: "The largest mobile money network in Africa with over 50 million active users.",
+    color: "#F59E0B", // Orange
     features: [
       "Instant transfers and payments",
       "Available 24/7 including weekends",
@@ -20,6 +21,7 @@ const mobileMoneyProviders = [
     name: "Vodafone Cash", 
     countries: ["Ghana", "Tanzania", "DRC"],
     description: "Reliable mobile money service with strong presence across multiple African markets.",
+    color: "#DC2626", // Red
     features: [
       "Fast payment processing",
       "Secure PIN-based authentication", 
@@ -31,6 +33,7 @@ const mobileMoneyProviders = [
     name: "AirtelTigo Money",
     countries: ["Ghana"],
     description: "Merged mobile money service combining Airtel and Tigo networks in Ghana.",
+    color: "#1877F2", // Blue
     features: [
       "Unified payment platform",
       "Enhanced network coverage",
@@ -44,22 +47,26 @@ const advantages = [
   {
     title: "Instant Payments",
     description: "Mobile money payments are processed in real-time, often within seconds of initiation.",
-    icon: Clock
+    icon: Clock,
+    color: "#F59E0B", // Orange
   },
   {
     title: "Universal Access",
     description: "No bank account required - clients only need a mobile phone to send payments.",
-    icon: Smartphone
+    icon: Smartphone,
+    color: "#1877F2", // Blue
   },
   {
     title: "High Security",
     description: "Protected by PIN authentication and encrypted transactions for safe payments.",
-    icon: Shield
+    icon: Shield,
+    color: "#7C3AED", // Purple
   },
   {
     title: "Wide Coverage",
     description: "Available across Africa with extensive agent networks for cash deposits and withdrawals.",
-    icon: Globe
+    icon: Globe,
+    color: "#059669", // Green
   }
 ];
 
@@ -126,9 +133,16 @@ export default function MobileMoneyPage() {
                   {advantages.map((advantage) => {
                     const Icon = advantage.icon;
                     return (
-                      <div key={advantage.title} className="border-l-4 border-gray-200 pl-6">
+                      <div 
+                        key={advantage.title} 
+                        className="border-l-4 pl-6"
+                        style={{ borderColor: advantage.color }}
+                      >
                         <div className="flex items-center gap-3 mb-4">
-                          <Icon className="h-6 w-6 text-black" />
+                          <Icon 
+                            className="h-6 w-6" 
+                            style={{ color: advantage.color }}
+                          />
                           <h3 className="text-xl font-semibold text-black">{advantage.title}</h3>
                         </div>
                         <p className="text-gray-700 leading-8 text-lg">{advantage.description}</p>
@@ -148,7 +162,11 @@ export default function MobileMoneyPage() {
 
                 <div className="not-prose space-y-12">
                   {mobileMoneyProviders.map((provider) => (
-                    <div key={provider.name} className="border-l-4 border-gray-200 pl-8">
+                    <div 
+                      key={provider.name} 
+                      className="border-l-4 pl-8"
+                      style={{ borderColor: provider.color }}
+                    >
                       <div className="mb-6">
                         <h3 className="text-2xl font-semibold text-black mb-2">{provider.name}</h3>
                         <p className="text-lg leading-7 text-gray-700 mb-3">{provider.description}</p>
@@ -160,7 +178,10 @@ export default function MobileMoneyPage() {
                       <div className="space-y-3">
                         {provider.features.map((feature, i) => (
                           <div key={i} className="flex items-center gap-3">
-                            <CheckCircle className="h-4 w-4 text-gray-500 flex-shrink-0" />
+                            <CheckCircle 
+                              className="h-4 w-4 flex-shrink-0" 
+                              style={{ color: provider.color }}
+                            />
                             <span className="text-gray-700">{feature}</span>
                           </div>
                         ))}
@@ -303,13 +324,13 @@ export default function MobileMoneyPage() {
 
                 <p className="text-lg leading-8 text-gray-700 mb-12">
                   Contact us through the chat widget or email 
-                  <a href="mailto:support@plaen.com" className="text-black underline"> support@plaen.com</a> 
+                  <a href="mailto:support@plaen.tech" className="text-black underline"> support@plaen.tech</a> 
                   for personalized assistance.
                 </p>
 
                 <div className="not-prose mt-16 flex flex-col gap-4 sm:flex-row">
                   <Link href="/contact">
-                    <Button size="lg" className="bg-black text-white hover:bg-gray-900">
+                    <Button size="lg">
                       Talk to our team
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </Button>

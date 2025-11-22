@@ -177,7 +177,7 @@ export default function HelpPage() {
                     <div className="absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                       <div className="absolute -right-8 top-4 h-20 w-20 rounded-full bg-gradient-to-br from-black/5 to-transparent blur-xl" />
                     </div>
-                      <IconFrame icon={User} size="md" variant="subtle" className="relative mb-4 transition group-hover:bg-black group-hover:border-black group-hover:text-white group-hover:scale-105" />
+                      <IconFrame icon={User} size="md" variant="subtle" className="relative mb-4 transition bg-[#1877F2]/10 border-[#1877F2]/20 group-hover:bg-[#1877F2] group-hover:border-[#1877F2] group-hover:text-white group-hover:scale-105" />
                     <h3 className="mb-2 text-lg font-semibold text-black group-hover:text-gray-700">I'm new to Plaen</h3>
                     <p className="mb-4 flex-1 text-sm text-gray-700 leading-relaxed">Get started with account setup and your first invoice</p>
                     {/* Progress visualization */}
@@ -202,7 +202,7 @@ export default function HelpPage() {
                     <div className="absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                       <div className="absolute -right-8 top-4 h-20 w-20 rounded-full bg-gradient-to-br from-black/5 to-transparent blur-xl" />
                     </div>
-                    <IconFrame icon={Smartphone} size="md" variant="subtle" className="relative mb-4 transition group-hover:bg-black group-hover:border-black group-hover:text-white group-hover:scale-105" />
+                    <IconFrame icon={Smartphone} size="md" variant="subtle" className="relative mb-4 transition bg-[#059669]/10 border-[#059669]/20 group-hover:bg-[#059669] group-hover:border-[#059669] group-hover:text-white group-hover:scale-105" />
                     <h3 className="mb-2 text-lg font-semibold text-black group-hover:text-gray-700">Payment questions</h3>
                     <p className="mb-4 flex-1 text-sm text-gray-700 leading-relaxed">Learn about mobile money, bank transfers, and crypto</p>
                     {/* Payment method indicators */}
@@ -225,7 +225,7 @@ export default function HelpPage() {
                     <div className="absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                       <div className="absolute -right-8 top-4 h-20 w-20 rounded-full bg-gradient-to-br from-black/5 to-transparent blur-xl" />
                     </div>
-                    <IconFrame icon={HelpCircle} size="md" variant="subtle" className="relative mb-4 transition group-hover:bg-black group-hover:border-black group-hover:text-white group-hover:scale-105" />
+                    <IconFrame icon={HelpCircle} size="md" variant="subtle" className="relative mb-4 transition bg-[#7C3AED]/10 border-[#7C3AED]/20 group-hover:bg-[#7C3AED] group-hover:border-[#7C3AED] group-hover:text-white group-hover:scale-105" />
                     <h3 className="mb-2 text-lg font-semibold text-black group-hover:text-gray-700">Still need help?</h3>
                     <p className="mb-4 flex-1 text-sm text-gray-700 leading-relaxed">Contact our support team directly</p>
                     {/* Response time indicator */}
@@ -328,14 +328,14 @@ export default function HelpPage() {
                   Ask us how to apply Money + Meaning and Finance Notes to your workflow. We’ll guide structure without friction.
                 </p>
                 <div className="flex flex-wrap justify-center gap-4">
-                  <Link href="/coming-soon">
-                    <SmartButton size="lg" className="bg-black text-white transition hover:bg-gray-900">
-                      Coming soon
+                  <Link href="/contact">
+                    <SmartButton size="lg">
+                      Contact support
                     </SmartButton>
                   </Link>
-                  <Link href="/coming-soon">
+                  <Link href="/how-it-works">
                     <SmartButton size="lg" variant="outline" className="border-gray-200 text-black transition hover:border-black hover:bg-gray-50">
-                      Learn more
+                      See product tour
                     </SmartButton>
                   </Link>
                 </div>

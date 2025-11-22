@@ -235,12 +235,12 @@ export default function BankTransfersPage() {
                 <p className="text-lg leading-8 text-gray-700 mb-8">
                   If you need help setting up bank transfers or have questions about fees and processing times, 
                   our support team is ready to assist you. Contact us through the chat widget or email 
-                  <a href="mailto:support@plaen.com" className="text-black underline"> support@plaen.com</a>.
+                  <a href="mailto:support@plaen.tech" className="text-black underline"> support@plaen.tech</a>.
                 </p>
 
                 <div className="not-prose mt-16 flex flex-col gap-4 sm:flex-row">
                   <Link href="/contact">
-                    <Button size="lg" className="bg-black text-white hover:bg-gray-900">
+                    <Button size="lg">
                       Talk to our team
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </Button>

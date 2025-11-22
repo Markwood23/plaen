@@ -184,7 +184,7 @@ export default function MobileMoneyFasterPage() {
                     <p className="mt-3 text-sm leading-[1.9] text-gray-700">
                       Embed quick how-tos on every invoice so clients never guess the next step:
                     </p>
-                    <div className="mt-4 rounded-xl border border-dashed border-gray-300 bg-white p-5">
+                    <div className="mt-4 rounded-xl border border-solid border-gray-300 bg-white p-5">
                       <h4 className="text-sm font-semibold uppercase tracking-[0.2em] text-gray-600">MTN MoMo example</h4>
                       <ol className="mt-3 space-y-2 text-sm leading-[1.8] text-gray-700">
                         <li>Dial <strong>*170#</strong></li>

@@ -1,16 +1,35 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
 import { MarketingHeader } from "@/components/marketing/marketing-header";
 import { MarketingFooter } from "@/components/marketing/marketing-footer";
-import { PageEffects } from "@/components/marketing/home-page-effects";
-import { ContactForm } from "@/components/contact/contact-form";
-import { Mail, MessageSquare } from "lucide-react";
+import { useRevealAnimation } from "@/hooks/use-reveal-animation";
+import { Mail, MessageSquare, Send } from "lucide-react";
 
 export default function ContactPage() {
   const year = new Date().getFullYear();
+  useRevealAnimation();
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
+
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    message: "",
+  });
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Handle form submission
+    console.log("Form submitted:", formData);
+  };
 
   return (
     <>
       <MarketingHeader />
-      <PageEffects resetScroll />
       <div className="relative min-h-screen bg-white text-black">
         <div className="pointer-events-none absolute inset-0 -z-10">
           <div
@@ -32,10 +51,10 @@ export default function ContactPage() {
               Contact
             </span>
             <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">
-              Move toward Money + Meaning.
+              Let's talk about your invoicing needs.
             </h1>
             <p className="max-w-2xl text-lg leading-7 text-gray-600">
-              Ask about structure, legitimacy, or finance notes. We help you attach context to payments and operate Official by Design.
+              Have questions? Need support? Want to share feedback? We're here to help you get the most out of Plaen.
             </p>
           </section>
 
@@ -95,7 +114,61 @@ export default function ContactPage() {
 
                 {/* Contact Form */}
                 <div className="rounded-3xl border border-gray-200 bg-white p-8 shadow-[0_24px_80px_rgba(15,15,15,0.08)]">
-                  <ContactForm />
+                  <form onSubmit={handleSubmit} className="space-y-6">
+                    <div>
+                      <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+                        Name
+                      </label>
+                      <input
+                        type="text"
+                        id="name"
+                        value={formData.name}
+                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                        className="mt-2 block w-full rounded-lg border border-gray-200 px-4 py-3 text-sm transition focus:border-black focus:outline-none focus:ring-1 focus:ring-black"
+                        placeholder="Your name"
+                        required
+                      />
+                    </div>
+
+                    <div>
+                      <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                        Email
+                      </label>
+                      <input
+                        type="email"
+                        id="email"
+                        value={formData.email}
+                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                        className="mt-2 block w-full rounded-lg border border-gray-200 px-4 py-3 text-sm transition focus:border-black focus:outline-none focus:ring-1 focus:ring-black"
+                        placeholder="you@example.com"
+                        required
+                      />
+                    </div>
+
+                    <div>
+                      <label htmlFor="message" className="block text-sm font-medium text-gray-700">
+                        Message
+                      </label>
+                      <textarea
+                        id="message"
+                        value={formData.message}
+                        onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                        rows={6}
+                        className="mt-2 block w-full rounded-lg border border-gray-200 px-4 py-3 text-sm transition focus:border-black focus:outline-none focus:ring-1 focus:ring-black"
+                        placeholder="Tell us how we can help..."
+                        required
+                      />
+                    </div>
+
+                    <Button
+                      type="submit"
+                      size="lg"
+                      className="w-full bg-black text-white transition hover:bg-gray-900"
+                    >
+                      Send message
+                      <Send className="ml-2 h-4 w-4" />
+                    </Button>
+                  </form>
                 </div>
               </div>
             </div>
