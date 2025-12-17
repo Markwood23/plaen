@@ -181,7 +181,7 @@ export default function PricingPage() {
                   <Card size={16} color="#D97706" variant="Bulk" /> Local payments routed via trusted providers
                 </li>
                 <li className="flex items-center gap-2">
-                  <TrendUp size={16} color="#7C3AED" variant="Bulk" /> Analytics that surface payment health trends
+                  <TrendUp size={16} color="#0D9488" variant="Bulk" /> Analytics that surface payment health trends
                 </li>
                 <li className="flex items-center gap-2">
                   <RefreshCircle size={16} color="#0284C7" variant="Bulk" /> Smooth upgrades with zero downtime for payers

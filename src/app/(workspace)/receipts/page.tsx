@@ -2,18 +2,18 @@
 
 import { Button } from "@/components/ui/button";
 import { 
-  Loading03Icon, 
-  Search01Icon, 
-  Calendar03Icon, 
-  Download01Icon, 
-  Add01Icon, 
-  MoreHorizontalIcon, 
-  ArrowDataTransferVerticalIcon, 
-  CheckmarkSquare02Icon, 
-  ViewIcon, 
-  Delete02Icon, 
-  FileValidationIcon 
-} from "hugeicons-react";
+  RefreshCircle, 
+  SearchNormal1, 
+  Calendar as CalendarIcon, 
+  DocumentDownload, 
+  Add, 
+  More, 
+  ArrowSwapVertical, 
+  TickSquare, 
+  Eye, 
+  Trash, 
+  DocumentText 
+} from "iconsax-react";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useState } from "react";
@@ -67,13 +67,13 @@ export default function ReceiptsPage() {
       case "Verified":
         return (
           <Badge style={{ backgroundColor: '#14462a', color: 'white', borderColor: '#14462a' }}>
-            <CheckmarkSquare02Icon size={14} /> Verified
+            <TickSquare size={14} color="white" variant="Linear" /> Verified
           </Badge>
         );
       case "Pending":
         return (
           <Badge style={{ backgroundColor: 'rgba(240, 242, 245, 0.5)', color: '#2D2D2D', borderColor: '#E4E6EB' }}>
-            <FileValidationIcon size={14} /> Pending
+            <DocumentText size={14} color="#2D2D2D" variant="Linear" /> Pending
           </Badge>
         );
       case "Flagged":
@@ -102,7 +102,7 @@ export default function ReceiptsPage() {
             className="rounded-xl border-0 shadow-sm transition-all hover:shadow-md hover:scale-105"
             style={{ backgroundColor: 'white' }}
           >
-            <Loading03Icon size={16} className="mr-2" />
+            <RefreshCircle size={16} color="#2D2D2D" variant="Linear" className="mr-2" />
             Refresh
           </Button>
           <Button
@@ -110,7 +110,7 @@ export default function ReceiptsPage() {
             className="rounded-full shadow-sm transition-all hover:shadow-md hover:scale-105"
             style={{ backgroundColor: '#14462a', color: 'white' }}
           >
-            <Add01Icon size={16} className="mr-2" />
+            <Add size={16} color="white" variant="Linear" className="mr-2" />
             Add Receipt
           </Button>
         </div>
@@ -124,7 +124,7 @@ export default function ReceiptsPage() {
               className="h-12 w-12 rounded-xl flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110"
               style={{ backgroundColor: 'rgba(5, 150, 105, 0.12)' }}
             >
-              <CheckmarkSquare02Icon size={24} style={{ color: '#059669', strokeWidth: 2 }} />
+              <TickSquare size={24} color="#059669" variant="Linear" />
             </div>
             <div
               className="inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-semibold"
@@ -144,7 +144,7 @@ export default function ReceiptsPage() {
               className="h-12 w-12 rounded-xl flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110"
               style={{ backgroundColor: 'rgba(245, 158, 11, 0.12)' }}
             >
-              <FileValidationIcon size={24} style={{ color: '#F59E0B', strokeWidth: 2 }} />
+              <DocumentText size={24} color="#F59E0B" variant="Linear" />
             </div>
             <div
               className="inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-semibold"
@@ -164,7 +164,7 @@ export default function ReceiptsPage() {
               className="h-12 w-12 rounded-xl flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110"
               style={{ backgroundColor: 'rgba(20, 70, 42, 0.12)' }}
             >
-              <FileValidationIcon size={24} style={{ color: '#14462a', strokeWidth: 2 }} />
+              <DocumentText size={24} color="#14462a" variant="Linear" />
             </div>
             <div
               className="inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-semibold"
@@ -184,7 +184,7 @@ export default function ReceiptsPage() {
               className="h-12 w-12 rounded-xl flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110"
               style={{ backgroundColor: 'rgba(220, 38, 38, 0.12)' }}
             >
-              <FileValidationIcon size={24} style={{ color: '#DC2626', strokeWidth: 2 }} />
+              <DocumentText size={24} color="#DC2626" variant="Linear" />
             </div>
             <div
               className="inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-semibold"
@@ -217,7 +217,7 @@ export default function ReceiptsPage() {
               Search
             </label>
             <div className="relative group">
-              <Search01Icon size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 transition-colors" style={{ color: '#B0B3B8' }} />
+              <SearchNormal1 size={16} color="#B0B3B8" variant="Linear" className="absolute left-3.5 top-1/2 -translate-y-1/2 transition-colors" />
               <Input
                 id="search"
                 placeholder="Search receipts..."
@@ -294,7 +294,7 @@ export default function ReceiptsPage() {
                   className="h-11 w-full justify-start text-left rounded-xl border-0 shadow-sm transition-all hover:shadow-md"
                   style={{ backgroundColor: 'white', color: dateRange ? '#2D2D2D' : '#B0B3B8', fontWeight: 400 }}
                 >
-                  <Calendar03Icon className="mr-2" size={16} />
+                  <CalendarIcon size={16} color="#B0B3B8" variant="Linear" className="mr-2" />
                   {dateRange?.from ? (
                     dateRange.to ? (
                       <>
@@ -328,7 +328,7 @@ export default function ReceiptsPage() {
           <div className="flex items-center justify-between px-6 py-4 border-b" style={{ backgroundColor: 'rgba(20, 70, 42, 0.04)', borderColor: 'rgba(20, 70, 42, 0.1)' }}>
             <div className="flex items-center gap-3">
               <div className="h-8 w-8 rounded-full flex items-center justify-center" style={{ backgroundColor: 'rgba(20, 70, 42, 0.12)' }}>
-                <CheckmarkSquare02Icon size={16} style={{ color: '#14462a' }} />
+                <TickSquare size={16} color="#14462a" variant="Linear" />
               </div>
               <div>
                 <p className="text-sm font-semibold" style={{ color: '#2D2D2D' }}>
@@ -346,7 +346,7 @@ export default function ReceiptsPage() {
                 className="rounded-xl border-0 shadow-sm transition-all hover:shadow-md hover:scale-105" 
                 style={{ backgroundColor: 'white' }}
               >
-                <Download01Icon size={16} className="mr-2" /> Export Selected
+                <DocumentDownload size={16} color="#2D2D2D" variant="Linear" className="mr-2" /> Export Selected
               </Button>
               <Button 
                 variant="ghost" 
@@ -373,23 +373,23 @@ export default function ReceiptsPage() {
               </TableHead>
               <TableHead>
                 <button className="flex items-center gap-1 hover:text-[#14462a] transition-colors">
-                  Receipt ID <ArrowDataTransferVerticalIcon size={14} />
+                  Receipt ID <ArrowSwapVertical size={14} color="#B0B3B8" variant="Linear" />
                 </button>
               </TableHead>
               <TableHead>
                 <button className="flex items-center gap-1 hover:text-[#14462a] transition-colors">
-                  Date <ArrowDataTransferVerticalIcon size={14} />
+                  Date <ArrowSwapVertical size={14} color="#B0B3B8" variant="Linear" />
                 </button>
               </TableHead>
               <TableHead>
                 <button className="flex items-center gap-1 hover:text-[#14462a] transition-colors">
-                  Vendor <ArrowDataTransferVerticalIcon size={14} />
+                  Vendor <ArrowSwapVertical size={14} color="#B0B3B8" variant="Linear" />
                 </button>
               </TableHead>
               <TableHead>Category</TableHead>
               <TableHead>
                 <button className="flex items-center gap-1 hover:text-[#14462a] transition-colors">
-                  Amount <ArrowDataTransferVerticalIcon size={14} />
+                  Amount <ArrowSwapVertical size={14} color="#B0B3B8" variant="Linear" />
                 </button>
               </TableHead>
               <TableHead>Status</TableHead>
@@ -422,7 +422,7 @@ export default function ReceiptsPage() {
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                       <button className="inline-flex items-center rounded-full p-1.5 transition-all hover:bg-[rgba(24,119,242,0.08)]">
-                        <MoreHorizontalIcon size={16} style={{ color: '#B0B3B8' }} />
+                        <More size={16} color="#B0B3B8" variant="Linear" />
                       </button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end" className="rounded-2xl w-56 p-2" style={{ boxShadow: '0 4px 16px rgba(0, 0, 0, 0.1)' }}>
@@ -431,7 +431,7 @@ export default function ReceiptsPage() {
                           className="h-8 w-8 rounded-full flex items-center justify-center transition-all"
                           style={{ backgroundColor: 'rgba(20, 70, 42, 0.08)' }}
                         >
-                          <ViewIcon size={16} style={{ color: '#14462a' }} />
+                          <Eye size={16} color="#14462a" variant="Linear" />
                         </div>
                         <span className="text-sm font-medium group-hover:text-[#14462a] transition-all" style={{ color: '#2D2D2D' }}>View Receipt</span>
                       </DropdownMenuItem>
@@ -440,7 +440,7 @@ export default function ReceiptsPage() {
                           className="h-8 w-8 rounded-full flex items-center justify-center transition-all"
                           style={{ backgroundColor: 'rgba(5, 150, 105, 0.08)' }}
                         >
-                          <Download01Icon size={16} style={{ color: '#059669' }} />
+                          <DocumentDownload size={16} color="#059669" variant="Linear" />
                         </div>
                         <span className="text-sm font-medium group-hover:text-[#14462a] transition-all" style={{ color: '#2D2D2D' }}>Download</span>
                       </DropdownMenuItem>
@@ -450,7 +450,7 @@ export default function ReceiptsPage() {
                           className="h-8 w-8 rounded-full flex items-center justify-center transition-all"
                           style={{ backgroundColor: 'rgba(220, 38, 38, 0.08)' }}
                         >
-                          <Delete02Icon size={16} style={{ color: '#DC2626' }} />
+                          <Trash size={16} color="#DC2626" variant="Linear" />
                         </div>
                         <span className="text-sm font-medium transition-all" style={{ color: '#DC2626' }}>Delete</span>
                       </DropdownMenuItem>

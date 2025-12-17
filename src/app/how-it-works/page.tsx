@@ -25,7 +25,7 @@ const steps = [
     description:
       "Personal or Business. Freelancers add their name and payout method. Companies add branding, logo, and tax details. Your information automatically populates future invoices.",
     icon: Setting2,
-    color: "#4F46E5", // Indigo
+    color: "#B45309", // Warm Amber
   },
   {
     title: "Build Your Invoice",
@@ -223,8 +223,8 @@ export default function HowItWorksPage() {
               </div>
 
               <div className="group space-y-3 text-center">
-                <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#4F46E5]/10 transition group-hover:bg-[#4F46E5]">
-                  <Share size={20} color="#4F46E5" variant="Bulk" className="transition group-hover:hidden" />
+                <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#14462a]/10 transition group-hover:bg-[#14462a]">
+                  <Share size={20} color="#14462a" variant="Bulk" className="transition group-hover:hidden" />
                   <Share size={20} color="white" variant="Bulk" className="hidden transition group-hover:block" />
                 </div>
                 <h3 className="font-semibold text-black">Context Layers</h3>

@@ -8,19 +8,18 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Checkbox } from "@/components/ui/checkbox";
 import { 
-  ArrowLeft01Icon, 
-  Add01Icon, 
-  Delete02Icon, 
-  SentIcon,
-  Building03Icon,
-  FileValidationIcon,
-  Calendar03Icon,
-  UserIcon,
-  Invoice03Icon,
-  CreditCardIcon,
-  InformationCircleIcon,
-  PencilEdit01Icon
-} from "hugeicons-react";
+  ArrowLeft2, 
+  Add, 
+  Trash, 
+  Send2,
+  Building,
+  DocumentText,
+  Calendar,
+  User,
+  Card,
+  InfoCircle,
+  Edit2
+} from "iconsax-react";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -314,7 +313,7 @@ export default function CreateInvoicePage() {
             className="rounded-full px-5 h-9 hover:bg-[rgba(240,242,245,0.5)]"
           >
             <Link href="/invoices">
-              <ArrowLeft01Icon size={16} className="mr-2" />
+              <ArrowLeft2 size={16} className="mr-2" />
               Back
             </Link>
           </Button>
@@ -327,14 +326,14 @@ export default function CreateInvoicePage() {
             variant="outline" 
             className="rounded-full px-5 h-10 border-none hover:bg-[rgba(240,242,245,0.5)]"
           >
-            <FileValidationIcon size={16} className="mr-2" />
+            <DocumentText size={16} className="mr-2" />
             Save Draft
           </Button>
           <Button 
             className="rounded-full px-5 h-10"
             style={{ backgroundColor: '#14462a', color: 'white', fontWeight: 500 }}
           >
-            <SentIcon size={16} className="mr-2" />
+            <Send2 size={16} className="mr-2" />
             Send Invoice
           </Button>
         </div>
@@ -344,23 +343,23 @@ export default function CreateInvoicePage() {
       <Tabs defaultValue="details" className="w-full">
         <TabsList>
           <TabsTrigger value="details">
-            <Invoice03Icon size={16} />
+            <DocumentText size={16} />
             Invoice Details
           </TabsTrigger>
           <TabsTrigger value="parties">
-            <UserIcon size={16} />
+            <User size={16} />
             Parties
           </TabsTrigger>
           <TabsTrigger value="items">
-            <FileValidationIcon size={16} />
+            <DocumentText size={16} />
             Line Items
           </TabsTrigger>
           <TabsTrigger value="payment">
-            <CreditCardIcon size={16} />
+            <Card size={16} />
             Payment & Currency
           </TabsTrigger>
           <TabsTrigger value="additional">
-            <InformationCircleIcon size={16} />
+            <InfoCircle size={16} />
             Additional Info
           </TabsTrigger>
         </TabsList>
@@ -465,7 +464,7 @@ export default function CreateInvoicePage() {
                     variant="outline" 
                     className="w-full h-11 justify-start text-left border-[#E4E6EB] font-normal rounded-full"
                   >
-                    <Calendar03Icon size={16} className="mr-2 text-[#B0B3B8]" />
+                    <Calendar size={16} className="mr-2 text-[#B0B3B8]" />
                     Nov 16, 2025
                   </Button>
                   <p className="text-xs text-[#B0B3B8] mt-1.5">Date invoice was created</p>
@@ -476,7 +475,7 @@ export default function CreateInvoicePage() {
                     variant="outline" 
                     className="w-full h-11 justify-start text-left border-[#E4E6EB] font-normal rounded-full"
                   >
-                    <Calendar03Icon size={16} className="mr-2 text-[#B0B3B8]" />
+                    <Calendar size={16} className="mr-2 text-[#B0B3B8]" />
                     Dec 16, 2025
                   </Button>
                   <p className="text-xs text-[#B0B3B8] mt-1.5">Calculated based on payment terms</p>
@@ -556,7 +555,7 @@ export default function CreateInvoicePage() {
                     style={{ color: '#14462a' }}
                   >
                     <Link href="/workspace/settings">
-                      <PencilEdit01Icon size={14} className="mr-1.5" />
+                      <Edit2 size={14} className="mr-1.5" />
                       Edit
                     </Link>
                   </Button>
@@ -618,7 +617,7 @@ export default function CreateInvoicePage() {
                       <SelectContent>
                         <SelectItem value="manual">
                           <div className="flex items-center gap-2">
-                            <Add01Icon size={16} />
+                            <Add size={16} />
                             <span>Enter manually</span>
                           </div>
                         </SelectItem>
@@ -716,7 +715,7 @@ export default function CreateInvoicePage() {
                   style={{ backgroundColor: '#14462a', color: 'white', fontWeight: 500 }}
                   onClick={addLineItem}
                 >
-                  <Add01Icon size={16} className="mr-2" />
+                  <Add size={16} className="mr-2" />
                   Add Line Item
                 </Button>
               </div>
@@ -755,7 +754,7 @@ export default function CreateInvoicePage() {
                         <SelectContent align="start" className="w-[400px]">
                           <SelectItem value="custom">
                             <div className="flex items-center gap-2">
-                              <Add01Icon size={14} />
+                              <Add size={14} />
                               <span>Enter manually</span>
                             </div>
                           </SelectItem>
@@ -857,7 +856,7 @@ export default function CreateInvoicePage() {
                         onClick={() => removeLineItem(item.id)}
                         disabled={lineItems.length === 1}
                       >
-                        <Delete02Icon size={16} className={`${lineItems.length === 1 ? 'text-[#E4E6EB]' : 'text-[#B0B3B8] hover:text-red-600'}`} />
+                        <Trash size={16} className={`${lineItems.length === 1 ? 'text-[#E4E6EB]' : 'text-[#B0B3B8] hover:text-red-600'}`} />
                       </Button>
                     </div>
                   </div>
@@ -1016,7 +1015,7 @@ export default function CreateInvoicePage() {
                     variant="outline" 
                     className="w-full h-11 justify-start text-left border-[#E4E6EB] font-normal rounded-full"
                   >
-                    <Calendar03Icon size={16} className="mr-2 text-[#B0B3B8]" />
+                    <Calendar size={16} className="mr-2 text-[#B0B3B8]" />
                     Nov 16, 2025
                   </Button>
                 </div>
@@ -1197,7 +1196,7 @@ export default function CreateInvoicePage() {
                 <p className="text-sm text-[#B0B3B8]">Attach supporting documents to this invoice</p>
               </div>
               <div className="border-2 border-solid border-[#E4E6EB] rounded-lg p-8 text-center hover:border-[#14462a] transition-colors cursor-pointer">
-                <Add01Icon size={32} className="text-[#B0B3B8] mx-auto mb-3" />
+                <Add size={32} className="text-[#B0B3B8] mx-auto mb-3" />
                 <p className="text-sm font-medium text-[#2D2D2D] mb-1">Click to upload files</p>
                 <p className="text-xs text-[#B0B3B8]">PDF, PNG, JPG up to 10MB each</p>
               </div>

@@ -15,22 +15,22 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import {
-  LayoutGridIcon,
-  Invoice03Icon,
-  UserGroupIcon,
-  CreditCardIcon,
-  File02Icon,
-  FileEditIcon,
-  Settings02Icon,
-  CustomerServiceIcon,
-  Menu01Icon,
-  Logout03Icon,
-  Add01Icon,
-  UserIcon,
-  Search01Icon,
-  Notification03Icon,
-  InformationCircleIcon,
-} from "hugeicons-react";
+  Category2,
+  DocumentText,
+  People,
+  Card,
+  Document,
+  DocumentText1,
+  Setting2,
+  MessageQuestion,
+  HambergerMenu,
+  Logout,
+  Add,
+  User,
+  SearchNormal1,
+  Notification,
+  InfoCircle,
+} from "iconsax-react";
 
 export default function WorkspaceLayout({
   children,
@@ -40,16 +40,16 @@ export default function WorkspaceLayout({
   const pathname = usePathname();
   const nav = {
     main: [
-      { href: "/dashboard", label: "Dashboard", icon: LayoutGridIcon },
-      { href: "/invoices", label: "Invoices", icon: Invoice03Icon },
-      { href: "/contacts", label: "Contacts", icon: UserGroupIcon },
-      { href: "/payments", label: "Payments", icon: CreditCardIcon },
-      { href: "/receipts", label: "Receipts", icon: File02Icon },
-      { href: "/notes", label: "Finance Notes & Docs", icon: FileEditIcon },
+      { href: "/dashboard", label: "Dashboard", icon: Category2 },
+      { href: "/invoices", label: "Invoices", icon: DocumentText },
+      { href: "/contacts", label: "Contacts", icon: People },
+      { href: "/payments", label: "Payments", icon: Card },
+      { href: "/receipts", label: "Receipts", icon: Document },
+      { href: "/notes", label: "Finance Notes & Docs", icon: DocumentText1 },
     ],
     account: [
-      { href: "/settings", label: "Settings", icon: Settings02Icon },
-      { href: "/support", label: "Support", icon: CustomerServiceIcon },
+      { href: "/settings", label: "Settings", icon: Setting2 },
+      { href: "/support", label: "Support", icon: MessageQuestion },
     ],
   } as const;
 
@@ -96,10 +96,12 @@ export default function WorkspaceLayout({
                       : { color: '#65676B', fontWeight: 500 }
                   }
                 >
-                  <item.icon className={cn(
-                    "h-5 w-5 shrink-0 transition-transform",
-                    pathname.startsWith(item.href) ? "" : "group-hover:scale-110"
-                  )} />
+                  <item.icon 
+                    size={20} 
+                    color={pathname.startsWith(item.href) ? '#14462a' : '#65676B'}
+                    variant={pathname.startsWith(item.href) ? 'Bold' : 'Linear'}
+                    className="shrink-0 transition-transform group-hover:scale-110"
+                  />
                   <span className="truncate">{item.label}</span>
                   {!pathname.startsWith(item.href) && (
                     <div className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" style={{ background: 'linear-gradient(90deg, transparent, rgba(20, 70, 42, 0.02))' }} />
@@ -134,10 +136,12 @@ export default function WorkspaceLayout({
                       : { color: '#65676B', fontWeight: 500 }
                   }
                 >
-                  <item.icon className={cn(
-                    "h-5 w-5 shrink-0 transition-transform",
-                    pathname.startsWith(item.href) ? "" : "group-hover:scale-110"
-                  )} />
+                  <item.icon 
+                    size={20} 
+                    color={pathname.startsWith(item.href) ? '#14462a' : '#65676B'}
+                    variant={pathname.startsWith(item.href) ? 'Bold' : 'Linear'}
+                    className="shrink-0 transition-transform group-hover:scale-110"
+                  />
                   <span className="truncate">{item.label}</span>
                   {!pathname.startsWith(item.href) && (
                     <div className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" style={{ background: 'linear-gradient(90deg, transparent, rgba(20, 70, 42, 0.02))' }} />
@@ -174,10 +178,10 @@ export default function WorkspaceLayout({
           {/* Search - more prominent */}
           <div className="flex-1 max-w-2xl">
             <div className="relative group">
-              <Search01Icon 
+              <SearchNormal1 
                 size={18}
+                color="#B0B3B8"
                 className="absolute left-4 top-1/2 -translate-y-1/2 transition-colors" 
-                style={{ color: '#B0B3B8' }} 
               />
               <Input 
                 placeholder="Search invoices, contacts, payments..." 
@@ -204,7 +208,7 @@ export default function WorkspaceLayout({
               className="hidden lg:flex items-center gap-2 px-4 py-2 rounded-full font-semibold text-base transition-all hover:scale-105 hover:shadow-md"
               style={{ backgroundColor: '#14462a', color: 'white' }}
             >
-              <Add01Icon size={16} />
+              <Add size={16} color="white" />
               New Invoice
             </Link>
             
@@ -213,7 +217,7 @@ export default function WorkspaceLayout({
               className="relative h-10 w-10 rounded-full flex items-center justify-center transition-all hover:bg-[rgba(240,242,245,0.8)] hover:scale-105"
               aria-label="Notifications"
             >
-              <Notification03Icon size={20} style={{ color: '#2D2D2D' }} />
+              <Notification size={20} color="#2D2D2D" />
               {/* Notification badge */}
               <span className="absolute top-1.5 right-1.5 h-2 w-2 rounded-full" style={{ backgroundColor: '#EF4444' }}>
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75" style={{ backgroundColor: '#EF4444' }} />
@@ -225,7 +229,7 @@ export default function WorkspaceLayout({
               className="h-10 w-10 rounded-full flex items-center justify-center transition-all hover:bg-[rgba(240,242,245,0.8)] hover:scale-105"
               aria-label="Help"
             >
-              <InformationCircleIcon size={20} style={{ color: '#2D2D2D' }} />
+              <InfoCircle size={20} color="#2D2D2D" />
             </button>
             
             <div className="h-8 w-px mx-1" style={{ backgroundColor: '#E4E6EB' }} />
@@ -257,7 +261,7 @@ function MobileNav({
           className="inline-flex items-center justify-center rounded-xl px-2.5 py-2 transition-all hover:bg-[rgba(240,242,245,0.8)] hover:scale-105"
           style={{ border: '1px solid #E4E6EB' }}
         >
-          <Menu01Icon size={20} />
+          <HambergerMenu size={20} color="#2D2D2D" />
         </button>
       </SheetTrigger>
       <SheetContent side="left" className="p-0 w-72" style={{ backgroundColor: 'white' }}>
@@ -335,7 +339,7 @@ function UserMenu() {
               className="h-8 w-8 rounded-full flex items-center justify-center transition-all"
               style={{ backgroundColor: 'rgba(20, 70, 42, 0.08)' }}
             >
-              <UserIcon size={16} style={{ color: '#14462a' }} />
+              <User size={16} color="#14462a" />
             </div>
             <span className="text-base font-medium group-hover:text-[#14462a] transition-all" style={{ color: '#2D2D2D' }}>Profile</span>
           </Link>
@@ -346,7 +350,7 @@ function UserMenu() {
               className="h-8 w-8 rounded-full flex items-center justify-center transition-all"
               style={{ backgroundColor: 'rgba(5, 150, 105, 0.08)' }}
             >
-              <CreditCardIcon size={16} style={{ color: '#059669' }} />
+              <Card size={16} color="#059669" />
             </div>
             <span className="text-base font-medium group-hover:text-[#14462a] transition-all" style={{ color: '#2D2D2D' }}>Billing</span>
           </Link>
@@ -357,7 +361,7 @@ function UserMenu() {
               className="h-8 w-8 rounded-full flex items-center justify-center transition-all"
               style={{ backgroundColor: 'rgba(20, 70, 42, 0.08)' }}
             >
-              <Settings02Icon size={16} style={{ color: '#14462a' }} />
+              <Setting2 size={16} color="#14462a" />
             </div>
             <span className="text-base font-medium group-hover:text-[#14462a] transition-all" style={{ color: '#2D2D2D' }}>Settings</span>
           </Link>
@@ -368,7 +372,7 @@ function UserMenu() {
             className="h-8 w-8 rounded-full flex items-center justify-center transition-all"
             style={{ backgroundColor: 'rgba(220, 38, 38, 0.08)' }}
           >
-            <Logout03Icon size={16} style={{ color: '#DC2626' }} />
+            <Logout size={16} color="#DC2626" />
           </div>
           <span className="text-base font-medium group-hover:text-red-600 transition-all" style={{ color: '#DC2626' }}>Log out</span>
         </DropdownMenuItem>

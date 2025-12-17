@@ -3,20 +3,20 @@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { 
-  ArrowLeft01Icon, 
-  Download01Icon, 
-  SentIcon,
-  PrinterIcon,
-  CheckmarkSquare02Icon,
-  Clock01Icon,
-  DollarSquareIcon,
-  MailAtSign01Icon,
-  Call02Icon,
-  Building03Icon,
-  Globe02Icon,
-  Calendar03Icon,
-  CreditCardIcon
-} from "hugeicons-react";
+  ArrowLeft2, 
+  DocumentDownload, 
+  Send2,
+  Printer,
+  TickSquare,
+  Clock,
+  DollarSquare,
+  Sms,
+  Call,
+  Building,
+  Global,
+  Calendar,
+  Card
+} from "iconsax-react";
 import Link from "next/link";
 import { use } from "react";
 
@@ -113,19 +113,19 @@ export default function InvoicePreviewPage({ params }: { params: Promise<{ id: s
       case "Paid":
         return (
           <Badge className="bg-[#14462a] text-white hover:bg-[#14462a]/90">
-            <CheckmarkSquare02Icon size={14} className="mr-1" /> Paid
+            <TickSquare size={14} className="mr-1" /> Paid
           </Badge>
         );
       case "Partially Paid":
         return (
           <Badge className="bg-[#F9F9F9] text-[#14462a] border-[#EBECE7] hover:bg-[#EBECE7]">
-            <DollarSquareIcon size={14} className="mr-1" /> Partially Paid
+            <DollarSquare size={14} className="mr-1" /> Partially Paid
           </Badge>
         );
       case "Pending":
         return (
           <Badge className="bg-[#F9F9F9] text-[#949494] border-[#EBECE7] hover:bg-[#EBECE7]">
-            <Clock01Icon size={14} className="mr-1" /> Pending
+            <Clock size={14} className="mr-1" /> Pending
           </Badge>
         );
       default:
@@ -145,7 +145,7 @@ export default function InvoicePreviewPage({ params }: { params: Promise<{ id: s
           <div className="flex items-center justify-between">
             <Button variant="ghost" size="sm" asChild className="gap-2 -ml-2 rounded-full hover:bg-[rgba(240,242,245,0.5)]">
               <Link href={`/invoices/${id}`}>
-                <ArrowLeft01Icon size={16} />
+                <ArrowLeft2 size={16} />
                 Back
               </Link>
             </Button>
@@ -157,7 +157,7 @@ export default function InvoicePreviewPage({ params }: { params: Promise<{ id: s
                 style={{ borderColor: '#E4E6EB', color: '#2D2D2D', fontWeight: 400 }}
                 onClick={handlePrint}
               >
-                <PrinterIcon size={14} className="mr-1.5" />
+                <Printer size={14} className="mr-1.5" />
                 Print
               </Button>
               <Button 
@@ -166,7 +166,7 @@ export default function InvoicePreviewPage({ params }: { params: Promise<{ id: s
                 className="rounded-full px-5 h-9 hover:bg-[rgba(240,242,245,0.8)]"
                 style={{ borderColor: '#E4E6EB', color: '#2D2D2D', fontWeight: 400 }}
               >
-                <Download01Icon size={14} className="mr-1.5" />
+                <DocumentDownload size={14} className="mr-1.5" />
                 Download PDF
               </Button>
               <Button 
@@ -174,7 +174,7 @@ export default function InvoicePreviewPage({ params }: { params: Promise<{ id: s
                 className="rounded-full px-5 h-9" 
                 style={{ backgroundColor: '#14462a', color: 'white', fontWeight: 500 }}
               >
-                <SentIcon size={14} className="mr-1.5" />
+                <Send2 size={14} className="mr-1.5" />
                 Send to Customer
               </Button>
             </div>
@@ -210,9 +210,9 @@ export default function InvoicePreviewPage({ params }: { params: Promise<{ id: s
                       color: invoice.status === 'Paid' ? '#059669' : invoice.status === 'Partially Paid' ? '#F59E0B' : '#B0B3B8'
                     }}
                   >
-                    {invoice.status === 'Paid' && <CheckmarkSquare02Icon size={16} />}
-                    {invoice.status === 'Partially Paid' && <Clock01Icon size={16} />}
-                    {invoice.status === 'Pending' && <Clock01Icon size={16} />}
+                    {invoice.status === 'Paid' && <TickSquare size={16} />}
+                    {invoice.status === 'Partially Paid' && <Clock size={16} />}
+                    {invoice.status === 'Pending' && <Clock size={16} />}
                     {invoice.status}
                   </span>
                 </div>
@@ -327,7 +327,7 @@ export default function InvoicePreviewPage({ params }: { params: Promise<{ id: s
                   className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full text-white font-medium hover:opacity-90 transition-opacity"
                   style={{ backgroundColor: '#14462a' }}
                 >
-                  <CreditCardIcon size={20} />
+                  <Card size={20} />
                   Pay Invoice Now
                 </a>
                 <p className="text-sm mt-3" style={{ color: '#B0B3B8' }}>

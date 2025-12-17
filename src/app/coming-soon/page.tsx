@@ -45,8 +45,8 @@ export default function ComingSoonPage() {
             </div>
             <div className="rounded-2xl border border-gray-200 bg-white/80 p-4">
               <div className="flex items-center gap-3">
-                <div className="h-8 w-8 rounded-lg bg-[#4F46E5]/10 flex items-center justify-center">
-                  <Calendar size={18} color="#4F46E5" variant="Bulk" />
+                <div className="h-8 w-8 rounded-lg bg-[#0D9488]/10 flex items-center justify-center">
+                  <Calendar size={18} color="#0D9488" variant="Bulk" />
                 </div>
                 <div className="text-sm font-medium text-black">Staged releases</div>
               </div>

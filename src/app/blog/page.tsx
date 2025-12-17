@@ -23,7 +23,7 @@ const stats = [
     value: "24k",
     description: "Leaders and operators across Africa",
     icon: People,
-    color: "#4F46E5",
+    color: "#B45309",
   },
   {
     label: "Guides published",

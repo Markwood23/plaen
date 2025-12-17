@@ -2,32 +2,30 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
+import NextLink from "next/link";
 import {
-  ArrowLeft01Icon,
-  MoreVerticalIcon,
-  Download01Icon,
-  Share08Icon,
-  PinIcon,
-  ArchiveIcon,
-  Delete02Icon,
-  Add01Icon,
-  TextIcon,
-  TextFontIcon,
-  ListViewIcon,
-  TextNumberSignIcon,
-  Link01Icon,
-  Image01Icon,
-  CodeIcon,
-  Table01Icon,
-  ChartHistogramIcon,
-  FileValidationIcon,
-  Invoice01Icon,
-  AtIcon,
-  Attachment02Icon,
-  CheckmarkSquare02Icon,
-  Cancel01Icon,
-} from "hugeicons-react";
+  ArrowLeft2,
+  More,
+  DocumentDownload,
+  Share,
+  Paperclip,
+  Archive,
+  Trash,
+  Add,
+  Text,
+  TextBlock,
+  Element3,
+  Hashtag,
+  Link2,
+  Image,
+  Code,
+  Grid1,
+  Chart,
+  DocumentText,
+  Sms,
+  TickSquare,
+  CloseSquare,
+} from "iconsax-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -76,15 +74,15 @@ export default function NewNotePage() {
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
-          <Link href="/notes">
+          <NextLink href="/notes">
             <Button
               variant="ghost"
               size="sm"
               className="h-9 w-9 p-0 rounded-full"
             >
-              <ArrowLeft01Icon size={16} />
+              <ArrowLeft2 size={16} color="#2D2D2D" variant="Linear" />
             </Button>
-          </Link>
+          </NextLink>
           <div>
             <h1 className="text-lg font-semibold" style={{ color: "#2D2D2D" }}>
               New Note
@@ -119,29 +117,29 @@ export default function NewNotePage() {
                 size="sm"
                 className="h-9 w-9 p-0 rounded-full"
               >
-                <MoreVerticalIcon size={16} />
+                <More size={16} color="#B0B3B8" variant="Linear" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="rounded-2xl p-2">
               <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer">
-                <PinIcon size={16} className="mr-2" />
+                <Paperclip size={16} color="#2D2D2D" variant="Linear" className="mr-2" />
                 <span>Pin Note</span>
               </DropdownMenuItem>
               <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer">
-                <Share08Icon size={16} className="mr-2" />
+                <Share size={16} color="#2D2D2D" variant="Linear" className="mr-2" />
                 <span>Share</span>
               </DropdownMenuItem>
               <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer">
-                <Download01Icon size={16} className="mr-2" />
+                <DocumentDownload size={16} color="#2D2D2D" variant="Linear" className="mr-2" />
                 <span>Export PDF</span>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer">
-                <ArchiveIcon size={16} className="mr-2" />
+                <Archive size={16} color="#2D2D2D" variant="Linear" className="mr-2" />
                 <span>Archive</span>
               </DropdownMenuItem>
               <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer text-red-600">
-                <Delete02Icon size={16} className="mr-2" />
+                <Trash size={16} color="#DC2626" variant="Linear" className="mr-2" />
                 <span>Delete</span>
               </DropdownMenuItem>
             </DropdownMenuContent>
@@ -178,7 +176,7 @@ export default function NewNotePage() {
               onClick={() => handleRemoveTag(tag)}
               className="hover:opacity-70"
             >
-              <Cancel01Icon size={12} />
+              <CloseSquare size={12} color="#14462a" variant="Linear" />
             </button>
           </Badge>
         ))}
@@ -204,7 +202,7 @@ export default function NewNotePage() {
               className="h-7 w-7 p-0 rounded-full"
               onClick={handleAddTag}
             >
-              <CheckmarkSquare02Icon size={14} style={{ color: "#059669" }} />
+              <TickSquare size={14} color="#059669" variant="Linear" />
             </Button>
             <Button
               size="sm"
@@ -215,7 +213,7 @@ export default function NewNotePage() {
                 setNewTag("");
               }}
             >
-              <Cancel01Icon size={14} style={{ color: "#B0B3B8" }} />
+              <CloseSquare size={14} color="#B0B3B8" variant="Linear" />
             </Button>
           </div>
         ) : (
@@ -233,7 +231,7 @@ export default function NewNotePage() {
               e.currentTarget.style.backgroundColor = "rgba(176, 179, 184, 0.08)";
             }}
           >
-            <Add01Icon size={12} />
+            <Add size={12} color="#B0B3B8" variant="Linear" />
             Add Tag
           </button>
         )}
@@ -250,34 +248,14 @@ export default function NewNotePage() {
             size="sm"
             className="h-8 w-8 p-0 rounded-full hover:bg-white"
           >
-            <TextIcon size={16} strokeWidth={3} />
+            <Text size={16} color="#2D2D2D" variant="Linear" />
           </Button>
           <Button
             variant="ghost"
             size="sm"
             className="h-8 w-8 p-0 rounded-full hover:bg-white"
           >
-            <TextFontIcon size={16} style={{ fontStyle: 'italic' }} />
-          </Button>
-        </div>
-        <div
-          className="h-6 w-px mx-1"
-          style={{ backgroundColor: "#E4E6EB" }}
-        />
-        <div className="flex items-center gap-0.5">
-          <Button
-            variant="ghost"
-            size="sm"
-            className="h-8 w-8 p-0 rounded-full hover:bg-white"
-          >
-            <ListViewIcon size={16} />
-          </Button>
-          <Button
-            variant="ghost"
-            size="sm"
-            className="h-8 w-8 p-0 rounded-full hover:bg-white"
-          >
-            <TextNumberSignIcon size={16} />
+            <TextBlock size={16} color="#2D2D2D" variant="Linear" />
           </Button>
         </div>
         <div
@@ -290,28 +268,48 @@ export default function NewNotePage() {
             size="sm"
             className="h-8 w-8 p-0 rounded-full hover:bg-white"
           >
-            <Link01Icon size={16} />
+            <Element3 size={16} color="#2D2D2D" variant="Linear" />
           </Button>
           <Button
             variant="ghost"
             size="sm"
             className="h-8 w-8 p-0 rounded-full hover:bg-white"
           >
-            <Image01Icon size={16} />
+            <Hashtag size={16} color="#2D2D2D" variant="Linear" />
+          </Button>
+        </div>
+        <div
+          className="h-6 w-px mx-1"
+          style={{ backgroundColor: "#E4E6EB" }}
+        />
+        <div className="flex items-center gap-0.5">
+          <Button
+            variant="ghost"
+            size="sm"
+            className="h-8 w-8 p-0 rounded-full hover:bg-white"
+          >
+            <Link2 size={16} color="#2D2D2D" variant="Linear" />
           </Button>
           <Button
             variant="ghost"
             size="sm"
             className="h-8 w-8 p-0 rounded-full hover:bg-white"
           >
-            <CodeIcon size={16} />
+            <Image size={16} color="#2D2D2D" variant="Linear" />
           </Button>
           <Button
             variant="ghost"
             size="sm"
             className="h-8 w-8 p-0 rounded-full hover:bg-white"
           >
-            <Table01Icon size={16} />
+            <Code size={16} color="#2D2D2D" variant="Linear" />
+          </Button>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="h-8 w-8 p-0 rounded-full hover:bg-white"
+          >
+            <Grid1 size={16} color="#2D2D2D" variant="Linear" />
           </Button>
         </div>
         <div
@@ -327,13 +325,13 @@ export default function NewNotePage() {
                 className="h-8 px-3 rounded-full hover:bg-white text-xs font-medium"
                 style={{ color: "#14462a" }}
               >
-                <Add01Icon size={16} className="mr-1.5" />
+                <Add size={16} color="#14462a" variant="Linear" className="mr-1.5" />
                 Insert Block
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start" className="rounded-2xl p-2 w-64">
               <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer">
-                <ChartHistogramIcon size={16} className="mr-2" style={{ color: "#14462a" }} />
+                <Chart size={16} color="#14462a" variant="Linear" className="mr-2" />
                 <div>
                   <div className="font-medium text-sm">AR Metrics</div>
                   <div className="text-xs" style={{ color: "#B0B3B8" }}>
@@ -342,7 +340,7 @@ export default function NewNotePage() {
                 </div>
               </DropdownMenuItem>
               <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer">
-                <FileValidationIcon size={16} className="mr-2" style={{ color: "#059669" }} />
+                <DocumentText size={16} color="#059669" variant="Linear" className="mr-2" />
                 <div>
                   <div className="font-medium text-sm">Invoice Table</div>
                   <div className="text-xs" style={{ color: "#B0B3B8" }}>
@@ -351,7 +349,7 @@ export default function NewNotePage() {
                 </div>
               </DropdownMenuItem>
               <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer">
-                <Invoice01Icon size={16} className="mr-2" style={{ color: "#F59E0B" }} />
+                <Sms size={16} color="#F59E0B" variant="Linear" className="mr-2" />
                 <div>
                   <div className="font-medium text-sm">Payment Summary</div>
                   <div className="text-xs" style={{ color: "#B0B3B8" }}>
@@ -368,14 +366,14 @@ export default function NewNotePage() {
             size="sm"
             className="h-8 w-8 p-0 rounded-full hover:bg-white"
           >
-            <Attachment02Icon size={16} />
+            <Paperclip size={16} color="#2D2D2D" variant="Linear" />
           </Button>
           <Button
             variant="ghost"
             size="sm"
             className="h-8 w-8 p-0 rounded-full hover:bg-white"
           >
-            <AtIcon size={16} />
+            <Sms size={16} color="#2D2D2D" variant="Linear" />
           </Button>
         </div>
       </div>

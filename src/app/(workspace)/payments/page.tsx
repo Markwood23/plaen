@@ -2,25 +2,25 @@
 
 import { Button } from "@/components/ui/button";
 import { 
-  Loading03Icon, 
-  Search01Icon, 
-  Calendar03Icon, 
-  Download01Icon, 
-  ArrowDataTransferVerticalIcon, 
-  MoreHorizontalIcon, 
-  CheckmarkSquare02Icon, 
-  Cancel01Icon, 
-  DollarSquareIcon, 
-  CreditCardIcon, 
-  SmartPhone01Icon, 
-  Building03Icon, 
-  Bitcoin01Icon, 
-  FileValidationIcon, 
-  ArrowLeft01Icon, 
-  ArrowRight01Icon, 
-  Clock01Icon, 
-  ViewIcon 
-} from "hugeicons-react";
+  RefreshCircle, 
+  SearchNormal1, 
+  Calendar as CalendarIcon, 
+  DocumentDownload, 
+  ArrowSwapVertical, 
+  More, 
+  TickSquare, 
+  CloseSquare, 
+  DollarSquare, 
+  Card, 
+  Mobile, 
+  Building, 
+  Bitcoin, 
+  DocumentText, 
+  ArrowLeft2, 
+  ArrowRight2, 
+  Clock, 
+  Eye 
+} from "iconsax-react";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useState } from "react";
@@ -242,19 +242,19 @@ export default function PaymentsPage() {
       case "Paid":
         return (
           <Badge style={{ backgroundColor: '#14462a', color: 'white', borderColor: '#14462a' }}>
-            <CheckmarkSquare02Icon size={14} /> Paid
+            <TickSquare size={14} /> Paid
           </Badge>
         );
       case "Partially Paid":
         return (
           <Badge style={{ backgroundColor: 'rgba(240, 242, 245, 0.5)', color: '#2D2D2D', borderColor: '#E4E6EB' }}>
-            <DollarSquareIcon size={14} /> Partial
+            <DollarSquare size={14} /> Partial
           </Badge>
         );
       case "Failed":
         return (
           <Badge style={{ backgroundColor: '#B0B3B8', color: 'white', borderColor: '#B0B3B8' }}>
-            <Cancel01Icon size={14} /> Failed
+            <CloseSquare size={14} /> Failed
           </Badge>
         );
       default:
@@ -346,7 +346,7 @@ export default function PaymentsPage() {
         <div className="group relative rounded-2xl p-6 transition-all duration-300 hover:scale-[1.02]" style={{ backgroundColor: 'rgba(5, 150, 105, 0.04)' }}>
           <div className="flex items-center justify-between mb-4">
             <div className="h-12 w-12 rounded-full flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110" style={{ backgroundColor: 'rgba(5, 150, 105, 0.12)' }}>
-              <DollarSquareIcon size={24} style={{ color: '#059669' }} />
+              <DollarSquare size={24} color="#059669" />
             </div>
             <div className="flex items-center gap-1 px-2 py-1 rounded-full" style={{ backgroundColor: 'rgba(5, 150, 105, 0.12)' }}>
               <span className="text-xs font-semibold" style={{ color: '#059669' }}>+12.5%</span>
@@ -363,7 +363,7 @@ export default function PaymentsPage() {
         <div className="group relative rounded-2xl p-6 transition-all duration-300 hover:scale-[1.02]" style={{ backgroundColor: 'rgba(20, 70, 42, 0.04)' }}>
           <div className="flex items-center justify-between mb-4">
             <div className="h-12 w-12 rounded-full flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110" style={{ backgroundColor: 'rgba(20, 70, 42, 0.12)' }}>
-              <Clock01Icon size={24} style={{ color: '#14462a' }} />
+              <Clock size={24} color="#14462a" />
             </div>
             <div className="flex items-center gap-1 px-2 py-1 rounded-full" style={{ backgroundColor: 'rgba(20, 70, 42, 0.12)' }}>
               <span className="text-xs font-semibold" style={{ color: '#14462a' }}>+8.2%</span>
@@ -380,7 +380,7 @@ export default function PaymentsPage() {
         <div className="group relative rounded-2xl p-6 transition-all duration-300 hover:scale-[1.02]" style={{ backgroundColor: 'rgba(20, 70, 42, 0.04)' }}>
           <div className="flex items-center justify-between mb-4">
             <div className="h-12 w-12 rounded-full flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110" style={{ backgroundColor: 'rgba(20, 70, 42, 0.12)' }}>
-              <Loading03Icon size={24} style={{ color: '#14462a' }} />
+              <RefreshCircle size={24} color="#14462a" />
             </div>
             <div className="flex items-center gap-1 px-2 py-1 rounded-full" style={{ backgroundColor: 'rgba(5, 150, 105, 0.12)' }}>
               <span className="text-xs font-semibold" style={{ color: '#059669' }}>-2.1d</span>
@@ -397,7 +397,7 @@ export default function PaymentsPage() {
         <div className="group relative rounded-2xl p-6 transition-all duration-300 hover:scale-[1.02]" style={{ backgroundColor: 'rgba(220, 38, 38, 0.04)' }}>
           <div className="flex items-center justify-between mb-4">
             <div className="h-12 w-12 rounded-full flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110" style={{ backgroundColor: 'rgba(220, 38, 38, 0.12)' }}>
-              <Cancel01Icon size={24} style={{ color: '#DC2626' }} />
+              <CloseSquare size={24} color="#DC2626" />
             </div>
             {failedPayments > 0 && (
               <div className="flex items-center gap-1 px-2 py-1 rounded-full" style={{ backgroundColor: 'rgba(220, 38, 38, 0.12)' }}>
@@ -430,7 +430,7 @@ export default function PaymentsPage() {
           <div>
             <label className="text-xs mb-2 block font-medium" style={{ color: '#65676B' }}>Search</label>
             <div className="relative group">
-              <Search01Icon size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 transition-colors" style={{ color: '#B0B3B8' }} />
+              <SearchNormal1 size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 transition-colors" style={{ color: '#B0B3B8' }} />
               <Input
                 placeholder="Invoice, contact, reference..."
                 className="pl-10 h-11 rounded-xl border-0 shadow-sm transition-all focus:shadow-md focus:scale-[1.01]"
@@ -483,37 +483,37 @@ export default function PaymentsPage() {
                 <SelectItem value="all">All Rails</SelectItem>
                 <SelectItem value="momo">
                   <div className="flex items-center gap-2">
-                    <SmartPhone01Icon size={14} style={{ color: '#14462a' }} />
+                    <Mobile size={14} color="#14462a" />
                     Mobile Money
                   </div>
                 </SelectItem>
                 <SelectItem value="bank">
                   <div className="flex items-center gap-2">
-                    <Building03Icon size={14} style={{ color: '#14462a' }} />
+                    <Building size={14} color="#14462a" />
                     Bank Transfer
                   </div>
                 </SelectItem>
                 <SelectItem value="card">
                   <div className="flex items-center gap-2">
-                    <CreditCardIcon size={14} style={{ color: '#14462a' }} />
+                    <Card size={14} color="#14462a" />
                     Card
                   </div>
                 </SelectItem>
                 <SelectItem value="crypto">
                   <div className="flex items-center gap-2">
-                    <Bitcoin01Icon size={14} style={{ color: '#14462a' }} />
+                    <Bitcoin size={14} color="#14462a" />
                     Crypto
                   </div>
                 </SelectItem>
                 <SelectItem value="cash">
                   <div className="flex items-center gap-2">
-                    <DollarSquareIcon size={14} style={{ color: '#14462a' }} />
+                    <DollarSquare size={14} color="#14462a" />
                     Cash
                   </div>
                 </SelectItem>
                 <SelectItem value="document">
                   <div className="flex items-center gap-2">
-                    <FileValidationIcon size={14} style={{ color: '#14462a' }} />
+                    <DocumentText size={14} color="#14462a" />
                     Document-only
                   </div>
                 </SelectItem>
@@ -531,7 +531,7 @@ export default function PaymentsPage() {
                   className="w-full h-11 rounded-xl justify-start text-left font-normal border-0 shadow-sm transition-all hover:shadow-md"
                   style={{ backgroundColor: '#FAFBFC', color: dateRange?.from ? '#2D2D2D' : '#B0B3B8' }}
                 >
-                  <Calendar03Icon className="mr-2" size={16} />
+                  <CalendarIcon className="mr-2" size={16} />
                   {dateRange?.from ? (
                     dateRange.to ? (
                       <>
@@ -568,7 +568,7 @@ export default function PaymentsPage() {
           <div className="flex items-center justify-between px-6 py-4 border-b" style={{ backgroundColor: 'rgba(20, 70, 42, 0.04)', borderColor: 'rgba(20, 70, 42, 0.1)' }}>
             <div className="flex items-center gap-3">
               <div className="h-8 w-8 rounded-full flex items-center justify-center" style={{ backgroundColor: 'rgba(20, 70, 42, 0.12)' }}>
-                <CheckmarkSquare02Icon size={16} style={{ color: '#14462a' }} />
+                <TickSquare size={16} color="#14462a" />
               </div>
               <div>
                 <p className="text-sm font-semibold" style={{ color: '#2D2D2D' }}>
@@ -586,7 +586,7 @@ export default function PaymentsPage() {
                 className="rounded-xl border-0 shadow-sm transition-all hover:shadow-md hover:scale-105" 
                 style={{ backgroundColor: 'white' }}
               >
-                <Download01Icon size={16} className="mr-2" /> Export Selected
+                <DocumentDownload size={16} className="mr-2" /> Export Selected
               </Button>
               <Button 
                 variant="ghost" 
@@ -613,7 +613,7 @@ export default function PaymentsPage() {
               </TableHead>
               <TableHead>
                 <button className="flex items-center gap-1 hover:text-[#14462a] transition-colors">
-                  Payment Date <ArrowDataTransferVerticalIcon size={14} />
+                  Payment Date <ArrowSwapVertical size={14} />
                 </button>
               </TableHead>
               <TableHead>Invoice</TableHead>
@@ -708,7 +708,7 @@ export default function PaymentsPage() {
                     <DropdownMenuTrigger asChild>
                       <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full hover:bg-[rgba(24,119,242,0.08)] transition-colors">
 
-                        <MoreHorizontalIcon size={16} />
+                        <More size={16} />
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end" className="rounded-2xl w-56 p-2" style={{ boxShadow: '0 4px 16px rgba(0, 0, 0, 0.1)' }}>
@@ -717,7 +717,7 @@ export default function PaymentsPage() {
                           className="h-8 w-8 rounded-full flex items-center justify-center transition-all"
                           style={{ backgroundColor: 'rgba(20, 70, 42, 0.08)' }}
                         >
-                          <FileValidationIcon size={16} style={{ color: '#14462a' }} />
+                          <DocumentText size={16} color="#14462a" />
                         </div>
                         <span className="text-sm font-medium group-hover:text-[#14462a] transition-all" style={{ color: '#2D2D2D' }}>
                           View Invoice
@@ -728,7 +728,7 @@ export default function PaymentsPage() {
                           className="h-8 w-8 rounded-full flex items-center justify-center transition-all"
                           style={{ backgroundColor: 'rgba(5, 150, 105, 0.08)' }}
                         >
-                          <ViewIcon size={16} style={{ color: '#059669' }} />
+                          <Eye size={16} color="#059669" />
                         </div>
                         <span className="text-sm font-medium group-hover:text-[#14462a] transition-all" style={{ color: '#2D2D2D' }}>
                           View Receipt
@@ -739,7 +739,7 @@ export default function PaymentsPage() {
                           className="h-8 w-8 rounded-full flex items-center justify-center transition-all"
                           style={{ backgroundColor: 'rgba(20, 70, 42, 0.08)' }}
                         >
-                          <Download01Icon size={16} style={{ color: '#14462a' }} />
+                          <DocumentDownload size={16} color="#14462a" />
                         </div>
                         <span className="text-sm font-medium group-hover:text-[#14462a] transition-all" style={{ color: '#2D2D2D' }}>
                           Download Receipt PDF
@@ -752,7 +752,7 @@ export default function PaymentsPage() {
                             className="h-8 w-8 rounded-full flex items-center justify-center transition-all"
                             style={{ backgroundColor: 'rgba(245, 158, 11, 0.08)' }}
                           >
-                            <Loading03Icon size={16} style={{ color: '#F59E0B' }} />
+                            <RefreshCircle size={16} color="#F59E0B" />
                           </div>
                           <span className="text-sm font-medium group-hover:text-[#14462a] transition-all" style={{ color: '#2D2D2D' }}>
                             Retry Payment
@@ -784,7 +784,7 @@ export default function PaymentsPage() {
               disabled={currentPage === 1}
               style={{ borderColor: '#E4E6EB' }}
             >
-              <ArrowLeft01Icon size={16} />
+              <ArrowLeft2 size={16} />
             </Button>
             {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
               <Button
@@ -824,7 +824,7 @@ export default function PaymentsPage() {
               disabled={currentPage === totalPages}
               style={{ borderColor: '#E4E6EB' }}
             >
-              <ArrowRight01Icon size={16} />
+              <ArrowRight2 size={16} />
             </Button>
           </div>
         </div>

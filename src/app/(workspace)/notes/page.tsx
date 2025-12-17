@@ -3,34 +3,31 @@
 import { useState } from "react";
 import Link from "next/link";
 import {
-  FileValidationIcon,
-  Add01Icon,
-  Search01Icon,
-  FilterIcon,
-  MoreVerticalIcon,
-  Calendar03Icon,
-  Tag01Icon,
-  Analytics01Icon,
-  Clock01Icon,
-  PinIcon,
-  ArchiveIcon,
-  Delete02Icon,
-  Download01Icon,
-  Share08Icon,
-  Folder01Icon,
-  StarIcon,
-  ArrowRight01Icon,
-  ChartHistogramIcon,
-  FileAttachmentIcon,
-  Invoice01Icon,
-  UserMultiple02Icon,
-  LayoutGridIcon,
-  ListViewIcon,
-  ArrowDataTransferVerticalIcon,
-  CheckmarkSquare02Icon,
-  Cancel01Icon,
-  ViewIcon,
-} from "hugeicons-react";
+  DocumentText,
+  Add,
+  SearchNormal1,
+  Filter,
+  More,
+  Calendar,
+  Tag,
+  Chart,
+  Clock,
+  Paperclip,
+  Archive,
+  Trash,
+  DocumentDownload,
+  Share,
+  Folder,
+  Star,
+  ArrowRight2,
+  People,
+  Category2,
+  Element3,
+  ArrowSwapVertical,
+  TickSquare,
+  CloseSquare,
+  Eye,
+} from "iconsax-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -56,10 +53,10 @@ const mockNotes = [
     updatedAt: "2024-11-18T14:22:00Z",
     author: "John Doe",
     isPinned: true,
-    hasAttachments: true,
+    hasPaperclipments: true,
     attachmentCount: 3,
     wordCount: 1247,
-    icon: ChartHistogramIcon,
+    icon: Chart,
     iconColor: "#14462a",
   },
   {
@@ -72,10 +69,10 @@ const mockNotes = [
     updatedAt: "2024-11-17T11:45:00Z",
     author: "John Doe",
     isPinned: false,
-    hasAttachments: false,
+    hasPaperclipments: false,
     attachmentCount: 0,
     wordCount: 892,
-    icon: Analytics01Icon,
+    icon: Chart,
     iconColor: "#059669",
   },
   {
@@ -88,10 +85,10 @@ const mockNotes = [
     updatedAt: "2024-11-16T10:30:00Z",
     author: "John Doe",
     isPinned: true,
-    hasAttachments: true,
+    hasPaperclipments: true,
     attachmentCount: 2,
     wordCount: 456,
-    icon: UserMultiple02Icon,
+    icon: People,
     iconColor: "#14462a",
   },
   {
@@ -104,10 +101,10 @@ const mockNotes = [
     updatedAt: "2024-11-01T16:45:00Z",
     author: "John Doe",
     isPinned: false,
-    hasAttachments: true,
+    hasPaperclipments: true,
     attachmentCount: 12,
     wordCount: 623,
-    icon: FileAttachmentIcon,
+    icon: Paperclip,
     iconColor: "#F59E0B",
   },
   {
@@ -120,10 +117,10 @@ const mockNotes = [
     updatedAt: "2024-11-14T09:20:00Z",
     author: "John Doe",
     isPinned: false,
-    hasAttachments: false,
+    hasPaperclipments: false,
     attachmentCount: 0,
     wordCount: 678,
-    icon: FileValidationIcon,
+    icon: DocumentText,
     iconColor: "#14462a",
   },
   {
@@ -136,22 +133,22 @@ const mockNotes = [
     updatedAt: "2024-11-13T15:10:00Z",
     author: "John Doe",
     isPinned: false,
-    hasAttachments: true,
+    hasPaperclipments: true,
     attachmentCount: 5,
     wordCount: 1089,
-    icon: Invoice01Icon,
+    icon: DocumentText,
     iconColor: "#DC2626",
   },
 ];
 
 // Categories/folders
 const categories = [
-  { name: "All Notes", count: 24, icon: FileValidationIcon, color: "#2D2D2D" },
-  { name: "AR Analysis", count: 8, icon: ChartHistogramIcon, color: "#14462a" },
-  { name: "Payment Analysis", count: 5, icon: Analytics01Icon, color: "#059669" },
-  { name: "Client Notes", count: 6, icon: UserMultiple02Icon, color: "#14462a" },
-  { name: "Tax Records", count: 3, icon: FileAttachmentIcon, color: "#F59E0B" },
-  { name: "Strategy", count: 2, icon: FileValidationIcon, color: "#14462a" },
+  { name: "All Notes", count: 24, icon: DocumentText, color: "#2D2D2D" },
+  { name: "AR Analysis", count: 8, icon: Chart, color: "#14462a" },
+  { name: "Payment Analysis", count: 5, icon: Chart, color: "#059669" },
+  { name: "Client Notes", count: 6, icon: People, color: "#14462a" },
+  { name: "Tax Records", count: 3, icon: Paperclip, color: "#F59E0B" },
+  { name: "Strategy", count: 2, icon: DocumentText, color: "#14462a" },
 ];
 export default function FinanceNotesPage() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -160,7 +157,7 @@ export default function FinanceNotesPage() {
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [showPinnedOnly, setShowPinnedOnly] = useState(false);
-  const [showAttachmentsOnly, setShowAttachmentsOnly] = useState(false);
+  const [showPaperclipmentsOnly, setShowPaperclipmentsOnly] = useState(false);
 
   // Calculate KPIs
   const totalNotes = mockNotes.length;
@@ -170,7 +167,7 @@ export default function FinanceNotesPage() {
     const now = new Date();
     return noteDate.getMonth() === now.getMonth() && noteDate.getFullYear() === now.getFullYear();
   }).length;
-  const totalAttachments = mockNotes.reduce((sum, n) => sum + n.attachmentCount, 0);
+  const totalPaperclipments = mockNotes.reduce((sum, n) => sum + n.attachmentCount, 0);
 
   // Filter notes based on criteria
   const filterNotes = (notes: typeof mockNotes) => {
@@ -202,8 +199,8 @@ export default function FinanceNotesPage() {
         return false;
       }
 
-      // Attachments filter
-      if (showAttachmentsOnly && !note.hasAttachments) {
+      // Paperclipments filter
+      if (showPaperclipmentsOnly && !note.hasPaperclipments) {
         return false;
       }
 
@@ -258,29 +255,29 @@ export default function FinanceNotesPage() {
                 className="h-8 w-8 p-0 rounded-full"
                 onClick={(e) => e.preventDefault()}
               >
-                <MoreVerticalIcon size={16} />
+                <More size={16} color="#B0B3B8" variant="Linear" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="rounded-2xl p-2">
               <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer">
-                <PinIcon size={16} className="mr-2" />
+                <Paperclip size={16} className="mr-2" color="#2D2D2D" variant="Linear" />
                 <span>{note.isPinned ? "Unpin" : "Pin"}</span>
               </DropdownMenuItem>
               <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer">
-                <Share08Icon size={16} className="mr-2" />
+                <Share size={16} className="mr-2" color="#2D2D2D" variant="Linear" />
                 <span>Share</span>
               </DropdownMenuItem>
               <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer">
-                <Download01Icon size={16} className="mr-2" />
+                <DocumentDownload size={16} className="mr-2" color="#2D2D2D" variant="Linear" />
                 <span>Export PDF</span>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer">
-                <ArchiveIcon size={16} className="mr-2" />
+                <Archive size={16} className="mr-2" color="#2D2D2D" variant="Linear" />
                 <span>Archive</span>
               </DropdownMenuItem>
               <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer text-red-600">
-                <Delete02Icon size={16} className="mr-2" />
+                <Trash size={16} className="mr-2" color="#DC2626" variant="Linear" />
                 <span>Delete</span>
               </DropdownMenuItem>
             </DropdownMenuContent>
@@ -335,12 +332,12 @@ export default function FinanceNotesPage() {
         >
           <div className="flex items-center gap-3 text-xs" style={{ color: "#B0B3B8" }}>
             <div className="flex items-center gap-1">
-              <Clock01Icon size={14} />
+              <Clock size={14} color="#B0B3B8" variant="Linear" />
               <span>{formatDate(note.updatedAt)}</span>
             </div>
-            {note.hasAttachments && (
+            {note.hasPaperclipments && (
               <div className="flex items-center gap-1">
-                <FileValidationIcon size={14} />
+                <DocumentText size={14} />
                 <span>{note.attachmentCount}</span>
               </div>
             )}
@@ -362,14 +359,14 @@ export default function FinanceNotesPage() {
               <TableHead className="w-12"></TableHead>
               <TableHead>
                 <button className="flex items-center gap-1 hover:text-[#14462a] transition-colors">
-                  Title <ArrowDataTransferVerticalIcon size={14} />
+                  Title <ArrowSwapVertical size={14} color="#B0B3B8" variant="Linear" />
                 </button>
               </TableHead>
               <TableHead>Category</TableHead>
               <TableHead>Tags</TableHead>
               <TableHead>
                 <button className="flex items-center gap-1 hover:text-[#14462a] transition-colors">
-                  Updated <ArrowDataTransferVerticalIcon size={14} />
+                  Updated <ArrowSwapVertical size={14} color="#B0B3B8" variant="Linear" />
                 </button>
               </TableHead>
               <TableHead>Words</TableHead>
@@ -388,7 +385,7 @@ export default function FinanceNotesPage() {
                 >
                   <TableCell>
                     {note.isPinned && (
-                      <PinIcon size={16} style={{ color: "#F59E0B" }} />
+                      <Paperclip size={16} color="#F59E0B" variant="Linear" />
                     )}
                   </TableCell>
                   <TableCell>
@@ -453,9 +450,9 @@ export default function FinanceNotesPage() {
                   <TableCell className="text-[#65676B]">{formatDate(note.updatedAt)}</TableCell>
                   <TableCell className="text-[#65676B]">{note.wordCount}</TableCell>
                   <TableCell>
-                    {note.hasAttachments && (
+                    {note.hasPaperclipments && (
                       <div className="flex items-center gap-1.5 text-sm" style={{ color: "#B0B3B8" }}>
-                        <FileValidationIcon size={14} />
+                        <DocumentText size={14} />
                         <span>{note.attachmentCount}</span>
                       </div>
                     )}
@@ -464,33 +461,33 @@ export default function FinanceNotesPage() {
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
                         <button className="inline-flex items-center rounded-full p-1.5 transition-all hover:bg-[rgba(24,119,242,0.04)]">
-                          <MoreVerticalIcon size={16} style={{ color: "#B0B3B8" }} />
+                          <More size={16} color="#B0B3B8" variant="Linear" />
                         </button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end" className="rounded-2xl p-2">
                         <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer">
-                          <ViewIcon size={16} className="mr-2" />
+                          <Eye size={16} className="mr-2" color="#2D2D2D" variant="Linear" />
                           <span>View Note</span>
                         </DropdownMenuItem>
                         <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer">
-                          <PinIcon size={16} className="mr-2" />
+                          <Paperclip size={16} className="mr-2" color="#2D2D2D" variant="Linear" />
                           <span>{note.isPinned ? "Unpin" : "Pin"}</span>
                         </DropdownMenuItem>
                         <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer">
-                          <Share08Icon size={16} className="mr-2" />
+                          <Share size={16} className="mr-2" color="#2D2D2D" variant="Linear" />
                           <span>Share</span>
                         </DropdownMenuItem>
                         <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer">
-                          <Download01Icon size={16} className="mr-2" />
+                          <DocumentDownload size={16} className="mr-2" color="#2D2D2D" variant="Linear" />
                           <span>Export PDF</span>
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer">
-                          <ArchiveIcon size={16} className="mr-2" />
+                          <Archive size={16} className="mr-2" color="#2D2D2D" variant="Linear" />
                           <span>Archive</span>
                         </DropdownMenuItem>
                         <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer text-red-600">
-                          <Delete02Icon size={16} className="mr-2" />
+                          <Trash size={16} className="mr-2" color="#DC2626" variant="Linear" />
                           <span>Delete</span>
                         </DropdownMenuItem>
                       </DropdownMenuContent>
@@ -530,7 +527,7 @@ export default function FinanceNotesPage() {
                 className={`h-8 px-3 rounded-full transition-all ${viewMode === "table" ? "bg-white shadow-sm" : ""}`}
                 onClick={() => setViewMode("table")}
               >
-                <ListViewIcon size={16} />
+                <Element3 size={16} color="#2D2D2D" variant="Linear" />
               </Button>
               <Button
                 variant="ghost"
@@ -538,7 +535,7 @@ export default function FinanceNotesPage() {
                 className={`h-8 px-3 rounded-full transition-all ${viewMode === "grid" ? "bg-white shadow-sm" : ""}`}
                 onClick={() => setViewMode("grid")}
               >
-                <LayoutGridIcon size={16} />
+                <Category2 size={16} color="#2D2D2D" variant="Linear" />
               </Button>
             </div>
 
@@ -547,7 +544,7 @@ export default function FinanceNotesPage() {
                 className="rounded-full h-10 px-5"
                 style={{ backgroundColor: "#14462a", color: "white", fontWeight: 600 }}
               >
-                <Add01Icon size={16} className="mr-2" />
+                <Add size={16} color="white" variant="Linear" className="mr-2" />
                 New Note
               </Button>
             </Link>
@@ -557,7 +554,7 @@ export default function FinanceNotesPage() {
               className="rounded-full h-10 px-4"
               style={{ borderColor: "#E4E6EB", color: "#2D2D2D" }}
             >
-              <Download01Icon size={14} className="mr-1.5" />
+              <DocumentDownload size={14} color="#2D2D2D" variant="Linear" className="mr-1.5" />
               Export
             </Button>
             <Button
@@ -566,7 +563,7 @@ export default function FinanceNotesPage() {
               className="rounded-full h-10 px-4"
               style={{ borderColor: "#E4E6EB", color: "#2D2D2D" }}
             >
-              <Share08Icon size={14} className="mr-1.5" />
+              <Share size={14} color="#2D2D2D" variant="Linear" className="mr-1.5" />
               Share
             </Button>
           </div>
@@ -578,28 +575,28 @@ export default function FinanceNotesPage() {
             {
               label: "Total Notes",
               value: totalNotes,
-              icon: FileValidationIcon,
+              icon: DocumentText,
               color: "#14462a",
               bg: "rgba(20, 70, 42, 0.04)",
             },
             {
               label: "Pinned",
               value: pinnedNotes,
-              icon: PinIcon,
+              icon: Paperclip,
               color: "#F59E0B",
               bg: "rgba(245, 158, 11, 0.04)",
             },
             {
               label: "This Month",
               value: notesThisMonth,
-              icon: Calendar03Icon,
+              icon: Calendar,
               color: "#059669",
               bg: "rgba(5, 150, 105, 0.04)",
             },
             {
-              label: "Attachments",
-              value: totalAttachments,
-              icon: FileValidationIcon,
+              label: "Paperclipments",
+              value: totalPaperclipments,
+              icon: DocumentText,
               color: "#14462a",
               bg: "rgba(20, 70, 42, 0.04)",
             },
@@ -639,10 +636,11 @@ export default function FinanceNotesPage() {
           style={{ backgroundColor: "#FAFBFC" }}
         >
           <div className="flex-1 relative">
-            <Search01Icon
+            <SearchNormal1
               size={16}
+              color="#B0B3B8"
+              variant="Linear"
               className="absolute left-4 top-1/2 -translate-y-1/2"
-              style={{ color: "#B0B3B8" }}
             />
             <Input
               type="text"
@@ -663,7 +661,7 @@ export default function FinanceNotesPage() {
             style={{ borderColor: "#E4E6EB", backgroundColor: "#FAFBFC" }}
             onClick={() => setShowFilters(!showFilters)}
           >
-            <FilterIcon size={14} className="mr-1.5" />
+            <Filter size={14} color="#2D2D2D" variant="Linear" className="mr-1.5" />
             {showFilters ? "Hide Filters" : "Filter"}
           </Button>
         </div>
@@ -692,7 +690,7 @@ export default function FinanceNotesPage() {
                   setSelectedCategory("all");
                   setSelectedTags([]);
                   setShowPinnedOnly(false);
-                  setShowAttachmentsOnly(false);
+                  setShowPaperclipmentsOnly(false);
                 }}
               >
                 Clear all
@@ -785,14 +783,14 @@ export default function FinanceNotesPage() {
                     }}
                     onClick={() => setShowPinnedOnly(!showPinnedOnly)}
                   >
-                    <PinIcon size={14} className="mr-1.5" />
+                    <Paperclip size={14} color="#2D2D2D" variant="Linear" className="mr-1.5" />
                     Pinned only
                   </Button>
                   <Button
-                    variant={showAttachmentsOnly ? "default" : "outline"}
+                    variant={showPaperclipmentsOnly ? "default" : "outline"}
                     size="sm"
                     className="rounded-xl justify-start h-8 text-xs"
-                    style={showAttachmentsOnly ? {
+                    style={showPaperclipmentsOnly ? {
                       backgroundColor: "#14462a",
                       color: "white",
                       borderColor: "#14462a"
@@ -801,9 +799,9 @@ export default function FinanceNotesPage() {
                       borderColor: "#E4E6EB",
                       color: "#2D2D2D"
                     }}
-                    onClick={() => setShowAttachmentsOnly(!showAttachmentsOnly)}
+                    onClick={() => setShowPaperclipmentsOnly(!showPaperclipmentsOnly)}
                   >
-                    <FileValidationIcon size={14} className="mr-1.5" />
+                    <DocumentText size={14} color="#2D2D2D" variant="Linear" className="mr-1.5" />
                     With attachments
                   </Button>
                 </div>
@@ -824,10 +822,10 @@ export default function FinanceNotesPage() {
                   {showPinnedOnly && (
                     <div className="mb-1">Pinned only</div>
                   )}
-                  {showAttachmentsOnly && (
+                  {showPaperclipmentsOnly && (
                     <div className="mb-1">With attachments</div>
                   )}
-                  {selectedCategory === "all" && selectedTags.length === 0 && !showPinnedOnly && !showAttachmentsOnly && (
+                  {selectedCategory === "all" && selectedTags.length === 0 && !showPinnedOnly && !showPaperclipmentsOnly && (
                     <div>No filters applied</div>
                   )}
                 </div>
@@ -841,23 +839,23 @@ export default function FinanceNotesPage() {
       <Tabs defaultValue="all" className="flex-1 flex flex-col">
         <TabsList className="mb-6" style={{ backgroundColor: "#FAFBFC" }}>
           <TabsTrigger value="all">
-            <FileValidationIcon size={16} />
+            <DocumentText size={16} color="#2D2D2D" variant="Linear" />
             All Notes
           </TabsTrigger>
           <TabsTrigger value="ar">
-            <ChartHistogramIcon size={16} />
+            <Chart size={16} color="#2D2D2D" variant="Linear" />
             AR Analysis
           </TabsTrigger>
           <TabsTrigger value="payment">
-            <Analytics01Icon size={16} />
+            <Chart size={16} color="#2D2D2D" variant="Linear" />
             Payment Analysis
           </TabsTrigger>
           <TabsTrigger value="client">
-            <UserMultiple02Icon size={16} />
+            <People size={16} color="#2D2D2D" variant="Linear" />
             Client Notes
           </TabsTrigger>
           <TabsTrigger value="tax">
-            <FileAttachmentIcon size={16} />
+            <Paperclip size={16} color="#2D2D2D" variant="Linear" />
             Tax Records
           </TabsTrigger>
         </TabsList>
@@ -870,7 +868,7 @@ export default function FinanceNotesPage() {
               {filterNotes(mockNotes).filter((n) => n.isPinned).length > 0 && (
                 <div className="mb-8">
                   <div className="flex items-center gap-2 mb-4">
-                    <PinIcon size={16} style={{ color: "#F59E0B" }} />
+                    <Paperclip size={16} color="#F59E0B" variant="Linear" />
                     <h2 className="text-sm font-semibold" style={{ color: "#B0B3B8" }}>
                       PINNED
                     </h2>

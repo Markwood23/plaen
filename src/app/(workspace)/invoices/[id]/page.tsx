@@ -12,29 +12,27 @@ import {
 import Image from "next/image";
 // Removed tabs to match clean single-page layout
 import { 
-  ArrowLeft01Icon, 
-  Download01Icon, 
-  SentIcon, 
-  PencilEdit01Icon, 
-  DollarSquareIcon, 
-  CheckmarkSquare02Icon, 
-  Clock01Icon,
-  FileValidationIcon,
-  MailAtSign01Icon,
-  Call02Icon,
-  Building03Icon,
-  Copy01Icon,
-  ViewIcon,
-  MoreVerticalIcon,
-  CreditCardIcon,
-  Message01Icon,
-  PauseIcon,
-  MoreHorizontalIcon,
-  File01Icon,
-  Files01Icon,
-  Cancel01Icon,
-  PrinterIcon
-} from "hugeicons-react";
+  ArrowLeft2, 
+  DocumentDownload, 
+  Send2, 
+  Edit2, 
+  DollarSquare, 
+  TickSquare, 
+  Clock,
+  DocumentText,
+  Sms,
+  Call,
+  Building,
+  Copy,
+  Eye,
+  More,
+  Card,
+  Message,
+  Pause,
+  Document,
+  CloseSquare,
+  Printer
+} from "iconsax-react";
 import Link from "next/link";
 import { use, useState } from "react";
 
@@ -173,11 +171,11 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
   const getActivityIcon = (type: string) => {
     switch (type) {
       case "sent":
-        return <SentIcon size={12} style={{ color: '#14462a' }} />;
+        return <Send2 size={12} color="#14462a" />;
       case "finalized":
-        return <CheckmarkSquare02Icon size={12} style={{ color: '#059669' }} />;
+        return <TickSquare size={12} color="#059669" />;
       case "created":
-        return <FileValidationIcon size={12} style={{ color: '#14462a' }} />;
+        return <DocumentText size={12} color="#14462a" />;
       default:
         return <div className="h-2 w-2 rounded-full bg-white" />;
     }
@@ -204,7 +202,7 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
           <div className="flex items-center gap-4">
             <Button variant="ghost" size="sm" asChild className="gap-2 -ml-2 rounded-full hover:bg-[rgba(240,242,245,0.5)]">
               <Link href="/invoices">
-                <ArrowLeft01Icon size={16} />
+                <ArrowLeft2 size={16} />
                 Back
               </Link>
             </Button>
@@ -244,7 +242,7 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
                 className="rounded-full px-5 h-9" 
                 style={{ backgroundColor: '#14462a', color: 'white', fontWeight: 500 }}
               >
-                <DollarSquareIcon size={14} className="mr-1.5" />
+                <DollarSquare size={14} className="mr-1.5" />
                 Record Payment
               </Button>
             )}
@@ -255,7 +253,7 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
                 className="rounded-full px-5 h-9 hover:bg-[rgba(240,242,245,0.8)]" 
                 style={{ borderColor: '#DC2626', color: '#DC2626', fontWeight: 400 }}
               >
-                <MailAtSign01Icon size={14} className="mr-1.5" />
+                <Sms size={14} className="mr-1.5" />
                 Send Reminder
               </Button>
             )}
@@ -266,7 +264,7 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
               style={{ borderColor: '#E4E6EB', color: '#2D2D2D', fontWeight: 400 }}
               onClick={copyPaymentLink}
             >
-              <Copy01Icon size={14} className="mr-1.5" />
+              <Copy size={14} className="mr-1.5" />
               {copiedPaymentLink ? 'Copied!' : 'Copy Payment Link'}
             </Button>
           </div>
@@ -299,7 +297,7 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
             asChild
           >
             <Link href={`/invoices/${id}/preview`}>
-              <ViewIcon size={14} className="mr-1.5" />
+              <Eye size={14} className="mr-1.5" />
               Preview
             </Link>
           </Button>
@@ -326,7 +324,7 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
             }}
             onClick={() => setActiveAction('edit')}
           >
-            <PencilEdit01Icon size={14} className="mr-1.5" />
+            <Edit2 size={14} className="mr-1.5" />
             Edit
           </Button>
           <Button 
@@ -352,7 +350,7 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
             }}
             onClick={() => setActiveAction('download')}
           >
-            <Download01Icon size={14} className="mr-1.5" />
+            <DocumentDownload size={14} className="mr-1.5" />
             Download PDF
           </Button>
           <Button 
@@ -378,7 +376,7 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
             }}
             onClick={() => setActiveAction('attachment')}
           >
-            <File01Icon size={14} className="mr-1.5" />
+            <Document size={14} className="mr-1.5" />
             Add attachment
           </Button>
           <Button 
@@ -404,7 +402,7 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
             }}
             onClick={() => setActiveAction('note')}
           >
-            <Message01Icon size={14} className="mr-1.5" />
+            <Message size={14} className="mr-1.5" />
             Add note
           </Button>
           <DropdownMenu onOpenChange={(open) => setActiveAction(open ? 'more' : null)}>
@@ -431,7 +429,7 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
                   }
                 }}
               >
-                <MoreHorizontalIcon size={14} className="mr-1.5" />
+                <More size={14} className="mr-1.5" />
                 More
               </Button>
             </DropdownMenuTrigger>
@@ -441,7 +439,7 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
                   className="h-8 w-8 rounded-full flex items-center justify-center transition-all"
                   style={{ backgroundColor: 'rgba(20, 70, 42, 0.08)' }}
                 >
-                  <Files01Icon size={16} style={{ color: '#14462a' }} />
+                  <Document size={16} color="#14462a" />
                 </div>
                 <span className="text-sm font-medium group-hover:text-[#14462a] transition-all" style={{ color: '#2D2D2D' }}>Duplicate</span>
               </DropdownMenuItem>
@@ -450,7 +448,7 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
                   className="h-8 w-8 rounded-full flex items-center justify-center transition-all"
                   style={{ backgroundColor: 'rgba(20, 70, 42, 0.08)' }}
                 >
-                  <PrinterIcon size={16} style={{ color: '#14462a' }} />
+                  <Printer size={16} color="#14462a" />
                 </div>
                 <span className="text-sm font-medium group-hover:text-[#14462a] transition-all" style={{ color: '#2D2D2D' }}>Print</span>
               </DropdownMenuItem>
@@ -459,7 +457,7 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
                   className="h-8 w-8 rounded-full flex items-center justify-center transition-all"
                   style={{ backgroundColor: 'rgba(5, 150, 105, 0.08)' }}
                 >
-                  <ViewIcon size={16} style={{ color: '#059669' }} />
+                  <Eye size={16} color="#059669" />
                 </div>
                 <span className="text-sm font-medium group-hover:text-[#14462a] transition-all" style={{ color: '#2D2D2D' }}>View public page</span>
               </DropdownMenuItem>
@@ -469,7 +467,7 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
                   className="h-8 w-8 rounded-full flex items-center justify-center transition-all"
                   style={{ backgroundColor: 'rgba(220, 38, 38, 0.08)' }}
                 >
-                  <Cancel01Icon size={16} style={{ color: '#DC2626' }} />
+                  <CloseSquare size={16} color="#DC2626" />
                 </div>
                 <span className="text-sm font-medium group-hover:text-red-600 transition-all" style={{ color: '#DC2626' }}>Cancel invoice</span>
               </DropdownMenuItem>
@@ -491,7 +489,7 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
               </p>
             </div>
             <Button size="sm" className="rounded-full px-5 py-2 h-auto" style={{ backgroundColor: '#14462a', color: 'white', fontWeight: 500 }}>
-              <DollarSquareIcon size={14} className="mr-1.5" />
+              <DollarSquare size={14} className="mr-1.5" />
               Record Payment
             </Button>
           </div>
@@ -635,7 +633,7 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
                 <div key={payment.id} className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <div className="h-10 w-10 rounded-full flex items-center justify-center" style={{ backgroundColor: 'rgba(20, 70, 42, 0.08)' }}>
-                      <CheckmarkSquare02Icon size={18} style={{ color: '#14462a' }} />
+                      <TickSquare size={18} color="#14462a" />
                     </div>
                     <div>
                       <p className="text-sm font-medium" style={{ color: '#2D2D2D' }}>
@@ -722,7 +720,7 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
                         e.currentTarget.style.color = '#2D2D2D';
                       }}
                     >
-                      <Download01Icon size={14} className="mr-1.5" />
+                      <DocumentDownload size={14} className="mr-1.5" />
                       Download
                     </Button>
                   </div>

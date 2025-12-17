@@ -4,8 +4,8 @@ import { DocumentText, Profile2User, Wallet3, ReceiptText, NotificationBing } fr
 // Accent color palette - complements primary green (#14462a)
 const accentColors = {
   emerald: "#059669",   // Fresh green - invoicing
-  indigo: "#4F46E5",    // Deep purple - contacts/people
-  amber: "#D97706",     // Warm amber - payments/money
+  warmAmber: "#B45309", // Warm amber - contacts/people
+  amber: "#D97706",     // Bright amber - payments/money
   rose: "#E11D48",      // Vibrant rose - receipts/docs
   sky: "#0284C7",       // Bright sky - reminders/notifications
 };
@@ -21,7 +21,7 @@ const pillars = [
     icon: Profile2User,
     title: "Contact Management",
     description: "Store and organize client information with custom fields and payment preferences.",
-    color: accentColors.indigo,
+    color: accentColors.warmAmber,
   },
   {
     icon: Wallet3,

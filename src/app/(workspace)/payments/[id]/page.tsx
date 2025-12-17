@@ -11,22 +11,22 @@ import {
 } from "@/components/ui/dropdown-menu";
 import Image from "next/image";
 import { 
-  ArrowLeft01Icon, 
-  Download01Icon, 
-  CheckmarkSquare02Icon, 
-  DollarSquareIcon,
-  FileValidationIcon,
-  MailAtSign01Icon,
-  Call02Icon,
-  Building03Icon,
-  Copy01Icon,
-  MoreVerticalIcon,
-  PrinterIcon,
-  Loading03Icon,
-  Clock01Icon,
-  Cancel01Icon,
-  AlertCircleIcon
-} from "hugeicons-react";
+  ArrowLeft2, 
+  DocumentDownload, 
+  TickSquare, 
+  DollarSquare,
+  DocumentText,
+  Sms,
+  Call,
+  Building,
+  Copy,
+  More,
+  Printer,
+  RefreshCircle,
+  Clock,
+  CloseSquare,
+  InfoCircle
+} from "iconsax-react";
 import Link from "next/link";
 import { use, useState } from "react";
 
@@ -130,11 +130,11 @@ export default function PaymentDetailPage({ params }: { params: Promise<{ id: st
   const getActivityIcon = (type: string) => {
     switch (type) {
       case "confirmed":
-        return <CheckmarkSquare02Icon size={12} style={{ color: '#059669' }} />;
+        return <TickSquare size={12} color="#059669" />;
       case "received":
-        return <DollarSquareIcon size={12} style={{ color: '#14462a' }} />;
+        return <DollarSquare size={12} color="#14462a" />;
       case "initiated":
-        return <Loading03Icon size={12} style={{ color: '#14462a' }} />;
+        return <RefreshCircle size={12} color="#14462a" />;
       default:
         return <div className="h-2 w-2 rounded-full bg-white" />;
     }
@@ -163,7 +163,7 @@ export default function PaymentDetailPage({ params }: { params: Promise<{ id: st
           <div className="flex items-center gap-4">
             <Button variant="ghost" size="sm" asChild className="gap-2 -ml-2 rounded-full hover:bg-[rgba(240,242,245,0.5)]">
               <Link href="/payments">
-                <ArrowLeft01Icon size={16} />
+                <ArrowLeft2 size={16} />
                 Back
               </Link>
             </Button>
@@ -179,7 +179,7 @@ export default function PaymentDetailPage({ params }: { params: Promise<{ id: st
                     borderColor: '#14462a',
                     fontSize: '12px',
                     fontWeight: 500
-                  }}>    <CheckmarkSquare02Icon size={12} className="mr-1" /> Paid
+                  }}>    <TickSquare size={12} className="mr-1" /> Paid
                   </Badge>
                 )}
                 {payment.status === "Partially Paid" && (
@@ -189,7 +189,7 @@ export default function PaymentDetailPage({ params }: { params: Promise<{ id: st
                     borderColor: '#F59E0B',
                     fontSize: '12px',
                     fontWeight: 500
-                  }}>    <DollarSquareIcon size={12} className="mr-1" /> Partial Payment
+                  }}>    <DollarSquare size={12} className="mr-1" /> Partial Payment
                   </Badge>
                 )}
                 {payment.status === "Failed" && (
@@ -199,7 +199,7 @@ export default function PaymentDetailPage({ params }: { params: Promise<{ id: st
                     borderColor: '#DC2626',
                     fontSize: '12px',
                     fontWeight: 500
-                  }}>    <Cancel01Icon size={12} className="mr-1" /> Failed
+                  }}>    <CloseSquare size={12} className="mr-1" /> Failed
                   </Badge>
                 )}
                 {payment.isOnTime && (
@@ -209,7 +209,7 @@ export default function PaymentDetailPage({ params }: { params: Promise<{ id: st
                     borderColor: '#059669',
                     fontSize: '12px',
                     fontWeight: 500
-                  }}>    <Clock01Icon size={12} className="mr-1" /> On-time (≤3 days)
+                  }}>    <Clock size={12} className="mr-1" /> On-time (≤3 days)
                   </Badge>
                 )}
               </div>
@@ -244,12 +244,12 @@ export default function PaymentDetailPage({ params }: { params: Promise<{ id: st
             >
               {copiedRef ? (
                 <>
-                  <CheckmarkSquare02Icon size={16} style={{ color: '#059669' }} />
+                  <TickSquare size={16} color="#059669" />
                   <span style={{ color: '#059669' }}>Copied</span>
                 </>
               ) : (
                 <>
-                  <Copy01Icon size={16} />
+                  <Copy size={16} />
                   Copy Reference
                 </>
               )}
@@ -259,7 +259,7 @@ export default function PaymentDetailPage({ params }: { params: Promise<{ id: st
               className="rounded-full gap-2 shadow-sm hover:shadow-md transition-all" 
               style={{ backgroundColor: '#14462a', color: 'white', fontWeight: 500 }}
             >
-              <Download01Icon size={16} />
+              <DocumentDownload size={16} />
               Download Receipt
             </Button>
             <DropdownMenu>
@@ -270,7 +270,7 @@ export default function PaymentDetailPage({ params }: { params: Promise<{ id: st
                   className="rounded-full hover:bg-[rgba(24,119,242,0.04)] hover:text-[#14462a] hover:border-[#14462a] transition-all" 
                   style={{ borderColor: '#E4E6EB' }}
                 >
-                  <MoreVerticalIcon size={16} />
+                  <More size={16} />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="rounded-2xl w-56 p-2" style={{ boxShadow: '0 4px 16px rgba(0, 0, 0, 0.1)' }}>
@@ -279,7 +279,7 @@ export default function PaymentDetailPage({ params }: { params: Promise<{ id: st
                     className="h-8 w-8 rounded-full flex items-center justify-center transition-all"
                     style={{ backgroundColor: 'rgba(20, 70, 42, 0.08)' }}
                   >
-                    <PrinterIcon size={16} style={{ color: '#14462a' }} />
+                    <Printer size={16} color="#14462a" />
                   </div>
                   <span className="text-sm font-medium group-hover:text-[#14462a] transition-all" style={{ color: '#2D2D2D' }}>
                     Print Receipt
@@ -290,7 +290,7 @@ export default function PaymentDetailPage({ params }: { params: Promise<{ id: st
                     className="h-8 w-8 rounded-full flex items-center justify-center transition-all"
                     style={{ backgroundColor: 'rgba(5, 150, 105, 0.08)' }}
                   >
-                    <MailAtSign01Icon size={16} style={{ color: '#059669' }} />
+                    <Sms size={16} color="#059669" />
                   </div>
                   <span className="text-sm font-medium group-hover:text-[#14462a] transition-all" style={{ color: '#2D2D2D' }}>
                     Email Receipt
@@ -302,7 +302,7 @@ export default function PaymentDetailPage({ params }: { params: Promise<{ id: st
                     className="h-8 w-8 rounded-full flex items-center justify-center transition-all"
                     style={{ backgroundColor: 'rgba(220, 38, 38, 0.08)' }}
                   >
-                    <AlertCircleIcon size={16} style={{ color: '#DC2626' }} />
+                    <InfoCircle size={16} color="#DC2626" />
                   </div>
                   <span className="text-sm font-medium group-hover:text-red-600 transition-all" style={{ color: '#DC2626' }}>
                     Report Issue
@@ -414,7 +414,7 @@ export default function PaymentDetailPage({ params }: { params: Promise<{ id: st
               >
                 <Link href={`/invoices/${payment.invoice.id}`}>
                   View Invoice
-                  <ArrowLeft01Icon size={14} className="rotate-180" />
+                  <ArrowLeft2 size={14} className="rotate-180" />
                 </Link>
               </Button>
             </div>
@@ -499,7 +499,7 @@ export default function PaymentDetailPage({ params }: { params: Promise<{ id: st
                 <div className="py-3">
                   <p className="text-sm mb-1" style={{ color: '#B0B3B8', fontWeight: 500 }}>Company</p>
                   <div className="flex items-center gap-2">
-                    <Building03Icon size={16} style={{ color: '#B0B3B8' }} />
+                    <Building size={16} color="#B0B3B8" />
                     <p className="text-sm" style={{ color: '#2D2D2D' }}>{payment.invoice.company}</p>
                   </div>
                 </div>
@@ -508,7 +508,7 @@ export default function PaymentDetailPage({ params }: { params: Promise<{ id: st
               <div className="py-3">
                 <p className="text-sm mb-1" style={{ color: '#B0B3B8', fontWeight: 500 }}>Email</p>
                 <div className="flex items-center gap-2">
-                  <MailAtSign01Icon size={16} style={{ color: '#B0B3B8' }} />
+                  <Sms size={16} color="#B0B3B8" />
                   <p className="text-sm" style={{ color: '#2D2D2D' }}>{payment.invoice.email}</p>
                 </div>
               </div>
@@ -516,7 +516,7 @@ export default function PaymentDetailPage({ params }: { params: Promise<{ id: st
               <div className="py-3">
                 <p className="text-sm mb-1" style={{ color: '#B0B3B8', fontWeight: 500 }}>Phone</p>
                 <div className="flex items-center gap-2">
-                  <Call02Icon size={16} style={{ color: '#B0B3B8' }} />
+                  <Call size={16} color="#B0B3B8" />
                   <p className="text-sm" style={{ color: '#2D2D2D' }}>{payment.invoice.phone}</p>
                 </div>
               </div>
@@ -561,7 +561,7 @@ export default function PaymentDetailPage({ params }: { params: Promise<{ id: st
                   className="h-10 w-10 rounded-full flex items-center justify-center transition-all"
                   style={{ backgroundColor: 'rgba(20, 70, 42, 0.08)' }}
                 >
-                  <Download01Icon size={20} style={{ color: '#14462a' }} />
+                  <DocumentDownload size={20} color="#14462a" />
                 </div>
                 <div className="flex-1 text-left">
                   <p className="text-sm font-medium transition-all group-hover:text-[#14462a]" style={{ color: '#2D2D2D' }}>
@@ -578,7 +578,7 @@ export default function PaymentDetailPage({ params }: { params: Promise<{ id: st
                   className="h-10 w-10 rounded-full flex items-center justify-center transition-all"
                   style={{ backgroundColor: 'rgba(20, 70, 42, 0.08)' }}
                 >
-                  <PrinterIcon size={20} style={{ color: '#14462a' }} />
+                  <Printer size={20} color="#14462a" />
                 </div>
                 <div className="flex-1 text-left">
                   <p className="text-sm font-medium transition-all group-hover:text-[#14462a]" style={{ color: '#2D2D2D' }}>
@@ -595,7 +595,7 @@ export default function PaymentDetailPage({ params }: { params: Promise<{ id: st
                   className="h-10 w-10 rounded-full flex items-center justify-center transition-all"
                   style={{ backgroundColor: 'rgba(5, 150, 105, 0.08)' }}
                 >
-                  <MailAtSign01Icon size={20} style={{ color: '#059669' }} />
+                  <Sms size={20} color="#059669" />
                 </div>
                 <div className="flex-1 text-left">
                   <p className="text-sm font-medium transition-all group-hover:text-[#14462a]" style={{ color: '#2D2D2D' }}>

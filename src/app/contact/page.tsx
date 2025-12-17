@@ -96,8 +96,8 @@ export default function ContactPage() {
 
                     <div className="group rounded-2xl border border-gray-200 bg-white p-6 transition hover:border-black/20 hover:shadow-lg">
                       <div className="flex items-start gap-4">
-                        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#4F46E5]/10 transition group-hover:bg-[#4F46E5]">
-                          <MessageText size={20} color="#4F46E5" variant="Bulk" className="group-hover:hidden" />
+                        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#14462a]/10 transition group-hover:bg-[#14462a]">
+                          <MessageText size={20} color="#14462a" variant="Bulk" className="group-hover:hidden" />
                           <MessageText size={20} color="white" variant="Bulk" className="hidden group-hover:block" />
                         </div>
                         <div>

@@ -24,12 +24,12 @@ import { DashboardPreview } from "@/components/marketing/dashboard-preview";
 // Accent color palette for icons
 const accentColors = {
   emerald: "#059669",   // Fresh green - invoicing/success
-  indigo: "#4F46E5",    // Deep purple - contacts/people  
-  amber: "#D97706",     // Warm amber - payments/money
+  warmAmber: "#B45309", // Warm amber - contacts/people  
+  amber: "#D97706",     // Bright amber - payments/money
   rose: "#E11D48",      // Vibrant rose - receipts/docs
   sky: "#0284C7",       // Bright sky - reminders/notifications
-  violet: "#7C3AED",    // Rich violet - analytics
-  teal: "#0D9488",      // Teal - security/trust
+  teal: "#0D9488",      // Teal - analytics/security
+  brand: "#14462a",     // Brand green - primary
   orange: "#EA580C",    // Orange - speed/time
 };
 
@@ -38,7 +38,7 @@ const modules = [
     title: "Personal or Business",
     copy: "Choose your setup. Freelancers add their name and payout method. Companies add branding, logo, and tax details. Your information automatically populates future invoices.",
     badge: "Tailored onboarding",
-    color: accentColors.indigo,
+    color: accentColors.warmAmber,
   },
   {
     title: "Invoice Builder",
@@ -76,7 +76,7 @@ const steps = [
     title: "Capture context",
     description:
       "Import a client or create inline. Choose personal or business sender details. Plaen keeps both on hand.",
-    color: accentColors.indigo,
+    color: accentColors.warmAmber,
   },
   {
     title: "Compose & preview",
@@ -314,14 +314,14 @@ export default function Home() {
 
                 <article className="group relative overflow-hidden rounded-2xl border border-gray-200 bg-gray-50/50 p-8 shadow-[0_16px_60px_rgba(15,15,15,0.05)] transition hover:-translate-y-1 hover:border-black/80 hover:shadow-[0_24px_80px_rgba(15,15,15,0.12)] lg:col-span-6">
                   <div className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
-                    <div className="absolute -right-12 top-8 h-32 w-32 rounded-full blur-2xl" style={{ backgroundColor: `${accentColors.violet}20` }} />
+                    <div className="absolute -right-12 top-8 h-32 w-32 rounded-full blur-2xl" style={{ backgroundColor: `${accentColors.teal}20` }} />
                   </div>
                   <div className="relative space-y-4">
                     <div 
                       className="h-12 w-12 rounded-2xl flex items-center justify-center transition-all group-hover:scale-110"
-                      style={{ backgroundColor: `${accentColors.violet}12`, border: `1px solid ${accentColors.violet}25` }}
+                      style={{ backgroundColor: `${accentColors.teal}12`, border: `1px solid ${accentColors.teal}25` }}
                     >
-                      <Activity size={24} color={accentColors.violet} variant="Bulk" />
+                      <Activity size={24} color={accentColors.teal} variant="Bulk" />
                     </div>
                     <h3 className="text-lg font-semibold text-black">Live Composition Feedback</h3>
                     <p className="text-sm leading-6 text-gray-600">

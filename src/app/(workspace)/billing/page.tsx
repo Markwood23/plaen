@@ -4,11 +4,11 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { 
-  CheckmarkCircle02Icon, 
-  Download04Icon,
-  CreditCardIcon,
-  Calendar03Icon 
-} from "hugeicons-react";
+  TickCircle, 
+  DocumentDownload,
+  Card,
+  Calendar 
+} from "iconsax-react";
 
 export default function WorkspaceBillingPage() {
   const [showChangePlanModal, setShowChangePlanModal] = useState(false);
@@ -92,7 +92,7 @@ export default function WorkspaceBillingPage() {
                   alert('Payment method update coming soon!');
                 }}
               >
-                <CreditCardIcon size={16} className="mr-2" />
+                <Card size={16} color="#2D2D2D" className="mr-2" />
                 Update Payment Method
               </Button>
             </div>
@@ -105,7 +105,7 @@ export default function WorkspaceBillingPage() {
             'Dual currency invoicing',
           ].map((item) => (
             <div key={item} className="flex items-start gap-2">
-              <CheckmarkCircle02Icon size={16} className="mt-0.5 flex-shrink-0" style={{ color: '#059669' }} />
+              <TickCircle size={16} color="#059669" className="mt-0.5 flex-shrink-0" />
               <span className="text-sm" style={{ color: '#65676B' }}>{item}</span>
             </div>
           ))}
@@ -133,7 +133,7 @@ export default function WorkspaceBillingPage() {
                   className="h-10 w-10 rounded-full flex items-center justify-center"
                   style={{ backgroundColor: 'rgba(20, 70, 42, 0.12)' }}
                 >
-                  <Calendar03Icon size={18} style={{ color: '#14462a' }} />
+                  <Calendar size={18} color="#14462a" />
                 </div>
                 <div>
                   <p className="text-sm font-medium" style={{ color: '#2D2D2D' }}>{invoice.description}</p>
@@ -147,7 +147,7 @@ export default function WorkspaceBillingPage() {
                     className="rounded-full px-2 py-0.5 text-xs mt-1" 
                     style={{ backgroundColor: 'rgba(5, 150, 105, 0.12)', color: '#059669', border: 'none' }}
                   >
-                    <CheckmarkCircle02Icon size={12} className="mr-1" />
+                    <TickCircle size={12} color="#059669" className="mr-1" />
                     Paid
                   </Badge>
                 </div>
@@ -161,7 +161,7 @@ export default function WorkspaceBillingPage() {
                     alert(`Download invoice: ${invoice.description}`);
                   }}
                 >
-                  <Download04Icon size={16} />
+                  <DocumentDownload size={16} color="#B0B3B8" />
                 </Button>
               </div>
             </div>
@@ -174,7 +174,7 @@ export default function WorkspaceBillingPage() {
               className="h-16 w-16 rounded-full flex items-center justify-center mx-auto mb-4"
               style={{ backgroundColor: '#FAFBFC' }}
             >
-              <Calendar03Icon size={24} style={{ color: '#B0B3B8' }} />
+              <Calendar size={24} color="#B0B3B8" />
             </div>
             <p className="text-sm font-medium mb-1" style={{ color: '#2D2D2D' }}>No billing history</p>
             <p className="text-sm" style={{ color: '#B0B3B8' }}>Your invoices will appear here</p>
@@ -217,7 +217,7 @@ export default function WorkspaceBillingPage() {
                   <ul className="space-y-2 mb-6">
                     {plan.features.map((feature) => (
                       <li key={feature} className="flex items-start gap-2 text-sm" style={{ color: '#65676B' }}>
-                        <CheckmarkCircle02Icon size={16} className="mt-0.5 flex-shrink-0" style={{ color: '#059669' }} />
+                        <TickCircle size={16} className="mt-0.5 flex-shrink-0" style={{ color: '#059669' }} />
                         {feature}
                       </li>
                     ))}

@@ -5,24 +5,24 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
 import { Badge } from "@/components/ui/badge";
 import IconFrame from "@/components/ui/icon-frame";
 import { 
-  ArrowUpRight01Icon, 
-  ArrowDownRight01Icon, 
-  MoreHorizontalIcon, 
-  Copy01Icon, 
-  ArrowDataTransferVerticalIcon, 
-  CheckmarkSquare02Icon, 
-  Cancel01Icon, 
-  Loading03Icon, 
-  FileValidationIcon, 
-  AlertCircleIcon, 
-  Clock01Icon, 
-  ArrowDown01Icon, 
-  ArrowUp01Icon, 
-  ViewIcon, 
-  Delete02Icon,
-  CreditCardIcon,
-  SentIcon
-} from "hugeicons-react";
+  ArrowRight,
+  ArrowDown,
+  More,
+  Copy,
+  ArrowSwapVertical,
+  TickSquare,
+  CloseSquare,
+  RefreshCircle,
+  DocumentText,
+  Danger,
+  Clock,
+  ArrowDown2,
+  ArrowUp2,
+  Eye,
+  Trash,
+  Card,
+  Send2
+} from "iconsax-react";
 import Link from "next/link";
 import ProfitRevenueChart from "@/components/dashboard/profit-revenue-chart";
 import { useState } from "react";
@@ -34,7 +34,7 @@ export default function DashboardPage() {
       label: "Incoming",
       value: "₵185,212.03",
       delta: "+10%",
-      icon: CreditCardIcon,
+      icon: Card,
       up: true,
       sparkline: "M2 20 Q10 8, 18 12 T34 8 Q42 14, 50 10 T62 6",
       iconColor: "#059669", // Green for incoming
@@ -44,7 +44,7 @@ export default function DashboardPage() {
       label: "Outgoing",
       value: "₵18,834.69",
       delta: "-18%",
-      icon: SentIcon,
+      icon: Send2,
       up: false,
       sparkline: "M2 12 Q10 18, 18 14 T34 20 Q42 16, 50 22 T62 26",
       iconColor: "#14462a", // Purple for outgoing
@@ -77,7 +77,7 @@ export default function DashboardPage() {
                   className="h-12 w-12 rounded-full flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110"
                   style={{ backgroundColor: kpi.iconBg }}
                 >
-                  <kpi.icon className="h-6 w-6" style={{ color: kpi.iconColor, strokeWidth: 2 }} />
+                  <kpi.icon size={24} color={kpi.iconColor} variant="Bulk" />
                   </div>
                 <div
                   className="inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-semibold"
@@ -115,7 +115,7 @@ export default function DashboardPage() {
               className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition-colors"
               style={{ border: '1px solid rgba(255, 255, 255, 0.2)' }}
               >
-                <ArrowUpRight01Icon size={16} />
+                <ArrowRight size={16} color="white" />
               </button>
           </div>
           <div className="space-y-3">
@@ -126,7 +126,7 @@ export default function DashboardPage() {
                 className="inline-flex h-6 w-6 items-center justify-center rounded-md bg-white/10 hover:bg-white/20 transition-colors"
                 style={{ border: '1px solid rgba(255, 255, 255, 0.2)' }}
               >
-                <Copy01Icon size={14} />
+                <Copy size={14} color="white" />
               </button>
             </div>
             <div className="rounded-md p-4 text-sm" style={{ border: '1px solid rgba(255, 255, 255, 0.1)', backgroundColor: 'rgba(255, 255, 255, 0.05)', color: 'rgba(255, 255, 255, 0.7)' }}>
@@ -184,9 +184,9 @@ export default function DashboardPage() {
                 }}
               >
                 {isARAgingExpanded ? (
-                  <ArrowUp01Icon size={16} style={{ color: '#B0B3B8' }} />
+                  <ArrowUp2 size={16} color="#B0B3B8" />
                 ) : (
-                  <ArrowDown01Icon size={16} style={{ color: '#B0B3B8' }} />
+                  <ArrowDown2 size={16} color="#B0B3B8" />
                 )}
               </button>
             </div>
@@ -252,7 +252,7 @@ export default function DashboardPage() {
                 <div className="flex items-start gap-3">
                   <div className="shrink-0">
                     <div className="h-8 w-8 rounded-full flex items-center justify-center" style={{ backgroundColor: 'rgba(20, 70, 42, 0.08)' }}>
-                      <AlertCircleIcon size={16} style={{ color: '#14462a' }} />
+                      <Danger size={16} color="#14462a" />
                     </div>
                   </div>
                   <div>
@@ -291,25 +291,25 @@ export default function DashboardPage() {
               <DropdownMenuContent align="end" className="rounded-2xl w-40 p-2" style={{ boxShadow: '0 4px 16px rgba(0, 0, 0, 0.1)' }}>
                 <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer group transition-all hover:bg-[rgba(24,119,242,0.04)]">
                   <div className="flex items-center gap-3">
-                    <Clock01Icon size={16} style={{ color: '#14462a' }} />
+                    <Clock size={16} color="#14462a" />
                     <span className="text-sm font-medium group-hover:text-[#14462a] transition-all" style={{ color: '#2D2D2D' }}>Daily</span>
                   </div>
                 </DropdownMenuItem>
                 <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer group transition-all hover:bg-[rgba(24,119,242,0.04)]">
                   <div className="flex items-center gap-3">
-                    <ArrowUp01Icon size={16} style={{ color: '#14462a' }} />
+                    <ArrowUp2 size={16} color="#14462a" />
                     <span className="text-sm font-medium group-hover:text-[#14462a] transition-all" style={{ color: '#2D2D2D' }}>Weekly</span>
                   </div>
                 </DropdownMenuItem>
                 <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer group transition-all hover:bg-[rgba(24,119,242,0.04)]">
                   <div className="flex items-center gap-3">
-                    <FileValidationIcon size={16} style={{ color: '#14462a' }} />
+                    <DocumentText size={16} color="#14462a" />
                     <span className="text-sm font-medium group-hover:text-[#14462a] transition-all" style={{ color: '#2D2D2D' }}>Monthly</span>
                   </div>
                 </DropdownMenuItem>
                 <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer group transition-all hover:bg-[rgba(24,119,242,0.04)]">
                   <div className="flex items-center gap-3">
-                    <ArrowUpRight01Icon size={16} style={{ color: '#14462a' }} />
+                    <ArrowRight size={16} color="#14462a" />
                     <span className="text-sm font-medium group-hover:text-[#14462a] transition-all" style={{ color: '#2D2D2D' }}>Yearly</span>
                   </div>
                 </DropdownMenuItem>
@@ -342,19 +342,19 @@ export default function DashboardPage() {
               <DropdownMenuSeparator className="my-1" />
               <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer group transition-all hover:bg-[rgba(24,119,242,0.04)]">
                 <div className="flex items-center gap-3">
-                  <Clock01Icon size={16} style={{ color: '#14462a' }} />
+                  <Clock size={16} color="#14462a" />
                   <span className="text-sm font-medium group-hover:text-[#14462a] transition-all" style={{ color: '#2D2D2D' }}>Daily</span>
                 </div>
               </DropdownMenuItem>
               <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer group transition-all hover:bg-[rgba(24,119,242,0.04)]">
                 <div className="flex items-center gap-3">
-                  <ArrowUpRight01Icon size={16} style={{ color: '#059669' }} />
+                  <ArrowRight size={16} color="#059669" />
                   <span className="text-sm font-medium group-hover:text-[#14462a] transition-all" style={{ color: '#2D2D2D' }}>Weekly</span>
                 </div>
               </DropdownMenuItem>
               <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer group transition-all hover:bg-[rgba(24,119,242,0.04)]">
                 <div className="flex items-center gap-3">
-                  <FileValidationIcon size={16} style={{ color: '#14462a' }} />
+                  <DocumentText size={16} color="#14462a" />
                   <span className="text-sm font-medium group-hover:text-[#14462a] transition-all" style={{ color: '#2D2D2D' }}>Monthly</span>
                 </div>
               </DropdownMenuItem>
@@ -368,28 +368,28 @@ export default function DashboardPage() {
                 <TableRow>
                 <TableHead>
                   <button className="flex items-center gap-1 hover:text-[#14462a] transition-colors">
-                    ID <ArrowDataTransferVerticalIcon size={14} />
+                    ID <ArrowSwapVertical size={14} color="#B0B3B8" />
                   </button>
                 </TableHead>
                 <TableHead>
                   <button className="flex items-center gap-1 hover:text-[#14462a] transition-colors">
-                    Date <ArrowDataTransferVerticalIcon size={14} />
+                    Date <ArrowSwapVertical size={14} color="#B0B3B8" />
                   </button>
                 </TableHead>
                 <TableHead>
                   <button className="flex items-center gap-1 hover:text-[#14462a] transition-colors">
-                    Contact <ArrowDataTransferVerticalIcon size={14} />
+                    Contact <ArrowSwapVertical size={14} color="#B0B3B8" />
                   </button>
                 </TableHead>
                 <TableHead>Reason</TableHead>
                 <TableHead>
                   <button className="flex items-center gap-1 hover:text-[#14462a] transition-colors">
-                    Amount <ArrowDataTransferVerticalIcon size={14} />
+                    Amount <ArrowSwapVertical size={14} color="#B0B3B8" />
                   </button>
                 </TableHead>
                 <TableHead>
                   <button className="flex items-center gap-1 hover:text-[#14462a] transition-colors">
-                    Status <ArrowDataTransferVerticalIcon size={14} />
+                    Status <ArrowSwapVertical size={14} color="#B0B3B8" />
                   </button>
                 </TableHead>
                 <TableHead className="w-12"></TableHead>
@@ -410,15 +410,15 @@ export default function DashboardPage() {
                     <TableCell>
                       {row.status === "Paid" ? (
                       <Badge style={{ backgroundColor: '#14462a', color: 'white', borderColor: '#14462a' }}>
-                          <CheckmarkSquare02Icon size={14} /> Paid
+                          <TickSquare size={14} color="white" /> Paid
                         </Badge>
                       ) : row.status === "Cancelled" ? (
                       <Badge style={{ backgroundColor: 'rgba(240, 242, 245, 0.5)', color: '#2D2D2D', borderColor: '#E4E6EB' }}>
-                          <Cancel01Icon size={14} /> Cancelled
+                          <CloseSquare size={14} color="#2D2D2D" /> Cancelled
                         </Badge>
                       ) : row.status === "Refunded" ? (
                       <Badge style={{ backgroundColor: '#B0B3B8', color: 'white', borderColor: '#B0B3B8' }}>
-                          <Loading03Icon size={14} /> Refunded
+                          <RefreshCircle size={14} color="white" /> Refunded
                         </Badge>
                       ) : null}
                     </TableCell>
@@ -426,7 +426,7 @@ export default function DashboardPage() {
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                         <button className="inline-flex items-center rounded-full p-1.5 transition-all hover:bg-[rgba(24,119,242,0.04)]">
-                          <MoreHorizontalIcon size={16} style={{ color: '#B0B3B8' }} />
+                          <More size={16} color="#B0B3B8" />
                           </button>
                         </DropdownMenuTrigger>
                       <DropdownMenuContent align="end" className="rounded-2xl w-48 p-2" style={{ boxShadow: '0 4px 16px rgba(0, 0, 0, 0.1)' }}>
@@ -436,7 +436,7 @@ export default function DashboardPage() {
                               className="h-8 w-8 rounded-full flex items-center justify-center transition-all"
                               style={{ backgroundColor: 'rgba(20, 70, 42, 0.08)' }}
                             >
-                              <ViewIcon size={16} style={{ color: '#14462a' }} />
+                              <Eye size={16} color="#14462a" />
                             </div>
                             <span className="text-sm font-medium group-hover:text-[#14462a] transition-all" style={{ color: '#2D2D2D' }}>View</span>
                           </Link>
@@ -446,7 +446,7 @@ export default function DashboardPage() {
                             className="h-8 w-8 rounded-full flex items-center justify-center transition-all"
                             style={{ backgroundColor: 'rgba(20, 70, 42, 0.08)' }}
                           >
-                            <Copy01Icon size={16} style={{ color: '#14462a' }} />
+                            <Copy size={16} color="#14462a" />
                           </div>
                           <span className="text-sm font-medium group-hover:text-[#14462a] transition-all" style={{ color: '#2D2D2D' }}>Copy link</span>
                         </DropdownMenuItem>
@@ -456,7 +456,7 @@ export default function DashboardPage() {
                             className="h-8 w-8 rounded-full flex items-center justify-center transition-all"
                             style={{ backgroundColor: 'rgba(220, 38, 38, 0.08)' }}
                           >
-                            <Delete02Icon size={16} style={{ color: '#DC2626' }} />
+                            <Trash size={16} color="#DC2626" />
                           </div>
                           <span className="text-sm font-medium group-hover:text-red-600 transition-all" style={{ color: '#DC2626' }}>Delete</span>
                         </DropdownMenuItem>

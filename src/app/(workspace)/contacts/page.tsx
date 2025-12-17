@@ -9,23 +9,23 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Checkbox } from "@/components/ui/checkbox";
 import { 
-  MoreHorizontalIcon,
-  MailAtSign01Icon,
-  Call02Icon,
-  ArrowLeft01Icon,
-  ArrowRight01Icon,
-  FileValidationIcon,
-  PencilEdit01Icon,
-  Tag01Icon,
-  ZapIcon,
-  Clock01Icon,
-  ArrowUp01Icon,
-  Delete02Icon,
-  Building03Icon,
-  CheckmarkSquare02Icon,
-  Download01Icon,
-  Search01Icon
-} from "hugeicons-react";
+  More,
+  Sms,
+  Call,
+  ArrowLeft2,
+  ArrowRight2,
+  DocumentText,
+  Edit2,
+  Tag,
+  Flash,
+  Clock,
+  ArrowUp2,
+  Trash,
+  Building,
+  TickSquare,
+  DocumentDownload,
+  SearchNormal1
+} from "iconsax-react";
 import Link from "next/link";
 import { useState } from "react";
 import { ContactDetailModal } from "@/components/contacts/contact-detail-modal";
@@ -367,7 +367,7 @@ export default function ContactsPage() {
               Search
             </label>
             <div className="relative group">
-              <Search01Icon size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 transition-colors" style={{ color: '#B0B3B8' }} />
+              <SearchNormal1 size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 transition-colors" style={{ color: '#B0B3B8' }} />
               <Input
                 id="search"
                 type="text"
@@ -391,7 +391,7 @@ export default function ContactsPage() {
                 <SelectItem value="all">All categories</SelectItem>
                 <SelectItem value="corporate">
                   <div className="flex items-center gap-2">
-                    <Building03Icon size={14} style={{ color: '#14462a' }} />
+                    <Building size={14} color="#14462a" />
                     Corporate
                   </div>
                 </SelectItem>
@@ -453,7 +453,7 @@ export default function ContactsPage() {
           <div className="flex items-center justify-between px-6 py-4 border-b" style={{ backgroundColor: 'rgba(20, 70, 42, 0.04)', borderColor: 'rgba(20, 70, 42, 0.1)' }}>
             <div className="flex items-center gap-3">
               <div className="h-8 w-8 rounded-full flex items-center justify-center" style={{ backgroundColor: 'rgba(20, 70, 42, 0.12)' }}>
-                <CheckmarkSquare02Icon size={16} style={{ color: '#14462a' }} />
+                <TickSquare size={16} color="#14462a" />
               </div>
               <div>
                 <p className="text-sm font-semibold" style={{ color: '#2D2D2D' }}>
@@ -471,7 +471,7 @@ export default function ContactsPage() {
                 className="rounded-xl border-0 shadow-sm transition-all hover:shadow-md hover:scale-105" 
                 style={{ backgroundColor: 'white' }}
               >
-                <MailAtSign01Icon size={16} className="mr-2" /> Email Selected
+                <Sms size={16} className="mr-2" /> Email Selected
               </Button>
               <Button 
                 variant="outline" 
@@ -479,7 +479,7 @@ export default function ContactsPage() {
                 className="rounded-xl border-0 shadow-sm transition-all hover:shadow-md hover:scale-105" 
                 style={{ backgroundColor: 'white' }}
               >
-                <Download01Icon size={16} className="mr-2" /> Export
+                <DocumentDownload size={16} className="mr-2" /> Export
               </Button>
               <Button 
                 variant="ghost" 
@@ -567,7 +567,7 @@ export default function ContactsPage() {
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
                         <button className="inline-flex items-center justify-center rounded-full p-1.5 transition-all hover:bg-[rgba(24,119,242,0.04)]" style={{ color: '#B0B3B8' }}>
-                          <MoreHorizontalIcon size={16} />
+                          <More size={16} />
                         </button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end" className="rounded-2xl w-56 p-2" style={{ boxShadow: '0 4px 16px rgba(0, 0, 0, 0.1)' }}>
@@ -577,7 +577,7 @@ export default function ContactsPage() {
                               className="h-8 w-8 rounded-full flex items-center justify-center transition-all"
                               style={{ backgroundColor: 'rgba(20, 70, 42, 0.08)' }}
                             >
-                              <FileValidationIcon size={16} style={{ color: '#14462a' }} />
+                              <DocumentText size={16} color="#14462a" />
                             </div>
                             <span className="text-sm font-medium group-hover:text-[#14462a] transition-all" style={{ color: '#2D2D2D' }}>Create Invoice</span>
                           </Link>
@@ -590,7 +590,7 @@ export default function ContactsPage() {
                             className="h-8 w-8 rounded-full flex items-center justify-center transition-all"
                             style={{ backgroundColor: 'rgba(245, 158, 11, 0.08)' }}
                           >
-                            <PencilEdit01Icon size={16} style={{ color: '#F59E0B' }} />
+                            <Edit2 size={16} color="#F59E0B" />
                           </div>
                           <span className="text-sm font-medium group-hover:text-[#14462a] transition-all" style={{ color: '#2D2D2D' }}>Edit Contact</span>
                         </DropdownMenuItem>
@@ -599,7 +599,7 @@ export default function ContactsPage() {
                             className="h-8 w-8 rounded-full flex items-center justify-center transition-all"
                             style={{ backgroundColor: 'rgba(5, 150, 105, 0.08)' }}
                           >
-                            <MailAtSign01Icon size={16} style={{ color: '#059669' }} />
+                            <Sms size={16} color="#059669" />
                           </div>
                           <span className="text-sm font-medium group-hover:text-[#14462a] transition-all" style={{ color: '#2D2D2D' }}>Send Email</span>
                         </DropdownMenuItem>
@@ -608,7 +608,7 @@ export default function ContactsPage() {
                             className="h-8 w-8 rounded-full flex items-center justify-center transition-all"
                             style={{ backgroundColor: 'rgba(20, 70, 42, 0.08)' }}
                           >
-                            <Call02Icon size={16} style={{ color: '#14462a' }} />
+                            <Call size={16} color="#14462a" />
                           </div>
                           <span className="text-sm font-medium group-hover:text-[#14462a] transition-all" style={{ color: '#2D2D2D' }}>Call</span>
                         </DropdownMenuItem>
@@ -618,7 +618,7 @@ export default function ContactsPage() {
                             className="h-8 w-8 rounded-full flex items-center justify-center transition-all"
                             style={{ backgroundColor: 'rgba(220, 38, 38, 0.08)' }}
                           >
-                            <Delete02Icon size={16} style={{ color: '#DC2626' }} />
+                            <Trash size={16} color="#DC2626" />
                           </div>
                           <span className="text-sm font-medium group-hover:text-red-600 transition-all" style={{ color: '#DC2626' }}>Delete</span>
                         </DropdownMenuItem>
@@ -644,7 +644,7 @@ export default function ContactsPage() {
               disabled={currentPage === 1}
               className="h-8 w-8 p-0 rounded-full"
             >
-              <ArrowLeft01Icon size={16} />
+              <ArrowLeft2 size={16} />
             </Button>
             {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
               <Button
@@ -665,7 +665,7 @@ export default function ContactsPage() {
               disabled={currentPage === totalPages}
               className="h-8 w-8 p-0 rounded-full"
             >
-              <ArrowRight01Icon size={16} />
+              <ArrowRight2 size={16} />
             </Button>
           </div>
         </div>

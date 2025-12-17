@@ -60,7 +60,7 @@ export default function AboutPage() {
                       <span className="text-sm font-medium text-black">5+ currencies supported</span>
                     </div>
                     <div className="flex items-center gap-3 rounded-2xl bg-gray-50 p-4 transition hover:bg-gray-100">
-                      <People size={20} color="#4F46E5" variant="Bulk" />
+                      <People size={20} color="#B45309" variant="Bulk" />
                       <span className="text-sm font-medium text-black">Personal & business</span>
                     </div>
                     <div className="flex items-center gap-3 rounded-2xl bg-gray-50 p-4 transition hover:bg-gray-100">

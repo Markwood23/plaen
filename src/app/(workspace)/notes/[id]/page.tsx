@@ -1,45 +1,42 @@
 "use client";
 
 import { useState, useRef } from "react";
-import Link from "next/link";
+import NextLink from "next/link";
 import {
-  ArrowLeft01Icon,
-  MoreVerticalIcon,
-  Download01Icon,
-  Share08Icon,
-  PinIcon,
-  ArchiveIcon,
-  Delete02Icon,
-  Add01Icon,
-  TextIcon,
-  TextFontIcon,
-  ListViewIcon,
-  TextNumberSignIcon,
-  Link01Icon,
-  Image01Icon,
-  CodeIcon,
-  Table01Icon,
-  ChartHistogramIcon,
-  FileValidationIcon,
-  Invoice01Icon,
-  AtIcon,
-  Attachment02Icon,
-  CheckmarkSquare02Icon,
-  Cancel01Icon,
-  Analytics01Icon,
-  Calendar03Icon,
-  DollarCircleIcon,
-  PencilEdit02Icon,
-  PrinterIcon,
-  Clock01Icon,
-  CreditCardIcon,
-  UserMultiple02Icon,
-  AlertCircleIcon,
-  PieChartIcon,
-  Wallet01Icon,
-  PaintBrush01Icon,
-  TextUnderlineIcon,
-} from "hugeicons-react";
+  ArrowLeft2,
+  More,
+  DocumentDownload,
+  Share,
+  Paperclip,
+  Archive,
+  Trash,
+  Add,
+  Text,
+  TextBlock,
+  Element3,
+  Hashtag,
+  Link2,
+  Image,
+  Code,
+  Grid1,
+  Chart,
+  DocumentText,
+  Sms,
+  TickSquare,
+  CloseSquare,
+  Calendar,
+  DollarCircle,
+  Edit2,
+  Printer,
+  Clock,
+  Card,
+  People,
+  Danger,
+  Diagram,
+  Wallet,
+  Brush2,
+  TextalignJustifycenter,
+} from "iconsax-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -273,7 +270,7 @@ Below is a summary of our current outstanding invoices:`);
         // Code
         parts.push(<code key={match.index} className="px-1.5 py-0.5 rounded text-sm" style={{ backgroundColor: "rgba(0,0,0,0.05)" }}>{match[6]}</code>);
       } else if (match[7]) {
-        // Underline
+        // TextalignJustifycenter
         parts.push(<u key={match.index}>{match[8]}</u>);
       } else if (match[9]) {
         // Link
@@ -394,7 +391,7 @@ Below is a summary of our current outstanding invoices:`);
               className="h-7 w-7 p-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
               onClick={onRemove}
             >
-              <Cancel01Icon size={16} style={{ color: "#B0B3B8" }} />
+              <CloseSquare size={16} style={{ color: "#B0B3B8" }} />
             </Button>
           </div>
         )}
@@ -406,7 +403,7 @@ Below is a summary of our current outstanding invoices:`);
       case 'invoice-table':
         return widgetWrapper(
           "Invoice Table Widget",
-          <FileValidationIcon size={16} style={{ color: "#059669" }} />,
+          <DocumentText size={16} color="#059669" variant="Linear" />,
           "#059669",
           <div className="rounded-2xl overflow-hidden" style={{ backgroundColor: "white", boxShadow: "0 1px 3px 0 rgba(0, 0, 0, 0.05)" }}>
             <Table>
@@ -436,7 +433,7 @@ Below is a summary of our current outstanding invoices:`);
                           borderColor: invoice.status === "Paid" ? "#14462a" : "transparent"
                         }}
                       >
-                        {invoice.status === "Paid" && <CheckmarkSquare02Icon size={14} />}
+                        {invoice.status === "Paid" && <TickSquare size={14} />}
                         {invoice.status}
                       </Badge>
                     </TableCell>
@@ -450,14 +447,14 @@ Below is a summary of our current outstanding invoices:`);
       case 'ar-metrics':
         return widgetWrapper(
           "AR Metrics Widget",
-          <ChartHistogramIcon size={16} style={{ color: "#14462a" }} />,
+          <Chart size={16} color="#14462a" variant="Linear" />,
           "#14462a",
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {[
-              { label: "Total Outstanding", value: mockARMetrics.totalOutstanding, icon: DollarCircleIcon, color: "#14462a", bg: "rgba(20, 70, 42, 0.04)" },
-              { label: "Overdue Amount", value: mockARMetrics.overdue, icon: Analytics01Icon, color: "#EF4444", bg: "rgba(239, 68, 68, 0.04)" },
-              { label: "DSO", value: `${mockARMetrics.dso} days`, icon: Calendar03Icon, color: "#F59E0B", bg: "rgba(245, 158, 11, 0.04)" },
-              { label: "On-Time Rate", value: mockARMetrics.onTimeRate, icon: CheckmarkSquare02Icon, color: "#059669", bg: "rgba(5, 150, 105, 0.04)" },
+              { label: "Total Outstanding", value: mockARMetrics.totalOutstanding, icon: DollarCircle, color: "#14462a", bg: "rgba(20, 70, 42, 0.04)" },
+              { label: "Overdue Amount", value: mockARMetrics.overdue, icon: Chart, color: "#EF4444", bg: "rgba(239, 68, 68, 0.04)" },
+              { label: "DSO", value: `${mockARMetrics.dso} days`, icon: Calendar, color: "#F59E0B", bg: "rgba(245, 158, 11, 0.04)" },
+              { label: "On-Time Rate", value: mockARMetrics.onTimeRate, icon: TickSquare, color: "#059669", bg: "rgba(5, 150, 105, 0.04)" },
             ].map((metric) => {
               const Icon = metric.icon;
               return (
@@ -488,7 +485,7 @@ Below is a summary of our current outstanding invoices:`);
       case 'payment-methods':
         return widgetWrapper(
           "Payment Methods Widget",
-          <CreditCardIcon size={16} style={{ color: "#14462a" }} />,
+          <Card size={16} color="#14462a" variant="Linear" />,
           "#14462a",
           <div className="rounded-2xl overflow-hidden" style={{ backgroundColor: "white", boxShadow: "0 1px 3px 0 rgba(0, 0, 0, 0.05)" }}>
             <Table>
@@ -524,7 +521,7 @@ Below is a summary of our current outstanding invoices:`);
       case 'client-list':
         return widgetWrapper(
           "Client Overview Widget",
-          <UserMultiple02Icon size={16} style={{ color: "#F59E0B" }} />,
+          <People size={16} color="#F59E0B" variant="Linear" />,
           "#F59E0B",
           <div className="rounded-2xl overflow-hidden" style={{ backgroundColor: "white", boxShadow: "0 1px 3px 0 rgba(0, 0, 0, 0.05)" }}>
             <Table>
@@ -564,7 +561,7 @@ Below is a summary of our current outstanding invoices:`);
       case 'expenses':
         return widgetWrapper(
           "Expense Breakdown Widget",
-          <Wallet01Icon size={16} style={{ color: "#EF4444" }} />,
+          <Wallet size={16} color="#EF4444" variant="Linear" />,
           "#EF4444",
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {mockExpenses.map((expense) => (
@@ -605,48 +602,48 @@ Below is a summary of our current outstanding invoices:`);
         <div className="print:hidden" style={{ borderBottom: "1px solid #E4E6EB" }}>
           <div className="max-w-5xl mx-auto px-6 py-4">
             <div className="flex items-center justify-between">
-              <Link href="/notes">
+              <NextLink href="/notes">
                 <Button variant="ghost" size="sm" className="gap-2 -ml-2 rounded-full hover:bg-[rgba(240,242,245,0.5)]">
-                  <ArrowLeft01Icon size={16} />
+                  <ArrowLeft2 size={16} color="#2D2D2D" variant="Linear" />
                   Back
                 </Button>
-              </Link>
+              </NextLink>
 
               <div className="flex items-center gap-2">
                 <Button variant="outline" size="sm" className="rounded-full gap-2" onClick={() => setIsEditMode(true)}>
-                  <PencilEdit02Icon size={16} />
+                  <Edit2 size={16} color="#2D2D2D" variant="Linear" />
                   Edit
                 </Button>
                 <Button variant="outline" size="sm" className="rounded-full gap-2" onClick={handlePrint}>
-                  <PrinterIcon size={16} />
+                  <Printer size={16} color="#2D2D2D" variant="Linear" />
                   Print
                 </Button>
                 <Button variant="outline" size="sm" className="rounded-full gap-2">
-                  <Download01Icon size={16} />
+                  <DocumentDownload size={16} color="#2D2D2D" variant="Linear" />
                   Export PDF
                 </Button>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button variant="ghost" size="sm" className="h-9 w-9 p-0 rounded-full">
-                      <MoreVerticalIcon size={16} />
+                      <More size={16} color="#B0B3B8" variant="Linear" />
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end" className="rounded-2xl p-2">
                     <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer">
-                      <PinIcon size={16} className="mr-2" />
+                      <Paperclip size={16} color="#2D2D2D" variant="Linear" className="mr-2" />
                       <span>Pin Note</span>
                     </DropdownMenuItem>
                     <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer">
-                      <Share08Icon size={16} className="mr-2" />
+                      <Share size={16} color="#2D2D2D" variant="Linear" className="mr-2" />
                       <span>Share</span>
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer">
-                      <ArchiveIcon size={16} className="mr-2" />
+                      <Archive size={16} color="#2D2D2D" variant="Linear" className="mr-2" />
                       <span>Archive</span>
                     </DropdownMenuItem>
                     <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer text-red-600">
-                      <Delete02Icon size={16} className="mr-2" />
+                      <Trash size={16} color="#DC2626" variant="Linear" className="mr-2" />
                       <span>Delete</span>
                     </DropdownMenuItem>
                   </DropdownMenuContent>
@@ -673,7 +670,7 @@ Below is a summary of our current outstanding invoices:`);
 
             <div className="flex items-center gap-4 text-sm" style={{ color: "#B0B3B8" }}>
               <div className="flex items-center gap-1.5">
-                <Clock01Icon size={16} />
+                <Clock size={16} color="#B0B3B8" variant="Linear" />
                 <span>Updated 2 hours ago</span>
               </div>
               <span>•</span>
@@ -761,7 +758,7 @@ Below is a summary of our current outstanding invoices:`);
                               borderColor: invoice.status === "Paid" ? "#14462a" : "transparent"
                             }}
                           >
-                            {invoice.status === "Paid" && <CheckmarkSquare02Icon size={14} />}
+                            {invoice.status === "Paid" && <TickSquare size={14} />}
                             {invoice.status}
                           </Badge>
                         </TableCell>
@@ -789,7 +786,7 @@ Below is a summary of our current outstanding invoices:`);
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
           <Button variant="ghost" size="sm" className="h-9 w-9 p-0 rounded-full" onClick={() => setIsEditMode(false)}>
-            <Cancel01Icon size={16} />
+            <CloseSquare size={16} color="#B0B3B8" variant="Linear" />
           </Button>
           <div>
             <h1 className="text-lg font-semibold" style={{ color: "#2D2D2D" }}>Edit Note</h1>
@@ -823,7 +820,7 @@ Below is a summary of our current outstanding invoices:`);
           <Badge key={tag} variant="secondary" className="rounded-full px-3 py-1 text-xs flex items-center gap-1.5" style={{ backgroundColor: "rgba(20, 70, 42, 0.08)", color: "#14462a" }}>
             {tag}
             <button onClick={() => handleRemoveTag(tag)} className="hover:opacity-70">
-              <Cancel01Icon size={12} />
+              <CloseSquare size={12} color="#14462a" variant="Linear" />
             </button>
           </Badge>
         ))}
@@ -840,15 +837,15 @@ Below is a summary of our current outstanding invoices:`);
               autoFocus
             />
             <Button size="sm" variant="ghost" className="h-7 w-7 p-0 rounded-full" onClick={handleAddTag}>
-              <CheckmarkSquare02Icon size={14} style={{ color: "#059669" }} />
+              <TickSquare size={14} color="#059669" variant="Linear" />
             </Button>
             <Button size="sm" variant="ghost" className="h-7 w-7 p-0 rounded-full" onClick={() => { setIsAddingTag(false); setNewTag(""); }}>
-              <Cancel01Icon size={14} style={{ color: "#B0B3B8" }} />
+              <CloseSquare size={14} color="#B0B3B8" variant="Linear" />
             </Button>
           </div>
         ) : (
           <button onClick={() => setIsAddingTag(true)} className="px-3 py-1 rounded-full text-xs flex items-center gap-1 transition-colors" style={{ backgroundColor: "rgba(176, 179, 184, 0.08)", color: "#B0B3B8" }}>
-            <Add01Icon size={12} />
+            <Add size={12} color="#B0B3B8" variant="Linear" />
             Add Tag
           </button>
         )}
@@ -869,7 +866,7 @@ Below is a summary of our current outstanding invoices:`);
               disabled={!activeBlockId}
               title="Bold (Ctrl+B)"
             >
-              <TextIcon size={16} strokeWidth={3} />
+              <Text size={16} color="#2D2D2D" variant="Linear" />
             </Button>
             <Button 
               variant="ghost" 
@@ -882,7 +879,7 @@ Below is a summary of our current outstanding invoices:`);
               disabled={!activeBlockId}
               title="Italic (Ctrl+I)"
             >
-              <TextFontIcon size={16} style={{ fontStyle: 'italic' }} />
+              <TextBlock size={16} color="#2D2D2D" variant="Linear" />
             </Button>
             <Button 
               variant="ghost" 
@@ -893,9 +890,9 @@ Below is a summary of our current outstanding invoices:`);
                 if (activeBlockId) applyTextFormat(activeBlockId, 'underline');
               }}
               disabled={!activeBlockId}
-              title="Underline (Ctrl+U)"
+              title="TextalignJustifycenter (Ctrl+U)"
             >
-              <TextUnderlineIcon size={16} />
+              <TextalignJustifycenter size={16} color="#2D2D2D" variant="Linear" />
             </Button>
             <Button 
               variant="ghost" 
@@ -908,7 +905,7 @@ Below is a summary of our current outstanding invoices:`);
               disabled={!activeBlockId}
               title="Code"
             >
-              <CodeIcon size={16} />
+              <Code size={16} color="#2D2D2D" variant="Linear" />
             </Button>
           </div>
           <div className="h-6 w-px mx-1" style={{ backgroundColor: "#E4E6EB" }} />
@@ -924,7 +921,7 @@ Below is a summary of our current outstanding invoices:`);
               disabled={!activeBlockId}
               title="Bullet List"
             >
-              <ListViewIcon size={16} />
+              <Element3 size={16} color="#2D2D2D" variant="Linear" />
             </Button>
             <Button 
               variant="ghost" 
@@ -937,7 +934,7 @@ Below is a summary of our current outstanding invoices:`);
               disabled={!activeBlockId}
               title="Numbered List"
             >
-              <TextNumberSignIcon size={16} />
+              <Hashtag size={16} color="#2D2D2D" variant="Linear" />
             </Button>
           </div>
           <div className="h-6 w-px mx-1" style={{ backgroundColor: "#E4E6EB" }} />
@@ -953,7 +950,7 @@ Below is a summary of our current outstanding invoices:`);
               disabled={!activeBlockId}
               title="Insert Link"
             >
-              <Link01Icon size={16} />
+              <Link2 size={16} color="#2D2D2D" variant="Linear" />
             </Button>
             <Button 
               variant="ghost" 
@@ -962,23 +959,23 @@ Below is a summary of our current outstanding invoices:`);
               disabled={true}
               title="Insert Image (Coming soon)"
             >
-              <Image01Icon size={16} />
+              <Image size={16} color="#B0B3B8" variant="Linear" />
             </Button>
             <Button 
               variant="ghost" 
               size="sm" 
               className="h-8 w-8 p-0 rounded-full hover:bg-white"
               disabled={true}
-              title="Attach File (Coming soon)"
+              title="Paperclip File (Coming soon)"
             >
-              <Attachment02Icon size={16} />
+              <Paperclip size={16} color="#B0B3B8" variant="Linear" />
             </Button>
           </div>
           <div className="h-6 w-px mx-1" style={{ backgroundColor: "#E4E6EB" }} />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" size="sm" className="rounded-full h-8 px-3 hover:bg-white text-xs font-medium" style={{ color: "#14462a" }}>
-                <Add01Icon size={16} className="mr-1.5" />
+                <Add size={16} color="#14462a" variant="Linear" className="mr-1.5" />
                 Insert Widget
               </Button>
             </DropdownMenuTrigger>
@@ -988,7 +985,7 @@ Below is a summary of our current outstanding invoices:`);
                 onClick={() => setShowARMetrics(true)}
                 disabled={showARMetrics}
               >
-                <ChartHistogramIcon size={16} className="mr-2" style={{ color: "#14462a" }} />
+                <Chart size={16} className="mr-2" style={{ color: "#14462a" }} />
                 <div>
                   <div className="font-medium text-sm">AR Metrics</div>
                   <div className="text-xs" style={{ color: "#B0B3B8" }}>Live accounts receivable data</div>
@@ -999,7 +996,7 @@ Below is a summary of our current outstanding invoices:`);
                 onClick={() => setShowInvoiceTable(true)}
                 disabled={showInvoiceTable}
               >
-                <FileValidationIcon size={16} className="mr-2" style={{ color: "#059669" }} />
+                <DocumentText size={16} color="#059669" variant="Linear" className="mr-2" />
                 <div>
                   <div className="font-medium text-sm">Invoice Table</div>
                   <div className="text-xs" style={{ color: "#B0B3B8" }}>Recent invoices overview</div>
@@ -1010,7 +1007,7 @@ Below is a summary of our current outstanding invoices:`);
                 onClick={() => setShowPaymentMethods(true)}
                 disabled={showPaymentMethods}
               >
-                <CreditCardIcon size={16} className="mr-2" style={{ color: "#14462a" }} />
+                <Card size={16} color="#14462a" variant="Linear" className="mr-2" />
                 <div>
                   <div className="font-medium text-sm">Payment Methods</div>
                   <div className="text-xs" style={{ color: "#B0B3B8" }}>Payment method breakdown</div>
@@ -1021,7 +1018,7 @@ Below is a summary of our current outstanding invoices:`);
                 onClick={() => setShowClientList(true)}
                 disabled={showClientList}
               >
-                <UserMultiple02Icon size={16} className="mr-2" style={{ color: "#F59E0B" }} />
+                <People size={16} color="#F59E0B" variant="Linear" className="mr-2" />
                 <div>
                   <div className="font-medium text-sm">Client Overview</div>
                   <div className="text-xs" style={{ color: "#B0B3B8" }}>Top clients and status</div>
@@ -1032,7 +1029,7 @@ Below is a summary of our current outstanding invoices:`);
                 onClick={() => setShowExpenses(true)}
                 disabled={showExpenses}
               >
-                <Wallet01Icon size={16} className="mr-2" style={{ color: "#EF4444" }} />
+                <Wallet size={16} color="#EF4444" variant="Linear" className="mr-2" />
                 <div>
                   <div className="font-medium text-sm">Expense Breakdown</div>
                   <div className="text-xs" style={{ color: "#B0B3B8" }}>Expense categories summary</div>
@@ -1114,7 +1111,7 @@ Below is a summary of our current outstanding invoices:`);
                       });
                     }}
                   >
-                    <PaintBrush01Icon size={16} style={{ color: "#B0B3B8" }} />
+                    <Brush2 size={16} color="#B0B3B8" variant="Linear" />
                   </Button>
                   {blocks.length > 1 && (
                     <Button
@@ -1123,7 +1120,7 @@ Below is a summary of our current outstanding invoices:`);
                       className="h-7 w-7 p-0 rounded-full"
                       onClick={() => removeBlock(block.id)}
                     >
-                      <Cancel01Icon size={16} style={{ color: "#B0B3B8" }} />
+                      <CloseSquare size={16} color="#B0B3B8" variant="Linear" />
                     </Button>
                   )}
                 </div>
@@ -1145,7 +1142,7 @@ Below is a summary of our current outstanding invoices:`);
                     className="h-7 px-3 rounded-full opacity-0 group-hover:opacity-100 transition-opacity text-xs"
                     style={{ color: "#B0B3B8" }}
                   >
-                    <Add01Icon size={14} className="mr-1" />
+                    <Add size={14} color="#B0B3B8" variant="Linear" className="mr-1" />
                     Insert Widget
                   </Button>
                 </DropdownMenuTrigger>
@@ -1154,42 +1151,42 @@ Below is a summary of our current outstanding invoices:`);
                     className="rounded-xl px-3 py-2 cursor-pointer text-sm"
                     onClick={() => addBlock(block.id, 'text')}
                   >
-                    <FileValidationIcon size={16} className="mr-2" style={{ color: "#2D2D2D" }} />
+                    <DocumentText size={16} color="#2D2D2D" variant="Linear" className="mr-2" />
                     Text Block
                   </DropdownMenuItem>
                   <DropdownMenuItem 
                     className="rounded-xl px-3 py-2 cursor-pointer text-sm"
                     onClick={() => addBlock(block.id, 'ar-metrics')}
                   >
-                    <ChartHistogramIcon size={16} className="mr-2" style={{ color: "#14462a" }} />
+                    <Chart size={16} color="#14462a" variant="Linear" className="mr-2" />
                     AR Metrics
                   </DropdownMenuItem>
                   <DropdownMenuItem 
                     className="rounded-xl px-3 py-2 cursor-pointer text-sm"
                     onClick={() => addBlock(block.id, 'invoice-table')}
                   >
-                    <FileValidationIcon size={16} className="mr-2" style={{ color: "#059669" }} />
+                    <DocumentText size={16} color="#059669" variant="Linear" className="mr-2" />
                     Invoice Table
                   </DropdownMenuItem>
                   <DropdownMenuItem 
                     className="rounded-xl px-3 py-2 cursor-pointer text-sm"
                     onClick={() => addBlock(block.id, 'payment-methods')}
                   >
-                    <CreditCardIcon size={16} className="mr-2" style={{ color: "#14462a" }} />
+                    <Card size={16} color="#14462a" variant="Linear" className="mr-2" />
                     Payment Methods
                   </DropdownMenuItem>
                   <DropdownMenuItem 
                     className="rounded-xl px-3 py-2 cursor-pointer text-sm"
                     onClick={() => addBlock(block.id, 'client-list')}
                   >
-                    <UserMultiple02Icon size={16} className="mr-2" style={{ color: "#F59E0B" }} />
+                    <People size={16} color="#F59E0B" variant="Linear" className="mr-2" />
                     Client Overview
                   </DropdownMenuItem>
                   <DropdownMenuItem 
                     className="rounded-xl px-3 py-2 cursor-pointer text-sm"
                     onClick={() => addBlock(block.id, 'expenses')}
                   >
-                    <Wallet01Icon size={16} className="mr-2" style={{ color: "#EF4444" }} />
+                    <Wallet size={16} color="#EF4444" variant="Linear" className="mr-2" />
                     Expense Breakdown
                   </DropdownMenuItem>
                 </DropdownMenuContent>
@@ -1219,35 +1216,35 @@ Below is a summary of our current outstanding invoices:`);
             className="w-full text-left px-3 py-2 rounded-xl hover:bg-gray-50 flex items-center gap-2 text-sm"
             onClick={() => addWidgetAtCursor(contextMenu.blockId, 'ar-metrics')}
           >
-            <ChartHistogramIcon size={16} style={{ color: "#14462a" }} />
+            <Chart size={16} color="#14462a" variant="Linear" />
             AR Metrics
           </button>
           <button
             className="w-full text-left px-3 py-2 rounded-xl hover:bg-gray-50 flex items-center gap-2 text-sm"
             onClick={() => addWidgetAtCursor(contextMenu.blockId, 'invoice-table')}
           >
-            <FileValidationIcon size={16} style={{ color: "#059669" }} />
+            <DocumentText size={16} color="#059669" variant="Linear" />
             Invoice Table
           </button>
           <button
             className="w-full text-left px-3 py-2 rounded-xl hover:bg-gray-50 flex items-center gap-2 text-sm"
             onClick={() => addWidgetAtCursor(contextMenu.blockId, 'payment-methods')}
           >
-            <CreditCardIcon size={16} style={{ color: "#14462a" }} />
+            <Card size={16} color="#14462a" variant="Linear" />
             Payment Methods
           </button>
           <button
             className="w-full text-left px-3 py-2 rounded-xl hover:bg-gray-50 flex items-center gap-2 text-sm"
             onClick={() => addWidgetAtCursor(contextMenu.blockId, 'client-list')}
           >
-            <UserMultiple02Icon size={16} style={{ color: "#F59E0B" }} />
+            <People size={16} color="#F59E0B" variant="Linear" />
             Client Overview
           </button>
           <button
             className="w-full text-left px-3 py-2 rounded-xl hover:bg-gray-50 flex items-center gap-2 text-sm"
             onClick={() => addWidgetAtCursor(contextMenu.blockId, 'expenses')}
           >
-            <Wallet01Icon size={16} style={{ color: "#EF4444" }} />
+            <Wallet size={16} color="#EF4444" variant="Linear" />
             Expense Breakdown
           </button>
         </div>

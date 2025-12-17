@@ -2,40 +2,40 @@
 
 import { useState } from "react";
 import {
-  UserIcon,
-  Notification02Icon,
-  CreditCardIcon,
-  ShieldKeyIcon,
-  Building03Icon,
-  DollarSquareIcon,
-  FileAttachmentIcon,
-  Wallet01Icon,
-  Settings02Icon,
-  PaintBoardIcon,
-  DatabaseIcon,
-  Plug02Icon,
-  Globe02Icon,
-  SmartPhone01Icon,
-  BitcoinIcon,
-  BankIcon,
-  Key01Icon,
-  ApiIcon,
-  Upload04Icon,
-  Download04Icon,
-  Delete02Icon,
-  Copy01Icon,
-  RefreshIcon,
-  LinkSquare02Icon,
-  CheckmarkCircle02Icon,
-  Calendar03Icon,
-  EyeIcon,
-  ViewOffSlashIcon,
-  SmartPhone02Icon,
-  LockPasswordIcon,
-  FingerPrintIcon,
-  TimeQuarterPassIcon,
-  LocationUser04Icon,
-} from "hugeicons-react";
+  User,
+  Notification,
+  Card,
+  ShieldTick,
+  Building,
+  DollarSquare,
+  Paperclip,
+  Wallet,
+  Setting2,
+  Brush2,
+  Data,
+  Flash,
+  Global,
+  Mobile,
+  Bitcoin,
+  Bank,
+  Key,
+  Code,
+  DocumentUpload,
+  DocumentDownload,
+  Trash,
+  Copy,
+  RefreshCircle,
+  Link2,
+  TickCircle,
+  Calendar,
+  Eye,
+  EyeSlash,
+  Call,
+  PasswordCheck,
+  FingerScan,
+  Clock,
+  Location,
+} from "iconsax-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ColorPicker } from "@/components/ui/color-picker";
@@ -118,43 +118,43 @@ export default function SettingsPage() {
       <Tabs defaultValue="profile" className="w-full">
         <TabsList className="mb-8">
           <TabsTrigger value="profile">
-            <UserIcon size={16} />
+            <User size={16} color="#2D2D2D" variant="Linear" />
             Profile
           </TabsTrigger>
           <TabsTrigger value="business">
-            <Building03Icon size={16} />
+            <Building size={16} color="#2D2D2D" variant="Linear" />
             Business
           </TabsTrigger>
           <TabsTrigger value="payments">
-            <Wallet01Icon size={16} />
+            <Wallet size={16} color="#2D2D2D" variant="Linear" />
             Payments
           </TabsTrigger>
           <TabsTrigger value="invoices">
-            <Settings02Icon size={16} />
+            <Setting2 size={16} color="#2D2D2D" variant="Linear" />
             Invoices
           </TabsTrigger>
           <TabsTrigger value="branding">
-            <PaintBoardIcon size={16} />
+            <Brush2 size={16} color="#2D2D2D" variant="Linear" />
             Branding
           </TabsTrigger>
           <TabsTrigger value="notifications">
-            <Notification02Icon size={16} />
+            <Notification size={16} color="#2D2D2D" variant="Linear" />
             Notifications
           </TabsTrigger>
           <TabsTrigger value="integrations">
-            <Plug02Icon size={16} />
+            <Flash size={16} color="#2D2D2D" variant="Linear" />
             Integrations
           </TabsTrigger>
           <TabsTrigger value="data">
-            <DatabaseIcon size={16} />
+            <Data size={16} color="#2D2D2D" variant="Linear" />
             Data & Privacy
           </TabsTrigger>
           <TabsTrigger value="billing">
-            <CreditCardIcon size={16} />
+            <Card size={16} color="#2D2D2D" variant="Linear" />
             Billing
           </TabsTrigger>
           <TabsTrigger value="security">
-            <ShieldKeyIcon size={16} />
+            <ShieldTick size={16} color="#2D2D2D" variant="Linear" />
             Security
           </TabsTrigger>
         </TabsList>
@@ -278,7 +278,7 @@ export default function SettingsPage() {
               <div className="flex items-center justify-between py-3">
                 <div className="flex items-center gap-3">
                   <div className="h-9 w-9 rounded-full flex items-center justify-center" style={{ backgroundColor: "#F9F9F9" }}>
-                    <CreditCardIcon size={16} style={{ color: "#FF6B00" }} />
+                    <Card size={16} color="#FF6B00" variant="Linear" />
                   </div>
                   <div>
                     <div className="text-base font-normal" style={{ color: "#2D2D2D" }}>
@@ -329,7 +329,7 @@ export default function SettingsPage() {
               <div className="flex items-center justify-between py-3">
                 <div className="flex items-center gap-3">
                   <div className="h-9 w-9 rounded-full flex items-center justify-center" style={{ backgroundColor: "#F9F9F9" }}>
-                    <CreditCardIcon size={16} style={{ color: "#00C3F7" }} />
+                    <Card size={16} color="#00C3F7" variant="Linear" />
                   </div>
                   <div>
                     <div className="text-base font-normal" style={{ color: "#2D2D2D" }}>
@@ -392,7 +392,7 @@ export default function SettingsPage() {
               <div className="flex items-center justify-between py-3">
                 <div className="flex items-center gap-3">
                   <div className="h-9 w-9 rounded-full flex items-center justify-center" style={{ backgroundColor: "#F9F9F9" }}>
-                    <BankIcon size={16} style={{ color: "#14462a" }} />
+                    <Bank size={16} color="#14462a" variant="Linear" />
                   </div>
                   <div>
                     <div className="text-base font-normal" style={{ color: "#2D2D2D" }}>
@@ -480,7 +480,7 @@ export default function SettingsPage() {
               <div className="flex items-center justify-between py-3">
                 <div className="flex items-center gap-3">
                   <div className="h-9 w-9 rounded-full flex items-center justify-center" style={{ backgroundColor: "#F9F9F9" }}>
-                    <SmartPhone01Icon size={16} style={{ color: "#14462a" }} />
+                    <Mobile size={16} color="#14462a" variant="Linear" />
                   </div>
                   <div>
                     <div className="text-base font-normal" style={{ color: "#2D2D2D" }}>
@@ -549,7 +549,7 @@ export default function SettingsPage() {
               <div className="flex items-center justify-between py-3">
                 <div className="flex items-center gap-3">
                   <div className="h-9 w-9 rounded-full flex items-center justify-center" style={{ backgroundColor: "#F9F9F9" }}>
-                    <BitcoinIcon size={16} style={{ color: "#14462a" }} />
+                    <Bitcoin size={16} color="#14462a" variant="Linear" />
                   </div>
                   <div>
                     <div className="text-base font-normal" style={{ color: "#2D2D2D" }}>
@@ -828,7 +828,7 @@ export default function SettingsPage() {
                   className="h-20 w-20 rounded-3xl flex items-center justify-center"
                   style={{ backgroundColor: "#F9F9F9" }}
                 >
-                  <Upload04Icon size={20} style={{ color: "#B0B3B8" }} />
+                  <DocumentUpload size={20} color="#B0B3B8" variant="Linear" />
                 </div>
                 <div className="flex-1">
                   <Button
@@ -836,7 +836,7 @@ export default function SettingsPage() {
                     className="rounded-full h-11 px-5 mb-2 border-0 font-normal"
                     style={{ backgroundColor: "#F9F9F9", color: "#2D2D2D" }}
                   >
-                    <Upload04Icon size={16} className="mr-2" />
+                    <DocumentUpload size={16} color="#2D2D2D" variant="Linear" className="mr-2" />
                     Upload Logo
                   </Button>
                   <p className="text-sm" style={{ color: "#B0B3B8" }}>
@@ -1017,7 +1017,7 @@ export default function SettingsPage() {
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-1">
                     <div className="h-9 w-9 rounded-full flex items-center justify-center" style={{ backgroundColor: "white" }}>
-                      <Key01Icon size={16} style={{ color: "#14462a" }} />
+                      <Key size={16} color="#14462a" variant="Linear" />
                     </div>
                     <div>
                       <div className="flex items-center gap-2">
@@ -1056,7 +1056,7 @@ export default function SettingsPage() {
                 className="rounded-full h-10 px-4 border-0 font-normal"
                 style={{ backgroundColor: "#F9F9F9", color: "#2D2D2D" }}
               >
-                <Key01Icon size={16} className="mr-2" />
+                <Key size={16} color="#2D2D2D" variant="Linear" className="mr-2" />
                 Generate New API Key
               </Button>
             </div>
@@ -1109,7 +1109,7 @@ export default function SettingsPage() {
                 className="rounded-full h-11 px-6 font-normal"
                 style={{ backgroundColor: "#14462a", color: "white" }}
               >
-                <ApiIcon size={16} className="mr-2" />
+                <Code size={16} color="white" variant="Linear" className="mr-2" />
                 Save Webhook Configuration
               </Button>
             </div>
@@ -1136,7 +1136,7 @@ export default function SettingsPage() {
                 >
                   <div className="flex items-center gap-3">
                     <div className="h-9 w-9 rounded-full flex items-center justify-center" style={{ backgroundColor: "#F9F9F9" }}>
-                      <Building03Icon size={16} style={{ color: "#14462a" }} />
+                      <Building size={16} color="#14462a" variant="Linear" />
                     </div>
                     <span className="font-normal text-sm" style={{ color: "#2D2D2D" }}>
                       {software.name}
@@ -1182,7 +1182,7 @@ export default function SettingsPage() {
                 className="rounded-full h-11 px-4 border-0 font-normal"
                 style={{ backgroundColor: "#F9F9F9", color: "#2D2D2D" }}
               >
-                <Download04Icon size={16} className="mr-2" style={{ color: "#14462a" }} />
+                <DocumentDownload size={16} color="#14462a" variant="Linear" className="mr-2" />
                 <span className="text-sm">Invoices (CSV)</span>
               </Button>
               <Button
@@ -1190,7 +1190,7 @@ export default function SettingsPage() {
                 className="rounded-full h-11 px-4 border-0 font-normal"
                 style={{ backgroundColor: "#F9F9F9", color: "#2D2D2D" }}
               >
-                <Download04Icon size={16} className="mr-2" style={{ color: "#14462a" }} />
+                <DocumentDownload size={16} color="#14462a" variant="Linear" className="mr-2" />
                 <span className="text-sm">Payments (CSV)</span>
               </Button>
               <Button
@@ -1198,7 +1198,7 @@ export default function SettingsPage() {
                 className="rounded-full h-11 px-4 border-0 font-normal"
                 style={{ backgroundColor: "#F9F9F9", color: "#2D2D2D" }}
               >
-                <Download04Icon size={16} className="mr-2" style={{ color: "#14462a" }} />
+                <DocumentDownload size={16} color="#14462a" variant="Linear" className="mr-2" />
                 <span className="text-sm">All Data (JSON)</span>
               </Button>
             </div>
@@ -1206,7 +1206,7 @@ export default function SettingsPage() {
             <div className="p-4 rounded-2xl" style={{ backgroundColor: "#F9F9F9" }}>
               <div className="flex items-start gap-3">
                 <div className="h-9 w-9 rounded-full flex items-center justify-center" style={{ backgroundColor: "white" }}>
-                  <FileAttachmentIcon size={16} style={{ color: "#14462a" }} />
+                  <Paperclip size={16} color="#14462a" variant="Linear" />
                 </div>
                 <div className="flex-1">
                   <div className="font-normal text-sm mb-1" style={{ color: "#2D2D2D" }}>
@@ -1293,7 +1293,7 @@ export default function SettingsPage() {
                   className="rounded-full h-10 px-4 border-0"
                   style={{ backgroundColor: "rgba(211, 47, 47, 0.08)", color: "#D32F2F" }}
                 >
-                  <Delete02Icon size={16} className="mr-2" />
+                  <Trash size={16} color="#D32F2F" variant="Linear" className="mr-2" />
                   Delete Account
                 </Button>
               </div>
@@ -1322,16 +1322,16 @@ export default function SettingsPage() {
 
             <div className="grid grid-cols-3 gap-x-8 gap-y-6">
               {[
-                { label: "Monthly Cost", value: "$29/mo", icon: DollarSquareIcon, color: "#14462a" },
-                { label: "Next Billing", value: "Dec 18, 2024", icon: CreditCardIcon, color: "#059669" },
-                { label: "Invoices Sent", value: "247 / ∞", icon: FileAttachmentIcon, color: "#F59E0B" },
+                { label: "Monthly Cost", value: "$29/mo", icon: DollarSquare, color: "#14462a" },
+                { label: "Next Billing", value: "Dec 18, 2024", icon: Card, color: "#059669" },
+                { label: "Invoices Sent", value: "247 / ∞", icon: Paperclip, color: "#F59E0B" },
               ].map((stat) => {
                 const Icon = stat.icon;
                 return (
                   <div key={stat.label} className="space-y-3">
                     <div className="flex items-center gap-2">
                       <div className="h-9 w-9 rounded-full flex items-center justify-center" style={{ backgroundColor: "#F9F9F9" }}>
-                        <Icon size={16} style={{ color: stat.color }} />
+                        <Icon size={16} color={stat.color} variant="Linear" />
                       </div>
                       <span className="text-sm font-normal" style={{ color: "#949494" }}>
                         {stat.label}
@@ -1502,7 +1502,7 @@ export default function SettingsPage() {
                     className="absolute right-4 top-1/2 -translate-y-1/2"
                     style={{ color: '#B0B3B8' }}
                   >
-                    {showPasswordVisibility.current ? <ViewOffSlashIcon size={18} /> : <EyeIcon size={18} />}
+                    {showPasswordVisibility.current ? <EyeSlash size={18} color="#B0B3B8" variant="Linear" /> : <Eye size={18} color="#B0B3B8" variant="Linear" />}
                   </button>
                 </div>
               </div>
@@ -1523,7 +1523,7 @@ export default function SettingsPage() {
                     className="absolute right-4 top-1/2 -translate-y-1/2"
                     style={{ color: '#B0B3B8' }}
                   >
-                    {showPasswordVisibility.new ? <ViewOffSlashIcon size={18} /> : <EyeIcon size={18} />}
+                    {showPasswordVisibility.new ? <EyeSlash size={18} color="#B0B3B8" variant="Linear" /> : <Eye size={18} color="#B0B3B8" variant="Linear" />}
                   </button>
                 </div>
                 <p className="text-xs mt-2" style={{ color: '#B0B3B8' }}>
@@ -1547,7 +1547,7 @@ export default function SettingsPage() {
                     className="absolute right-4 top-1/2 -translate-y-1/2"
                     style={{ color: '#B0B3B8' }}
                   >
-                    {showPasswordVisibility.confirm ? <ViewOffSlashIcon size={18} /> : <EyeIcon size={18} />}
+                    {showPasswordVisibility.confirm ? <EyeSlash size={18} color="#B0B3B8" variant="Linear" /> : <Eye size={18} color="#B0B3B8" variant="Linear" />}
                   </button>
                 </div>
               </div>
@@ -1582,14 +1582,14 @@ export default function SettingsPage() {
 
             <div className="grid gap-3">
               <div className="flex items-center gap-3 p-4 rounded-xl" style={{ backgroundColor: '#FAFBFC' }}>
-                <FingerPrintIcon size={20} style={{ color: '#B0B3B8' }} />
+                <FingerScan size={20} style={{ color: '#B0B3B8' }} />
                 <div className="flex-1">
                   <p className="text-sm font-medium" style={{ color: '#2D2D2D' }}>Authenticator App</p>
                   <p className="text-xs" style={{ color: '#B0B3B8' }}>Use Google Authenticator or similar apps</p>
                 </div>
               </div>
               <div className="flex items-center gap-3 p-4 rounded-xl" style={{ backgroundColor: '#FAFBFC' }}>
-                <SmartPhone02Icon size={20} style={{ color: '#B0B3B8' }} />
+                <Mobile size={20} style={{ color: '#B0B3B8' }} />
                 <div className="flex-1">
                   <p className="text-sm font-medium" style={{ color: '#2D2D2D' }}>SMS Verification</p>
                   <p className="text-xs" style={{ color: '#B0B3B8' }}>Receive codes via text message</p>
@@ -1747,7 +1747,7 @@ export default function SettingsPage() {
                   <ul className="space-y-2 mb-6">
                     {plan.features.map((feature) => (
                       <li key={feature} className="flex items-start gap-2 text-sm" style={{ color: '#65676B' }}>
-                        <CheckmarkCircle02Icon size={16} className="mt-0.5 flex-shrink-0" style={{ color: '#059669' }} />
+                        <TickCircle size={16} className="mt-0.5 flex-shrink-0" style={{ color: '#059669' }} />
                         {feature}
                       </li>
                     ))}
@@ -1807,7 +1807,7 @@ export default function SettingsPage() {
                       className="h-10 w-10 rounded-full flex items-center justify-center"
                       style={{ backgroundColor: 'rgba(20, 70, 42, 0.12)' }}
                     >
-                      <Calendar03Icon size={18} style={{ color: '#14462a' }} />
+                      <Calendar size={18} style={{ color: '#14462a' }} />
                     </div>
                     <div>
                       <p className="text-sm font-medium" style={{ color: '#2D2D2D' }}>{invoice.description}</p>
@@ -1821,7 +1821,7 @@ export default function SettingsPage() {
                         className="rounded-full px-2 py-0.5 text-xs mt-1" 
                         style={{ backgroundColor: 'rgba(5, 150, 105, 0.12)', color: '#059669', border: 'none' }}
                       >
-                        <CheckmarkCircle02Icon size={12} className="mr-1" />
+                        <TickCircle size={12} className="mr-1" />
                         Paid
                       </Badge>
                     </div>
@@ -1834,7 +1834,7 @@ export default function SettingsPage() {
                         alert(`Download invoice: ${invoice.description}`);
                       }}
                     >
-                      <Download04Icon size={16} />
+                      <DocumentDownload size={16} />
                     </Button>
                   </div>
                 </div>

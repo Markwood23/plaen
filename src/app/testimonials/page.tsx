@@ -98,7 +98,7 @@ const testimonials = [
 const stats = [
   { label: "User satisfaction", value: "98%", icon: TrendUp, color: "#059669" },
   { label: "Faster payments", value: "2.5x", icon: Star, color: "#D97706" },
-  { label: "Active users", value: "10K+", icon: User, color: "#4F46E5" },
+  { label: "Active users", value: "10K+", icon: User, color: "#B45309" },
   { label: "Businesses served", value: "500+", icon: Building, color: "#0284C7" },
 ];
 
