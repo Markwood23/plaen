@@ -257,7 +257,7 @@ export default function ContactsPage() {
         <Button 
           onClick={() => openContactModal(null, "create")}
           className="rounded-full px-6 py-2.5 h-auto shadow-sm transition-all hover:shadow-md"
-          style={{ backgroundColor: '#1877F2', color: 'white', fontWeight: 500 }}
+          style={{ backgroundColor: '#14462a', color: 'white', fontWeight: 500 }}
         >
           + New Contact
         </Button>
@@ -266,15 +266,15 @@ export default function ContactsPage() {
       {/* Stats Card */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Total Contacts */}
-        <div className="group relative rounded-2xl p-6 transition-all duration-300 hover:scale-[1.02]" style={{ backgroundColor: 'rgba(24, 119, 242, 0.04)' }}>
+        <div className="group relative rounded-2xl p-6 transition-all duration-300 hover:scale-[1.02]" style={{ backgroundColor: 'rgba(20, 70, 42, 0.04)' }}>
           <div className="flex items-center justify-between mb-4">
-            <div className="h-12 w-12 rounded-full flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110" style={{ backgroundColor: 'rgba(24, 119, 242, 0.12)' }}>
-              <svg className="h-6 w-6" style={{ color: '#1877F2' }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+            <div className="h-12 w-12 rounded-full flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110" style={{ backgroundColor: 'rgba(20, 70, 42, 0.12)' }}>
+              <svg className="h-6 w-6" style={{ color: '#14462a' }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
               </svg>
             </div>
-            <div className="flex items-center gap-1 px-2 py-1 rounded-full" style={{ backgroundColor: 'rgba(24, 119, 242, 0.12)' }}>
-              <span className="text-xs font-semibold" style={{ color: '#1877F2' }}>+15.3%</span>
+            <div className="flex items-center gap-1 px-2 py-1 rounded-full" style={{ backgroundColor: 'rgba(20, 70, 42, 0.12)' }}>
+              <span className="text-xs font-semibold" style={{ color: '#14462a' }}>+15.3%</span>
             </div>
           </div>
           <p className="text-sm mb-2" style={{ color: '#65676B', fontWeight: 500 }}>Total Contacts</p>
@@ -308,15 +308,15 @@ export default function ContactsPage() {
         </div>
 
         {/* Total Invoices */}
-        <div className="group relative rounded-2xl p-6 transition-all duration-300 hover:scale-[1.02]" style={{ backgroundColor: 'rgba(124, 58, 237, 0.04)' }}>
+        <div className="group relative rounded-2xl p-6 transition-all duration-300 hover:scale-[1.02]" style={{ backgroundColor: 'rgba(20, 70, 42, 0.04)' }}>
           <div className="flex items-center justify-between mb-4">
-            <div className="h-12 w-12 rounded-full flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110" style={{ backgroundColor: 'rgba(124, 58, 237, 0.12)' }}>
-              <svg className="h-6 w-6" style={{ color: '#7C3AED' }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+            <div className="h-12 w-12 rounded-full flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110" style={{ backgroundColor: 'rgba(20, 70, 42, 0.12)' }}>
+              <svg className="h-6 w-6" style={{ color: '#14462a' }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
               </svg>
             </div>
-            <div className="flex items-center gap-1 px-2 py-1 rounded-full" style={{ backgroundColor: 'rgba(124, 58, 237, 0.12)' }}>
-              <span className="text-xs font-semibold" style={{ color: '#7C3AED' }}>+8.7%</span>
+            <div className="flex items-center gap-1 px-2 py-1 rounded-full" style={{ backgroundColor: 'rgba(20, 70, 42, 0.12)' }}>
+              <span className="text-xs font-semibold" style={{ color: '#14462a' }}>+8.7%</span>
             </div>
           </div>
           <p className="text-sm mb-2" style={{ color: '#65676B', fontWeight: 500 }}>Total Invoices</p>
@@ -355,7 +355,7 @@ export default function ContactsPage() {
             <h3 className="text-sm font-semibold" style={{ color: '#2D2D2D' }}>Filter Contacts</h3>
             <p className="text-xs mt-0.5" style={{ color: '#B0B3B8' }}>Refine your search results</p>
           </div>
-          <button className="text-xs font-medium px-3 py-1.5 rounded-full transition-all hover:bg-white" style={{ color: '#1877F2' }}>
+          <button className="text-xs font-medium px-3 py-1.5 rounded-full transition-all hover:bg-white" style={{ color: '#14462a' }}>
             Clear all
           </button>
         </div>
@@ -391,13 +391,13 @@ export default function ContactsPage() {
                 <SelectItem value="all">All categories</SelectItem>
                 <SelectItem value="corporate">
                   <div className="flex items-center gap-2">
-                    <Building03Icon size={14} style={{ color: '#1877F2' }} />
+                    <Building03Icon size={14} style={{ color: '#14462a' }} />
                     Corporate
                   </div>
                 </SelectItem>
                 <SelectItem value="freelance">
                   <div className="flex items-center gap-2">
-                    <svg className="h-3.5 w-3.5" style={{ color: '#1877F2' }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                    <svg className="h-3.5 w-3.5" style={{ color: '#14462a' }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                     </svg>
                     Freelance
@@ -405,7 +405,7 @@ export default function ContactsPage() {
                 </SelectItem>
                 <SelectItem value="international">
                   <div className="flex items-center gap-2">
-                    <svg className="h-3.5 w-3.5" style={{ color: '#1877F2' }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                    <svg className="h-3.5 w-3.5" style={{ color: '#14462a' }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                     International
@@ -450,10 +450,10 @@ export default function ContactsPage() {
       <div className="rounded-2xl overflow-hidden" style={{ backgroundColor: 'white', boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.05)' }}>
         {/* Bulk Actions Bar */}
         {selectedRows.length > 0 && (
-          <div className="flex items-center justify-between px-6 py-4 border-b" style={{ backgroundColor: 'rgba(24, 119, 242, 0.04)', borderColor: 'rgba(24, 119, 242, 0.1)' }}>
+          <div className="flex items-center justify-between px-6 py-4 border-b" style={{ backgroundColor: 'rgba(20, 70, 42, 0.04)', borderColor: 'rgba(20, 70, 42, 0.1)' }}>
             <div className="flex items-center gap-3">
-              <div className="h-8 w-8 rounded-full flex items-center justify-center" style={{ backgroundColor: 'rgba(24, 119, 242, 0.12)' }}>
-                <CheckmarkSquare02Icon size={16} style={{ color: '#1877F2' }} />
+              <div className="h-8 w-8 rounded-full flex items-center justify-center" style={{ backgroundColor: 'rgba(20, 70, 42, 0.12)' }}>
+                <CheckmarkSquare02Icon size={16} style={{ color: '#14462a' }} />
               </div>
               <div>
                 <p className="text-sm font-semibold" style={{ color: '#2D2D2D' }}>
@@ -532,7 +532,7 @@ export default function ContactsPage() {
                     <div className="flex items-center gap-3">
                       <Avatar className="h-8 w-8 shrink-0">
                         <AvatarImage src={contact.avatar} alt={contact.name} />
-                        <AvatarFallback className="text-xs" style={{ backgroundColor: 'rgba(24, 119, 242, 0.08)', color: '#1877F2', fontWeight: 600 }}>
+                        <AvatarFallback className="text-xs" style={{ backgroundColor: 'rgba(20, 70, 42, 0.08)', color: '#14462a', fontWeight: 600 }}>
                           {getInitials(contact.name)}
                         </AvatarFallback>
                       </Avatar>
@@ -544,7 +544,7 @@ export default function ContactsPage() {
                   </TableCell>
                   <TableCell className="text-[#65676B]">{contact.email}</TableCell>
                   <TableCell>
-                    <Badge variant="outline" style={{ backgroundColor: 'rgba(24, 119, 242, 0.04)', borderColor: 'rgba(24, 119, 242, 0.2)', color: '#1877F2', fontWeight: 500 }}>
+                    <Badge variant="outline" style={{ backgroundColor: 'rgba(20, 70, 42, 0.04)', borderColor: 'rgba(20, 70, 42, 0.2)', color: '#14462a', fontWeight: 500 }}>
                       {contact.category}
                     </Badge>
                   </TableCell>
@@ -575,11 +575,11 @@ export default function ContactsPage() {
                           <Link href="/invoices/new" className="flex items-center">
                             <div 
                               className="h-8 w-8 rounded-full flex items-center justify-center transition-all"
-                              style={{ backgroundColor: 'rgba(24, 119, 242, 0.08)' }}
+                              style={{ backgroundColor: 'rgba(20, 70, 42, 0.08)' }}
                             >
-                              <FileValidationIcon size={16} style={{ color: '#1877F2' }} />
+                              <FileValidationIcon size={16} style={{ color: '#14462a' }} />
                             </div>
-                            <span className="text-sm font-medium group-hover:text-[#1877F2] transition-all" style={{ color: '#2D2D2D' }}>Create Invoice</span>
+                            <span className="text-sm font-medium group-hover:text-[#14462a] transition-all" style={{ color: '#2D2D2D' }}>Create Invoice</span>
                           </Link>
                         </DropdownMenuItem>
                         <DropdownMenuItem onClick={(e) => {
@@ -592,7 +592,7 @@ export default function ContactsPage() {
                           >
                             <PencilEdit01Icon size={16} style={{ color: '#F59E0B' }} />
                           </div>
-                          <span className="text-sm font-medium group-hover:text-[#1877F2] transition-all" style={{ color: '#2D2D2D' }}>Edit Contact</span>
+                          <span className="text-sm font-medium group-hover:text-[#14462a] transition-all" style={{ color: '#2D2D2D' }}>Edit Contact</span>
                         </DropdownMenuItem>
                         <DropdownMenuItem className="gap-3 rounded-xl p-3 cursor-pointer group transition-all hover:bg-[rgba(24,119,242,0.04)]">
                           <div 
@@ -601,16 +601,16 @@ export default function ContactsPage() {
                           >
                             <MailAtSign01Icon size={16} style={{ color: '#059669' }} />
                           </div>
-                          <span className="text-sm font-medium group-hover:text-[#1877F2] transition-all" style={{ color: '#2D2D2D' }}>Send Email</span>
+                          <span className="text-sm font-medium group-hover:text-[#14462a] transition-all" style={{ color: '#2D2D2D' }}>Send Email</span>
                         </DropdownMenuItem>
                         <DropdownMenuItem className="gap-3 rounded-xl p-3 cursor-pointer group transition-all hover:bg-[rgba(24,119,242,0.04)]">
                           <div 
                             className="h-8 w-8 rounded-full flex items-center justify-center transition-all"
-                            style={{ backgroundColor: 'rgba(124, 58, 237, 0.08)' }}
+                            style={{ backgroundColor: 'rgba(20, 70, 42, 0.08)' }}
                           >
-                            <Call02Icon size={16} style={{ color: '#7C3AED' }} />
+                            <Call02Icon size={16} style={{ color: '#14462a' }} />
                           </div>
-                          <span className="text-sm font-medium group-hover:text-[#1877F2] transition-all" style={{ color: '#2D2D2D' }}>Call</span>
+                          <span className="text-sm font-medium group-hover:text-[#14462a] transition-all" style={{ color: '#2D2D2D' }}>Call</span>
                         </DropdownMenuItem>
                         <DropdownMenuSeparator className="my-2" />
                         <DropdownMenuItem className="gap-3 rounded-xl p-3 cursor-pointer group transition-all hover:bg-red-50">
@@ -653,7 +653,7 @@ export default function ContactsPage() {
                 size="sm"
                 onClick={() => setCurrentPage(page)}
                 className="h-8 w-8 p-0 rounded-full"
-                style={page === currentPage ? { backgroundColor: '#1877F2', color: 'white' } : {}}
+                style={page === currentPage ? { backgroundColor: '#14462a', color: 'white' } : {}}
               >
                 {page}
               </Button>

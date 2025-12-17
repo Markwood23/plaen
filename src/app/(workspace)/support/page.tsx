@@ -17,7 +17,7 @@ import {
   Shield,
   Zap,
   Clock,
-} from "hugeicons-react";
+} from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -26,7 +26,7 @@ const helpCategories = [
   {
     title: "Getting Started",
     icon: BookOpen,
-    color: "#1877F2",
+    color: "#14462a",
     articles: [
       { title: "Creating your first invoice", href: "/help/first-invoice", views: "2.4K" },
       { title: "Setting up your account", href: "/help/creating-account", views: "1.8K" },
@@ -59,7 +59,7 @@ const helpCategories = [
   {
     title: "Account & Settings",
     icon: Settings,
-    color: "#7C3AED",
+    color: "#14462a",
     articles: [
       { title: "Account types explained", href: "/help/account-types", views: "1.4K" },
       { title: "Dual currency invoicing", href: "/help/dual-currency", views: "2.1K" },
@@ -119,7 +119,7 @@ export default function SupportPage() {
             title: "Live Chat",
             description: "Chat with our support team",
             action: "Start Chat",
-            color: "#1877F2",
+            color: "#14462a",
             available: true,
           },
           {
@@ -135,7 +135,7 @@ export default function SupportPage() {
             title: "Phone Support",
             description: "Mon-Fri, 9am-5pm GMT",
             action: "Call Us",
-            color: "#7C3AED",
+            color: "#14462a",
             available: false,
           },
         ].map((option) => {
@@ -208,13 +208,13 @@ export default function SupportPage() {
                 <div className="flex items-center gap-4 flex-1">
                   <div
                     className="h-10 w-10 rounded-full flex items-center justify-center"
-                    style={{ backgroundColor: "rgba(24, 119, 242, 0.08)" }}
+                    style={{ backgroundColor: "rgba(20, 70, 42, 0.08)" }}
                   >
-                    <FileText className="h-5 w-5" style={{ color: "#1877F2" }} />
+                    <FileText className="h-5 w-5" style={{ color: "#14462a" }} />
                   </div>
                   <div className="flex-1">
                     <h3
-                      className="text-base font-medium mb-1 group-hover:text-[#1877F2] transition-colors"
+                      className="text-base font-medium mb-1 group-hover:text-[#14462a] transition-colors"
                       style={{ color: "#2D2D2D" }}
                     >
                       {article.title}
@@ -275,7 +275,7 @@ export default function SupportPage() {
                       className="flex items-center justify-between p-3 rounded-xl hover:bg-[#FAFBFC] transition-colors group"
                     >
                       <span
-                        className="text-sm group-hover:text-[#1877F2] transition-colors"
+                        className="text-sm group-hover:text-[#14462a] transition-colors"
                         style={{ color: "#2D2D2D" }}
                       >
                         {article.title}
@@ -286,7 +286,7 @@ export default function SupportPage() {
                         </span>
                         <ChevronRight
                           className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity"
-                          style={{ color: "#1877F2" }}
+                          style={{ color: "#14462a" }}
                         />
                       </div>
                     </a>
@@ -302,8 +302,8 @@ export default function SupportPage() {
       <div
         className="rounded-2xl p-8 text-center"
         style={{
-          backgroundColor: "rgba(24, 119, 242, 0.04)",
-          border: "1px solid rgba(24, 119, 242, 0.2)",
+          backgroundColor: "rgba(20, 70, 42, 0.04)",
+          border: "1px solid rgba(20, 70, 42, 0.2)",
         }}
       >
         <h3 className="text-xl font-semibold mb-2" style={{ color: "#2D2D2D" }}>
@@ -315,7 +315,7 @@ export default function SupportPage() {
         <div className="flex items-center justify-center gap-3">
           <Button
             className="rounded-full h-11 px-6"
-            style={{ backgroundColor: "#1877F2", color: "white" }}
+            style={{ backgroundColor: "#14462a", color: "white" }}
           >
             <MessageCircle className="h-4 w-4 mr-2" />
             Contact Support
@@ -323,7 +323,7 @@ export default function SupportPage() {
           <Button
             variant="outline"
             className="rounded-full h-11 px-6"
-            style={{ borderColor: "#1877F2", color: "#1877F2" }}
+            style={{ borderColor: "#14462a", color: "#14462a" }}
           >
             <BookOpen className="h-4 w-4 mr-2" />
             View All Guides

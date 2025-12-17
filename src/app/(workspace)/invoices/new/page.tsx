@@ -332,7 +332,7 @@ export default function CreateInvoicePage() {
           </Button>
           <Button 
             className="rounded-full px-5 h-10"
-            style={{ backgroundColor: '#1877F2', color: 'white', fontWeight: 500 }}
+            style={{ backgroundColor: '#14462a', color: 'white', fontWeight: 500 }}
           >
             <SentIcon size={16} className="mr-2" />
             Send Invoice
@@ -368,7 +368,7 @@ export default function CreateInvoicePage() {
           {/* Tab 1: Details - Enhanced */}
           <TabsContent value="details" className="space-y-10 mt-8">
             {/* Template Selection */}
-            <div className="p-6" style={{ backgroundColor: 'rgba(247, 249, 250, 0.3)', borderLeft: '3px solid #1877F2' }}>
+            <div className="p-6" style={{ backgroundColor: 'rgba(247, 249, 250, 0.3)', borderLeft: '3px solid #14462a' }}>
               <div className="mb-6 flex items-start justify-between">
                 <div>
                   <h2 className="text-lg font-semibold text-[#2D2D2D] mb-1">Invoice Template</h2>
@@ -553,7 +553,7 @@ export default function CreateInvoicePage() {
                     variant="ghost" 
                     asChild 
                     className="rounded-full px-4 h-9 hover:bg-[rgba(24,119,242,0.08)]"
-                    style={{ color: '#1877F2' }}
+                    style={{ color: '#14462a' }}
                   >
                     <Link href="/workspace/settings">
                       <PencilEdit01Icon size={14} className="mr-1.5" />
@@ -563,7 +563,7 @@ export default function CreateInvoicePage() {
                 </div>
                 
                 {/* Read-only business info display */}
-                <div className="space-y-4 p-6" style={{ backgroundColor: 'rgba(247, 249, 250, 0.3)', borderLeft: '3px solid #1877F2' }}>
+                <div className="space-y-4 p-6" style={{ backgroundColor: 'rgba(247, 249, 250, 0.3)', borderLeft: '3px solid #14462a' }}>
                   <div>
                     <p className="text-xs text-[#B0B3B8] font-medium uppercase tracking-wide mb-1.5">Business Name</p>
                     <p className="text-sm text-[#2D2D2D] font-medium">Your Business Name</p>
@@ -713,7 +713,7 @@ export default function CreateInvoicePage() {
                 </div>
                 <Button 
                   className="rounded-full px-5 h-9"
-                  style={{ backgroundColor: '#1877F2', color: 'white', fontWeight: 500 }}
+                  style={{ backgroundColor: '#14462a', color: 'white', fontWeight: 500 }}
                   onClick={addLineItem}
                 >
                   <Add01Icon size={16} className="mr-2" />
@@ -919,7 +919,7 @@ export default function CreateInvoicePage() {
                     key={method.id}
                     className={`flex items-start gap-3 p-4 rounded-2xl border transition-all cursor-pointer ${
                       paymentMethods.includes(method.id) 
-                        ? 'border-[#1877F2] bg-[rgba(24,119,242,0.04)]' 
+                        ? 'border-[#14462a] bg-[rgba(24,119,242,0.04)]' 
                         : 'border-[#E4E6EB] hover:border-[#B0B3B8]'
                     }`}
                     onClick={() => togglePaymentMethod(method.id)}
@@ -999,7 +999,7 @@ export default function CreateInvoicePage() {
                     />
                     {loadingRate && (
                       <div className="absolute right-3 top-1/2 -translate-y-1/2">
-                        <div className="h-4 w-4 animate-spin rounded-full border-2 border-[#1877F2] border-t-transparent"></div>
+                        <div className="h-4 w-4 animate-spin rounded-full border-2 border-[#14462a] border-t-transparent"></div>
                       </div>
                     )}
                   </div>
@@ -1040,7 +1040,7 @@ export default function CreateInvoicePage() {
                     key={reminder.id}
                     className={`flex items-start gap-3 p-4 rounded-2xl border transition-all cursor-pointer ${
                       paymentReminders.includes(reminder.id)
-                        ? 'border-[#1877F2] bg-[rgba(24,119,242,0.04)]'
+                        ? 'border-[#14462a] bg-[rgba(24,119,242,0.04)]'
                         : 'border-[#E4E6EB] hover:border-[#B0B3B8]'
                     }`}
                     onClick={() => togglePaymentReminder(reminder.id)}
@@ -1196,7 +1196,7 @@ export default function CreateInvoicePage() {
                 <h2 className="text-lg font-semibold text-[#2D2D2D] mb-1">Attachments</h2>
                 <p className="text-sm text-[#B0B3B8]">Attach supporting documents to this invoice</p>
               </div>
-              <div className="border-2 border-solid border-[#E4E6EB] rounded-lg p-8 text-center hover:border-[#1877F2] transition-colors cursor-pointer">
+              <div className="border-2 border-solid border-[#E4E6EB] rounded-lg p-8 text-center hover:border-[#14462a] transition-colors cursor-pointer">
                 <Add01Icon size={32} className="text-[#B0B3B8] mx-auto mb-3" />
                 <p className="text-sm font-medium text-[#2D2D2D] mb-1">Click to upload files</p>
                 <p className="text-xs text-[#B0B3B8]">PDF, PNG, JPG up to 10MB each</p>

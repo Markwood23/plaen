@@ -1,36 +1,45 @@
 import { IconFrame } from "@/components/ui/icon-frame";
-import { FileText, Users2, Wallet, Receipt, Bell } from "lucide-react";
+import { DocumentText, Profile2User, Wallet3, ReceiptText, NotificationBing } from "iconsax-react";
+
+// Accent color palette - complements primary green (#14462a)
+const accentColors = {
+  emerald: "#059669",   // Fresh green - invoicing
+  indigo: "#4F46E5",    // Deep purple - contacts/people
+  amber: "#D97706",     // Warm amber - payments/money
+  rose: "#E11D48",      // Vibrant rose - receipts/docs
+  sky: "#0284C7",       // Bright sky - reminders/notifications
+};
 
 const pillars = [
   {
-    icon: FileText,
+    icon: DocumentText,
     title: "Invoice Builder",
     description: "Compose dual-currency invoices with live totals, tax calculations, and professional templates.",
-    color: "#1877F2",
+    color: accentColors.emerald,
   },
   {
-    icon: Users2,
+    icon: Profile2User,
     title: "Contact Management",
     description: "Store and organize client information with custom fields and payment preferences.",
-    color: "#059669",
+    color: accentColors.indigo,
   },
   {
-    icon: Wallet,
+    icon: Wallet3,
     title: "Payment Processing",
     description: "Accept payments via mobile money, bank transfer, cards, and crypto in one unified flow.",
-    color: "#7C3AED",
+    color: accentColors.amber,
   },
   {
-    icon: Receipt,
+    icon: ReceiptText,
     title: "Finance Notes & Docs",
     description: "Automatic receipt generation with tamper-evident records and contextual documentation.",
-    color: "#F59E0B",
+    color: accentColors.rose,
   },
   {
-    icon: Bell,
+    icon: NotificationBing,
     title: "Smart Reminders",
     description: "Automated payment reminders and status tracking to keep invoices moving forward.",
-    color: "#DC2626",
+    color: accentColors.sky,
   },
 ];
 
@@ -44,7 +53,7 @@ export function Pillars({ heading = "Five product pillars" }: PillarsProps) {
     <section className="border-t border-gray-100 bg-white py-24" data-animate="fade-up">
       <div className="mx-auto max-w-6xl space-y-12 px-6">
         <div className="space-y-4 text-center">
-          <h2 className="text-3xl font-semibold tracking-tight text-black sm:text-4xl">
+          <h2 className="text-3xl font-semibold tracking-tight text-[#14462a] sm:text-4xl">
             {heading}
           </h2>
           <p className="mx-auto max-w-2xl text-base text-gray-600">
@@ -64,20 +73,19 @@ export function Pillars({ heading = "Five product pillars" }: PillarsProps) {
                 <div className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
                   <div
                     className="absolute -right-16 top-8 h-36 w-36 rounded-full blur-3xl"
-                    style={{ backgroundColor: `${pillar.color}15` }}
+                    style={{ backgroundColor: `${pillar.color}20` }}
                   />
                 </div>
                 <div className="relative space-y-4">
-                  <IconFrame
-                    icon={Icon}
-                    size="md"
-                    variant="subtle"
-                    className="transition"
+                  <div 
+                    className="h-12 w-12 rounded-2xl flex items-center justify-center transition-transform group-hover:scale-110"
                     style={{
-                      backgroundColor: `${pillar.color}10`,
-                      borderColor: `${pillar.color}20`,
+                      backgroundColor: `${pillar.color}12`,
+                      border: `1px solid ${pillar.color}25`,
                     }}
-                  />
+                  >
+                    <Icon size={24} color={pillar.color} variant="Bulk" />
+                  </div>
                   <h3 className="text-lg font-semibold text-black">{pillar.title}</h3>
                   <p className="text-sm leading-6 text-gray-600">{pillar.description}</p>
                 </div>

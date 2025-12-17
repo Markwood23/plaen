@@ -1,7 +1,19 @@
 import Link from "next/link";
 import { SmartButton } from "@/components/ui/smart-button";
 import { Badge } from "@/components/ui/badge";
-import { Activity, ArrowRight, CheckCircle2, FileText, Globe2, Lock, Shield, Smartphone, Sparkles, TimerReset } from "lucide-react";
+import { ArrowRight } from "lucide-react";
+import { 
+  Activity, 
+  DocumentText1, 
+  Global, 
+  Lock1, 
+  ShieldTick, 
+  Mobile, 
+  Timer1, 
+  TickCircle, 
+  ReceiptText,
+  Magicpen
+} from "iconsax-react";
 import { IconFrame } from "@/components/ui/icon-frame";
 import { Pillars } from "@/components/marketing/pillars";
 import { MarketingHeader } from "@/components/marketing/marketing-header";
@@ -9,24 +21,36 @@ import { MarketingFooter } from "@/components/marketing/marketing-footer";
 import { HomePageEffects } from "@/components/marketing/home-page-effects";
 import { DashboardPreview } from "@/components/marketing/dashboard-preview";
 
+// Accent color palette for icons
+const accentColors = {
+  emerald: "#059669",   // Fresh green - invoicing/success
+  indigo: "#4F46E5",    // Deep purple - contacts/people  
+  amber: "#D97706",     // Warm amber - payments/money
+  rose: "#E11D48",      // Vibrant rose - receipts/docs
+  sky: "#0284C7",       // Bright sky - reminders/notifications
+  violet: "#7C3AED",    // Rich violet - analytics
+  teal: "#0D9488",      // Teal - security/trust
+  orange: "#EA580C",    // Orange - speed/time
+};
+
 const modules = [
   {
     title: "Personal or Business",
     copy: "Choose your setup. Freelancers add their name and payout method. Companies add branding, logo, and tax details. Your information automatically populates future invoices.",
     badge: "Tailored onboarding",
-    color: "#1877F2", // Blue
+    color: accentColors.indigo,
   },
   {
     title: "Invoice Builder",
     copy: "A quiet, black-and-white interface. Add items, quantities, and rates. See totals update in real time. Preview a clean, ready-to-share document in one click.",
     badge: "The heart of Plaen",
-    color: "#059669", // Green
+    color: accentColors.emerald,
   },
   {
     title: "Send & Get Paid",
   copy: "Share via link, email, or WhatsApp. Recipients don't need an account. They open a secure link, review, and pay through mobile money, bank, or crypto.",
     badge: "Smooth & transparent",
-    color: "#7C3AED", // Purple
+    color: accentColors.amber,
   },
 ];
 
@@ -35,14 +59,14 @@ const stats = [
     label: "Currencies supported",
     value: "5",
     detail: "GHS, NGN, KES, ZAR, USD",
-    icon: Globe2,
+    icon: Global,
     accent: "bg-gradient-to-r from-gray-900 to-gray-700",
   },
   {
     label: "Invoice completion",
     value: "< 3 min",
     detail: "Average setup time",
-    icon: TimerReset,
+    icon: Timer1,
     accent: "bg-gradient-to-r from-gray-900/90 to-gray-600",
   },
 ];
@@ -52,19 +76,19 @@ const steps = [
     title: "Capture context",
     description:
       "Import a client or create inline. Choose personal or business sender details. Plaen keeps both on hand.",
-    color: "#1877F2", // Blue
+    color: accentColors.indigo,
   },
   {
     title: "Compose & preview",
     description:
       "Add line items, taxes, and notes. Toggle dual currency, attach documentation, and preview the public invoice instantly.",
-    color: "#059669", // Green
+    color: accentColors.emerald,
   },
   {
     title: "Share & track",
     description:
       "Send a focused payment page. Track opens, enable automatic reminders, and generate receipts the moment funds land.",
-    color: "#F59E0B", // Orange
+    color: accentColors.amber,
   },
 ];
 
@@ -111,9 +135,9 @@ export default function Home() {
         >
           <div className="max-w-xl space-y-8">
             <Badge variant="outline" className="rounded-full border-gray-200 px-4 py-1 text-xs uppercase tracking-[0.3em] text-gray-500">
-              <IconFrame icon={Sparkles} size="sm" variant="plain" /> Structured invoicing + AR
+              <Magicpen size={14} className="mr-1" /> Structured invoicing + AR
             </Badge>
-            <h1 className="text-4xl font-semibold tracking-tight text-black sm:text-5xl lg:text-6xl">
+            <h1 className="text-4xl font-semibold tracking-tight text-[#14462a] sm:text-5xl lg:text-6xl">
               Calm finance surface for invoices, AR, and payment notes.
             </h1>
             <p className="text-lg leading-7 text-gray-600 sm:text-xl">
@@ -133,10 +157,10 @@ export default function Home() {
             </div>
             <div className="space-y-3 text-sm text-gray-600">
               <p className="flex items-center gap-2">
-                <CheckCircle2 className="h-4 w-4 text-[#059669]" /> Mobile money, bank transfer, USD, and crypto from one link
+                <TickCircle size={16} color={accentColors.emerald} variant="Bold" /> Mobile money, bank transfer, USD, and crypto from one link
               </p>
               <p className="flex items-center gap-2">
-                <Lock className="h-4 w-4 text-gray-400" /> Tamper-evident receipts with Finance Notes & Docs
+                <Lock1 size={16} className="text-gray-400" /> Tamper-evident receipts with Finance Notes & Docs
               </p>
             </div>
 
@@ -154,7 +178,9 @@ export default function Home() {
                     </div>
                     <div className="flex items-start justify-between">
                       <p className="text-[11px] leading-4 uppercase tracking-[0.3em] text-gray-500">{stat.label}</p>
-                      <IconFrame icon={Icon} size="sm" variant="subtle" className="self-start" />
+                      <div className="h-8 w-8 rounded-xl bg-gray-100 flex items-center justify-center">
+                        <Icon size={18} className="text-gray-600" />
+                      </div>
                     </div>
                     <p className="mt-6 text-3xl font-semibold text-black">{stat.value}</p>
                     <p className="mt-2 text-xs text-gray-500">{stat.detail}</p>
@@ -193,10 +219,10 @@ export default function Home() {
   <Pillars heading="Five product pillars" />
 
         {/* Feature Highlights (legacy feature framing kept, now follows narrative) */}
-        <section id="product" className="border-t border-gray-100 bg-gradient-to-b from-white to-blue-50/30 py-20" data-animate="fade-up">
+        <section id="product" className="border-t border-gray-100 bg-gradient-to-b from-white to-gray-50/50 py-20" data-animate="fade-up">
           <div className="mx-auto max-w-5xl space-y-12 px-6">
             <div className="space-y-4 text-center">
-              <h2 className="text-3xl font-semibold tracking-tight text-black sm:text-4xl">Structure with human context</h2>
+              <h2 className="text-3xl font-semibold tracking-tight text-[#14462a] sm:text-4xl">Structure with human context</h2>
               <p className="mx-auto max-w-2xl text-base text-gray-600">
                 Each invoice couples financial clarity with meaning (why, for whom, and under what terms) so payments become durable records.
               </p>
@@ -208,10 +234,15 @@ export default function Home() {
               <div className="grid gap-6 lg:grid-cols-10">
                 <article className="group relative overflow-hidden rounded-2xl border border-gray-200 bg-gray-50/50 p-8 shadow-[0_16px_60px_rgba(15,15,15,0.05)] transition hover:-translate-y-1 hover:border-black/80 hover:shadow-[0_24px_80px_rgba(15,15,15,0.12)] lg:col-span-6">
                   <div className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
-                    <div className="absolute -right-12 top-8 h-32 w-32 rounded-full bg-gradient-to-br from-black/5 to-transparent blur-2xl" />
+                    <div className="absolute -right-12 top-8 h-32 w-32 rounded-full blur-2xl" style={{ backgroundColor: `${accentColors.teal}20` }} />
                   </div>
                   <div className="relative space-y-4">
-                    <IconFrame icon={Shield} size="md" variant="subtle" className="transition bg-[#1877F2]/10 border-[#1877F2]/20 group-hover:bg-[#1877F2] group-hover:border-[#1877F2] group-hover:text-white" />
+                    <div 
+                      className="h-12 w-12 rounded-2xl flex items-center justify-center transition-all group-hover:scale-110"
+                      style={{ backgroundColor: `${accentColors.teal}12`, border: `1px solid ${accentColors.teal}25` }}
+                    >
+                      <ShieldTick size={24} color={accentColors.teal} variant="Bulk" />
+                    </div>
                     <h3 className="text-lg font-semibold text-black">Built-in Professionalism</h3>
                     <p className="text-sm leading-6 text-gray-600">
                       Operate with global-grade clarity even without a registered entity. Plaen gives you legitimacy through format, flow, and consistency.
@@ -219,7 +250,7 @@ export default function Home() {
                     {/* Visual mockup area */}
                     <div className="mt-6 flex items-center gap-3 rounded-xl border border-gray-200 bg-white p-4">
                       <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-100">
-                        <CheckCircle2 className="h-5 w-5 text-gray-600" />
+                        <TickCircle size={20} className="text-gray-600" />
                       </div>
                       <div className="flex-1">
                         <div className="h-2 w-32 rounded bg-gray-200" />
@@ -231,10 +262,15 @@ export default function Home() {
 
                 <article className="group relative overflow-hidden rounded-2xl border border-gray-200 bg-gray-50/50 p-8 shadow-[0_16px_60px_rgba(15,15,15,0.05)] transition hover:-translate-y-1 hover:border-black/80 hover:shadow-[0_24px_80px_rgba(15,15,15,0.12)] lg:col-span-4">
                   <div className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
-                    <div className="absolute -right-12 top-8 h-32 w-32 rounded-full bg-gradient-to-br from-black/5 to-transparent blur-2xl" />
+                    <div className="absolute -right-12 top-8 h-32 w-32 rounded-full blur-2xl" style={{ backgroundColor: `${accentColors.emerald}20` }} />
                   </div>
                   <div className="relative space-y-4">
-                    <IconFrame icon={FileText} size="md" variant="subtle" className="transition bg-[#059669]/10 border-[#059669]/20 group-hover:bg-[#059669] group-hover:border-[#059669] group-hover:text-white" />
+                    <div 
+                      className="h-12 w-12 rounded-2xl flex items-center justify-center transition-all group-hover:scale-110"
+                      style={{ backgroundColor: `${accentColors.emerald}12`, border: `1px solid ${accentColors.emerald}25` }}
+                    >
+                      <DocumentText1 size={24} color={accentColors.emerald} variant="Bulk" />
+                    </div>
                     <h3 className="text-lg font-semibold text-black">Calm Invoice Builder</h3>
                     <p className="text-sm leading-6 text-gray-600">
                       A monochrome surface engineered for focus. Totals, taxes, context notes update instantly without visual noise.
@@ -253,10 +289,15 @@ export default function Home() {
               <div className="grid gap-6 lg:grid-cols-10">
                 <article className="group relative overflow-hidden rounded-2xl border border-gray-200 bg-gray-50/50 p-8 shadow-[0_16px_60px_rgba(15,15,15,0.05)] transition hover:-translate-y-1 hover:border-black/80 hover:shadow-[0_24px_80px_rgba(15,15,15,0.12)] lg:col-span-4">
                   <div className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
-                    <div className="absolute -right-12 top-8 h-32 w-32 rounded-full bg-gradient-to-br from-black/5 to-transparent blur-2xl" />
+                    <div className="absolute -right-12 top-8 h-32 w-32 rounded-full blur-2xl" style={{ backgroundColor: `${accentColors.amber}20` }} />
                   </div>
                   <div className="relative space-y-4">
-                    <IconFrame icon={Smartphone} size="md" variant="subtle" className="transition bg-[#7C3AED]/10 border-[#7C3AED]/20 group-hover:bg-[#7C3AED] group-hover:border-[#7C3AED] group-hover:text-white" />
+                    <div 
+                      className="h-12 w-12 rounded-2xl flex items-center justify-center transition-all group-hover:scale-110"
+                      style={{ backgroundColor: `${accentColors.amber}12`, border: `1px solid ${accentColors.amber}25` }}
+                    >
+                      <Mobile size={24} color={accentColors.amber} variant="Bulk" />
+                    </div>
                     <h3 className="text-lg font-semibold text-black">Frictionless Payment Access</h3>
                     <p className="text-sm leading-6 text-gray-600">
                       Recipients open a secure link, review structured context, and complete payment with no account barrier and no confusion.
@@ -264,7 +305,7 @@ export default function Home() {
                     {/* Visual mockup area */}
                     <div className="mt-6 flex items-center justify-center rounded-xl border border-gray-200 bg-white p-6">
                       <div className="flex items-center gap-2 text-xs text-gray-500">
-                        <Lock className="h-4 w-4" />
+                        <Lock1 size={16} />
                         <span>Secure link</span>
                       </div>
                     </div>
@@ -273,10 +314,15 @@ export default function Home() {
 
                 <article className="group relative overflow-hidden rounded-2xl border border-gray-200 bg-gray-50/50 p-8 shadow-[0_16px_60px_rgba(15,15,15,0.05)] transition hover:-translate-y-1 hover:border-black/80 hover:shadow-[0_24px_80px_rgba(15,15,15,0.12)] lg:col-span-6">
                   <div className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
-                    <div className="absolute -right-12 top-8 h-32 w-32 rounded-full bg-gradient-to-br from-black/5 to-transparent blur-2xl" />
+                    <div className="absolute -right-12 top-8 h-32 w-32 rounded-full blur-2xl" style={{ backgroundColor: `${accentColors.violet}20` }} />
                   </div>
                   <div className="relative space-y-4">
-                    <IconFrame icon={Activity} size="md" variant="subtle" className="transition bg-[#F59E0B]/10 border-[#F59E0B]/20 group-hover:bg-[#F59E0B] group-hover:border-[#F59E0B] group-hover:text-white" />
+                    <div 
+                      className="h-12 w-12 rounded-2xl flex items-center justify-center transition-all group-hover:scale-110"
+                      style={{ backgroundColor: `${accentColors.violet}12`, border: `1px solid ${accentColors.violet}25` }}
+                    >
+                      <Activity size={24} color={accentColors.violet} variant="Bulk" />
+                    </div>
                     <h3 className="text-lg font-semibold text-black">Live Composition Feedback</h3>
                     <p className="text-sm leading-6 text-gray-600">
                       Totals, previews, and context sync as you type, reducing errors and reinforcing trust before sending.
@@ -300,10 +346,15 @@ export default function Home() {
               <div className="grid gap-6 lg:grid-cols-2">
                 <article className="group relative overflow-hidden rounded-2xl border border-gray-200 bg-gray-50/50 p-8 shadow-[0_16px_60px_rgba(15,15,15,0.05)] transition hover:-translate-y-1 hover:border-black/80 hover:shadow-[0_24px_80px_rgba(15,15,15,0.12)]">
                   <div className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
-                    <div className="absolute -right-12 top-8 h-32 w-32 rounded-full bg-gradient-to-br from-black/5 to-transparent blur-2xl" />
+                    <div className="absolute -right-12 top-8 h-32 w-32 rounded-full blur-2xl" style={{ backgroundColor: `${accentColors.rose}20` }} />
                   </div>
                   <div className="relative space-y-4">
-                    <IconFrame icon={CheckCircle2} size="md" variant="subtle" className="transition bg-[#059669]/10 border-[#059669]/20 group-hover:bg-[#059669] group-hover:border-[#059669] group-hover:text-white" />
+                    <div 
+                      className="h-12 w-12 rounded-2xl flex items-center justify-center transition-all group-hover:scale-110"
+                      style={{ backgroundColor: `${accentColors.rose}12`, border: `1px solid ${accentColors.rose}25` }}
+                    >
+                      <ReceiptText size={24} color={accentColors.rose} variant="Bulk" />
+                    </div>
                     <h3 className="text-lg font-semibold text-black">Finance Notes & Receipts</h3>
                     <p className="text-sm leading-6 text-gray-600">
                       Each payment triggers a verifiable receipt and keeps contextual notes attached, building a searchable narrative over time.
@@ -322,19 +373,24 @@ export default function Home() {
 
                 <article className="group relative overflow-hidden rounded-2xl border border-gray-200 bg-gray-50/50 p-8 shadow-[0_16px_60px_rgba(15,15,15,0.05)] transition hover:-translate-y-1 hover:border-black/80 hover:shadow-[0_24px_80px_rgba(15,15,15,0.12)]">
                   <div className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
-                    <div className="absolute -right-12 top-8 h-32 w-32 rounded-full bg-gradient-to-br from-black/5 to-transparent blur-2xl" />
+                    <div className="absolute -right-12 top-8 h-32 w-32 rounded-full blur-2xl" style={{ backgroundColor: `${accentColors.sky}20` }} />
                   </div>
                   <div className="relative space-y-4">
-                    <IconFrame icon={Globe2} size="md" variant="subtle" className="transition bg-[#1877F2]/10 border-[#1877F2]/20 group-hover:bg-[#1877F2] group-hover:border-[#1877F2] group-hover:text-white" />
+                    <div 
+                      className="h-12 w-12 rounded-2xl flex items-center justify-center transition-all group-hover:scale-110"
+                      style={{ backgroundColor: `${accentColors.sky}12`, border: `1px solid ${accentColors.sky}25` }}
+                    >
+                      <Global size={24} color={accentColors.sky} variant="Bulk" />
+                    </div>
                     <h3 className="text-lg font-semibold text-black">Device-Agnostic Workspace</h3>
                     <p className="text-sm leading-6 text-gray-600">
                       Access structured financial context on mobile, desktop, or tablet without losing fidelity.
                     </p>
                     {/* Visual mockup area */}
                     <div className="mt-6 flex items-center justify-center gap-4 rounded-xl border border-gray-200 bg-white p-4">
-                      <Smartphone className="h-6 w-6 text-gray-400" />
+                      <Mobile size={24} className="text-gray-400" />
                       <div className="h-6 w-6 rounded border-2 border-gray-400" />
-                      <Globe2 className="h-6 w-6 text-gray-400" />
+                      <Global size={24} className="text-gray-400" />
                     </div>
                   </div>
                 </article>
@@ -347,19 +403,19 @@ export default function Home() {
         <section id="modules" className="border-t border-gray-100 bg-gray-50 py-24" data-animate="fade-up">
           <div className="mx-auto flex max-w-6xl flex-col gap-12 px-6 lg:flex-row">
             <div className="max-w-sm space-y-6">
-              <h2 className="text-3xl font-semibold tracking-tight text-black">Calm surface. Durable records.</h2>
+              <h2 className="text-3xl font-semibold tracking-tight text-[#14462a]">Calm surface. Durable records.</h2>
               <p className="text-base leading-7 text-gray-600">
                 A monochrome, low noise interface guides you from context capture to receipt: fast, deliberate, human. No clutter; just official output ready to share or search.
               </p>
               <div className="flex flex-col gap-2 text-sm text-gray-600">
                 <span className="flex items-center gap-2">
-                  <CheckCircle2 className="h-4 w-4" /> Tailored setup for individuals and businesses
+                  <TickCircle size={16} color={accentColors.emerald} variant="Bold" /> Tailored setup for individuals and businesses
                 </span>
                 <span className="flex items-center gap-2">
-                  <CheckCircle2 className="h-4 w-4" /> Clean interface with real-time updates
+                  <TickCircle size={16} color={accentColors.emerald} variant="Bold" /> Clean interface with real-time updates
                 </span>
                 <span className="flex items-center gap-2">
-                  <CheckCircle2 className="h-4 w-4" /> Secure payment links, no account needed
+                  <TickCircle size={16} color={accentColors.emerald} variant="Bold" /> Secure payment links, no account needed
                 </span>
               </div>
             </div>
@@ -399,7 +455,7 @@ export default function Home() {
               <span className="inline-flex items-center gap-2 rounded-full border border-gray-200 px-4 py-1 text-xs uppercase tracking-[0.35em] text-gray-500">
                 Flow intelligence
               </span>
-              <h2 className="text-3xl font-semibold tracking-tight text-black sm:text-4xl">
+              <h2 className="text-3xl font-semibold tracking-tight text-[#14462a] sm:text-4xl">
                 Draft → Context → Receipt in seconds.
               </h2>
               <p className="text-base leading-7 text-gray-600">
@@ -408,7 +464,7 @@ export default function Home() {
             </div>
 
             <div className="relative flex-1">
-              <div className="absolute left-[1.25rem] top-3 hidden h-[calc(100%-1.5rem)] w-px bg-gradient-to-b from-[#1877F2] via-[#059669] to-[#F59E0B]/30 lg:block" />
+              <div className="absolute left-[1.25rem] top-3 hidden h-[calc(100%-1.5rem)] w-px bg-[#14462a]/30 lg:block" />
               <ol className="space-y-6">
                 {steps.map((step, index) => (
                   <li
@@ -544,7 +600,7 @@ export default function Home() {
         </section>
 
   {/* CTA */}
-  <section id="pricing" className="relative overflow-hidden border-t border-blue-600/20 bg-[#1877F2] py-24 text-white" data-animate="fade-up">
+  <section id="pricing" className="relative overflow-hidden border-t border-blue-600/20 bg-[#14462a] py-24 text-white" data-animate="fade-up">
           {/* Background Pattern */}
           <div className="pointer-events-none absolute inset-0">
             {/* Grid Pattern */}

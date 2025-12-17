@@ -241,7 +241,7 @@ export default function PaymentsPage() {
     switch (status) {
       case "Paid":
         return (
-          <Badge style={{ backgroundColor: '#1877F2', color: 'white', borderColor: '#1877F2' }}>
+          <Badge style={{ backgroundColor: '#14462a', color: 'white', borderColor: '#14462a' }}>
             <CheckmarkSquare02Icon size={14} /> Paid
           </Badge>
         );
@@ -360,13 +360,13 @@ export default function PaymentsPage() {
         </div>
 
         {/* On-time Rate (≤3 days per PRD) */}
-        <div className="group relative rounded-2xl p-6 transition-all duration-300 hover:scale-[1.02]" style={{ backgroundColor: 'rgba(24, 119, 242, 0.04)' }}>
+        <div className="group relative rounded-2xl p-6 transition-all duration-300 hover:scale-[1.02]" style={{ backgroundColor: 'rgba(20, 70, 42, 0.04)' }}>
           <div className="flex items-center justify-between mb-4">
-            <div className="h-12 w-12 rounded-full flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110" style={{ backgroundColor: 'rgba(24, 119, 242, 0.12)' }}>
-              <Clock01Icon size={24} style={{ color: '#1877F2' }} />
+            <div className="h-12 w-12 rounded-full flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110" style={{ backgroundColor: 'rgba(20, 70, 42, 0.12)' }}>
+              <Clock01Icon size={24} style={{ color: '#14462a' }} />
             </div>
-            <div className="flex items-center gap-1 px-2 py-1 rounded-full" style={{ backgroundColor: 'rgba(24, 119, 242, 0.12)' }}>
-              <span className="text-xs font-semibold" style={{ color: '#1877F2' }}>+8.2%</span>
+            <div className="flex items-center gap-1 px-2 py-1 rounded-full" style={{ backgroundColor: 'rgba(20, 70, 42, 0.12)' }}>
+              <span className="text-xs font-semibold" style={{ color: '#14462a' }}>+8.2%</span>
             </div>
           </div>
           <p className="text-sm mb-2" style={{ color: '#65676B', fontWeight: 500 }}>On-time Rate</p>
@@ -377,10 +377,10 @@ export default function PaymentsPage() {
         </div>
 
         {/* DSO (Days Sales Outstanding) */}
-        <div className="group relative rounded-2xl p-6 transition-all duration-300 hover:scale-[1.02]" style={{ backgroundColor: 'rgba(124, 58, 237, 0.04)' }}>
+        <div className="group relative rounded-2xl p-6 transition-all duration-300 hover:scale-[1.02]" style={{ backgroundColor: 'rgba(20, 70, 42, 0.04)' }}>
           <div className="flex items-center justify-between mb-4">
-            <div className="h-12 w-12 rounded-full flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110" style={{ backgroundColor: 'rgba(124, 58, 237, 0.12)' }}>
-              <Loading03Icon size={24} style={{ color: '#7C3AED' }} />
+            <div className="h-12 w-12 rounded-full flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110" style={{ backgroundColor: 'rgba(20, 70, 42, 0.12)' }}>
+              <Loading03Icon size={24} style={{ color: '#14462a' }} />
             </div>
             <div className="flex items-center gap-1 px-2 py-1 rounded-full" style={{ backgroundColor: 'rgba(5, 150, 105, 0.12)' }}>
               <span className="text-xs font-semibold" style={{ color: '#059669' }}>-2.1d</span>
@@ -420,7 +420,7 @@ export default function PaymentsPage() {
             <h3 className="text-sm font-semibold" style={{ color: '#2D2D2D' }}>Filter Payments</h3>
             <p className="text-xs mt-0.5" style={{ color: '#B0B3B8' }}>Refine your search results</p>
           </div>
-          <button className="text-xs font-medium px-3 py-1.5 rounded-full transition-all hover:bg-white" style={{ color: '#1877F2' }}>
+          <button className="text-xs font-medium px-3 py-1.5 rounded-full transition-all hover:bg-white" style={{ color: '#14462a' }}>
             Clear all
           </button>
         </div>
@@ -483,37 +483,37 @@ export default function PaymentsPage() {
                 <SelectItem value="all">All Rails</SelectItem>
                 <SelectItem value="momo">
                   <div className="flex items-center gap-2">
-                    <SmartPhone01Icon size={14} style={{ color: '#1877F2' }} />
+                    <SmartPhone01Icon size={14} style={{ color: '#14462a' }} />
                     Mobile Money
                   </div>
                 </SelectItem>
                 <SelectItem value="bank">
                   <div className="flex items-center gap-2">
-                    <Building03Icon size={14} style={{ color: '#1877F2' }} />
+                    <Building03Icon size={14} style={{ color: '#14462a' }} />
                     Bank Transfer
                   </div>
                 </SelectItem>
                 <SelectItem value="card">
                   <div className="flex items-center gap-2">
-                    <CreditCardIcon size={14} style={{ color: '#1877F2' }} />
+                    <CreditCardIcon size={14} style={{ color: '#14462a' }} />
                     Card
                   </div>
                 </SelectItem>
                 <SelectItem value="crypto">
                   <div className="flex items-center gap-2">
-                    <Bitcoin01Icon size={14} style={{ color: '#1877F2' }} />
+                    <Bitcoin01Icon size={14} style={{ color: '#14462a' }} />
                     Crypto
                   </div>
                 </SelectItem>
                 <SelectItem value="cash">
                   <div className="flex items-center gap-2">
-                    <DollarSquareIcon size={14} style={{ color: '#1877F2' }} />
+                    <DollarSquareIcon size={14} style={{ color: '#14462a' }} />
                     Cash
                   </div>
                 </SelectItem>
                 <SelectItem value="document">
                   <div className="flex items-center gap-2">
-                    <FileValidationIcon size={14} style={{ color: '#1877F2' }} />
+                    <FileValidationIcon size={14} style={{ color: '#14462a' }} />
                     Document-only
                   </div>
                 </SelectItem>
@@ -565,10 +565,10 @@ export default function PaymentsPage() {
       <div className="rounded-2xl overflow-hidden" style={{ backgroundColor: 'white', boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.05)' }}>
         {/* Bulk Actions Bar */}
         {selectedRows.length > 0 && (
-          <div className="flex items-center justify-between px-6 py-4 border-b" style={{ backgroundColor: 'rgba(24, 119, 242, 0.04)', borderColor: 'rgba(24, 119, 242, 0.1)' }}>
+          <div className="flex items-center justify-between px-6 py-4 border-b" style={{ backgroundColor: 'rgba(20, 70, 42, 0.04)', borderColor: 'rgba(20, 70, 42, 0.1)' }}>
             <div className="flex items-center gap-3">
-              <div className="h-8 w-8 rounded-full flex items-center justify-center" style={{ backgroundColor: 'rgba(24, 119, 242, 0.12)' }}>
-                <CheckmarkSquare02Icon size={16} style={{ color: '#1877F2' }} />
+              <div className="h-8 w-8 rounded-full flex items-center justify-center" style={{ backgroundColor: 'rgba(20, 70, 42, 0.12)' }}>
+                <CheckmarkSquare02Icon size={16} style={{ color: '#14462a' }} />
               </div>
               <div>
                 <p className="text-sm font-semibold" style={{ color: '#2D2D2D' }}>
@@ -612,7 +612,7 @@ export default function PaymentsPage() {
                 />
               </TableHead>
               <TableHead>
-                <button className="flex items-center gap-1 hover:text-[#1877F2] transition-colors">
+                <button className="flex items-center gap-1 hover:text-[#14462a] transition-colors">
                   Payment Date <ArrowDataTransferVerticalIcon size={14} />
                 </button>
               </TableHead>
@@ -649,7 +649,7 @@ export default function PaymentsPage() {
                   <Link 
                     href={`/invoices/${allocation.id}`} 
                     className="font-medium hover:underline transition-colors"
-                    style={{ color: '#1877F2' }}
+                    style={{ color: '#14462a' }}
                   >
                     {allocation.invoiceId}
                   </Link>
@@ -715,11 +715,11 @@ export default function PaymentsPage() {
                       <DropdownMenuItem className="gap-3 rounded-xl p-3 cursor-pointer group transition-all hover:bg-[rgba(24,119,242,0.04)]">
                         <div 
                           className="h-8 w-8 rounded-full flex items-center justify-center transition-all"
-                          style={{ backgroundColor: 'rgba(24, 119, 242, 0.08)' }}
+                          style={{ backgroundColor: 'rgba(20, 70, 42, 0.08)' }}
                         >
-                          <FileValidationIcon size={16} style={{ color: '#1877F2' }} />
+                          <FileValidationIcon size={16} style={{ color: '#14462a' }} />
                         </div>
-                        <span className="text-sm font-medium group-hover:text-[#1877F2] transition-all" style={{ color: '#2D2D2D' }}>
+                        <span className="text-sm font-medium group-hover:text-[#14462a] transition-all" style={{ color: '#2D2D2D' }}>
                           View Invoice
                         </span>
                       </DropdownMenuItem>
@@ -730,18 +730,18 @@ export default function PaymentsPage() {
                         >
                           <ViewIcon size={16} style={{ color: '#059669' }} />
                         </div>
-                        <span className="text-sm font-medium group-hover:text-[#1877F2] transition-all" style={{ color: '#2D2D2D' }}>
+                        <span className="text-sm font-medium group-hover:text-[#14462a] transition-all" style={{ color: '#2D2D2D' }}>
                           View Receipt
                         </span>
                       </DropdownMenuItem>
                       <DropdownMenuItem className="gap-3 rounded-xl p-3 cursor-pointer group transition-all hover:bg-[rgba(24,119,242,0.04)]">
                         <div 
                           className="h-8 w-8 rounded-full flex items-center justify-center transition-all"
-                          style={{ backgroundColor: 'rgba(124, 58, 237, 0.08)' }}
+                          style={{ backgroundColor: 'rgba(20, 70, 42, 0.08)' }}
                         >
-                          <Download01Icon size={16} style={{ color: '#7C3AED' }} />
+                          <Download01Icon size={16} style={{ color: '#14462a' }} />
                         </div>
-                        <span className="text-sm font-medium group-hover:text-[#1877F2] transition-all" style={{ color: '#2D2D2D' }}>
+                        <span className="text-sm font-medium group-hover:text-[#14462a] transition-all" style={{ color: '#2D2D2D' }}>
                           Download Receipt PDF
                         </span>
                       </DropdownMenuItem>
@@ -754,7 +754,7 @@ export default function PaymentsPage() {
                           >
                             <Loading03Icon size={16} style={{ color: '#F59E0B' }} />
                           </div>
-                          <span className="text-sm font-medium group-hover:text-[#1877F2] transition-all" style={{ color: '#2D2D2D' }}>
+                          <span className="text-sm font-medium group-hover:text-[#14462a] transition-all" style={{ color: '#2D2D2D' }}>
                             Retry Payment
                           </span>
                         </DropdownMenuItem>
@@ -795,14 +795,14 @@ export default function PaymentsPage() {
                 onClick={() => setCurrentPage(page)}
                 style={
                   currentPage === page
-                    ? { backgroundColor: '#1877F2', color: 'white', borderColor: '#1877F2' }
+                    ? { backgroundColor: '#14462a', color: 'white', borderColor: '#14462a' }
                     : { borderColor: '#E4E6EB', color: '#2D2D2D' }
                 }
                 onMouseEnter={(e) => {
                   if (currentPage !== page) {
-                    e.currentTarget.style.backgroundColor = 'rgba(24, 119, 242, 0.04)';
-                    e.currentTarget.style.borderColor = '#1877F2';
-                    e.currentTarget.style.color = '#1877F2';
+                    e.currentTarget.style.backgroundColor = 'rgba(20, 70, 42, 0.04)';
+                    e.currentTarget.style.borderColor = '#14462a';
+                    e.currentTarget.style.color = '#14462a';
                   }
                 }}
                 onMouseLeave={(e) => {

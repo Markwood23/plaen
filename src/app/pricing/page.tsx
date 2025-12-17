@@ -1,11 +1,12 @@
 "use client";
 
 import { useEffect } from "react";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { MarketingHeader } from "@/components/marketing/marketing-header";
 import { MarketingFooter } from "@/components/marketing/marketing-footer";
 import { useRevealAnimation } from "@/hooks/use-reveal-animation";
-import { BadgeCheck, CreditCard, RefreshCcw, Shield, TrendingUp } from "lucide-react";
+import { TickCircle, Card, RefreshCircle, ShieldTick, TrendUp } from "iconsax-react";
 
 const pricingTiers = [
   {
@@ -20,6 +21,8 @@ const pricingTiers = [
       "Documentation timeline",
     ],
     highlighted: true,
+    href: "/signup",
+    buttonLabel: "Get started free",
   },
   {
     name: "Pro",
@@ -33,6 +36,8 @@ const pricingTiers = [
       "Priority support",
     ],
     highlighted: false,
+    href: "/coming-soon",
+    buttonLabel: "Join waitlist",
   },
   {
     name: "Teams",
@@ -46,6 +51,8 @@ const pricingTiers = [
       "Team analytics",
     ],
     highlighted: false,
+    href: "/contact",
+    buttonLabel: "Talk to Plaen",
   },
 ];
 
@@ -103,7 +110,7 @@ export default function PricingPage() {
           <span className="inline-flex items-center gap-2 rounded-full border border-gray-200 px-4 py-1 text-xs uppercase tracking-[0.35em] text-gray-500">
             Pricing
           </span>
-          <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">
+          <h1 className="text-4xl font-semibold tracking-tight text-[#14462a] sm:text-5xl">
             Structure should be free to start.
           </h1>
           <p className="max-w-2xl text-lg leading-7 text-gray-600">
@@ -127,7 +134,7 @@ export default function PricingPage() {
                 )}
                 <div className="flex items-center justify-between">
                   <h3 className="text-xl font-semibold text-black">{tier.name}</h3>
-                  <BadgeCheck className={`h-5 w-5 ${tier.highlighted ? "text-[#1877F2]" : "text-gray-400"}`} />
+                  <TickCircle size={20} color={tier.highlighted ? "#059669" : "#9CA3AF"} variant="Bold" />
                 </div>
                 <p className="mt-3 text-sm leading-6 text-gray-600">{tier.description}</p>
                 <div className="mt-6 flex items-baseline gap-1 text-3xl font-semibold text-black">
@@ -137,19 +144,21 @@ export default function PricingPage() {
                 <ul className="mt-6 space-y-2 text-sm text-gray-600">
                   {tier.features.map((feature) => (
                     <li key={feature} className="flex items-center gap-2">
-                      <Shield className="h-4 w-4 text-[#059669]" />
+                      <ShieldTick size={16} color="#059669" variant="Bold" />
                       {feature}
                     </li>
                   ))}
                 </ul>
-                <Button
-                  size="lg"
-                  className={`mt-8 w-full ${
-                    tier.highlighted ? "bg-black text-white hover:bg-gray-900" : "border border-gray-200 bg-white text-black hover:border-black hover:bg-gray-50"
-                  }`}
-                >
-                  {tier.highlighted ? "Start Ops plan" : tier.price === "$0" ? "Launch now" : "Talk to Plaen"}
-                </Button>
+                <Link href={tier.href}>
+                  <Button
+                    size="lg"
+                    className={`mt-8 w-full ${
+                      tier.highlighted ? "bg-black text-white hover:bg-gray-900" : "border border-gray-200 bg-white text-black hover:border-black hover:bg-gray-50"
+                    }`}
+                  >
+                    {tier.buttonLabel}
+                  </Button>
+                </Link>
               </article>
             ))}
           </div>
@@ -161,7 +170,7 @@ export default function PricingPage() {
               <span className="inline-flex items-center gap-2 rounded-full border border-gray-200 px-4 py-1 text-xs uppercase tracking-[0.35em] text-gray-500">
                 Value breakdown
               </span>
-              <h2 className="text-3xl font-semibold tracking-tight text-black sm:text-4xl">
+              <h2 className="text-3xl font-semibold tracking-tight text-[#14462a] sm:text-4xl">
                 Every plan keeps Plaen’s monochrome calm.
               </h2>
               <p className="text-sm leading-6 text-gray-600">
@@ -169,13 +178,13 @@ export default function PricingPage() {
               </p>
               <ul className="space-y-3 text-sm text-gray-600">
                 <li className="flex items-center gap-2">
-                  <CreditCard className="h-4 w-4 text-[#1877F2]" /> Local payments routed via trusted providers
+                  <Card size={16} color="#D97706" variant="Bulk" /> Local payments routed via trusted providers
                 </li>
                 <li className="flex items-center gap-2">
-                  <TrendingUp className="h-4 w-4 text-[#059669]" /> Analytics that surface payment health trends
+                  <TrendUp size={16} color="#7C3AED" variant="Bulk" /> Analytics that surface payment health trends
                 </li>
                 <li className="flex items-center gap-2">
-                  <RefreshCcw className="h-4 w-4 text-[#7C3AED]" /> Smooth upgrades with zero downtime for payers
+                  <RefreshCircle size={16} color="#0284C7" variant="Bulk" /> Smooth upgrades with zero downtime for payers
                 </li>
               </ul>
             </div>

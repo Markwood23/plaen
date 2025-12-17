@@ -132,9 +132,9 @@ export default function PaymentDetailPage({ params }: { params: Promise<{ id: st
       case "confirmed":
         return <CheckmarkSquare02Icon size={12} style={{ color: '#059669' }} />;
       case "received":
-        return <DollarSquareIcon size={12} style={{ color: '#1877F2' }} />;
+        return <DollarSquareIcon size={12} style={{ color: '#14462a' }} />;
       case "initiated":
-        return <Loading03Icon size={12} style={{ color: '#7C3AED' }} />;
+        return <Loading03Icon size={12} style={{ color: '#14462a' }} />;
       default:
         return <div className="h-2 w-2 rounded-full bg-white" />;
     }
@@ -145,9 +145,9 @@ export default function PaymentDetailPage({ params }: { params: Promise<{ id: st
       case "confirmed":
         return 'rgba(5, 150, 105, 0.08)';
       case "received":
-        return 'rgba(24, 119, 242, 0.08)';
+        return 'rgba(20, 70, 42, 0.08)';
       case "initiated":
-        return 'rgba(124, 58, 237, 0.08)';
+        return 'rgba(20, 70, 42, 0.08)';
       default:
         return 'rgba(240, 242, 245, 0.5)';
     }
@@ -174,9 +174,9 @@ export default function PaymentDetailPage({ params }: { params: Promise<{ id: st
                 </h1>
                 {payment.status === "Paid" && (
                   <Badge variant="outline" className="px-3 py-1 rounded-full" style={{ 
-                    backgroundColor: 'rgba(24, 119, 242, 0.08)',
-                    color: '#1877F2',
-                    borderColor: '#1877F2',
+                    backgroundColor: 'rgba(20, 70, 42, 0.08)',
+                    color: '#14462a',
+                    borderColor: '#14462a',
                     fontSize: '12px',
                     fontWeight: 500
                   }}>    <CheckmarkSquare02Icon size={12} className="mr-1" /> Paid
@@ -238,7 +238,7 @@ export default function PaymentDetailPage({ params }: { params: Promise<{ id: st
             <Button 
               variant="outline" 
               size="sm" 
-              className="rounded-full gap-2 hover:bg-[rgba(24,119,242,0.04)] hover:text-[#1877F2] hover:border-[#1877F2] transition-all" 
+              className="rounded-full gap-2 hover:bg-[rgba(24,119,242,0.04)] hover:text-[#14462a] hover:border-[#14462a] transition-all" 
               style={{ borderColor: '#E4E6EB' }}
               onClick={copyReference}
             >
@@ -257,7 +257,7 @@ export default function PaymentDetailPage({ params }: { params: Promise<{ id: st
             <Button 
               size="sm" 
               className="rounded-full gap-2 shadow-sm hover:shadow-md transition-all" 
-              style={{ backgroundColor: '#1877F2', color: 'white', fontWeight: 500 }}
+              style={{ backgroundColor: '#14462a', color: 'white', fontWeight: 500 }}
             >
               <Download01Icon size={16} />
               Download Receipt
@@ -267,7 +267,7 @@ export default function PaymentDetailPage({ params }: { params: Promise<{ id: st
                 <Button 
                   variant="outline" 
                   size="sm" 
-                  className="rounded-full hover:bg-[rgba(24,119,242,0.04)] hover:text-[#1877F2] hover:border-[#1877F2] transition-all" 
+                  className="rounded-full hover:bg-[rgba(24,119,242,0.04)] hover:text-[#14462a] hover:border-[#14462a] transition-all" 
                   style={{ borderColor: '#E4E6EB' }}
                 >
                   <MoreVerticalIcon size={16} />
@@ -277,11 +277,11 @@ export default function PaymentDetailPage({ params }: { params: Promise<{ id: st
                 <DropdownMenuItem className="gap-3 rounded-xl p-3 cursor-pointer group transition-all hover:bg-[rgba(24,119,242,0.04)]">
                   <div 
                     className="h-8 w-8 rounded-full flex items-center justify-center transition-all"
-                    style={{ backgroundColor: 'rgba(124, 58, 237, 0.08)' }}
+                    style={{ backgroundColor: 'rgba(20, 70, 42, 0.08)' }}
                   >
-                    <PrinterIcon size={16} style={{ color: '#7C3AED' }} />
+                    <PrinterIcon size={16} style={{ color: '#14462a' }} />
                   </div>
-                  <span className="text-sm font-medium group-hover:text-[#1877F2] transition-all" style={{ color: '#2D2D2D' }}>
+                  <span className="text-sm font-medium group-hover:text-[#14462a] transition-all" style={{ color: '#2D2D2D' }}>
                     Print Receipt
                   </span>
                 </DropdownMenuItem>
@@ -292,7 +292,7 @@ export default function PaymentDetailPage({ params }: { params: Promise<{ id: st
                   >
                     <MailAtSign01Icon size={16} style={{ color: '#059669' }} />
                   </div>
-                  <span className="text-sm font-medium group-hover:text-[#1877F2] transition-all" style={{ color: '#2D2D2D' }}>
+                  <span className="text-sm font-medium group-hover:text-[#14462a] transition-all" style={{ color: '#2D2D2D' }}>
                     Email Receipt
                   </span>
                 </DropdownMenuItem>
@@ -319,7 +319,7 @@ export default function PaymentDetailPage({ params }: { params: Promise<{ id: st
         <div className="lg:col-span-2 space-y-6">
           {/* Payment Summary Card */}
           <div className="rounded-lg p-6" style={{ backgroundColor: 'white' }}>
-            <div className="mb-6 pb-4" style={{ borderBottom: '2px solid rgba(24, 119, 242, 0.1)' }}>
+            <div className="mb-6 pb-4" style={{ borderBottom: '2px solid rgba(20, 70, 42, 0.1)' }}>
               <h2 className="text-lg" style={{ color: '#2D2D2D', fontWeight: 600 }}>Payment Summary</h2>
             </div>
             
@@ -403,13 +403,13 @@ export default function PaymentDetailPage({ params }: { params: Promise<{ id: st
 
           {/* Invoice Details Card */}
           <div className="rounded-lg p-6" style={{ backgroundColor: 'white' }}>
-            <div className="flex items-center justify-between mb-6 pb-4" style={{ borderBottom: '2px solid rgba(24, 119, 242, 0.1)' }}>
+            <div className="flex items-center justify-between mb-6 pb-4" style={{ borderBottom: '2px solid rgba(20, 70, 42, 0.1)' }}>
               <h2 className="text-lg" style={{ color: '#2D2D2D', fontWeight: 600 }}>Related Invoice</h2>
               <Button 
                 variant="outline" 
                 size="sm" 
                 asChild 
-                className="rounded-full gap-2 hover:bg-[rgba(24,119,242,0.04)] hover:text-[#1877F2] hover:border-[#1877F2] transition-all" 
+                className="rounded-full gap-2 hover:bg-[rgba(24,119,242,0.04)] hover:text-[#14462a] hover:border-[#14462a] transition-all" 
                 style={{ borderColor: '#E4E6EB' }}
               >
                 <Link href={`/invoices/${payment.invoice.id}`}>
@@ -425,7 +425,7 @@ export default function PaymentDetailPage({ params }: { params: Promise<{ id: st
                 <Link 
                   href={`/invoices/${payment.invoice.id}`}
                   className="text-sm hover:underline"
-                  style={{ color: '#1877F2', fontWeight: 500 }}
+                  style={{ color: '#14462a', fontWeight: 500 }}
                 >
                   #{payment.invoice.id}
                 </Link>
@@ -450,7 +450,7 @@ export default function PaymentDetailPage({ params }: { params: Promise<{ id: st
 
           {/* Activity Timeline */}
           <div className="rounded-lg p-6" style={{ backgroundColor: 'white' }}>
-            <div className="mb-6 pb-4" style={{ borderBottom: '2px solid rgba(24, 119, 242, 0.1)' }}>
+            <div className="mb-6 pb-4" style={{ borderBottom: '2px solid rgba(20, 70, 42, 0.1)' }}>
               <h2 className="text-lg" style={{ color: '#2D2D2D', fontWeight: 600 }}>Payment Activity</h2>
             </div>
             
@@ -485,7 +485,7 @@ export default function PaymentDetailPage({ params }: { params: Promise<{ id: st
         <div className="space-y-6">
           {/* Customer Details Card */}
           <div className="rounded-lg p-6" style={{ backgroundColor: 'white', paddingBottom: '112px' }}>
-            <div className="mb-6 pb-4" style={{ borderBottom: '2px solid rgba(24, 119, 242, 0.1)' }}>
+            <div className="mb-6 pb-4" style={{ borderBottom: '2px solid rgba(20, 70, 42, 0.1)' }}>
               <h2 className="text-lg" style={{ color: '#2D2D2D', fontWeight: 600 }}>Customer Details</h2>
             </div>
             
@@ -525,7 +525,7 @@ export default function PaymentDetailPage({ params }: { params: Promise<{ id: st
 
           {/* Transaction Fees Card */}
           <div className="rounded-lg p-6" style={{ backgroundColor: 'white', paddingBottom: '90px' }}>
-            <div className="mb-6 pb-4" style={{ borderBottom: '2px solid rgba(24, 119, 242, 0.1)' }}>
+            <div className="mb-6 pb-4" style={{ borderBottom: '2px solid rgba(20, 70, 42, 0.1)' }}>
               <h2 className="text-lg" style={{ color: '#2D2D2D', fontWeight: 600 }}>Transaction Details</h2>
             </div>
             
@@ -549,7 +549,7 @@ export default function PaymentDetailPage({ params }: { params: Promise<{ id: st
 
           {/* Quick Actions Card */}
           <div className="rounded-lg p-6" style={{ backgroundColor: 'white' }}>
-            <div className="mb-4 pb-4" style={{ borderBottom: '2px solid rgba(24, 119, 242, 0.1)' }}>
+            <div className="mb-4 pb-4" style={{ borderBottom: '2px solid rgba(20, 70, 42, 0.1)' }}>
               <h2 className="text-lg" style={{ color: '#2D2D2D', fontWeight: 600 }}>Quick Actions</h2>
             </div>
             
@@ -559,12 +559,12 @@ export default function PaymentDetailPage({ params }: { params: Promise<{ id: st
               >
                 <div 
                   className="h-10 w-10 rounded-full flex items-center justify-center transition-all"
-                  style={{ backgroundColor: 'rgba(24, 119, 242, 0.08)' }}
+                  style={{ backgroundColor: 'rgba(20, 70, 42, 0.08)' }}
                 >
-                  <Download01Icon size={20} style={{ color: '#1877F2' }} />
+                  <Download01Icon size={20} style={{ color: '#14462a' }} />
                 </div>
                 <div className="flex-1 text-left">
-                  <p className="text-sm font-medium transition-all group-hover:text-[#1877F2]" style={{ color: '#2D2D2D' }}>
+                  <p className="text-sm font-medium transition-all group-hover:text-[#14462a]" style={{ color: '#2D2D2D' }}>
                     Download Receipt
                   </p>
                   <p className="text-xs" style={{ color: '#B0B3B8' }}>Save as PDF</p>
@@ -576,12 +576,12 @@ export default function PaymentDetailPage({ params }: { params: Promise<{ id: st
               >
                 <div 
                   className="h-10 w-10 rounded-full flex items-center justify-center transition-all"
-                  style={{ backgroundColor: 'rgba(124, 58, 237, 0.08)' }}
+                  style={{ backgroundColor: 'rgba(20, 70, 42, 0.08)' }}
                 >
-                  <PrinterIcon size={20} style={{ color: '#7C3AED' }} />
+                  <PrinterIcon size={20} style={{ color: '#14462a' }} />
                 </div>
                 <div className="flex-1 text-left">
-                  <p className="text-sm font-medium transition-all group-hover:text-[#1877F2]" style={{ color: '#2D2D2D' }}>
+                  <p className="text-sm font-medium transition-all group-hover:text-[#14462a]" style={{ color: '#2D2D2D' }}>
                     Print Receipt
                   </p>
                   <p className="text-xs" style={{ color: '#B0B3B8' }}>Print or save locally</p>
@@ -598,7 +598,7 @@ export default function PaymentDetailPage({ params }: { params: Promise<{ id: st
                   <MailAtSign01Icon size={20} style={{ color: '#059669' }} />
                 </div>
                 <div className="flex-1 text-left">
-                  <p className="text-sm font-medium transition-all group-hover:text-[#1877F2]" style={{ color: '#2D2D2D' }}>
+                  <p className="text-sm font-medium transition-all group-hover:text-[#14462a]" style={{ color: '#2D2D2D' }}>
                     Email Receipt
                   </p>
                   <p className="text-xs" style={{ color: '#B0B3B8' }}>Send to customer</p>

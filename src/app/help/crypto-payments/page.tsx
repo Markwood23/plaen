@@ -33,7 +33,7 @@ const supportedCryptos = [
     name: "Ethereum (ETH)",
     description: "The second-largest cryptocurrency with smart contract capabilities and broad ecosystem support.",
     icon: "Ξ",
-    color: "#7C3AED", // Purple
+    color: "#14462a", // Purple
     features: [
       "Smart contract functionality",
       "Large developer ecosystem",
@@ -48,7 +48,7 @@ const advantages = [
     title: "Global Payments",
     description: "Accept payments from anywhere in the world without traditional banking restrictions or currency conversion fees.",
     icon: Globe,
-    color: "#1877F2", // Blue
+    color: "#14462a", // Blue
   },
   {
     title: "Fast Settlement",
@@ -66,7 +66,7 @@ const advantages = [
     title: "Enhanced Security",
     description: "Blockchain technology provides cryptographic security and immutable transaction records.",
     icon: Shield,
-    color: "#7C3AED", // Purple
+    color: "#14462a", // Purple
   }
 ];
 
@@ -93,7 +93,7 @@ export default function CryptoPaymentsPage() {
               </div>
               
               <div className="max-w-3xl">
-                <h1 className="text-4xl font-semibold tracking-tight text-black sm:text-5xl mb-6">
+                <h1 className="text-4xl font-semibold tracking-tight text-[#14462a] sm:text-5xl mb-6">
                   Cryptocurrency Payments
                 </h1>
                 <p className="text-xl leading-8 text-gray-700">

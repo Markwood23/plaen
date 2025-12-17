@@ -173,11 +173,11 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
   const getActivityIcon = (type: string) => {
     switch (type) {
       case "sent":
-        return <SentIcon size={12} style={{ color: '#1877F2' }} />;
+        return <SentIcon size={12} style={{ color: '#14462a' }} />;
       case "finalized":
         return <CheckmarkSquare02Icon size={12} style={{ color: '#059669' }} />;
       case "created":
-        return <FileValidationIcon size={12} style={{ color: '#7C3AED' }} />;
+        return <FileValidationIcon size={12} style={{ color: '#14462a' }} />;
       default:
         return <div className="h-2 w-2 rounded-full bg-white" />;
     }
@@ -186,11 +186,11 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
   const getActivityIconBackground = (type: string) => {
     switch (type) {
       case "sent":
-        return 'rgba(24, 119, 242, 0.08)'; // Blue
+        return 'rgba(20, 70, 42, 0.08)'; // Blue
       case "finalized":
         return 'rgba(5, 150, 105, 0.08)'; // Green
       case "created":
-        return 'rgba(124, 58, 237, 0.08)'; // Purple
+        return 'rgba(20, 70, 42, 0.08)'; // Purple
       default:
         return 'rgba(240, 242, 245, 0.5)';
     }
@@ -242,7 +242,7 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
               <Button 
                 size="sm" 
                 className="rounded-full px-5 h-9" 
-                style={{ backgroundColor: '#1877F2', color: 'white', fontWeight: 500 }}
+                style={{ backgroundColor: '#14462a', color: 'white', fontWeight: 500 }}
               >
                 <DollarSquareIcon size={14} className="mr-1.5" />
                 Record Payment
@@ -279,14 +279,14 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
             size="sm" 
             className="rounded-full px-5 h-9 transition-all" 
             style={{ 
-              backgroundColor: activeAction === 'preview' ? 'rgba(24, 119, 242, 0.08)' : 'transparent',
-              color: activeAction === 'preview' ? '#1877F2' : '#2D2D2D', 
+              backgroundColor: activeAction === 'preview' ? 'rgba(20, 70, 42, 0.08)' : 'transparent',
+              color: activeAction === 'preview' ? '#14462a' : '#2D2D2D', 
               fontWeight: activeAction === 'preview' ? 500 : 400 
             }}
             onMouseEnter={(e) => {
               if (activeAction !== 'preview') {
-                e.currentTarget.style.backgroundColor = 'rgba(24, 119, 242, 0.04)';
-                e.currentTarget.style.color = '#1877F2';
+                e.currentTarget.style.backgroundColor = 'rgba(20, 70, 42, 0.04)';
+                e.currentTarget.style.color = '#14462a';
               }
             }}
             onMouseLeave={(e) => {
@@ -308,14 +308,14 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
             size="sm" 
             className="rounded-full px-5 h-9 transition-all" 
             style={{ 
-              backgroundColor: activeAction === 'edit' ? 'rgba(24, 119, 242, 0.08)' : 'transparent',
-              color: activeAction === 'edit' ? '#1877F2' : '#2D2D2D', 
+              backgroundColor: activeAction === 'edit' ? 'rgba(20, 70, 42, 0.08)' : 'transparent',
+              color: activeAction === 'edit' ? '#14462a' : '#2D2D2D', 
               fontWeight: activeAction === 'edit' ? 500 : 400 
             }}
             onMouseEnter={(e) => {
               if (activeAction !== 'edit') {
-                e.currentTarget.style.backgroundColor = 'rgba(24, 119, 242, 0.04)';
-                e.currentTarget.style.color = '#1877F2';
+                e.currentTarget.style.backgroundColor = 'rgba(20, 70, 42, 0.04)';
+                e.currentTarget.style.color = '#14462a';
               }
             }}
             onMouseLeave={(e) => {
@@ -334,14 +334,14 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
             size="sm" 
             className="rounded-full px-5 h-9 transition-all" 
             style={{ 
-              backgroundColor: activeAction === 'download' ? 'rgba(24, 119, 242, 0.08)' : 'transparent',
-              color: activeAction === 'download' ? '#1877F2' : '#2D2D2D', 
+              backgroundColor: activeAction === 'download' ? 'rgba(20, 70, 42, 0.08)' : 'transparent',
+              color: activeAction === 'download' ? '#14462a' : '#2D2D2D', 
               fontWeight: activeAction === 'download' ? 500 : 400 
             }}
             onMouseEnter={(e) => {
               if (activeAction !== 'download') {
-                e.currentTarget.style.backgroundColor = 'rgba(24, 119, 242, 0.04)';
-                e.currentTarget.style.color = '#1877F2';
+                e.currentTarget.style.backgroundColor = 'rgba(20, 70, 42, 0.04)';
+                e.currentTarget.style.color = '#14462a';
               }
             }}
             onMouseLeave={(e) => {
@@ -360,14 +360,14 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
             size="sm" 
             className="rounded-full px-5 h-9 transition-all" 
             style={{ 
-              backgroundColor: activeAction === 'attachment' ? 'rgba(24, 119, 242, 0.08)' : 'transparent',
-              color: activeAction === 'attachment' ? '#1877F2' : '#2D2D2D', 
+              backgroundColor: activeAction === 'attachment' ? 'rgba(20, 70, 42, 0.08)' : 'transparent',
+              color: activeAction === 'attachment' ? '#14462a' : '#2D2D2D', 
               fontWeight: activeAction === 'attachment' ? 500 : 400 
             }}
             onMouseEnter={(e) => {
               if (activeAction !== 'attachment') {
-                e.currentTarget.style.backgroundColor = 'rgba(24, 119, 242, 0.04)';
-                e.currentTarget.style.color = '#1877F2';
+                e.currentTarget.style.backgroundColor = 'rgba(20, 70, 42, 0.04)';
+                e.currentTarget.style.color = '#14462a';
               }
             }}
             onMouseLeave={(e) => {
@@ -386,14 +386,14 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
             size="sm" 
             className="rounded-full px-5 h-9 transition-all" 
             style={{ 
-              backgroundColor: activeAction === 'note' ? 'rgba(24, 119, 242, 0.08)' : 'transparent',
-              color: activeAction === 'note' ? '#1877F2' : '#2D2D2D', 
+              backgroundColor: activeAction === 'note' ? 'rgba(20, 70, 42, 0.08)' : 'transparent',
+              color: activeAction === 'note' ? '#14462a' : '#2D2D2D', 
               fontWeight: activeAction === 'note' ? 500 : 400 
             }}
             onMouseEnter={(e) => {
               if (activeAction !== 'note') {
-                e.currentTarget.style.backgroundColor = 'rgba(24, 119, 242, 0.04)';
-                e.currentTarget.style.color = '#1877F2';
+                e.currentTarget.style.backgroundColor = 'rgba(20, 70, 42, 0.04)';
+                e.currentTarget.style.color = '#14462a';
               }
             }}
             onMouseLeave={(e) => {
@@ -414,14 +414,14 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
                 size="sm" 
                 className="rounded-full px-5 h-9 transition-all" 
                 style={{ 
-                  backgroundColor: activeAction === 'more' ? 'rgba(24, 119, 242, 0.08)' : 'transparent',
-                  color: activeAction === 'more' ? '#1877F2' : '#2D2D2D', 
+                  backgroundColor: activeAction === 'more' ? 'rgba(20, 70, 42, 0.08)' : 'transparent',
+                  color: activeAction === 'more' ? '#14462a' : '#2D2D2D', 
                   fontWeight: activeAction === 'more' ? 500 : 400 
                 }}
                 onMouseEnter={(e) => {
                   if (activeAction !== 'more') {
-                    e.currentTarget.style.backgroundColor = 'rgba(24, 119, 242, 0.04)';
-                    e.currentTarget.style.color = '#1877F2';
+                    e.currentTarget.style.backgroundColor = 'rgba(20, 70, 42, 0.04)';
+                    e.currentTarget.style.color = '#14462a';
                   }
                 }}
                 onMouseLeave={(e) => {
@@ -439,20 +439,20 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
               <DropdownMenuItem className="gap-3 rounded-xl p-3 cursor-pointer group transition-all hover:bg-[rgba(24,119,242,0.04)]">
                 <div 
                   className="h-8 w-8 rounded-full flex items-center justify-center transition-all"
-                  style={{ backgroundColor: 'rgba(24, 119, 242, 0.08)' }}
+                  style={{ backgroundColor: 'rgba(20, 70, 42, 0.08)' }}
                 >
-                  <Files01Icon size={16} style={{ color: '#1877F2' }} />
+                  <Files01Icon size={16} style={{ color: '#14462a' }} />
                 </div>
-                <span className="text-sm font-medium group-hover:text-[#1877F2] transition-all" style={{ color: '#2D2D2D' }}>Duplicate</span>
+                <span className="text-sm font-medium group-hover:text-[#14462a] transition-all" style={{ color: '#2D2D2D' }}>Duplicate</span>
               </DropdownMenuItem>
               <DropdownMenuItem className="gap-3 rounded-xl p-3 cursor-pointer group transition-all hover:bg-[rgba(24,119,242,0.04)]">
                 <div 
                   className="h-8 w-8 rounded-full flex items-center justify-center transition-all"
-                  style={{ backgroundColor: 'rgba(124, 58, 237, 0.08)' }}
+                  style={{ backgroundColor: 'rgba(20, 70, 42, 0.08)' }}
                 >
-                  <PrinterIcon size={16} style={{ color: '#7C3AED' }} />
+                  <PrinterIcon size={16} style={{ color: '#14462a' }} />
                 </div>
-                <span className="text-sm font-medium group-hover:text-[#1877F2] transition-all" style={{ color: '#2D2D2D' }}>Print</span>
+                <span className="text-sm font-medium group-hover:text-[#14462a] transition-all" style={{ color: '#2D2D2D' }}>Print</span>
               </DropdownMenuItem>
               <DropdownMenuItem className="gap-3 rounded-xl p-3 cursor-pointer group transition-all hover:bg-[rgba(24,119,242,0.04)]">
                 <div 
@@ -461,7 +461,7 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
                 >
                   <ViewIcon size={16} style={{ color: '#059669' }} />
                 </div>
-                <span className="text-sm font-medium group-hover:text-[#1877F2] transition-all" style={{ color: '#2D2D2D' }}>View public page</span>
+                <span className="text-sm font-medium group-hover:text-[#14462a] transition-all" style={{ color: '#2D2D2D' }}>View public page</span>
               </DropdownMenuItem>
               <DropdownMenuSeparator className="my-2" />
               <DropdownMenuItem className="gap-3 rounded-xl p-3 cursor-pointer group transition-all hover:bg-red-50">
@@ -490,13 +490,13 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
                 ₵{amountPaid.toFixed(2)} paid of ₵{total.toFixed(2)} total
               </p>
             </div>
-            <Button size="sm" className="rounded-full px-5 py-2 h-auto" style={{ backgroundColor: '#1877F2', color: 'white', fontWeight: 500 }}>
+            <Button size="sm" className="rounded-full px-5 py-2 h-auto" style={{ backgroundColor: '#14462a', color: 'white', fontWeight: 500 }}>
               <DollarSquareIcon size={14} className="mr-1.5" />
               Record Payment
             </Button>
           </div>
           <div className="w-full h-2 rounded-full" style={{ backgroundColor: '#E4E6EB' }}>
-            <div className="h-2 rounded-full transition-all" style={{ width: `${paidPercentage}%`, backgroundColor: '#1877F2' }} />
+            <div className="h-2 rounded-full transition-all" style={{ width: `${paidPercentage}%`, backgroundColor: '#14462a' }} />
           </div>
         </div>
       )}
@@ -527,7 +527,7 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
             <div className="space-y-3">
               <div className="flex items-center justify-between">
                 <span className="text-sm" style={{ color: '#B0B3B8' }}>Billed to</span>
-                <span className="text-sm" style={{ color: '#1877F2', fontWeight: 500 }}>{invoice.billTo.email}</span>
+                <span className="text-sm" style={{ color: '#14462a', fontWeight: 500 }}>{invoice.billTo.email}</span>
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-sm" style={{ color: '#B0B3B8' }}>Client Name</span>
@@ -634,8 +634,8 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
               {invoice.payments.map((payment) => (
                 <div key={payment.id} className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <div className="h-10 w-10 rounded-full flex items-center justify-center" style={{ backgroundColor: 'rgba(24, 119, 242, 0.08)' }}>
-                      <CheckmarkSquare02Icon size={18} style={{ color: '#1877F2' }} />
+                    <div className="h-10 w-10 rounded-full flex items-center justify-center" style={{ backgroundColor: 'rgba(20, 70, 42, 0.08)' }}>
+                      <CheckmarkSquare02Icon size={18} style={{ color: '#14462a' }} />
                     </div>
                     <div>
                       <p className="text-sm font-medium" style={{ color: '#2D2D2D' }}>
@@ -649,7 +649,7 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
                       </p>
                     </div>
                   </div>
-                  <p className="text-base font-medium" style={{ color: '#1877F2' }}>₵{payment.amount.toFixed(2)}</p>
+                  <p className="text-base font-medium" style={{ color: '#14462a' }}>₵{payment.amount.toFixed(2)}</p>
                 </div>
               ))}
             </div>
@@ -714,8 +714,8 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
                       className="rounded-full px-4 h-8 transition-all" 
                       style={{ color: '#2D2D2D', fontWeight: 400 }}
                       onMouseEnter={(e) => {
-                        e.currentTarget.style.backgroundColor = 'rgba(24, 119, 242, 0.04)';
-                        e.currentTarget.style.color = '#1877F2';
+                        e.currentTarget.style.backgroundColor = 'rgba(20, 70, 42, 0.04)';
+                        e.currentTarget.style.color = '#14462a';
                       }}
                       onMouseLeave={(e) => {
                         e.currentTarget.style.backgroundColor = 'transparent';

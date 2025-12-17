@@ -75,7 +75,7 @@ export default function WorkspaceBillingPage() {
             <div className="flex items-center gap-2">
               <Button
                 className="rounded-full px-5 h-10 shadow-sm transition-all hover:shadow-md"
-                style={{ backgroundColor: '#1877F2', color: 'white' }}
+                style={{ backgroundColor: '#14462a', color: 'white' }}
                 onClick={() => {
                   console.log('Change Plan clicked!');
                   setShowChangePlanModal(true);
@@ -131,9 +131,9 @@ export default function WorkspaceBillingPage() {
               <div className="flex items-center gap-4">
                 <div 
                   className="h-10 w-10 rounded-full flex items-center justify-center"
-                  style={{ backgroundColor: 'rgba(24, 119, 242, 0.12)' }}
+                  style={{ backgroundColor: 'rgba(20, 70, 42, 0.12)' }}
                 >
-                  <Calendar03Icon size={18} style={{ color: '#1877F2' }} />
+                  <Calendar03Icon size={18} style={{ color: '#14462a' }} />
                 </div>
                 <div>
                   <p className="text-sm font-medium" style={{ color: '#2D2D2D' }}>{invoice.description}</p>
@@ -224,7 +224,7 @@ export default function WorkspaceBillingPage() {
                   </ul>
                   <Button 
                     className="w-full rounded-full h-10"
-                    style={{ backgroundColor: plan.name === "Free" ? '#F9F9F9' : '#1877F2', color: plan.name === "Free" ? '#2D2D2D' : 'white' }}
+                    style={{ backgroundColor: plan.name === "Free" ? '#F9F9F9' : '#14462a', color: plan.name === "Free" ? '#2D2D2D' : 'white' }}
                   >
                     {plan.name === "Free" ? "Current Plan" : "Upgrade"}
                   </Button>

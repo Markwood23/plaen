@@ -3,8 +3,7 @@ import { MarketingHeader } from "@/components/marketing/marketing-header";
 import { MarketingFooter } from "@/components/marketing/marketing-footer";
 import { SmartButton } from "@/components/ui/smart-button";
 import { PageEffects } from "@/components/marketing/home-page-effects";
-import { Rocket, CalendarClock, Wrench, Mail } from "lucide-react";
-import { IconFrame } from "@/components/ui/icon-frame";
+import { Lovely, Calendar, Setting2, Sms } from "iconsax-react";
 
 export default function ComingSoonPage() {
   const year = new Date().getFullYear();
@@ -27,9 +26,9 @@ export default function ComingSoonPage() {
 
         <main className="mx-auto flex max-w-5xl flex-col items-center gap-10 px-6 pb-24 pt-24 text-center">
           <span className="inline-flex items-center gap-2 rounded-full border border-gray-200 px-4 py-1 text-xs uppercase tracking-[0.35em] text-gray-500">
-            <IconFrame icon={Rocket} size="sm" variant="plain" /> Coming Soon
+            <Lovely size={14} color="#E11D48" variant="Bold" /> Coming Soon
           </span>
-          <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">This part of Plaen isn\'t live yet.</h1>
+          <h1 className="text-4xl font-semibold tracking-tight text-[#14462a] sm:text-5xl">This part of Plaen isn\'t live yet.</h1>
           <p className="max-w-2xl text-lg leading-7 text-gray-600">
             We\'re polishing the workspace experience. You can still explore the product narrative while we stage the full app/dashboard rollout.
           </p>
@@ -37,21 +36,27 @@ export default function ComingSoonPage() {
           <div className="grid w-full gap-4 text-left sm:grid-cols-3">
             <div className="rounded-2xl border border-gray-200 bg-white/80 p-4">
               <div className="flex items-center gap-3">
-                <IconFrame icon={Wrench} size="sm" variant="subtle" />
+                <div className="h-8 w-8 rounded-lg bg-[#059669]/10 flex items-center justify-center">
+                  <Setting2 size={18} color="#059669" variant="Bulk" />
+                </div>
                 <div className="text-sm font-medium text-black">In progress</div>
               </div>
               <p className="mt-2 text-sm leading-6 text-gray-600">Core workspace, payments, and receipts.</p>
             </div>
             <div className="rounded-2xl border border-gray-200 bg-white/80 p-4">
               <div className="flex items-center gap-3">
-                <IconFrame icon={CalendarClock} size="sm" variant="subtle" />
+                <div className="h-8 w-8 rounded-lg bg-[#4F46E5]/10 flex items-center justify-center">
+                  <Calendar size={18} color="#4F46E5" variant="Bulk" />
+                </div>
                 <div className="text-sm font-medium text-black">Staged releases</div>
               </div>
               <p className="mt-2 text-sm leading-6 text-gray-600">We\'ll open access incrementally for feedback.</p>
             </div>
             <div className="rounded-2xl border border-gray-200 bg-white/80 p-4">
               <div className="flex items-center gap-3">
-                <IconFrame icon={Mail} size="sm" variant="subtle" />
+                <div className="h-8 w-8 rounded-lg bg-[#D97706]/10 flex items-center justify-center">
+                  <Sms size={18} color="#D97706" variant="Bulk" />
+                </div>
                 <div className="text-sm font-medium text-black">Get notified</div>
               </div>
               <p className="mt-2 text-sm leading-6 text-gray-600">We\'ll email when your access is ready.</p>

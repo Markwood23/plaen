@@ -124,7 +124,7 @@ export function ContactDetailModal({ contact, isOpen, onClose, onSave, mode = "v
   };
 
   const getTagClassName = (tag: string) => {
-    if (tag === "VIP") return "bg-[#212121] text-white border-[#212121]";
+    if (tag === "VIP") return "bg-[#14462a] text-white border-[#14462a]";
     if (tag === "New") return "bg-blue-50 text-blue-700 border-blue-200";
     if (tag === "International") return "bg-purple-50 text-purple-700 border-purple-200";
     if (tag === "Tech") return "bg-green-50 text-green-700 border-green-200";
@@ -135,7 +135,7 @@ export function ContactDetailModal({ contact, isOpen, onClose, onSave, mode = "v
     switch (status) {
       case "Paid":
         return (
-          <Badge className="bg-[#212121] text-white border-[#212121]">
+          <Badge className="bg-[#14462a] text-white border-[#14462a]">
             <Check className="h-3.5 w-3.5" /> Paid
           </Badge>
         );
@@ -175,7 +175,7 @@ export function ContactDetailModal({ contact, isOpen, onClose, onSave, mode = "v
       <DialogContent className="!max-w-[70vw] w-full max-h-[90vh] overflow-y-auto" showCloseButton={false}>
         <DialogHeader>
           <div className="flex items-center justify-between">
-            <DialogTitle className="text-2xl font-semibold text-[#212121]">
+            <DialogTitle className="text-2xl font-semibold text-[#2D2D2D]">
               {mode === "create" ? "New Contact" : editMode ? "Edit Contact" : "Contact Details"}
             </DialogTitle>
             <button
@@ -192,17 +192,17 @@ export function ContactDetailModal({ contact, isOpen, onClose, onSave, mode = "v
           <div className="flex items-center gap-4 pb-6 border-b border-[#EBECE7]">
             <Avatar className="h-16 w-16 shrink-0">
               <AvatarImage src={formData.avatar} alt={formData.name} />
-              <AvatarFallback className="bg-[#F9F9F9] text-[#212121] text-lg font-medium border-2 border-[#EBECE7]">
+              <AvatarFallback className="bg-[#F9F9F9] text-[#2D2D2D] text-lg font-medium border-2 border-[#EBECE7]">
                 {getInitials(formData.name)}
               </AvatarFallback>
             </Avatar>
             <div className="flex-1">
-              <h3 className="text-xl font-semibold text-[#212121]">{formData.name || "Unnamed Contact"}</h3>
+              <h3 className="text-xl font-semibold text-[#2D2D2D]">{formData.name || "Unnamed Contact"}</h3>
               <p className="text-sm text-[#949494]">{formData.company}</p>
               {!editMode && (
                 <div className="flex items-center gap-2 mt-2">
                   {formData.status === "Active" ? (
-                    <Badge className="bg-[#212121] text-white border-[#212121] font-medium">
+                    <Badge className="bg-[#14462a] text-white border-[#14462a] font-medium">
                       Active
                     </Badge>
                   ) : (
@@ -210,7 +210,7 @@ export function ContactDetailModal({ contact, isOpen, onClose, onSave, mode = "v
                       Inactive
                     </Badge>
                   )}
-                  <Badge variant="outline" className="border-[#EBECE7] text-[#212121]">
+                  <Badge variant="outline" className="border-[#EBECE7] text-[#2D2D2D]">
                     {formData.category}
                   </Badge>
                 </div>
@@ -225,7 +225,7 @@ export function ContactDetailModal({ contact, isOpen, onClose, onSave, mode = "v
                     console.log("Create invoice for:", formData.name);
                     // In real app: router.push(`/invoices/new?customerId=${formData.id}`);
                   }}
-                  className="bg-[#212121] text-white hover:bg-[#212121]/90"
+                  className="bg-[#14462a] text-white hover:bg-[#14462a]/90"
                 >
                   <FileText className="h-4 w-4 mr-2" />
                   Create Invoice
@@ -265,7 +265,7 @@ export function ContactDetailModal({ contact, isOpen, onClose, onSave, mode = "v
 
           {/* Contact Information */}
           <div>
-            <h4 className="text-sm font-semibold text-[#212121] mb-4 flex items-center gap-2">
+            <h4 className="text-sm font-semibold text-[#2D2D2D] mb-4 flex items-center gap-2">
               <Building2 className="h-4 w-4" />
               Contact Information
             </h4>
@@ -368,7 +368,7 @@ export function ContactDetailModal({ contact, isOpen, onClose, onSave, mode = "v
 
           {/* Payment & Relationship Settings */}
           <div>
-            <h4 className="text-sm font-semibold text-[#212121] mb-4 flex items-center gap-2">
+            <h4 className="text-sm font-semibold text-[#2D2D2D] mb-4 flex items-center gap-2">
               <DollarSign className="h-4 w-4" />
               Payment & Relationship
             </h4>
@@ -432,7 +432,7 @@ export function ContactDetailModal({ contact, isOpen, onClose, onSave, mode = "v
                       <SelectItem key={behavior} value={behavior}>
                         <div className="flex items-center gap-2">
                           {behavior === "Fast" && <Zap className="h-3.5 w-3.5 text-green-600" />}
-                          {behavior === "On-time" && <Clock className="h-3.5 w-3.5 text-[#212121]" />}
+                          {behavior === "On-time" && <Clock className="h-3.5 w-3.5 text-[#14462a]" />}
                           {behavior === "Slow" && <TrendingUp className="h-3.5 w-3.5 text-orange-600 rotate-180" />}
                           {behavior}
                         </div>
@@ -460,7 +460,7 @@ export function ContactDetailModal({ contact, isOpen, onClose, onSave, mode = "v
                       className={`px-3 py-1.5 rounded-md text-xs font-medium border transition-all ${
                         isSelected
                           ? getTagClassName(tag)
-                          : "border-[#EBECE7] text-[#949494] hover:border-[#212121] hover:text-[#212121]"
+                          : "border-[#EBECE7] text-[#949494] hover:border-[#14462a] hover:text-[#14462a]"
                       }`}
                     >
                       {tag}
@@ -500,7 +500,7 @@ export function ContactDetailModal({ contact, isOpen, onClose, onSave, mode = "v
               <Separator className="bg-[#EBECE7]" />
               <div>
                 <div className="flex items-center justify-between mb-4">
-                  <h4 className="text-sm font-semibold text-[#212121] flex items-center gap-2">
+                  <h4 className="text-sm font-semibold text-[#2D2D2D] flex items-center gap-2">
                     <FileText className="h-4 w-4" />
                     Invoice History
                   </h4>
@@ -524,12 +524,12 @@ export function ContactDetailModal({ contact, isOpen, onClose, onSave, mode = "v
                   <TableBody>
                     {mockInvoiceHistory.map((invoice) => (
                       <TableRow key={invoice.id}>
-                        <TableCell className="font-medium text-[#212121]">{invoice.id}</TableCell>
+                        <TableCell className="font-medium text-[#2D2D2D]">{invoice.id}</TableCell>
                         <TableCell className="text-[#949494] font-normal">{invoice.date}</TableCell>
                         <TableCell className="text-[#949494] font-normal">{invoice.dueDate}</TableCell>
-                        <TableCell className="text-[#212121]">{invoice.purpose || "—"}</TableCell>
-                        <TableCell className="font-medium text-[#212121]">{invoice.amount}</TableCell>
-                        <TableCell className="font-medium text-[#212121]">{invoice.balanceDue || "$0.00"}</TableCell>
+                        <TableCell className="text-[#2D2D2D]">{invoice.purpose || "—"}</TableCell>
+                        <TableCell className="font-medium text-[#2D2D2D]">{invoice.amount}</TableCell>
+                        <TableCell className="font-medium text-[#2D2D2D]">{invoice.balanceDue || "$0.00"}</TableCell>
                         <TableCell>
                           {getStatusBadge(invoice.status)}
                         </TableCell>
@@ -550,7 +550,7 @@ export function ContactDetailModal({ contact, isOpen, onClose, onSave, mode = "v
                 </Button>
                 <Button
                   onClick={handleSave}
-                  className="bg-[#212121] text-white hover:bg-[#212121]/90"
+                  className="bg-[#14462a] text-white hover:bg-[#14462a]/90"
                 >
                   {mode === "create" ? "Create Contact" : "Save Changes"}
                 </Button>

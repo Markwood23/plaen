@@ -33,7 +33,7 @@ const mobileMoneyProviders = [
     name: "AirtelTigo Money",
     countries: ["Ghana"],
     description: "Merged mobile money service combining Airtel and Tigo networks in Ghana.",
-    color: "#1877F2", // Blue
+    color: "#14462a", // Blue
     features: [
       "Unified payment platform",
       "Enhanced network coverage",
@@ -54,13 +54,13 @@ const advantages = [
     title: "Universal Access",
     description: "No bank account required - clients only need a mobile phone to send payments.",
     icon: Smartphone,
-    color: "#1877F2", // Blue
+    color: "#14462a", // Blue
   },
   {
     title: "High Security",
     description: "Protected by PIN authentication and encrypted transactions for safe payments.",
     icon: Shield,
-    color: "#7C3AED", // Purple
+    color: "#14462a", // Purple
   },
   {
     title: "Wide Coverage",
@@ -93,7 +93,7 @@ export default function MobileMoneyPage() {
               </div>
               
               <div className="max-w-3xl">
-                <h1 className="text-4xl font-semibold tracking-tight text-black sm:text-5xl mb-6">
+                <h1 className="text-4xl font-semibold tracking-tight text-[#14462a] sm:text-5xl mb-6">
                   Mobile Money Payments
                 </h1>
                 <p className="text-xl leading-8 text-gray-700">

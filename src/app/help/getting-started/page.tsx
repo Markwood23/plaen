@@ -81,7 +81,7 @@ export default function GettingStartedPage() {
               </div>
               
               <div className="max-w-2xl">
-                <h1 className="text-4xl font-semibold tracking-tight text-black sm:text-5xl">
+                <h1 className="text-4xl font-semibold tracking-tight text-[#14462a] sm:text-5xl">
                   Getting Started with Plaen
                 </h1>
                 <p className="mt-4 text-lg leading-7 text-gray-700">

@@ -26,7 +26,7 @@ export default function FreelancerInvoicesPage() {
                   <User className="h-3 w-3" />
                   Popular • Getting Started
                 </span>
-                <h1 className="mt-4 text-4xl font-bold tracking-tight">
+                <h1 className="mt-4 text-4xl font-bold tracking-tight text-[#14462a]">
                   Creating professional invoices as a freelancer
                 </h1>
                 <p className="mt-4 text-xl text-gray-700">

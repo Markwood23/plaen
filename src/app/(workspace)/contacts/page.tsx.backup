@@ -240,7 +240,7 @@ export default function ContactsPage() {
         <Button 
           onClick={() => openContactModal(null, "create")}
           className="rounded-full px-6 py-2.5 h-auto shadow-sm transition-all hover:shadow-md"
-          style={{ backgroundColor: '#1877F2', color: 'white', fontWeight: 500 }}
+          style={{ backgroundColor: '#14462a', color: 'white', fontWeight: 500 }}
         >
           + New Contact
         </Button>
@@ -341,7 +341,7 @@ export default function ContactsPage() {
                 id="search"
                 type="text"
                 placeholder="Search by name, email, or company"
-                className="pl-10 h-11 rounded-full border-2 focus:border-[#1877F2] transition-colors"
+                className="pl-10 h-11 rounded-full border-2 focus:border-[#14462a] transition-colors"
                 style={{ borderColor: '#E4E6EB' }}
               />
             </div>
@@ -353,7 +353,7 @@ export default function ContactsPage() {
               Category
             </label>
             <Select defaultValue="all">
-              <SelectTrigger id="category" className="h-11 w-full rounded-full border-2 focus:border-[#1877F2] transition-colors" style={{ borderColor: '#E4E6EB' }}>
+              <SelectTrigger id="category" className="h-11 w-full rounded-full border-2 focus:border-[#14462a] transition-colors" style={{ borderColor: '#E4E6EB' }}>
                 <SelectValue placeholder="All categories" />
               </SelectTrigger>
               <SelectContent>
@@ -371,7 +371,7 @@ export default function ContactsPage() {
               Status
             </label>
             <Select defaultValue="all">
-              <SelectTrigger id="status" className="h-11 w-full rounded-full border-2 focus:border-[#1877F2] transition-colors" style={{ borderColor: '#E4E6EB' }}>
+              <SelectTrigger id="status" className="h-11 w-full rounded-full border-2 focus:border-[#14462a] transition-colors" style={{ borderColor: '#E4E6EB' }}>
                 <SelectValue placeholder="All statuses" />
               </SelectTrigger>
               <SelectContent>
@@ -467,7 +467,7 @@ export default function ContactsPage() {
                           key={tagIdx} 
                           className="text-xs"
                           style={{
-                            backgroundColor: tag === 'VIP' ? '#1877F2' : 
+                            backgroundColor: tag === 'VIP' ? '#14462a' : 
                               tag === 'New' ? 'rgba(59, 130, 246, 0.1)' :
                               tag === 'International' ? 'rgba(168, 85, 247, 0.1)' :
                               tag === 'Tech' ? 'rgba(34, 197, 94, 0.1)' :
@@ -477,7 +477,7 @@ export default function ContactsPage() {
                               tag === 'International' ? '#A855F7' :
                               tag === 'Tech' ? '#22C55E' :
                               '#6B7280',
-                            borderColor: tag === 'VIP' ? '#1877F2' : 
+                            borderColor: tag === 'VIP' ? '#14462a' : 
                               tag === 'New' ? '#BFDBFE' :
                               tag === 'International' ? '#E9D5FF' :
                               tag === 'Tech' ? '#BBF7D0' :
@@ -516,7 +516,7 @@ export default function ContactsPage() {
                   <TableCell className="text-sm" style={{ color: '#2D2D2D', fontWeight: 500 }}>{contact.totalPaid}</TableCell>
                   <TableCell>
                     {contact.status === "Active" ? (
-                      <Badge className="text-xs" style={{ backgroundColor: '#1877F2', color: 'white', borderColor: '#1877F2', fontWeight: 500 }}>
+                      <Badge className="text-xs" style={{ backgroundColor: '#14462a', color: 'white', borderColor: '#14462a', fontWeight: 500 }}>
                         Active
                       </Badge>
                     ) : (
@@ -587,7 +587,7 @@ export default function ContactsPage() {
                 size="sm"
                 onClick={() => setCurrentPage(page)}
                 className="h-8 w-8 p-0 rounded-full"
-                style={page === currentPage ? { backgroundColor: '#1877F2', color: 'white' } : {}}
+                style={page === currentPage ? { backgroundColor: '#14462a', color: 'white' } : {}}
               >
                 {page}
               </Button>

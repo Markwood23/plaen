@@ -61,12 +61,12 @@ export default function WorkspaceLayout({
           <Link href="/" className="flex items-center gap-2.5 group">
             <div className="relative">
               <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="transition-transform group-hover:scale-110">
-                <path d="M3 3H12V12H3V3Z" fill="#1877F2"/>
-                <path d="M14 3H21L17.5 12H14V3Z" fill="#1877F2"/>
-                <path d="M12 14H21V21H12V14Z" fill="#1877F2"/>
+                <path d="M3 3H12V12H3V3Z" fill="#14462a"/>
+                <path d="M14 3H21L17.5 12H14V3Z" fill="#14462a"/>
+                <path d="M12 14H21V21H12V14Z" fill="#14462a"/>
               </svg>
             </div>
-            <span style={{ fontWeight: 700, fontSize: '18px' }} className="tracking-tight group-hover:text-[#1877F2] transition-colors">Plaen</span>
+            <span style={{ fontWeight: 700, fontSize: '18px' }} className="tracking-tight group-hover:text-[#14462a] transition-colors">Plaen</span>
           </Link>
         </div>
         <nav className="flex-1 p-3 space-y-8 overflow-y-auto">
@@ -88,10 +88,10 @@ export default function WorkspaceLayout({
                   style={
                     pathname.startsWith(item.href)
                       ? { 
-                          backgroundColor: 'rgba(24, 119, 242, 0.08)', 
-                          color: '#1877F2', 
+                          backgroundColor: 'rgba(20, 70, 42, 0.08)', 
+                          color: '#14462a', 
                           fontWeight: 600,
-                          borderLeft: '3px solid #1877F2'
+                          borderLeft: '3px solid #14462a'
                         }
                       : { color: '#65676B', fontWeight: 500 }
                   }
@@ -102,7 +102,7 @@ export default function WorkspaceLayout({
                   )} />
                   <span className="truncate">{item.label}</span>
                   {!pathname.startsWith(item.href) && (
-                    <div className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" style={{ background: 'linear-gradient(90deg, transparent, rgba(24, 119, 242, 0.02))' }} />
+                    <div className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" style={{ background: 'linear-gradient(90deg, transparent, rgba(20, 70, 42, 0.02))' }} />
                   )}
                 </Link>
               ))}
@@ -126,10 +126,10 @@ export default function WorkspaceLayout({
                   style={
                     pathname.startsWith(item.href)
                       ? { 
-                          backgroundColor: 'rgba(24, 119, 242, 0.08)', 
-                          color: '#1877F2', 
+                          backgroundColor: 'rgba(20, 70, 42, 0.08)', 
+                          color: '#14462a', 
                           fontWeight: 600,
-                          borderLeft: '3px solid #1877F2'
+                          borderLeft: '3px solid #14462a'
                         }
                       : { color: '#65676B', fontWeight: 500 }
                   }
@@ -140,7 +140,7 @@ export default function WorkspaceLayout({
                   )} />
                   <span className="truncate">{item.label}</span>
                   {!pathname.startsWith(item.href) && (
-                    <div className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" style={{ background: 'linear-gradient(90deg, transparent, rgba(24, 119, 242, 0.02))' }} />
+                    <div className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" style={{ background: 'linear-gradient(90deg, transparent, rgba(20, 70, 42, 0.02))' }} />
                   )}
                 </Link>
               ))}
@@ -155,7 +155,7 @@ export default function WorkspaceLayout({
           <Link 
             href="/pricing" 
             className="text-sm font-semibold px-3 py-1.5 rounded-full transition-all hover:scale-105"
-            style={{ backgroundColor: 'rgba(24, 119, 242, 0.08)', color: '#1877F2' }}
+            style={{ backgroundColor: 'rgba(20, 70, 42, 0.08)', color: '#14462a' }}
           >
             Upgrade
           </Link>
@@ -181,7 +181,7 @@ export default function WorkspaceLayout({
               />
               <Input 
                 placeholder="Search invoices, contacts, payments..." 
-                className="h-11 pl-11 pr-4 rounded-2xl border-2 transition-all focus:border-[#1877F2] focus:shadow-lg" 
+                className="h-11 pl-11 pr-4 rounded-2xl border-2 transition-all focus:border-[#14462a] focus:shadow-lg" 
                 style={{ 
                   backgroundColor: 'rgba(247, 249, 250, 0.8)', 
                   border: '2px solid #E4E6EB',
@@ -202,7 +202,7 @@ export default function WorkspaceLayout({
             <Link 
               href="/invoices/new"
               className="hidden lg:flex items-center gap-2 px-4 py-2 rounded-full font-semibold text-base transition-all hover:scale-105 hover:shadow-md"
-              style={{ backgroundColor: '#1877F2', color: 'white' }}
+              style={{ backgroundColor: '#14462a', color: 'white' }}
             >
               <Add01Icon size={16} />
               New Invoice
@@ -264,11 +264,11 @@ function MobileNav({
         <div className="h-16 px-5 flex items-center" style={{ borderBottom: '1px solid #E4E6EB' }}>
           <Link href="/" className="flex items-center gap-2 group transition-all hover:opacity-80">
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="transition-transform group-hover:scale-110">
-              <path d="M3 3H12V12H3V3Z" fill="#1877F2"/>
-              <path d="M14 3H21L17.5 12H14V3Z" fill="#1877F2"/>
-              <path d="M12 14H21V21H12V14Z" fill="#1877F2"/>
+              <path d="M3 3H12V12H3V3Z" fill="#14462a"/>
+              <path d="M14 3H21L17.5 12H14V3Z" fill="#14462a"/>
+              <path d="M12 14H21V21H12V14Z" fill="#14462a"/>
             </svg>
-            <span style={{ fontWeight: 700, fontSize: '18px', color: '#1877F2' }} className="tracking-tight transition-colors hover:text-[#1877F2]">Plaen</span>
+            <span style={{ fontWeight: 700, fontSize: '18px', color: '#14462a' }} className="tracking-tight transition-colors hover:text-[#14462a]">Plaen</span>
           </Link>
         </div>
         <nav className="p-3 space-y-6 overflow-y-auto h-[calc(100vh-64px)]">
@@ -288,12 +288,12 @@ function MobileNav({
                       style={
                         isActive
                           ? { 
-                              backgroundColor: 'rgba(24, 119, 242, 0.08)', 
-                              color: '#1877F2', 
+                              backgroundColor: 'rgba(20, 70, 42, 0.08)', 
+                              color: '#14462a', 
                               fontWeight: 600,
-                              borderLeft: '3px solid #1877F2',
+                              borderLeft: '3px solid #14462a',
                               paddingLeft: '9px',
-                              boxShadow: '0 1px 3px rgba(24, 119, 242, 0.1)'
+                              boxShadow: '0 1px 3px rgba(20, 70, 42, 0.1)'
                             }
                           : { color: '#65676B', fontWeight: 500 }
                       }
@@ -333,11 +333,11 @@ function UserMenu() {
           <Link href="/workspace/profile" className="flex items-center">
             <div 
               className="h-8 w-8 rounded-full flex items-center justify-center transition-all"
-              style={{ backgroundColor: 'rgba(24, 119, 242, 0.08)' }}
+              style={{ backgroundColor: 'rgba(20, 70, 42, 0.08)' }}
             >
-              <UserIcon size={16} style={{ color: '#1877F2' }} />
+              <UserIcon size={16} style={{ color: '#14462a' }} />
             </div>
-            <span className="text-base font-medium group-hover:text-[#1877F2] transition-all" style={{ color: '#2D2D2D' }}>Profile</span>
+            <span className="text-base font-medium group-hover:text-[#14462a] transition-all" style={{ color: '#2D2D2D' }}>Profile</span>
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild className="gap-3 rounded-xl p-3 cursor-pointer group transition-all hover:bg-[rgba(24,119,242,0.04)]">
@@ -348,18 +348,18 @@ function UserMenu() {
             >
               <CreditCardIcon size={16} style={{ color: '#059669' }} />
             </div>
-            <span className="text-base font-medium group-hover:text-[#1877F2] transition-all" style={{ color: '#2D2D2D' }}>Billing</span>
+            <span className="text-base font-medium group-hover:text-[#14462a] transition-all" style={{ color: '#2D2D2D' }}>Billing</span>
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild className="gap-3 rounded-xl p-3 cursor-pointer group transition-all hover:bg-[rgba(24,119,242,0.04)]">
           <Link href="/workspace/settings" className="flex items-center">
             <div 
               className="h-8 w-8 rounded-full flex items-center justify-center transition-all"
-              style={{ backgroundColor: 'rgba(124, 58, 237, 0.08)' }}
+              style={{ backgroundColor: 'rgba(20, 70, 42, 0.08)' }}
             >
-              <Settings02Icon size={16} style={{ color: '#7C3AED' }} />
+              <Settings02Icon size={16} style={{ color: '#14462a' }} />
             </div>
-            <span className="text-base font-medium group-hover:text-[#1877F2] transition-all" style={{ color: '#2D2D2D' }}>Settings</span>
+            <span className="text-base font-medium group-hover:text-[#14462a] transition-all" style={{ color: '#2D2D2D' }}>Settings</span>
           </Link>
         </DropdownMenuItem>
         <DropdownMenuSeparator className="my-2" />

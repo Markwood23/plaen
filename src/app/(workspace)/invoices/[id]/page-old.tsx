@@ -193,7 +193,7 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
     switch (status) {
       case "Paid":
         return (
-          <Badge className="bg-[#212121] text-white border-[#212121]">
+          <Badge className="bg-[#14462a] text-white border-[#14462a]">
             <Check className="h-3.5 w-3.5" /> Paid
           </Badge>
         );
@@ -239,11 +239,11 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
           </Link>
         </Button>
         <div className="flex items-center gap-2 text-sm text-[#949494]">
-          <Link href="/invoices" className="hover:text-[#212121] transition-colors">
+          <Link href="/invoices" className="hover:text-[#14462a] transition-colors">
             Invoices
           </Link>
           <span>/</span>
-          <span className="text-[#212121] font-medium">{invoice.invoiceNumber}</span>
+          <span className="text-[#14462a] font-medium">{invoice.invoiceNumber}</span>
         </div>
       </div>
 
@@ -251,9 +251,9 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
       <div className="flex items-start justify-between pb-4 border-b border-[#EBECE7]">
         <div className="space-y-3">
           <div className="flex items-center gap-3">
-            <h1 className="text-3xl font-semibold text-[#212121]">{invoice.invoiceNumber}</h1>
+            <h1 className="text-3xl font-semibold text-[#14462a]">{invoice.invoiceNumber}</h1>
             <span className="text-sm text-[#949494]">for</span>
-            <span className="text-lg font-medium text-[#212121]">{invoice.total}</span>
+            <span className="text-lg font-medium text-[#14462a]">{invoice.total}</span>
             {getStatusBadge(invoice.status)}
           </div>
           
@@ -315,35 +315,35 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
         <TabsList className="inline-flex h-10 items-center justify-center rounded-lg bg-[#F9F9F9] p-1 text-[#949494]">
           <TabsTrigger 
             value="overview" 
-            className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md px-4 py-2 text-sm font-medium ring-offset-white transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#212121] focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-white data-[state=active]:text-[#212121] data-[state=active]:shadow-sm"
+            className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md px-4 py-2 text-sm font-medium ring-offset-white transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#14462a] focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-white data-[state=active]:text-[#14462a] data-[state=active]:shadow-sm"
           >
             <FileText className="h-4 w-4" />
             Overview
           </TabsTrigger>
           <TabsTrigger 
             value="payments"
-            className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md px-4 py-2 text-sm font-medium ring-offset-white transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#212121] focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-white data-[state=active]:text-[#212121] data-[state=active]:shadow-sm"
+            className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md px-4 py-2 text-sm font-medium ring-offset-white transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#14462a] focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-white data-[state=active]:text-[#14462a] data-[state=active]:shadow-sm"
           >
             <Banknote className="h-4 w-4" />
             Payments
           </TabsTrigger>
           <TabsTrigger 
             value="activity"
-            className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md px-4 py-2 text-sm font-medium ring-offset-white transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#212121] focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-white data-[state=active]:text-[#212121] data-[state=active]:shadow-sm"
+            className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md px-4 py-2 text-sm font-medium ring-offset-white transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#14462a] focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-white data-[state=active]:text-[#14462a] data-[state=active]:shadow-sm"
           >
             <Activity className="h-4 w-4" />
             Activity
           </TabsTrigger>
           <TabsTrigger 
             value="attachments"
-            className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md px-4 py-2 text-sm font-medium ring-offset-white transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#212121] focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-white data-[state=active]:text-[#212121] data-[state=active]:shadow-sm"
+            className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md px-4 py-2 text-sm font-medium ring-offset-white transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#14462a] focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-white data-[state=active]:text-[#14462a] data-[state=active]:shadow-sm"
           >
             <Paperclip className="h-4 w-4" />
             Attachments
           </TabsTrigger>
           <TabsTrigger 
             value="settings"
-            className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md px-4 py-2 text-sm font-medium ring-offset-white transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#212121] focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-white data-[state=active]:text-[#212121] data-[state=active]:shadow-sm"
+            className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md px-4 py-2 text-sm font-medium ring-offset-white transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#14462a] focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-white data-[state=active]:text-[#14462a] data-[state=active]:shadow-sm"
           >
             <Settings className="h-4 w-4" />
             Settings
@@ -358,27 +358,27 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
           {/* Summary Card */}
           <Card>
             <CardHeader>
-              <CardTitle className="text-lg font-semibold text-[#212121]">Summary</CardTitle>
+              <CardTitle className="text-lg font-semibold text-[#14462a]">Summary</CardTitle>
             </CardHeader>
             <CardContent>
               {/* Fact chips */}
               <div className="flex flex-wrap items-center gap-3 mb-6 pb-6 border-b border-[#EBECE7]">
-                <div className="inline-flex items-center gap-2 rounded-md bg-[#F9F9F9] px-3 py-2 text-sm font-medium text-[#212121]">
+                <div className="inline-flex items-center gap-2 rounded-md bg-[#F9F9F9] px-3 py-2 text-sm font-medium text-[#14462a]">
                   <Hash className="h-4 w-4 text-[#949494]" />
                   {invoice.invoiceNumber}
                 </div>
                 <div className="h-4 w-px bg-[#EBECE7]" />
                 <div className="inline-flex items-center gap-2 text-sm">
                   <span className="text-[#949494]">Issued</span>
-                  <span className="font-medium text-[#212121]">{invoice.issueDate}</span>
+                  <span className="font-medium text-[#14462a]">{invoice.issueDate}</span>
                 </div>
                 <div className="h-4 w-px bg-[#EBECE7]" />
                 <div className="inline-flex items-center gap-2 text-sm">
                   <span className="text-[#949494]">Due</span>
-                  <span className="font-medium text-[#212121]">{invoice.dueDate}</span>
+                  <span className="font-medium text-[#14462a]">{invoice.dueDate}</span>
                 </div>
                 <div className="h-4 w-px bg-[#EBECE7]" />
-                <div className="inline-flex items-center gap-2 rounded-md bg-[#F9F9F9] px-3 py-2 text-sm font-medium text-[#212121]">
+                <div className="inline-flex items-center gap-2 rounded-md bg-[#F9F9F9] px-3 py-2 text-sm font-medium text-[#14462a]">
                   <Clock className="h-4 w-4 text-[#949494]" />
                   {invoice.paymentTerms}
                 </div>
@@ -396,7 +396,7 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
                   </div>
                   <div className="space-y-2.5">
                     <div>
-                      <div className="text-base font-semibold text-[#212121]">{invoice.issuer.businessName}</div>
+                      <div className="text-base font-semibold text-[#14462a]">{invoice.issuer.businessName}</div>
                       <div className="text-sm text-[#949494] mt-0.5">{invoice.issuer.name}</div>
                     </div>
                     {invoice.issuer.address && (
@@ -407,7 +407,7 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
                     )}
                     <div className="flex items-center gap-2">
                       <Mail className="h-3.5 w-3.5 text-[#949494] shrink-0" />
-                      <div className="text-sm text-[#212121]">{invoice.issuer.email}</div>
+                      <div className="text-sm text-[#14462a]">{invoice.issuer.email}</div>
                     </div>
                     <div className="flex items-center gap-2">
                       <Phone className="h-3.5 w-3.5 text-[#949494] shrink-0" />
@@ -430,7 +430,7 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
                   </div>
                   <div className="space-y-2.5">
                     <div>
-                      <div className="text-base font-semibold text-[#212121]">{invoice.customer.name}</div>
+                      <div className="text-base font-semibold text-[#14462a]">{invoice.customer.name}</div>
                       {invoice.customer.company && (
                         <div className="text-sm text-[#949494] mt-0.5">{invoice.customer.company}</div>
                       )}
@@ -443,7 +443,7 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
                     )}
                     <div className="flex items-center gap-2">
                       <Mail className="h-3.5 w-3.5 text-[#949494] shrink-0" />
-                      <div className="text-sm text-[#212121]">{invoice.customer.email}</div>
+                      <div className="text-sm text-[#14462a]">{invoice.customer.email}</div>
                     </div>
                     <div className="flex items-center gap-2">
                       <Phone className="h-3.5 w-3.5 text-[#949494] shrink-0" />
@@ -456,7 +456,7 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
               {/* Dual currency info (when enabled) */}
               {invoice.currency?.dualCurrency && (
                 <div className="flex items-center gap-3 px-4 py-3 rounded-lg border border-[#EBECE7] bg-[#F9F9F9] text-xs">
-                  <div className="font-medium text-[#212121]">
+                  <div className="font-medium text-[#14462a]">
                     1 {invoice.currency.primary} = {invoice.currency.exchangeRate} {invoice.currency.secondary}
                   </div>
                   <div className="h-3 w-px bg-[#EBECE7]" />
@@ -470,24 +470,24 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
 
               {/* Line Items Table */}
               <div>
-                <h3 className="text-sm font-semibold text-[#212121] mb-4">Items</h3>
+                <h3 className="text-sm font-semibold text-[#14462a] mb-4">Items</h3>
                 <div className="border border-[#EBECE7] rounded-lg overflow-hidden">
                   <Table>
                     <TableHeader>
                       <TableRow className="bg-[#F9F9F9] border-[#EBECE7] hover:bg-[#F9F9F9]">
-                        <TableHead className="text-[#212121] font-semibold">Description</TableHead>
-                        <TableHead className="text-[#212121] font-semibold text-center w-24">Qty</TableHead>
-                        <TableHead className="text-right text-[#212121] font-semibold w-32">Unit Price</TableHead>
-                        <TableHead className="text-right text-[#212121] font-semibold w-32">Amount</TableHead>
+                        <TableHead className="text-[#14462a] font-semibold">Description</TableHead>
+                        <TableHead className="text-[#14462a] font-semibold text-center w-24">Qty</TableHead>
+                        <TableHead className="text-right text-[#14462a] font-semibold w-32">Unit Price</TableHead>
+                        <TableHead className="text-right text-[#14462a] font-semibold w-32">Amount</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
                       {invoice.items.map((item, idx) => (
                         <TableRow key={item.id} className="border-[#EBECE7] hover:bg-[#F9F9F9]/50">
-                          <TableCell className="text-[#212121] font-medium py-4">{item.description}</TableCell>
+                          <TableCell className="text-[#14462a] font-medium py-4">{item.description}</TableCell>
                           <TableCell className="text-[#949494] text-center py-4">{item.quantity}</TableCell>
                           <TableCell className="text-right text-[#949494] py-4">{item.unitPrice}</TableCell>
-                          <TableCell className="text-right text-[#212121] font-semibold py-4">{item.total}</TableCell>
+                          <TableCell className="text-right text-[#14462a] font-semibold py-4">{item.total}</TableCell>
                         </TableRow>
                       ))}
                     </TableBody>
@@ -502,23 +502,23 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
                 <div className="space-y-0 divide-y divide-[#EBECE7]">
                   <div className="flex justify-between px-6 py-4">
                     <span className="text-sm text-[#949494]">Sub Total</span>
-                    <span className="text-sm text-[#212121] font-semibold">{invoice.subtotal}</span>
+                    <span className="text-sm text-[#14462a] font-semibold">{invoice.subtotal}</span>
                   </div>
                   {invoice.discount !== "$0.00" && (
                     <div className="flex justify-between px-6 py-4">
                       <span className="text-sm text-[#949494]">Discount</span>
-                      <span className="text-sm text-[#212121]">-{invoice.discount}</span>
+                      <span className="text-sm text-[#14462a]">-{invoice.discount}</span>
                     </div>
                   )}
                   {invoice.tax !== "$0.00" && (
                     <div className="flex justify-between px-6 py-4">
                       <span className="text-sm text-[#949494]">Tax</span>
-                      <span className="text-sm text-[#212121]">{invoice.tax}</span>
+                      <span className="text-sm text-[#14462a]">{invoice.tax}</span>
                     </div>
                   )}
                   <div className="flex justify-between px-6 py-4 bg-[#F9F9F9]">
-                    <span className="text-base text-[#212121] font-semibold">Total Amount</span>
-                    <span className="text-lg text-[#212121] font-bold">{invoice.total}</span>
+                    <span className="text-base text-[#14462a] font-semibold">Total Amount</span>
+                    <span className="text-lg text-[#14462a] font-bold">{invoice.total}</span>
                   </div>
                 </div>
               </div>
@@ -532,14 +532,14 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
           {invoice.payments.length > 0 && (
             <Card>
               <CardHeader>
-                <CardTitle className="text-base font-semibold text-[#212121]">Recent Payments</CardTitle>
+                <CardTitle className="text-base font-semibold text-[#14462a]">Recent Payments</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 {/* Balance summary */}
                 <div className="rounded-lg border border-[#EBECE7] p-3">
                   <div className="flex items-center justify-between text-sm mb-2">
                     <span className="text-[#949494]">Paid {paidPct}%</span>
-                    <span className="text-[#212121] font-medium">Balance {invoice.balanceDue}</span>
+                    <span className="text-[#14462a] font-medium">Balance {invoice.balanceDue}</span>
                   </div>
                   <Progress value={paidPct} className="h-2" />
                 </div>
@@ -548,15 +548,15 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
                   <div key={payment.id} className="p-3 bg-[#F9F9F9] rounded-lg space-y-2">
                     <div className="flex justify-between items-start">
                       <div>
-                        <div className="text-sm font-semibold text-[#212121]">{payment.amount}</div>
+                        <div className="text-sm font-semibold text-[#14462a]">{payment.amount}</div>
                         <div className="text-xs text-[#949494] mt-0.5">{payment.date}</div>
                       </div>
-                      <Badge className="bg-[#212121] text-white border-[#212121] text-xs">
+                      <Badge className="bg-[#14462a] text-white border-[#14462a] text-xs">
                         <Check className="h-3 w-3" /> {payment.status}
                       </Badge>
                     </div>
                     <div className="flex items-center gap-2 text-xs">
-                      <Badge variant="outline" className="text-[#212121] border-[#EBECE7] font-medium">
+                      <Badge variant="outline" className="text-[#14462a] border-[#EBECE7] font-medium">
                         {payment.rail}
                       </Badge>
                       <span className="text-[#949494] font-mono">ref …{payment.reference.slice(-4)}</span>
@@ -578,12 +578,12 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
           {/* Quick Actions */}
           <Card>
             <CardHeader>
-              <CardTitle className="text-base font-semibold text-[#212121]">Quick Actions</CardTitle>
+              <CardTitle className="text-base font-semibold text-[#14462a]">Quick Actions</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
               {(invoice.status === "Pending" || invoice.status === "Partially Paid") && (
                 <Button 
-                  className="w-full justify-start bg-[#212121] hover:bg-[#212121]/90 text-white"
+                  className="w-full justify-start bg-[#14462a] hover:bg-[#14462a]/90 text-white"
                 >
                   <DollarSign className="h-4 w-4 mr-2" />
                   Record Payment
@@ -629,7 +629,7 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
     <TabsContent value="payments" className="space-y-6">
       <Card>
         <CardHeader>
-          <CardTitle className="text-lg font-semibold text-[#212121]">Payment History</CardTitle>
+          <CardTitle className="text-lg font-semibold text-[#14462a]">Payment History</CardTitle>
         </CardHeader>
         <CardContent>
           <Table>
@@ -648,7 +648,7 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
                   <TableCell className="text-[#949494]">{payment.date}</TableCell>
                   <TableCell className="font-semibold">{payment.amount}</TableCell>
                   <TableCell>
-                    <Badge variant="outline" className="text-[#212121] border-[#EBECE7] font-medium">
+                    <Badge variant="outline" className="text-[#14462a] border-[#EBECE7] font-medium">
                       {payment.rail}
                     </Badge>
                   </TableCell>
@@ -656,7 +656,7 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
                     ...{payment.reference.slice(-4)}
                   </TableCell>
                   <TableCell>
-                    <Badge className="bg-[#212121] text-white border-[#212121]">
+                    <Badge className="bg-[#14462a] text-white border-[#14462a]">
                       <Check className="h-3.5 w-3.5" /> {payment.status}
                     </Badge>
                   </TableCell>
@@ -672,7 +672,7 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
     <TabsContent value="activity" className="space-y-6">
       <Card>
         <CardHeader className="flex flex-row items-center justify-between">
-          <CardTitle className="text-lg font-semibold text-[#212121]">Activity Log</CardTitle>
+          <CardTitle className="text-lg font-semibold text-[#14462a]">Activity Log</CardTitle>
           <Button variant="outline" size="sm">
             <Download className="h-3.5 w-3.5 mr-1.5" />
             Export
@@ -689,7 +689,7 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
                 
                 {/* Icon */}
                 <div className="shrink-0 mt-0.5">
-                  <div className="h-4 w-4 rounded-full bg-[#212121] flex items-center justify-center">
+                  <div className="h-4 w-4 rounded-full bg-[#14462a] flex items-center justify-center">
                     <div className="h-2 w-2 rounded-full bg-white" />
                   </div>
                 </div>
@@ -698,7 +698,7 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
                 <div className="flex-1 pb-2">
                   <div className="flex items-start justify-between gap-4">
                     <div className="flex-1">
-                      <div className="text-sm font-semibold text-[#212121] mb-0.5">{item.action}</div>
+                      <div className="text-sm font-semibold text-[#14462a] mb-0.5">{item.action}</div>
                       <div className="text-sm text-[#949494] leading-relaxed">{item.description}</div>
                     </div>
                     <div className="text-xs text-[#949494] whitespace-nowrap">{item.date}</div>
@@ -715,8 +715,8 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
     <TabsContent value="attachments" className="space-y-6">
       <Card>
         <CardHeader className="flex flex-row items-center justify-between">
-          <CardTitle className="text-lg font-semibold text-[#212121]">Attachments</CardTitle>
-          <Button size="sm" className="bg-[#212121] hover:bg-[#212121]/90 text-white">
+          <CardTitle className="text-lg font-semibold text-[#14462a]">Attachments</CardTitle>
+          <Button size="sm" className="bg-[#14462a] hover:bg-[#14462a]/90 text-white">
             <Plus className="h-3.5 w-3.5 mr-1.5" />
             Upload File
           </Button>
@@ -727,7 +727,7 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
               <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-[#F9F9F9] mb-4">
                 <Paperclip className="h-8 w-8 text-[#949494]" />
               </div>
-              <h3 className="text-base font-semibold text-[#212121] mb-2">No attachments</h3>
+              <h3 className="text-base font-semibold text-[#14462a] mb-2">No attachments</h3>
               <p className="text-sm text-[#949494] mb-6 max-w-sm mx-auto">
                 Upload contracts, receipts, or other documents related to this invoice.
               </p>
@@ -739,10 +739,10 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {invoice.attachments.map((attachment: any, idx: number) => (
-                <div key={idx} className="border border-[#EBECE7] rounded-lg p-4 hover:border-[#212121] transition-colors group">
+                <div key={idx} className="border border-[#EBECE7] rounded-lg p-4 hover:border-[#14462a] transition-colors group">
                   <div className="flex items-start justify-between mb-3">
                     <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-[#F9F9F9]">
-                      <FileText className="h-5 w-5 text-[#212121]" />
+                      <FileText className="h-5 w-5 text-[#14462a]" />
                     </div>
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
@@ -768,7 +768,7 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
                     </DropdownMenu>
                   </div>
                   <div className="space-y-1">
-                    <h4 className="text-sm font-medium text-[#212121] truncate">{attachment.name}</h4>
+                    <h4 className="text-sm font-medium text-[#14462a] truncate">{attachment.name}</h4>
                     <p className="text-xs text-[#949494]">{attachment.size}</p>
                     <p className="text-xs text-[#949494]">Uploaded {attachment.date}</p>
                   </div>
@@ -791,16 +791,16 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <Card>
           <CardHeader>
-            <CardTitle className="text-lg font-semibold text-[#212121]">Invoice Settings</CardTitle>
+            <CardTitle className="text-lg font-semibold text-[#14462a]">Invoice Settings</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div>
               <div className="text-xs font-medium text-[#949494] mb-2">Payment Terms</div>
-              <div className="text-sm text-[#212121]">{invoice.paymentTerms}</div>
+              <div className="text-sm text-[#14462a]">{invoice.paymentTerms}</div>
             </div>
             <div>
               <div className="text-xs font-medium text-[#949494] mb-2">Currency</div>
-              <div className="text-sm text-[#212121]">
+              <div className="text-sm text-[#14462a]">
                 {invoice.currency.dualCurrency 
                   ? `${invoice.currency.primary} / ${invoice.currency.secondary}`
                   : invoice.currency.primary
@@ -811,7 +811,7 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
               <>
                 <div>
                   <div className="text-xs font-medium text-[#949494] mb-2">Exchange Rate</div>
-                  <div className="text-sm text-[#212121]">
+                  <div className="text-sm text-[#14462a]">
                     1 {invoice.currency.primary} = {invoice.currency.exchangeRate} {invoice.currency.secondary}
                   </div>
                   <div className="text-xs text-[#949494] mt-1">
@@ -825,12 +825,12 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
 
         <Card>
           <CardHeader>
-            <CardTitle className="text-lg font-semibold text-[#212121]">Payment Methods</CardTitle>
+            <CardTitle className="text-lg font-semibold text-[#14462a]">Payment Methods</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="flex flex-wrap gap-2">
               {invoice.paymentMethods.map((method, idx) => (
-                <Badge key={idx} variant="outline" className="text-[#212121] border-[#EBECE7]">
+                <Badge key={idx} variant="outline" className="text-[#14462a] border-[#EBECE7]">
                   {method}
                 </Badge>
               ))}
@@ -840,19 +840,19 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
 
         <Card>
           <CardHeader>
-            <CardTitle className="text-lg font-semibold text-[#212121]">Terms & Conditions</CardTitle>
+            <CardTitle className="text-lg font-semibold text-[#14462a]">Terms & Conditions</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             {invoice.earlyPaymentDiscount && (
               <div>
                 <div className="text-xs font-medium text-[#949494] mb-2">Early Payment Discount</div>
-                <div className="text-sm text-[#212121]">{invoice.earlyPaymentDiscount}</div>
+                <div className="text-sm text-[#14462a]">{invoice.earlyPaymentDiscount}</div>
               </div>
             )}
             {invoice.lateFeePolicy && (
               <div>
                 <div className="text-xs font-medium text-[#949494] mb-2">Late Fee Policy</div>
-                <div className="text-sm text-[#212121]">{invoice.lateFeePolicy}</div>
+                <div className="text-sm text-[#14462a]">{invoice.lateFeePolicy}</div>
               </div>
             )}
             {invoice.termsAndConditions && (

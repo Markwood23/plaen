@@ -228,27 +228,25 @@
 }
 
 /* Brand color adjustments
-   Ensure all usages of Tailwind's "black" utilities resolve to the brand black #212121.
-   This is a lightweight override without changing Tailwind config.
+   Override bg-black and border-black to use brand green #14462a for buttons/accents.
+   DO NOT override text-black - text should remain black for readability.
 */
 @layer utilities {
-  .text-black { color: #212121 !important; }
-  .bg-black { background-color: #212121 !important; }
-  .border-black { border-color: #212121 !important; }
-  .fill-black { fill: #212121 !important; }
-  .stroke-black { stroke: #212121 !important; }
+  /* Background and border overrides for buttons and interactive elements */
+  .bg-black { background-color: #14462a !important; }
+  .border-black { border-color: #14462a !important; }
+  .fill-black { fill: #14462a !important; }
+  .stroke-black { stroke: #14462a !important; }
 
   /* Common variants used across the site */
-  .hover\:bg-black:hover { background-color: #212121 !important; }
-  .hover\:border-black:hover { border-color: #212121 !important; }
-  .hover\:text-black:hover { color: #212121 !important; }
-  .group:hover .group-hover\:bg-black { background-color: #212121 !important; }
-  .group:hover .group-hover\:text-black { color: #212121 !important; }
-  .group:hover .group-hover\:border-black { border-color: #212121 !important; }
+  .hover\:bg-black:hover { background-color: #14462a !important; }
+  .hover\:border-black:hover { border-color: #14462a !important; }
+  .group:hover .group-hover\:bg-black { background-color: #14462a !important; }
+  .group:hover .group-hover\:border-black { border-color: #14462a !important; }
 
   /* Opacity variants seen in codebase */
-  .bg-black\/90 { background-color: rgb(33 33 33 / 0.9) !important; }
-  .border-black\/80 { border-color: rgb(33 33 33 / 0.8) !important; }
+  .bg-black\/90 { background-color: rgb(20 70 42 / 0.9) !important; }
+  .border-black\/80 { border-color: rgb(20 70 42 / 0.8) !important; }
 }
 
 /* React Day Picker - Grayscale Override - Force all blue to grayscale */
@@ -264,17 +262,17 @@
   border-radius: 6px !important;
 }
 
-/* Month/year text */
+/* Month/year text - keep dark for readability */
 .rdp-caption_label,
 .rdp-weekday,
 .rdp-nav_button {
-  color: #212121 !important;
+  color: #2D2D2D !important;
   font-weight: 500 !important;
 }
 
-/* Regular days - default color (non-selected) */
+/* Regular days - default color (non-selected) - black for readability */
 .rdp-day_button:not([aria-selected="true"]):not([data-range-start="true"]):not([data-range-end="true"]) {
-  color: #212121 !important;
+  color: #2D2D2D !important;
 }
 
 /* SELECTED DAYS - Must come AFTER base styles to override */
@@ -292,7 +290,7 @@ button[aria-selected="true"]:not([data-slot="tabs-trigger"]),
 .rdp [aria-selected="true"],
 .rdp [data-range-start="true"],
 .rdp [data-range-end="true"] {
-  background-color: #212121 !important;
+  background-color: #14462a !important;
   color: #FFFFFF !important;
   font-weight: 500 !important;
 }
@@ -321,7 +319,7 @@ button[aria-selected="true"]:not([data-slot="tabs-trigger"]) *,
 .rdp .rdp-day_button[aria-selected="true"]:hover,
 .rdp-day_button[data-range-start="true"]:hover,
 .rdp-day_button[data-range-end="true"]:hover {
-  background-color: #212121 !important;
+  background-color: #14462a !important;
   color: #FFFFFF !important;
 }
 
@@ -332,11 +330,11 @@ button[aria-selected="true"]:not([data-slot="tabs-trigger"]) *,
   color: #FFFFFF !important;
 }
 
-/* Today indicator - remove blue, use gray */
+/* Today indicator - subtle gray background */
 .rdp-day_button[data-today="true"]:not([aria-selected="true"]):not([data-range-start="true"]):not([data-range-end="true"]),
 .rdp .rdp-day_button[data-today="true"]:not([aria-selected="true"]):not([data-range-start="true"]):not([data-range-end="true"]) {
   background-color: #F9F9F9 !important;
-  color: #212121 !important;
+  color: #2D2D2D !important;
   font-weight: 600 !important;
 }
 
@@ -344,7 +342,7 @@ button[aria-selected="true"]:not([data-slot="tabs-trigger"]) *,
 .rdp-day_button:hover:not([aria-selected="true"]):not([data-range-start="true"]):not([data-range-end="true"]),
 .rdp .rdp-day_button:hover:not([aria-selected="true"]):not([data-range-start="true"]):not([data-range-end="true"]) {
   background-color: #F9F9F9 !important;
-  color: #212121 !important;
+  color: #2D2D2D !important;
 }
 
 /* Range middle days */
@@ -355,20 +353,20 @@ button[aria-selected="true"]:not([data-slot="tabs-trigger"]) *,
 .rdp .rdp-range_middle,
 .rdp .rdp-day_range_middle {
   background-color: #F9F9F9 !important;
-  color: #212121 !important;
+  color: #2D2D2D !important;
 }
 
 /* Force any element with range in between to be gray */
 .rdp [data-selected-range="true"],
 .rdp [class*="range"]:not([aria-selected="true"]):not([data-range-start="true"]):not([data-range-end="true"]) {
   background-color: #F9F9F9 !important;
-  color: #212121 !important;
+  color: #2D2D2D !important;
 }
 
 /* Focus states - remove blue ring */
 .rdp-day_button:focus-visible,
 .rdp .rdp-day_button:focus-visible {
-  outline: 2px solid #212121 !important;
+  outline: 2px solid #14462a !important;
   outline-offset: 2px !important;
 }
 
@@ -387,7 +385,7 @@ button[aria-selected="true"]:not([data-slot="tabs-trigger"]) *,
 /* Remove any default blue from the component */
 .rdp-root,
 .rdp {
-  --rdp-accent-color: #212121 !important;
+  --rdp-accent-color: #14462a !important;
   --rdp-background-color: #F9F9F9 !important;
 }
 
@@ -398,7 +396,7 @@ button[aria-selected="true"]:not([data-slot="tabs-trigger"]) *,
 .plaen-calendar .rdp-day_button[aria-selected="true"],
 .plaen-calendar .rdp-day_button[data-range-start="true"],
 .plaen-calendar .rdp-day_button[data-range-end="true"] {
-  background-color: #212121 !important;
+  background-color: #14462a !important;
   color: #FFFFFF !important;
 }
 
@@ -407,7 +405,7 @@ button[aria-selected="true"]:not([data-slot="tabs-trigger"]) *,
 .plaen-calendar .rdp-day[data-selected="true"] .rdp-day_button,
 .plaen-calendar .rdp-day[data-range-start="true"] .rdp-day_button,
 .plaen-calendar .rdp-day[data-range-end="true"] .rdp-day_button {
-  background-color: #212121 !important;
+  background-color: #14462a !important;
   color: #FFFFFF !important;
 }
 
@@ -415,30 +413,30 @@ button[aria-selected="true"]:not([data-slot="tabs-trigger"]) *,
 .plaen-calendar .rdp-day[aria-selected="true"]:not([data-range-start="true"]):not([data-range-end="true"]) .rdp-day_button,
 .plaen-calendar .rdp-day_button[aria-selected="true"]:not([data-range-start="true"]):not([data-range-end="true"]) {
   background-color: #F9F9F9 !important;
-  color: #212121 !important;
+  color: #2D2D2D !important;
 }
 
 .plaen-calendar .rdp-day[aria-selected="true"] .rdp-day_button:hover,
 .plaen-calendar .rdp-day[data-range-start="true"] .rdp-day_button:hover,
 .plaen-calendar .rdp-day[data-range-end="true"] .rdp-day_button:hover {
-  background-color: #212121 !important;
+  background-color: #14462a !important;
   color: #FFFFFF !important;
 }
 
 .plaen-calendar .rdp-day_range_middle .rdp-day_button,
 .plaen-calendar .rdp-day_button[data-range-middle="true"] {
   background-color: #F9F9F9 !important;
-  color: #212121 !important;
+  color: #2D2D2D !important;
 }
 
 .plaen-calendar .rdp-day_today:not(.rdp-day_selected) .rdp-day_button,
 .plaen-calendar .rdp-day_button[data-today="true"]:not([aria-selected="true"]) {
   background-color: #F9F9F9 !important;
-  color: #212121 !important;
+  color: #2D2D2D !important;
   font-weight: 600 !important;
 }
 
 .plaen-calendar .rdp-day_button:focus-visible {
-  outline: 2px solid #212121 !important;
+  outline: 2px solid #14462a !important;
   outline-offset: 2px !important;
 }

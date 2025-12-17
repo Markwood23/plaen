@@ -3,7 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { MarketingHeader } from "@/components/marketing/marketing-header";
 import { MarketingFooter } from "@/components/marketing/marketing-footer";
 import { PageEffects } from "@/components/marketing/home-page-effects";
-import { Building2, Globe2, Heart, Users } from "lucide-react";
+import { Building, Global, Heart, People } from "iconsax-react";
 import { Pillars } from "@/components/marketing/pillars";
 import Link from "next/link";
 
@@ -34,7 +34,7 @@ export default function AboutPage() {
             <Badge variant="outline" className="rounded-full border-gray-200 px-4 py-1 text-xs uppercase tracking-[0.35em] text-gray-500">
               About Plaen
             </Badge>
-            <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">
+            <h1 className="text-4xl font-semibold tracking-tight text-[#14462a] sm:text-5xl">
               Money + Meaning. Built-in Professionalism.
             </h1>
             <p className="max-w-2xl text-lg leading-7 text-gray-600">
@@ -48,7 +48,7 @@ export default function AboutPage() {
             <div className="mx-auto max-w-6xl px-6">
               <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
                 <div className="space-y-6">
-                  <h2 className="text-3xl font-semibold tracking-tight text-black sm:text-4xl">
+                  <h2 className="text-3xl font-semibold tracking-tight text-[#14462a] sm:text-4xl">
                     Official flows for African operators
                   </h2>
                   <p className="text-base leading-7 text-gray-600">
@@ -56,19 +56,19 @@ export default function AboutPage() {
                   </p>
                   <div className="grid gap-4 sm:grid-cols-2">
                     <div className="flex items-center gap-3 rounded-2xl bg-gray-50 p-4 transition hover:bg-gray-100">
-                      <Globe2 className="h-5 w-5 text-gray-600" />
+                      <Global size={20} color="#0284C7" variant="Bulk" />
                       <span className="text-sm font-medium text-black">5+ currencies supported</span>
                     </div>
                     <div className="flex items-center gap-3 rounded-2xl bg-gray-50 p-4 transition hover:bg-gray-100">
-                      <Users className="h-5 w-5 text-gray-600" />
+                      <People size={20} color="#4F46E5" variant="Bulk" />
                       <span className="text-sm font-medium text-black">Personal & business</span>
                     </div>
                     <div className="flex items-center gap-3 rounded-2xl bg-gray-50 p-4 transition hover:bg-gray-100">
-                      <Building2 className="h-5 w-5 text-gray-600" />
+                      <Building size={20} color="#D97706" variant="Bulk" />
                       <span className="text-sm font-medium text-black">No registration required</span>
                     </div>
                     <div className="flex items-center gap-3 rounded-2xl bg-gray-50 p-4 transition hover:bg-gray-100">
-                      <Heart className="h-5 w-5 text-gray-600" />
+                      <Heart size={20} color="#E11D48" variant="Bulk" />
                       <span className="text-sm font-medium text-black">Made with care</span>
                     </div>
                   </div>
@@ -95,7 +95,7 @@ export default function AboutPage() {
           <section className="border-t border-gray-200 bg-gray-50 py-24" data-animate="fade-up">
             <div className="mx-auto max-w-6xl px-6 text-center">
               <div className="space-y-6">
-                <h2 className="text-3xl font-semibold tracking-tight text-black sm:text-4xl">
+                <h2 className="text-3xl font-semibold tracking-tight text-[#14462a] sm:text-4xl">
                   Ready to operate with built-in professionalism?
                 </h2>
                 <p className="mx-auto max-w-2xl text-base leading-7 text-gray-600">

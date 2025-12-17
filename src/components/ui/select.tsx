@@ -116,7 +116,7 @@ function SelectItem({
     >
       <span className="absolute right-3 flex size-3.5 items-center justify-center">
         <SelectPrimitive.ItemIndicator>
-          <CheckIcon className="size-4" style={{ color: "#1877F2" }} />
+          <CheckIcon className="size-4" style={{ color: "#14462a" }} />
         </SelectPrimitive.ItemIndicator>
       </span>
       <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>

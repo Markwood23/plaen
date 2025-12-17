@@ -78,18 +78,18 @@ export function ColorPicker({ value, onChange, label, description }: ColorPicker
                 </p>
                 <div className="grid grid-cols-6 gap-2">
                   {[
-                    "#1877F2", // Blue
-                    "#059669", // Green
-                    "#F59E0B", // Orange
-                    "#7C3AED", // Purple
-                    "#DC2626", // Red
+                    "#14462a", // Primary Green
+                    "#1a5a38", // Lighter Green
+                    "#0f3520", // Darker Green
                     "#2D2D2D", // Black
-                    "#EC4899", // Pink
-                    "#14B8A6", // Teal
-                    "#F97316", // Deep Orange
+                    "#65676B", // Gray
+                    "#B0B3B8", // Light Gray
+                    "#DC2626", // Error Red
+                    "#F59E0B", // Warning Orange
+                    "#059669", // Success Green
+                    "#3B82F6", // Blue
                     "#8B5CF6", // Violet
-                    "#6366F1", // Indigo
-                    "#EAB308", // Yellow
+                    "#EC4899", // Pink
                   ].map((presetColor) => (
                     <button
                       key={presetColor}

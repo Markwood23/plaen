@@ -106,7 +106,7 @@ export default function NewNotePage() {
           </Button>
           <Button
             className="rounded-full h-9 px-4"
-            style={{ backgroundColor: "#1877F2", color: "white" }}
+            style={{ backgroundColor: "#14462a", color: "white" }}
             onClick={handleSave}
             disabled={isSaving || !title.trim()}
           >
@@ -169,8 +169,8 @@ export default function NewNotePage() {
             variant="secondary"
             className="rounded-full px-3 py-1 text-xs flex items-center gap-1.5"
             style={{
-              backgroundColor: "rgba(24, 119, 242, 0.08)",
-              color: "#1877F2",
+              backgroundColor: "rgba(20, 70, 42, 0.08)",
+              color: "#14462a",
             }}
           >
             {tag}
@@ -325,7 +325,7 @@ export default function NewNotePage() {
                 variant="ghost"
                 size="sm"
                 className="h-8 px-3 rounded-full hover:bg-white text-xs font-medium"
-                style={{ color: "#1877F2" }}
+                style={{ color: "#14462a" }}
               >
                 <Add01Icon size={16} className="mr-1.5" />
                 Insert Block
@@ -333,7 +333,7 @@ export default function NewNotePage() {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start" className="rounded-2xl p-2 w-64">
               <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer">
-                <ChartHistogramIcon size={16} className="mr-2" style={{ color: "#1877F2" }} />
+                <ChartHistogramIcon size={16} className="mr-2" style={{ color: "#14462a" }} />
                 <div>
                   <div className="font-medium text-sm">AR Metrics</div>
                   <div className="text-xs" style={{ color: "#B0B3B8" }}>

@@ -21,7 +21,7 @@ const paymentMethods = [
     name: "Bank Transfers",
     description: "Direct bank-to-bank transfers for traditional banking customers and larger transactions.",
     icon: Building2,
-    color: "#1877F2", // Blue
+    color: "#14462a", // Blue
     features: [
       "Secure bank-grade encryption",
       "Support for local and international transfers",
@@ -45,7 +45,7 @@ const paymentMethods = [
     name: "Credit & Debit Cards", 
     description: "Traditional card payments for customers who prefer using Visa, Mastercard, or local cards.",
     icon: CreditCard,
-    color: "#7C3AED", // Purple
+    color: "#14462a", // Purple
     features: [
       "Wide customer acceptance",
       "Instant payment confirmation",
@@ -78,7 +78,7 @@ export default function PaymentsPage() {
               </div>
               
               <div className="max-w-3xl">
-                <h1 className="text-4xl font-semibold tracking-tight text-black sm:text-5xl mb-6">
+                <h1 className="text-4xl font-semibold tracking-tight text-[#14462a] sm:text-5xl mb-6">
                   Payment Methods
                 </h1>
                 <p className="text-xl leading-8 text-gray-700">

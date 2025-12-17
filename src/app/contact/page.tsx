@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { MarketingHeader } from "@/components/marketing/marketing-header";
 import { MarketingFooter } from "@/components/marketing/marketing-footer";
 import { useRevealAnimation } from "@/hooks/use-reveal-animation";
-import { Mail, MessageSquare, Send } from "lucide-react";
+import { Sms, MessageText, Send2 } from "iconsax-react";
 
 export default function ContactPage() {
   const year = new Date().getFullYear();
@@ -50,7 +50,7 @@ export default function ContactPage() {
             <span className="inline-flex items-center gap-2 rounded-full border border-gray-200 px-4 py-1 text-xs uppercase tracking-[0.35em] text-gray-500">
               Contact
             </span>
-            <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">
+            <h1 className="text-4xl font-semibold tracking-tight text-[#14462a] sm:text-5xl">
               Let's talk about your invoicing needs.
             </h1>
             <p className="max-w-2xl text-lg leading-7 text-gray-600">
@@ -64,7 +64,7 @@ export default function ContactPage() {
                 {/* Contact Info */}
                 <div className="space-y-8">
                   <div>
-                    <h2 className="text-2xl font-semibold tracking-tight text-black">
+                    <h2 className="text-2xl font-semibold tracking-tight text-[#14462a]">
                       Get in touch
                     </h2>
                     <p className="mt-3 text-base leading-7 text-gray-600">
@@ -75,8 +75,9 @@ export default function ContactPage() {
                   <div className="space-y-6">
                     <div className="group rounded-2xl border border-gray-200 bg-white p-6 transition hover:border-black/20 hover:shadow-lg">
                       <div className="flex items-start gap-4">
-                        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gray-100 transition group-hover:bg-black group-hover:text-white">
-                          <Mail className="h-5 w-5" />
+                        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#059669]/10 transition group-hover:bg-[#059669]">
+                          <Sms size={20} color="#059669" variant="Bulk" className="group-hover:hidden" />
+                          <Sms size={20} color="white" variant="Bulk" className="hidden group-hover:block" />
                         </div>
                         <div>
                           <h3 className="font-semibold text-black">Email us</h3>
@@ -95,8 +96,9 @@ export default function ContactPage() {
 
                     <div className="group rounded-2xl border border-gray-200 bg-white p-6 transition hover:border-black/20 hover:shadow-lg">
                       <div className="flex items-start gap-4">
-                        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gray-100 transition group-hover:bg-black group-hover:text-white">
-                          <MessageSquare className="h-5 w-5" />
+                        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#4F46E5]/10 transition group-hover:bg-[#4F46E5]">
+                          <MessageText size={20} color="#4F46E5" variant="Bulk" className="group-hover:hidden" />
+                          <MessageText size={20} color="white" variant="Bulk" className="hidden group-hover:block" />
                         </div>
                         <div>
                           <h3 className="font-semibold text-black">Live chat</h3>
@@ -166,7 +168,7 @@ export default function ContactPage() {
                       className="w-full bg-black text-white transition hover:bg-gray-900"
                     >
                       Send message
-                      <Send className="ml-2 h-4 w-4" />
+                      <Send2 size={16} className="ml-2" />
                     </Button>
                   </form>
                 </div>

@@ -40,7 +40,7 @@ export function IconFrame({
         "relative inline-flex aspect-square shrink-0 items-center justify-center rounded-full border leading-none overflow-hidden transition-colors", // base
         variant === "plain" && "border-transparent",
         variant === "subtle" && "border-[#E4E6EB] bg-[#F9F9F9]",
-        variant === "solid" && "border-[#212121] bg-[#212121]",
+        variant === "solid" && "border-[#14462a] bg-[#14462a]",
         tone === "muted" && variant !== "solid" && "bg-[#F9F9F9]",
         s.wrapper,
         s.padding,

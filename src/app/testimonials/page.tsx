@@ -2,7 +2,8 @@ import { SmartButton } from "@/components/ui/smart-button";
 import { MarketingHeader } from "@/components/marketing/marketing-header";
 import { MarketingFooter } from "@/components/marketing/marketing-footer";
 import { PageEffects } from "@/components/marketing/home-page-effects";
-import { Star, Quote, Building2, User, TrendingUp } from "lucide-react";
+import { Star, TrendUp, Building, User } from "iconsax-react";
+import { Quote } from "lucide-react";
 import { IconFrame } from "@/components/ui/icon-frame";
 import Link from "next/link";
 
@@ -95,10 +96,10 @@ const testimonials = [
 ];
 
 const stats = [
-  { label: "User satisfaction", value: "98%", icon: TrendingUp },
-  { label: "Faster payments", value: "2.5x", icon: Star },
-  { label: "Active users", value: "10K+", icon: User },
-  { label: "Businesses served", value: "500+", icon: Building2 },
+  { label: "User satisfaction", value: "98%", icon: TrendUp, color: "#059669" },
+  { label: "Faster payments", value: "2.5x", icon: Star, color: "#D97706" },
+  { label: "Active users", value: "10K+", icon: User, color: "#4F46E5" },
+  { label: "Businesses served", value: "500+", icon: Building, color: "#0284C7" },
 ];
 
 export default function TestimonialsPage() {
@@ -126,9 +127,9 @@ export default function TestimonialsPage() {
             className="mx-auto flex max-w-6xl flex-col items-center gap-8 px-6 pb-16 pt-20 text-center"
           >
             <span className="inline-flex items-center gap-2 rounded-full border border-gray-200 px-4 py-1 text-xs uppercase tracking-[0.35em] text-gray-500">
-              <IconFrame icon={Star} size="sm" variant="plain" /> Customer Stories
+              <Star size={14} color="#D97706" variant="Bold" /> Customer Stories
             </span>
-            <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">
+            <h1 className="text-4xl font-semibold tracking-tight text-[#14462a] sm:text-5xl">
               Trusted by operators who value clarity
             </h1>
             <p className="max-w-2xl text-lg leading-7 text-gray-600">
@@ -144,7 +145,9 @@ export default function TestimonialsPage() {
                   const Icon = stat.icon;
                   return (
                     <div key={stat.label} className="text-center">
-                      <IconFrame icon={Icon} size="lg" variant="subtle" />
+                      <div className="mx-auto h-14 w-14 rounded-2xl flex items-center justify-center" style={{ backgroundColor: `${stat.color}12` }}>
+                        <Icon size={28} color={stat.color} variant="Bulk" />
+                      </div>
                       <div className="mt-4 text-3xl font-bold text-black">{stat.value}</div>
                       <div className="text-sm text-gray-600">{stat.label}</div>
                     </div>
@@ -157,7 +160,7 @@ export default function TestimonialsPage() {
           {/* Featured Testimonials */}
           <section className="bg-white py-16" data-animate="fade-up">
             <div className="mx-auto max-w-6xl px-6">
-              <h2 className="mb-12 text-center text-3xl font-semibold text-black">
+              <h2 className="mb-12 text-center text-3xl font-semibold text-[#14462a]">
                 What our users are saying
               </h2>
               <div className="grid gap-8 lg:grid-cols-2">
@@ -245,7 +248,7 @@ export default function TestimonialsPage() {
           {/* All Testimonials Grid */}
           <section className="border-t border-gray-200 bg-gray-50 py-16" data-animate="fade-up">
             <div className="mx-auto max-w-6xl px-6">
-              <h2 className="mb-8 text-2xl font-semibold text-black">More success stories</h2>
+              <h2 className="mb-8 text-2xl font-semibold text-[#14462a]">More success stories</h2>
               <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                 {regularTestimonials.map((testimonial) => (
                   <div
@@ -289,7 +292,7 @@ export default function TestimonialsPage() {
           <section className="border-t border-gray-200 bg-white py-16" data-animate="fade-up">
             <div className="mx-auto max-w-4xl px-6 text-center">
               <div className="rounded-3xl border border-gray-200 bg-gradient-to-br from-gray-50 to-white p-12 shadow-[0_24px_80px_rgba(15,15,15,0.08)]">
-                <h2 className="mb-4 text-3xl font-semibold text-black">
+                <h2 className="mb-4 text-3xl font-semibold text-[#14462a]">
                   Join thousands of satisfied users
                 </h2>
                 <p className="mb-8 text-lg text-gray-600">

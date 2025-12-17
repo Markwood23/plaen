@@ -54,9 +54,9 @@
 - **Never Use**: Icons smaller than 16px
 
 ### Icon Color
-- **Primary Actions**: `#1877F2` (brand blue)
+- **Primary Actions**: `#14462a` (brand green)
 - **Default State**: `#65676B` (muted gray)
-- **Active State**: `#1877F2` (brand blue)
+- **Active State**: `#14462a` (brand green)
 - **Destructive**: `#DC2626` (red)
 
 ---
@@ -70,7 +70,7 @@
 - **Border Color**: `#E4E6EB`
 
 ### Buttons
-- **Primary**: `h-11` (44px), `text-base`, `rounded-full`, `bg-[#1877F2]`
+- **Primary**: `h-11` (44px), `text-base`, `rounded-full`, `bg-[#14462a]`
 - **Secondary**: `h-10` (40px), `text-sm`, `rounded-full`
 - **Tertiary/Small**: `h-9` (36px), `text-sm`, `rounded-xl`
 
@@ -80,8 +80,8 @@
 - **Border Radius**: `rounded-xl`
 - **Active State**: 
   - Background: `rgba(24, 119, 242, 0.08)`
-  - Text Color: `#1877F2`
-  - Border Left: `3px solid #1877F2`
+  - Text Color: `#14462a`
+  - Border Left: `3px solid #14462a`
   - Font Weight: 600
 
 ### Labels
@@ -108,7 +108,7 @@
 ## Color Palette
 
 ### Primary
-- **Brand Blue**: `#1877F2`
+- **Brand Blue**: `#14462a`
 - **Blue Hover**: `rgba(24, 119, 242, 0.9)`
 - **Blue Background**: `rgba(24, 119, 242, 0.08)`
 
@@ -157,9 +157,9 @@
   className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-base transition-all"
   style={{
     backgroundColor: 'rgba(24, 119, 242, 0.08)',
-    color: '#1877F2',
+    color: '#14462a',
     fontWeight: 600,
-    borderLeft: '3px solid #1877F2'
+    borderLeft: '3px solid #14462a'
   }}
 >
   <DashboardIcon className="h-5 w-5" />
@@ -185,7 +185,7 @@
 ```tsx
 <button
   className="h-11 px-6 rounded-full font-semibold text-base"
-  style={{ backgroundColor: '#1877F2', color: 'white' }}
+  style={{ backgroundColor: '#14462a', color: 'white' }}
 >
   Save Changes
 </button>

@@ -60,7 +60,7 @@ const mockNotes = [
     attachmentCount: 3,
     wordCount: 1247,
     icon: ChartHistogramIcon,
-    iconColor: "#1877F2",
+    iconColor: "#14462a",
   },
   {
     id: "2",
@@ -92,7 +92,7 @@ const mockNotes = [
     attachmentCount: 2,
     wordCount: 456,
     icon: UserMultiple02Icon,
-    iconColor: "#7C3AED",
+    iconColor: "#14462a",
   },
   {
     id: "4",
@@ -124,7 +124,7 @@ const mockNotes = [
     attachmentCount: 0,
     wordCount: 678,
     icon: FileValidationIcon,
-    iconColor: "#1877F2",
+    iconColor: "#14462a",
   },
   {
     id: "6",
@@ -147,11 +147,11 @@ const mockNotes = [
 // Categories/folders
 const categories = [
   { name: "All Notes", count: 24, icon: FileValidationIcon, color: "#2D2D2D" },
-  { name: "AR Analysis", count: 8, icon: ChartHistogramIcon, color: "#1877F2" },
+  { name: "AR Analysis", count: 8, icon: ChartHistogramIcon, color: "#14462a" },
   { name: "Payment Analysis", count: 5, icon: Analytics01Icon, color: "#059669" },
-  { name: "Client Notes", count: 6, icon: UserMultiple02Icon, color: "#7C3AED" },
+  { name: "Client Notes", count: 6, icon: UserMultiple02Icon, color: "#14462a" },
   { name: "Tax Records", count: 3, icon: FileAttachmentIcon, color: "#F59E0B" },
-  { name: "Strategy", count: 2, icon: FileValidationIcon, color: "#1877F2" },
+  { name: "Strategy", count: 2, icon: FileValidationIcon, color: "#14462a" },
 ];
 export default function FinanceNotesPage() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -308,8 +308,8 @@ export default function FinanceNotesPage() {
               variant="secondary"
               className="rounded-full px-2.5 py-0.5 text-xs"
               style={{
-                backgroundColor: "rgba(24, 119, 242, 0.08)",
-                color: "#1877F2",
+                backgroundColor: "rgba(20, 70, 42, 0.08)",
+                color: "#14462a",
               }}
             >
               {tag}
@@ -361,14 +361,14 @@ export default function FinanceNotesPage() {
             <TableRow>
               <TableHead className="w-12"></TableHead>
               <TableHead>
-                <button className="flex items-center gap-1 hover:text-[#1877F2] transition-colors">
+                <button className="flex items-center gap-1 hover:text-[#14462a] transition-colors">
                   Title <ArrowDataTransferVerticalIcon size={14} />
                 </button>
               </TableHead>
               <TableHead>Category</TableHead>
               <TableHead>Tags</TableHead>
               <TableHead>
-                <button className="flex items-center gap-1 hover:text-[#1877F2] transition-colors">
+                <button className="flex items-center gap-1 hover:text-[#14462a] transition-colors">
                   Updated <ArrowDataTransferVerticalIcon size={14} />
                 </button>
               </TableHead>
@@ -429,8 +429,8 @@ export default function FinanceNotesPage() {
                           variant="secondary"
                           className="rounded-full px-2 py-0.5 text-xs"
                           style={{
-                            backgroundColor: "rgba(24, 119, 242, 0.08)",
-                            color: "#1877F2",
+                            backgroundColor: "rgba(20, 70, 42, 0.08)",
+                            color: "#14462a",
                           }}
                         >
                           {tag}
@@ -545,7 +545,7 @@ export default function FinanceNotesPage() {
             <Link href="/notes/new">
               <Button
                 className="rounded-full h-10 px-5"
-                style={{ backgroundColor: "#1877F2", color: "white", fontWeight: 600 }}
+                style={{ backgroundColor: "#14462a", color: "white", fontWeight: 600 }}
               >
                 <Add01Icon size={16} className="mr-2" />
                 New Note
@@ -579,8 +579,8 @@ export default function FinanceNotesPage() {
               label: "Total Notes",
               value: totalNotes,
               icon: FileValidationIcon,
-              color: "#1877F2",
-              bg: "rgba(24, 119, 242, 0.04)",
+              color: "#14462a",
+              bg: "rgba(20, 70, 42, 0.04)",
             },
             {
               label: "Pinned",
@@ -600,8 +600,8 @@ export default function FinanceNotesPage() {
               label: "Attachments",
               value: totalAttachments,
               icon: FileValidationIcon,
-              color: "#7C3AED",
-              bg: "rgba(124, 58, 237, 0.04)",
+              color: "#14462a",
+              bg: "rgba(20, 70, 42, 0.04)",
             },
           ].map((kpi) => {
             const Icon = kpi.icon;
@@ -687,7 +687,7 @@ export default function FinanceNotesPage() {
                 variant="ghost"
                 size="sm"
                 className="rounded-full h-8 px-3 text-xs"
-                style={{ color: "#1877F2" }}
+                style={{ color: "#14462a" }}
                 onClick={() => {
                   setSelectedCategory("all");
                   setSelectedTags([]);
@@ -713,9 +713,9 @@ export default function FinanceNotesPage() {
                       size="sm"
                       className="rounded-full text-xs h-8"
                       style={selectedCategory === cat ? {
-                        backgroundColor: "#1877F2",
+                        backgroundColor: "#14462a",
                         color: "white",
-                        borderColor: "#1877F2"
+                        borderColor: "#14462a"
                       } : {
                         backgroundColor: "white",
                         borderColor: "#E4E6EB",
@@ -742,9 +742,9 @@ export default function FinanceNotesPage() {
                       size="sm"
                       className="rounded-full text-xs h-8"
                       style={selectedTags.includes(tag) ? {
-                        backgroundColor: "#1877F2",
+                        backgroundColor: "#14462a",
                         color: "white",
-                        borderColor: "#1877F2"
+                        borderColor: "#14462a"
                       } : {
                         backgroundColor: "white",
                         borderColor: "#E4E6EB",
@@ -775,9 +775,9 @@ export default function FinanceNotesPage() {
                     size="sm"
                     className="rounded-xl justify-start h-8 text-xs"
                     style={showPinnedOnly ? {
-                      backgroundColor: "#1877F2",
+                      backgroundColor: "#14462a",
                       color: "white",
-                      borderColor: "#1877F2"
+                      borderColor: "#14462a"
                     } : {
                       backgroundColor: "white",
                       borderColor: "#E4E6EB",
@@ -793,9 +793,9 @@ export default function FinanceNotesPage() {
                     size="sm"
                     className="rounded-xl justify-start h-8 text-xs"
                     style={showAttachmentsOnly ? {
-                      backgroundColor: "#1877F2",
+                      backgroundColor: "#14462a",
                       color: "white",
-                      borderColor: "#1877F2"
+                      borderColor: "#14462a"
                     } : {
                       backgroundColor: "white",
                       borderColor: "#E4E6EB",

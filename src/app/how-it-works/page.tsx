@@ -5,41 +5,41 @@ import { MarketingHeader } from "@/components/marketing/marketing-header";
 import { MarketingFooter } from "@/components/marketing/marketing-footer";
 import { PageEffects } from "@/components/marketing/home-page-effects";
 import {
-  BadgeCheck,
+  TickCircle,
   Bitcoin,
-  Building2,
+  Building,
   Clock,
   Eye,
-  FileCheck2,
-  FileText,
-  History,
-  Settings2,
-  Share2,
-  Smartphone,
-  TrendingUp,
-} from "lucide-react";
+  DocumentLike,
+  DocumentText1,
+  Refresh,
+  Setting2,
+  Share,
+  Mobile,
+  TrendUp,
+} from "iconsax-react";
 
 const steps = [
   {
     title: "Choose Your Setup",
     description:
       "Personal or Business. Freelancers add their name and payout method. Companies add branding, logo, and tax details. Your information automatically populates future invoices.",
-    icon: Settings2,
-    color: "#1877F2", // Blue
+    icon: Setting2,
+    color: "#4F46E5", // Indigo
   },
   {
     title: "Build Your Invoice",
     description:
       "A quiet, black-and-white interface. Add items, quantities, and rates. See totals update in real time. Preview a clean, ready-to-share document in one click.",
-    icon: FileCheck2,
+    icon: DocumentLike,
     color: "#059669", // Green
   },
   {
     title: "Send & Get Paid",
     description:
       "Share via link, email, or WhatsApp. Recipients don't need an account. They open a secure link, review, and pay through mobile money, bank, or crypto.",
-    icon: Share2,
-    color: "#7C3AED", // Purple
+    icon: Share,
+    color: "#D97706", // Amber
   },
 ];
 
@@ -48,11 +48,11 @@ const features = [
     heading: "No Account Needed to Pay",
   copy: "Your clients receive a clean, secure link. They review the invoice and complete payment with no signup and no friction.",
     bullets: [
-      { text: "Mobile Money (MTN, AirtelTigo, M-Pesa)", icon: Smartphone },
-      { text: "Bank Transfer", icon: Building2 },
+      { text: "Mobile Money (MTN, AirtelTigo, M-Pesa)", icon: Mobile },
+      { text: "Bank Transfer", icon: Building },
       { text: "Crypto Payments", icon: Bitcoin },
     ],
-    color: "#1877F2", // Blue
+    color: "#0284C7", // Sky
   },
   {
     heading: "Real-Time Updates",
@@ -60,7 +60,7 @@ const features = [
     bullets: [
       { text: "Live total calculations", icon: Clock },
       { text: "Clean preview mode", icon: Eye },
-      { text: "Professional formatting", icon: FileCheck2 },
+      { text: "Professional formatting", icon: DocumentLike },
     ],
     color: "#059669", // Green
   },
@@ -68,9 +68,9 @@ const features = [
     heading: "Automatic Records",
     copy: "Every payment generates a timestamped receipt. Your documentation stays organized without manual updates.",
     bullets: [
-      { text: "Instant receipts", icon: FileText },
-      { text: "Payment timeline", icon: History },
-      { text: "Verifiable records", icon: BadgeCheck },
+      { text: "Instant receipts", icon: DocumentText1 },
+      { text: "Payment timeline", icon: Refresh },
+      { text: "Verifiable records", icon: TickCircle },
     ],
     color: "#F59E0B", // Orange
   },
@@ -110,7 +110,7 @@ export default function HowItWorksPage() {
           <Badge variant="outline" className="rounded-full border-gray-200 px-4 py-1 text-xs uppercase tracking-[0.35em] text-gray-500">
             How it Works
           </Badge>
-          <h1 className="max-w-3xl text-4xl font-semibold tracking-tight sm:text-5xl">
+          <h1 className="max-w-3xl text-4xl font-semibold tracking-tight text-[#14462a] sm:text-5xl">
             A narrative-driven flow from draft to receipt.
           </h1>
           <p className="max-w-2xl text-lg leading-7 text-gray-600">
@@ -152,10 +152,9 @@ export default function HowItWorksPage() {
                     className="relative mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full transition group-hover:text-white"
                     style={{
                       backgroundColor: `${step.color}10`,
-                      color: step.color,
                     }}
                   >
-                    <Icon className="h-5 w-5" />
+                    <Icon size={20} color={step.color} variant="Bulk" />
                   </span>
                   <h3 className="relative text-lg font-semibold text-black">{step.title}</h3>
                   <p className="relative mt-3 text-sm leading-6 text-gray-600">{step.description}</p>
@@ -173,7 +172,7 @@ export default function HowItWorksPage() {
               <Badge variant="outline" className="rounded-full border-gray-200 px-4 py-1 text-xs font-medium uppercase tracking-[0.35em] text-gray-500">
                 Why Plaen
               </Badge>
-              <h2 className="mx-auto max-w-3xl text-3xl font-semibold tracking-tight text-black sm:text-4xl">
+              <h2 className="mx-auto max-w-3xl text-3xl font-semibold tracking-tight text-[#14462a] sm:text-4xl">
                 Professional structure + human context.
               </h2>
               <p className="mx-auto max-w-2xl text-base text-gray-600">
@@ -185,7 +184,7 @@ export default function HowItWorksPage() {
             <div className="mx-auto mt-12 max-w-3xl">
               <div className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-gray-50 to-white">
                 <div className="flex aspect-video items-center justify-center">
-                  <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#1877F2] transition group-hover:scale-110 group-hover:bg-[#1877F2]/90">
+                  <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#14462a] transition group-hover:scale-110 group-hover:bg-[#14462a]/90">
                     <svg className="h-6 w-6 translate-x-0.5 text-white" fill="currentColor" viewBox="0 0 24 24">
                       <path d="M8 5v14l11-7z" />
                     </svg>
@@ -202,8 +201,9 @@ export default function HowItWorksPage() {
             {/* Three solutions */}
             <div className="mt-16 grid gap-8 md:grid-cols-3">
               <div className="group space-y-3 text-center">
-                <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#1877F2]/10 transition group-hover:bg-[#1877F2]">
-                  <Settings2 className="h-5 w-5 text-[#1877F2] transition group-hover:text-white" />
+                <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#0D9488]/10 transition group-hover:bg-[#0D9488]">
+                  <Setting2 size={20} color="#0D9488" variant="Bulk" className="transition group-hover:hidden" />
+                  <Setting2 size={20} color="white" variant="Bulk" className="hidden transition group-hover:block" />
                 </div>
                 <h3 className="font-semibold text-black">Built-in Professionalism</h3>
                 <p className="text-sm leading-6 text-gray-600">
@@ -212,8 +212,9 @@ export default function HowItWorksPage() {
               </div>
 
               <div className="group space-y-3 text-center">
-                <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#059669]/10 transition group-hover:bg-[#059669]">
-                  <Smartphone className="h-5 w-5 text-[#059669] transition group-hover:text-white" />
+                <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#D97706]/10 transition group-hover:bg-[#D97706]">
+                  <Mobile size={20} color="#D97706" variant="Bulk" className="transition group-hover:hidden" />
+                  <Mobile size={20} color="white" variant="Bulk" className="hidden transition group-hover:block" />
                 </div>
                 <h3 className="font-semibold text-black">Frictionless Access</h3>
                 <p className="text-sm leading-6 text-gray-600">
@@ -222,8 +223,9 @@ export default function HowItWorksPage() {
               </div>
 
               <div className="group space-y-3 text-center">
-                <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#7C3AED]/10 transition group-hover:bg-[#7C3AED]">
-                  <Share2 className="h-5 w-5 text-[#7C3AED] transition group-hover:text-white" />
+                <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#4F46E5]/10 transition group-hover:bg-[#4F46E5]">
+                  <Share size={20} color="#4F46E5" variant="Bulk" className="transition group-hover:hidden" />
+                  <Share size={20} color="white" variant="Bulk" className="hidden transition group-hover:block" />
                 </div>
                 <h3 className="font-semibold text-black">Context Layers</h3>
                 <p className="text-sm leading-6 text-gray-600">
@@ -240,7 +242,7 @@ export default function HowItWorksPage() {
               <Badge variant="outline" className="rounded-full border-gray-200 px-4 py-1 text-xs uppercase tracking-[0.35em] text-gray-500">
                 What makes it work
               </Badge>
-              <h2 className="text-3xl font-semibold tracking-tight text-black sm:text-4xl">
+              <h2 className="text-3xl font-semibold tracking-tight text-[#14462a] sm:text-4xl">
                 Smooth, transparent, and human.
               </h2>
               <p className="text-base leading-7 text-gray-600">
@@ -272,8 +274,9 @@ export default function HowItWorksPage() {
                         return (
                           <li key={bullet.text} className="inline-flex items-center justify-center gap-2 lg:justify-end">
                             <Icon 
-                              className="h-4 w-4 shrink-0" 
-                              style={{ color: feature.color }}
+                              size={16}
+                              color={feature.color}
+                              variant="Bulk"
                             />
                             {bullet.text}
                           </li>
@@ -328,7 +331,7 @@ export default function HowItWorksPage() {
                         <p className="mt-1 text-xs text-gray-500">Based on 30 recent invoices</p>
                       </div>
                       <div className="rounded-lg bg-gray-100 p-2.5">
-                        <TrendingUp className="h-5 w-5 text-gray-600" />
+                        <TrendUp size={20} className="text-gray-600" />
                       </div>
                     </div>
                     
@@ -340,7 +343,7 @@ export default function HowItWorksPage() {
                           className="group/bar flex-1 rounded-t-sm transition-all"
                           style={{ 
                             height: `${height}%`,
-                            background: `linear-gradient(to top, #1877F2, #1877F2CC)`,
+                            background: `linear-gradient(to top, #14462a, #14462aCC)`,
                           }}
                         />
                       ))}

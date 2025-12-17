@@ -26,7 +26,7 @@ export default function MtnSetupPage() {
                   <Smartphone className="h-3 w-3" />
                   Popular • Payments
                 </span>
-                <h1 className="mt-4 text-4xl font-bold tracking-tight">
+                <h1 className="mt-4 text-4xl font-bold tracking-tight text-[#14462a]">
                   Setting up MTN Mobile Money for business
                 </h1>
                 <p className="mt-4 text-xl text-gray-700">

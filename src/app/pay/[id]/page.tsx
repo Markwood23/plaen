@@ -266,9 +266,9 @@ export default function PayPage({ params }: { params: Promise<{ id: string }> })
                 <div>
                   <div className="mb-4">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M3 3H12V12H3V3Z" fill="#1877F2"/>
-                      <path d="M14 3H21L17.5 12H14V3Z" fill="#1877F2"/>
-                      <path d="M12 14H21V21H12V14Z" fill="#1877F2"/>
+                      <path d="M3 3H12V12H3V3Z" fill="#14462a"/>
+                      <path d="M14 3H21L17.5 12H14V3Z" fill="#14462a"/>
+                      <path d="M12 14H21V21H12V14Z" fill="#14462a"/>
                     </svg>
                   </div>
                   <h1 className="text-2xl font-bold mb-1" style={{ color: '#2D2D2D' }}>{invoice.from.business_name}</h1>
@@ -536,11 +536,11 @@ export default function PayPage({ params }: { params: Promise<{ id: string }> })
                       <div className="flex items-center gap-3">
                         <FileText className="h-5 w-5" style={{ color: '#B0B3B8' }} />
                         <div className="text-left">
-                          <p className="text-base group-hover:text-[#1877F2] transition-colors" style={{ color: '#2D2D2D' }}>{file.name}</p>
+                          <p className="text-base group-hover:text-[#14462a] transition-colors" style={{ color: '#2D2D2D' }}>{file.name}</p>
                           <p className="text-sm" style={{ color: '#B0B3B8' }}>{file.size}</p>
                         </div>
                       </div>
-                      <Download className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" style={{ color: '#1877F2' }} />
+                      <Download className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" style={{ color: '#14462a' }} />
                     </a>
                   ))}
                 </div>
@@ -645,7 +645,7 @@ export default function PayPage({ params }: { params: Promise<{ id: string }> })
                       <button
                         onClick={() => handleAmountChange(invoice.totals.balance_due.toString())}
                         className="text-body-sm font-medium hover:underline"
-                        style={{ color: '#1877F2' }}
+                        style={{ color: '#14462a' }}
                       >
                         Pay Full Amount
                       </button>
@@ -672,7 +672,7 @@ export default function PayPage({ params }: { params: Promise<{ id: string }> })
                     Powered by <span className="font-medium" style={{ color: '#2D2D2D' }}>Plaen Pay</span>
                   </p>
                   <p className="text-body-sm text-[#B0B3B8]">
-                    Questions? Contact <a href="mailto:info@plaen.tech" className="hover:underline" style={{ color: '#1877F2' }}>Plaen</a>
+                    Questions? Contact <a href="mailto:info@plaen.tech" className="hover:underline" style={{ color: '#14462a' }}>Plaen</a>
                   </p>
                 </div>
               </div>
@@ -685,7 +685,7 @@ export default function PayPage({ params }: { params: Promise<{ id: string }> })
                   Powered by <span className="font-medium" style={{ color: '#2D2D2D' }}>Plaen Pay</span>
                 </p>
                 <p className="text-body-sm text-[#B0B3B8]">
-                  Questions? Contact <a href={`mailto:${invoice.from.email}`} className="hover:underline" style={{ color: '#1877F2' }}>{invoice.from.business_name}</a>
+                  Questions? Contact <a href={`mailto:${invoice.from.email}`} className="hover:underline" style={{ color: '#14462a' }}>{invoice.from.business_name}</a>
                 </p>
               </div>
             </div>

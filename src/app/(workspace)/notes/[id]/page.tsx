@@ -240,7 +240,7 @@ Below is a summary of our current outstanding invoices:`);
   const applyStylePreset = (blockId: string, preset: 'default' | 'info' | 'success' | 'warning' | 'error') => {
     const presets = {
       default: {},
-      info: { backgroundColor: 'rgba(247, 249, 250, 0.3)', borderLeft: '3px solid #1877F2' },
+      info: { backgroundColor: 'rgba(247, 249, 250, 0.3)', borderLeft: '3px solid #14462a' },
       success: { backgroundColor: 'rgba(247, 249, 250, 0.3)', borderLeft: '3px solid #059669' },
       warning: { backgroundColor: 'rgba(247, 249, 250, 0.3)', borderLeft: '3px solid #F59E0B' },
       error: { backgroundColor: 'rgba(247, 249, 250, 0.3)', borderLeft: '3px solid #EF4444' },
@@ -431,9 +431,9 @@ Below is a summary of our current outstanding invoices:`);
                         variant="secondary" 
                         className="rounded-full gap-1" 
                         style={{ 
-                          backgroundColor: invoice.status === "Paid" ? "#1877F2" : invoice.status === "Overdue" ? "rgba(239, 68, 68, 0.08)" : "rgba(245, 158, 11, 0.08)", 
+                          backgroundColor: invoice.status === "Paid" ? "#14462a" : invoice.status === "Overdue" ? "rgba(239, 68, 68, 0.08)" : "rgba(245, 158, 11, 0.08)", 
                           color: invoice.status === "Paid" ? "white" : invoice.status === "Overdue" ? "#EF4444" : "#F59E0B",
-                          borderColor: invoice.status === "Paid" ? "#1877F2" : "transparent"
+                          borderColor: invoice.status === "Paid" ? "#14462a" : "transparent"
                         }}
                       >
                         {invoice.status === "Paid" && <CheckmarkSquare02Icon size={14} />}
@@ -450,11 +450,11 @@ Below is a summary of our current outstanding invoices:`);
       case 'ar-metrics':
         return widgetWrapper(
           "AR Metrics Widget",
-          <ChartHistogramIcon size={16} style={{ color: "#1877F2" }} />,
-          "#1877F2",
+          <ChartHistogramIcon size={16} style={{ color: "#14462a" }} />,
+          "#14462a",
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {[
-              { label: "Total Outstanding", value: mockARMetrics.totalOutstanding, icon: DollarCircleIcon, color: "#1877F2", bg: "rgba(24, 119, 242, 0.04)" },
+              { label: "Total Outstanding", value: mockARMetrics.totalOutstanding, icon: DollarCircleIcon, color: "#14462a", bg: "rgba(20, 70, 42, 0.04)" },
               { label: "Overdue Amount", value: mockARMetrics.overdue, icon: Analytics01Icon, color: "#EF4444", bg: "rgba(239, 68, 68, 0.04)" },
               { label: "DSO", value: `${mockARMetrics.dso} days`, icon: Calendar03Icon, color: "#F59E0B", bg: "rgba(245, 158, 11, 0.04)" },
               { label: "On-Time Rate", value: mockARMetrics.onTimeRate, icon: CheckmarkSquare02Icon, color: "#059669", bg: "rgba(5, 150, 105, 0.04)" },
@@ -488,8 +488,8 @@ Below is a summary of our current outstanding invoices:`);
       case 'payment-methods':
         return widgetWrapper(
           "Payment Methods Widget",
-          <CreditCardIcon size={16} style={{ color: "#7C3AED" }} />,
-          "#7C3AED",
+          <CreditCardIcon size={16} style={{ color: "#14462a" }} />,
+          "#14462a",
           <div className="rounded-2xl overflow-hidden" style={{ backgroundColor: "white", boxShadow: "0 1px 3px 0 rgba(0, 0, 0, 0.05)" }}>
             <Table>
               <TableHeader>
@@ -509,7 +509,7 @@ Below is a summary of our current outstanding invoices:`);
                     <TableCell>
                       <div className="flex items-center gap-2">
                         <div className="flex-1 h-2 rounded-full" style={{ backgroundColor: "#F0F2F5" }}>
-                          <div className="h-2 rounded-full" style={{ width: `${payment.percentage}%`, backgroundColor: "#7C3AED" }} />
+                          <div className="h-2 rounded-full" style={{ width: `${payment.percentage}%`, backgroundColor: "#14462a" }} />
                         </div>
                         <span className="text-sm font-medium" style={{ color: "#2D2D2D" }}>{payment.percentage}%</span>
                       </div>
@@ -665,7 +665,7 @@ Below is a summary of our current outstanding invoices:`);
             
             <div className="flex flex-wrap gap-2 mb-4 print:hidden">
               {tags.map((tag) => (
-                <Badge key={tag} variant="secondary" className="rounded-full px-3 py-1 text-xs" style={{ backgroundColor: "rgba(24, 119, 242, 0.08)", color: "#1877F2" }}>
+                <Badge key={tag} variant="secondary" className="rounded-full px-3 py-1 text-xs" style={{ backgroundColor: "rgba(20, 70, 42, 0.08)", color: "#14462a" }}>
                   {tag}
                 </Badge>
               ))}
@@ -756,9 +756,9 @@ Below is a summary of our current outstanding invoices:`);
                             variant="secondary" 
                             className="rounded-full gap-1" 
                             style={{ 
-                              backgroundColor: invoice.status === "Paid" ? "#1877F2" : invoice.status === "Overdue" ? "rgba(239, 68, 68, 0.08)" : "rgba(245, 158, 11, 0.08)", 
+                              backgroundColor: invoice.status === "Paid" ? "#14462a" : invoice.status === "Overdue" ? "rgba(239, 68, 68, 0.08)" : "rgba(245, 158, 11, 0.08)", 
                               color: invoice.status === "Paid" ? "white" : invoice.status === "Overdue" ? "#EF4444" : "#F59E0B",
-                              borderColor: invoice.status === "Paid" ? "#1877F2" : "transparent"
+                              borderColor: invoice.status === "Paid" ? "#14462a" : "transparent"
                             }}
                           >
                             {invoice.status === "Paid" && <CheckmarkSquare02Icon size={14} />}
@@ -801,7 +801,7 @@ Below is a summary of our current outstanding invoices:`);
           <Button variant="outline" className="rounded-full h-9 px-4" style={{ borderColor: "#E4E6EB" }} onClick={() => setIsEditMode(false)}>
             Cancel
           </Button>
-          <Button className="rounded-full h-9 px-4" style={{ backgroundColor: "#1877F2", color: "white" }} onClick={handleSave}>
+          <Button className="rounded-full h-9 px-4" style={{ backgroundColor: "#14462a", color: "white" }} onClick={handleSave}>
             Save Changes
           </Button>
         </div>
@@ -820,7 +820,7 @@ Below is a summary of our current outstanding invoices:`);
 
       <div className="flex flex-wrap gap-2 mb-6">
         {tags.map((tag) => (
-          <Badge key={tag} variant="secondary" className="rounded-full px-3 py-1 text-xs flex items-center gap-1.5" style={{ backgroundColor: "rgba(24, 119, 242, 0.08)", color: "#1877F2" }}>
+          <Badge key={tag} variant="secondary" className="rounded-full px-3 py-1 text-xs flex items-center gap-1.5" style={{ backgroundColor: "rgba(20, 70, 42, 0.08)", color: "#14462a" }}>
             {tag}
             <button onClick={() => handleRemoveTag(tag)} className="hover:opacity-70">
               <Cancel01Icon size={12} />
@@ -977,7 +977,7 @@ Below is a summary of our current outstanding invoices:`);
           <div className="h-6 w-px mx-1" style={{ backgroundColor: "#E4E6EB" }} />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="sm" className="rounded-full h-8 px-3 hover:bg-white text-xs font-medium" style={{ color: "#1877F2" }}>
+              <Button variant="ghost" size="sm" className="rounded-full h-8 px-3 hover:bg-white text-xs font-medium" style={{ color: "#14462a" }}>
                 <Add01Icon size={16} className="mr-1.5" />
                 Insert Widget
               </Button>
@@ -988,7 +988,7 @@ Below is a summary of our current outstanding invoices:`);
                 onClick={() => setShowARMetrics(true)}
                 disabled={showARMetrics}
               >
-                <ChartHistogramIcon size={16} className="mr-2" style={{ color: "#1877F2" }} />
+                <ChartHistogramIcon size={16} className="mr-2" style={{ color: "#14462a" }} />
                 <div>
                   <div className="font-medium text-sm">AR Metrics</div>
                   <div className="text-xs" style={{ color: "#B0B3B8" }}>Live accounts receivable data</div>
@@ -1010,7 +1010,7 @@ Below is a summary of our current outstanding invoices:`);
                 onClick={() => setShowPaymentMethods(true)}
                 disabled={showPaymentMethods}
               >
-                <CreditCardIcon size={16} className="mr-2" style={{ color: "#7C3AED" }} />
+                <CreditCardIcon size={16} className="mr-2" style={{ color: "#14462a" }} />
                 <div>
                   <div className="font-medium text-sm">Payment Methods</div>
                   <div className="text-xs" style={{ color: "#B0B3B8" }}>Payment method breakdown</div>
@@ -1161,7 +1161,7 @@ Below is a summary of our current outstanding invoices:`);
                     className="rounded-xl px-3 py-2 cursor-pointer text-sm"
                     onClick={() => addBlock(block.id, 'ar-metrics')}
                   >
-                    <ChartHistogramIcon size={16} className="mr-2" style={{ color: "#1877F2" }} />
+                    <ChartHistogramIcon size={16} className="mr-2" style={{ color: "#14462a" }} />
                     AR Metrics
                   </DropdownMenuItem>
                   <DropdownMenuItem 
@@ -1175,7 +1175,7 @@ Below is a summary of our current outstanding invoices:`);
                     className="rounded-xl px-3 py-2 cursor-pointer text-sm"
                     onClick={() => addBlock(block.id, 'payment-methods')}
                   >
-                    <CreditCardIcon size={16} className="mr-2" style={{ color: "#7C3AED" }} />
+                    <CreditCardIcon size={16} className="mr-2" style={{ color: "#14462a" }} />
                     Payment Methods
                   </DropdownMenuItem>
                   <DropdownMenuItem 
@@ -1219,7 +1219,7 @@ Below is a summary of our current outstanding invoices:`);
             className="w-full text-left px-3 py-2 rounded-xl hover:bg-gray-50 flex items-center gap-2 text-sm"
             onClick={() => addWidgetAtCursor(contextMenu.blockId, 'ar-metrics')}
           >
-            <ChartHistogramIcon size={16} style={{ color: "#1877F2" }} />
+            <ChartHistogramIcon size={16} style={{ color: "#14462a" }} />
             AR Metrics
           </button>
           <button
@@ -1233,7 +1233,7 @@ Below is a summary of our current outstanding invoices:`);
             className="w-full text-left px-3 py-2 rounded-xl hover:bg-gray-50 flex items-center gap-2 text-sm"
             onClick={() => addWidgetAtCursor(contextMenu.blockId, 'payment-methods')}
           >
-            <CreditCardIcon size={16} style={{ color: "#7C3AED" }} />
+            <CreditCardIcon size={16} style={{ color: "#14462a" }} />
             Payment Methods
           </button>
           <button
@@ -1279,7 +1279,7 @@ Below is a summary of our current outstanding invoices:`);
             className="w-full text-left px-3 py-2 rounded-xl hover:bg-gray-50 flex items-center gap-2 text-sm"
             onClick={() => applyStylePreset(styleMenu.blockId, 'info')}
           >
-            <div className="h-4 w-4 rounded" style={{ backgroundColor: 'rgba(247, 249, 250, 0.3)', borderLeft: '3px solid #1877F2' }} />
+            <div className="h-4 w-4 rounded" style={{ backgroundColor: 'rgba(247, 249, 250, 0.3)', borderLeft: '3px solid #14462a' }} />
             Info (Blue)
           </button>
           <button

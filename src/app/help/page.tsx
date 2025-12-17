@@ -158,7 +158,7 @@ export default function HelpPage() {
             <span className="inline-flex items-center gap-2 rounded-full border border-gray-200 px-4 py-1 text-xs uppercase tracking-[0.35em] text-gray-500">
               <IconFrame icon={HelpCircle} size="sm" variant="plain" /> Help Center
             </span>
-            <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">
+            <h1 className="text-4xl font-semibold tracking-tight text-[#14462a] sm:text-5xl">
               Support for structure + context.
             </h1>
             <p className="max-w-2xl text-lg leading-7 text-gray-700">
@@ -177,7 +177,7 @@ export default function HelpPage() {
                     <div className="absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                       <div className="absolute -right-8 top-4 h-20 w-20 rounded-full bg-gradient-to-br from-black/5 to-transparent blur-xl" />
                     </div>
-                      <IconFrame icon={User} size="md" variant="subtle" className="relative mb-4 transition bg-[#1877F2]/10 border-[#1877F2]/20 group-hover:bg-[#1877F2] group-hover:border-[#1877F2] group-hover:text-white group-hover:scale-105" />
+                      <IconFrame icon={User} size="md" variant="subtle" className="relative mb-4 transition bg-[#14462a]/10 border-[#14462a]/20 group-hover:bg-[#14462a] group-hover:border-[#14462a] group-hover:text-white group-hover:scale-105" />
                     <h3 className="mb-2 text-lg font-semibold text-black group-hover:text-gray-700">I'm new to Plaen</h3>
                     <p className="mb-4 flex-1 text-sm text-gray-700 leading-relaxed">Get started with account setup and your first invoice</p>
                     {/* Progress visualization */}
@@ -202,7 +202,7 @@ export default function HelpPage() {
                     <div className="absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                       <div className="absolute -right-8 top-4 h-20 w-20 rounded-full bg-gradient-to-br from-black/5 to-transparent blur-xl" />
                     </div>
-                    <IconFrame icon={Smartphone} size="md" variant="subtle" className="relative mb-4 transition bg-[#059669]/10 border-[#059669]/20 group-hover:bg-[#059669] group-hover:border-[#059669] group-hover:text-white group-hover:scale-105" />
+                    <IconFrame icon={Smartphone} size="md" variant="subtle" className="relative mb-4 transition bg-[#14462a]/10 border-[#14462a]/20 group-hover:bg-[#14462a] group-hover:border-[#14462a] group-hover:text-white group-hover:scale-105" />
                     <h3 className="mb-2 text-lg font-semibold text-black group-hover:text-gray-700">Payment questions</h3>
                     <p className="mb-4 flex-1 text-sm text-gray-700 leading-relaxed">Learn about mobile money, bank transfers, and crypto</p>
                     {/* Payment method indicators */}
@@ -225,7 +225,7 @@ export default function HelpPage() {
                     <div className="absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                       <div className="absolute -right-8 top-4 h-20 w-20 rounded-full bg-gradient-to-br from-black/5 to-transparent blur-xl" />
                     </div>
-                    <IconFrame icon={HelpCircle} size="md" variant="subtle" className="relative mb-4 transition bg-[#7C3AED]/10 border-[#7C3AED]/20 group-hover:bg-[#7C3AED] group-hover:border-[#7C3AED] group-hover:text-white group-hover:scale-105" />
+                    <IconFrame icon={HelpCircle} size="md" variant="subtle" className="relative mb-4 transition bg-[#14462a]/10 border-[#14462a]/20 group-hover:bg-[#14462a] group-hover:border-[#14462a] group-hover:text-white group-hover:scale-105" />
                     <h3 className="mb-2 text-lg font-semibold text-black group-hover:text-gray-700">Still need help?</h3>
                     <p className="mb-4 flex-1 text-sm text-gray-700 leading-relaxed">Contact our support team directly</p>
                     {/* Response time indicator */}
@@ -251,7 +251,7 @@ export default function HelpPage() {
           {/* Popular Articles */}
           <section className="bg-white py-16" data-animate="fade-up">
             <div className="mx-auto max-w-6xl px-6">
-              <h2 className="mb-8 text-2xl font-semibold text-black">Popular articles</h2>
+              <h2 className="mb-8 text-2xl font-semibold text-[#14462a]">Popular articles</h2>
               <div className="grid gap-6 md:grid-cols-2">
                 {popularArticles.map((article) => (
                   <Link key={article.slug} href={`/help/${article.slug}`}>
@@ -280,7 +280,7 @@ export default function HelpPage() {
           {/* All Categories */}
           <section className="border-t border-gray-200 bg-gray-50 py-16" data-animate="fade-up">
             <div className="mx-auto max-w-6xl px-6">
-              <h2 className="mb-8 text-2xl font-semibold text-black">Browse by category</h2>
+              <h2 className="mb-8 text-2xl font-semibold text-[#14462a]">Browse by category</h2>
               <div className="grid gap-8 lg:grid-cols-2">
                 {categories.map((category) => {
                   const Icon = category.icon;

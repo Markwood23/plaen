@@ -252,7 +252,7 @@ export default function SettingsPage() {
               </Button>
               <Button
                 className="rounded-full h-11 px-6 font-normal"
-                style={{ backgroundColor: "#1877F2", color: "white" }}
+                style={{ backgroundColor: "#14462a", color: "white" }}
               >
                 Save Changes
               </Button>
@@ -392,7 +392,7 @@ export default function SettingsPage() {
               <div className="flex items-center justify-between py-3">
                 <div className="flex items-center gap-3">
                   <div className="h-9 w-9 rounded-full flex items-center justify-center" style={{ backgroundColor: "#F9F9F9" }}>
-                    <BankIcon size={16} style={{ color: "#1877F2" }} />
+                    <BankIcon size={16} style={{ color: "#14462a" }} />
                   </div>
                   <div>
                     <div className="text-base font-normal" style={{ color: "#2D2D2D" }}>
@@ -480,7 +480,7 @@ export default function SettingsPage() {
               <div className="flex items-center justify-between py-3">
                 <div className="flex items-center gap-3">
                   <div className="h-9 w-9 rounded-full flex items-center justify-center" style={{ backgroundColor: "#F9F9F9" }}>
-                    <SmartPhone01Icon size={16} style={{ color: "#1877F2" }} />
+                    <SmartPhone01Icon size={16} style={{ color: "#14462a" }} />
                   </div>
                   <div>
                     <div className="text-base font-normal" style={{ color: "#2D2D2D" }}>
@@ -549,7 +549,7 @@ export default function SettingsPage() {
               <div className="flex items-center justify-between py-3">
                 <div className="flex items-center gap-3">
                   <div className="h-9 w-9 rounded-full flex items-center justify-center" style={{ backgroundColor: "#F9F9F9" }}>
-                    <BitcoinIcon size={16} style={{ color: "#1877F2" }} />
+                    <BitcoinIcon size={16} style={{ color: "#14462a" }} />
                   </div>
                   <div>
                     <div className="text-base font-normal" style={{ color: "#2D2D2D" }}>
@@ -617,7 +617,7 @@ export default function SettingsPage() {
             </Button>
             <Button
               className="rounded-full h-11 px-6 font-normal"
-              style={{ backgroundColor: "#1877F2", color: "white" }}
+              style={{ backgroundColor: "#14462a", color: "white" }}
             >
               Save Payment Methods
             </Button>
@@ -808,7 +808,7 @@ export default function SettingsPage() {
               </Button>
               <Button
                 className="rounded-full h-11 px-6 font-normal"
-                style={{ backgroundColor: "#1877F2", color: "white" }}
+                style={{ backgroundColor: "#14462a", color: "white" }}
               >
                 Save Invoice Settings
               </Button>
@@ -848,7 +848,7 @@ export default function SettingsPage() {
 
             <div className="grid grid-cols-2 gap-x-8 gap-y-6">
               <ColorPicker
-                value="#1877F2"
+                value="#14462a"
                 label="Primary Brand Color"
                 description="Used for buttons and highlights"
               />
@@ -902,7 +902,7 @@ export default function SettingsPage() {
               </Button>
               <Button
                 className="rounded-full h-11 px-6 font-normal"
-                style={{ backgroundColor: "#1877F2", color: "white" }}
+                style={{ backgroundColor: "#14462a", color: "white" }}
               >
                 Save Branding
               </Button>
@@ -1017,7 +1017,7 @@ export default function SettingsPage() {
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-1">
                     <div className="h-9 w-9 rounded-full flex items-center justify-center" style={{ backgroundColor: "white" }}>
-                      <Key01Icon size={16} style={{ color: "#1877F2" }} />
+                      <Key01Icon size={16} style={{ color: "#14462a" }} />
                     </div>
                     <div>
                       <div className="flex items-center gap-2">
@@ -1107,7 +1107,7 @@ export default function SettingsPage() {
 
               <Button
                 className="rounded-full h-11 px-6 font-normal"
-                style={{ backgroundColor: "#1877F2", color: "white" }}
+                style={{ backgroundColor: "#14462a", color: "white" }}
               >
                 <ApiIcon size={16} className="mr-2" />
                 Save Webhook Configuration
@@ -1136,7 +1136,7 @@ export default function SettingsPage() {
                 >
                   <div className="flex items-center gap-3">
                     <div className="h-9 w-9 rounded-full flex items-center justify-center" style={{ backgroundColor: "#F9F9F9" }}>
-                      <Building03Icon size={16} style={{ color: "#1877F2" }} />
+                      <Building03Icon size={16} style={{ color: "#14462a" }} />
                     </div>
                     <span className="font-normal text-sm" style={{ color: "#2D2D2D" }}>
                       {software.name}
@@ -1182,7 +1182,7 @@ export default function SettingsPage() {
                 className="rounded-full h-11 px-4 border-0 font-normal"
                 style={{ backgroundColor: "#F9F9F9", color: "#2D2D2D" }}
               >
-                <Download04Icon size={16} className="mr-2" style={{ color: "#1877F2" }} />
+                <Download04Icon size={16} className="mr-2" style={{ color: "#14462a" }} />
                 <span className="text-sm">Invoices (CSV)</span>
               </Button>
               <Button
@@ -1190,7 +1190,7 @@ export default function SettingsPage() {
                 className="rounded-full h-11 px-4 border-0 font-normal"
                 style={{ backgroundColor: "#F9F9F9", color: "#2D2D2D" }}
               >
-                <Download04Icon size={16} className="mr-2" style={{ color: "#1877F2" }} />
+                <Download04Icon size={16} className="mr-2" style={{ color: "#14462a" }} />
                 <span className="text-sm">Payments (CSV)</span>
               </Button>
               <Button
@@ -1198,7 +1198,7 @@ export default function SettingsPage() {
                 className="rounded-full h-11 px-4 border-0 font-normal"
                 style={{ backgroundColor: "#F9F9F9", color: "#2D2D2D" }}
               >
-                <Download04Icon size={16} className="mr-2" style={{ color: "#1877F2" }} />
+                <Download04Icon size={16} className="mr-2" style={{ color: "#14462a" }} />
                 <span className="text-sm">All Data (JSON)</span>
               </Button>
             </div>
@@ -1206,7 +1206,7 @@ export default function SettingsPage() {
             <div className="p-4 rounded-2xl" style={{ backgroundColor: "#F9F9F9" }}>
               <div className="flex items-start gap-3">
                 <div className="h-9 w-9 rounded-full flex items-center justify-center" style={{ backgroundColor: "white" }}>
-                  <FileAttachmentIcon size={16} style={{ color: "#1877F2" }} />
+                  <FileAttachmentIcon size={16} style={{ color: "#14462a" }} />
                 </div>
                 <div className="flex-1">
                   <div className="font-normal text-sm mb-1" style={{ color: "#2D2D2D" }}>
@@ -1314,7 +1314,7 @@ export default function SettingsPage() {
               <Badge
                 variant="secondary"
                 className="rounded-full px-3 py-1"
-                style={{ backgroundColor: "rgba(124, 58, 237, 0.08)", color: "#7C3AED" }}
+                style={{ backgroundColor: "rgba(20, 70, 42, 0.08)", color: "#14462a" }}
               >
                 Pro Plan
               </Badge>
@@ -1322,7 +1322,7 @@ export default function SettingsPage() {
 
             <div className="grid grid-cols-3 gap-x-8 gap-y-6">
               {[
-                { label: "Monthly Cost", value: "$29/mo", icon: DollarSquareIcon, color: "#1877F2" },
+                { label: "Monthly Cost", value: "$29/mo", icon: DollarSquareIcon, color: "#14462a" },
                 { label: "Next Billing", value: "Dec 18, 2024", icon: CreditCardIcon, color: "#059669" },
                 { label: "Invoices Sent", value: "247 / ∞", icon: FileAttachmentIcon, color: "#F59E0B" },
               ].map((stat) => {
@@ -1465,7 +1465,7 @@ export default function SettingsPage() {
               </Button>
               <Button
                 className="rounded-full h-11 px-6 font-normal"
-                style={{ backgroundColor: "#1877F2", color: "white" }}
+                style={{ backgroundColor: "#14462a", color: "white" }}
               >
                 Save Changes
               </Button>
@@ -1556,7 +1556,7 @@ export default function SettingsPage() {
             <div className="flex justify-end">
               <Button
                 className="rounded-full h-11 px-6 font-normal"
-                style={{ backgroundColor: "#1877F2", color: "white" }}
+                style={{ backgroundColor: "#14462a", color: "white" }}
               >
                 Update Password
               </Button>
@@ -1700,7 +1700,7 @@ export default function SettingsPage() {
                       className="h-2 w-2 rounded-full"
                       style={{ 
                         backgroundColor: activity.status === 'success' ? '#059669' : 
-                                       activity.status === 'warning' ? '#F59E0B' : '#1877F2' 
+                                       activity.status === 'warning' ? '#F59E0B' : '#14462a' 
                       }}
                     />
                     <div>
@@ -1754,7 +1754,7 @@ export default function SettingsPage() {
                   </ul>
                   <Button 
                     className="w-full rounded-full h-10"
-                    style={{ backgroundColor: plan.name === "Pro" ? '#1877F2' : '#F9F9F9', color: plan.name === "Pro" ? 'white' : '#2D2D2D' }}
+                    style={{ backgroundColor: plan.name === "Pro" ? '#14462a' : '#F9F9F9', color: plan.name === "Pro" ? 'white' : '#2D2D2D' }}
                   >
                     {plan.name === "Pro" ? "Current Plan" : plan.name === "Free" ? "Downgrade" : "Upgrade"}
                   </Button>
@@ -1805,9 +1805,9 @@ export default function SettingsPage() {
                   <div className="flex items-center gap-4">
                     <div 
                       className="h-10 w-10 rounded-full flex items-center justify-center"
-                      style={{ backgroundColor: 'rgba(24, 119, 242, 0.12)' }}
+                      style={{ backgroundColor: 'rgba(20, 70, 42, 0.12)' }}
                     >
-                      <Calendar03Icon size={18} style={{ color: '#1877F2' }} />
+                      <Calendar03Icon size={18} style={{ color: '#14462a' }} />
                     </div>
                     <div>
                       <p className="text-sm font-medium" style={{ color: '#2D2D2D' }}>{invoice.description}</p>

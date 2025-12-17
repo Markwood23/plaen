@@ -26,7 +26,7 @@ export default function DraftsPage() {
                   <FileText className="h-3 w-3" />
                   Creating Invoices
                 </span>
-                <h1 className="mt-4 text-4xl font-bold tracking-tight">
+                <h1 className="mt-4 text-4xl font-bold tracking-tight text-[#14462a]">
                   Saving and managing drafts
                 </h1>
                 <p className="mt-4 text-xl text-gray-700">

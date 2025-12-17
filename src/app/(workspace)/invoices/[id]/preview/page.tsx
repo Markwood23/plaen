@@ -112,13 +112,13 @@ export default function InvoicePreviewPage({ params }: { params: Promise<{ id: s
     switch (status) {
       case "Paid":
         return (
-          <Badge className="bg-[#212121] text-white hover:bg-[#212121]/90">
+          <Badge className="bg-[#14462a] text-white hover:bg-[#14462a]/90">
             <CheckmarkSquare02Icon size={14} className="mr-1" /> Paid
           </Badge>
         );
       case "Partially Paid":
         return (
-          <Badge className="bg-[#F9F9F9] text-[#212121] border-[#EBECE7] hover:bg-[#EBECE7]">
+          <Badge className="bg-[#F9F9F9] text-[#14462a] border-[#EBECE7] hover:bg-[#EBECE7]">
             <DollarSquareIcon size={14} className="mr-1" /> Partially Paid
           </Badge>
         );
@@ -172,7 +172,7 @@ export default function InvoicePreviewPage({ params }: { params: Promise<{ id: s
               <Button 
                 size="sm" 
                 className="rounded-full px-5 h-9" 
-                style={{ backgroundColor: '#1877F2', color: 'white', fontWeight: 500 }}
+                style={{ backgroundColor: '#14462a', color: 'white', fontWeight: 500 }}
               >
                 <SentIcon size={14} className="mr-1.5" />
                 Send to Customer
@@ -191,9 +191,9 @@ export default function InvoicePreviewPage({ params }: { params: Promise<{ id: s
               <div>
                 <div className="mb-4">
                   <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M3 3H12V12H3V3Z" fill="#1877F2"/>
-                    <path d="M14 3H21L17.5 12H14V3Z" fill="#1877F2"/>
-                    <path d="M12 14H21V21H12V14Z" fill="#1877F2"/>
+                    <path d="M3 3H12V12H3V3Z" fill="#14462a"/>
+                    <path d="M14 3H21L17.5 12H14V3Z" fill="#14462a"/>
+                    <path d="M12 14H21V21H12V14Z" fill="#14462a"/>
                   </svg>
                 </div>
                 <h1 className="text-3xl font-bold mb-2" style={{ color: '#2D2D2D' }}>{invoice.from.businessName}</h1>
@@ -325,7 +325,7 @@ export default function InvoicePreviewPage({ params }: { params: Promise<{ id: s
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full text-white font-medium hover:opacity-90 transition-opacity"
-                  style={{ backgroundColor: '#1877F2' }}
+                  style={{ backgroundColor: '#14462a' }}
                 >
                   <CreditCardIcon size={20} />
                   Pay Invoice Now

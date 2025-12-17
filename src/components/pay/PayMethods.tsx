@@ -152,7 +152,7 @@ export function PayMethods({
                   />
                 </div>
                 <div className="flex flex-col items-start flex-1">
-                  <span className="text-lg font-bold font-outfit" style={{ color: '#212121' }}>
+                  <span className="text-lg font-bold font-outfit" style={{ color: '#14462a' }}>
                     {currentMethod.name}
                   </span>
                   <span className="text-body font-medium font-outfit text-[#B0B3B8]">
@@ -171,7 +171,7 @@ export function PayMethods({
                   />
                 </div>
                 <div className="flex flex-col items-start">
-                  <span className="text-lg font-bold font-outfit" style={{ color: '#212121' }}>
+                  <span className="text-lg font-bold font-outfit" style={{ color: '#14462a' }}>
                     Choose how you'd like to pay
                   </span>
                   <span className="text-body font-medium font-outfit text-[#B0B3B8]">
@@ -202,7 +202,7 @@ export function PayMethods({
                     />
                   </div>
                   <div className="flex flex-col items-start flex-1">
-                    <span className="text-base font-medium font-outfit" style={{ color: '#212121' }}>
+                    <span className="text-base font-medium font-outfit" style={{ color: '#14462a' }}>
                       {method.name}
                     </span>
                     <span className="text-body font-medium font-outfit text-[#B0B3B8]">
@@ -226,7 +226,7 @@ export function PayMethods({
             </div>
           ) : sdkError ? (
             <div className="py-6 px-4 rounded-lg" style={{ backgroundColor: '#F9F9F9' }}>
-              <p className="text-body-sm" style={{ color: '#212121' }}>{sdkError}</p>
+              <p className="text-body-sm" style={{ color: '#14462a' }}>{sdkError}</p>
               <Button 
                 variant="ghost" 
                 size="sm" 
@@ -365,7 +365,7 @@ function MoMoForm({ onSubmit, isProcessing }: { onSubmit: (data: any) => void; i
         <Label
           htmlFor="momo-terms"
           className="text-body-sm cursor-pointer font-medium font-outfit flex-1"
-          style={{ color: '#212121', lineHeight: '1.4' }}
+          style={{ color: '#14462a', lineHeight: '1.4' }}
         >
           I authorize this payment and understand that all transactions are secure, final, and non-refundable.
         </Label>
@@ -376,7 +376,7 @@ function MoMoForm({ onSubmit, isProcessing }: { onSubmit: (data: any) => void; i
         className="w-full h-14 text-white hover:opacity-90 rounded-full text-base font-bold font-outfit"
         disabled={isProcessing || !phoneNumber || !acceptedTerms}
         style={{ 
-          backgroundColor: '#1877F2',
+          backgroundColor: '#14462a',
         }}
       >
         {isProcessing ? (
@@ -440,7 +440,7 @@ function BankTransferInfo({ amount, onSubmit, isProcessing, invoiceNumber }: { a
                 aria-label="Copy bank name"
               >
                 {copiedField === 'bank' ? (
-                  <Check className="h-4 w-4" style={{ color: '#1877F2' }} />
+                  <Check className="h-4 w-4" style={{ color: '#14462a' }} />
                 ) : (
                   <Copy className="h-4 w-4 text-[#B0B3B8]" />
                 )}
@@ -458,7 +458,7 @@ function BankTransferInfo({ amount, onSubmit, isProcessing, invoiceNumber }: { a
                 aria-label="Copy account number"
               >
                 {copiedField === 'account' ? (
-                  <Check className="h-4 w-4" style={{ color: '#1877F2' }} />
+                  <Check className="h-4 w-4" style={{ color: '#14462a' }} />
                 ) : (
                   <Copy className="h-4 w-4 text-[#B0B3B8]" />
                 )}
@@ -476,7 +476,7 @@ function BankTransferInfo({ amount, onSubmit, isProcessing, invoiceNumber }: { a
                 aria-label="Copy account name"
               >
                 {copiedField === 'name' ? (
-                  <Check className="h-4 w-4" style={{ color: '#1877F2' }} />
+                  <Check className="h-4 w-4" style={{ color: '#14462a' }} />
                 ) : (
                   <Copy className="h-4 w-4 text-[#B0B3B8]" />
                 )}
@@ -494,7 +494,7 @@ function BankTransferInfo({ amount, onSubmit, isProcessing, invoiceNumber }: { a
                 aria-label="Copy reference"
               >
                 {copiedField === 'reference' ? (
-                  <Check className="h-4 w-4" style={{ color: '#1877F2' }} />
+                  <Check className="h-4 w-4" style={{ color: '#14462a' }} />
                 ) : (
                   <Copy className="h-4 w-4 text-[#B0B3B8]" />
                 )}
@@ -522,7 +522,7 @@ function BankTransferInfo({ amount, onSubmit, isProcessing, invoiceNumber }: { a
           <Label
             htmlFor="transfer-completed"
             className="text-body-sm cursor-pointer font-medium font-outfit flex-1"
-            style={{ color: '#212121', lineHeight: '1.4' }}
+            style={{ color: '#14462a', lineHeight: '1.4' }}
           >
             I confirm that I have completed this bank transfer
           </Label>
@@ -538,7 +538,7 @@ function BankTransferInfo({ amount, onSubmit, isProcessing, invoiceNumber }: { a
           <Label
             htmlFor="bank-terms"
             className="text-body-sm cursor-pointer font-medium font-outfit flex-1"
-            style={{ color: '#212121', lineHeight: '1.4' }}
+            style={{ color: '#14462a', lineHeight: '1.4' }}
           >
             I understand that all transactions are secure, final, and non-refundable.
           </Label>
@@ -550,7 +550,7 @@ function BankTransferInfo({ amount, onSubmit, isProcessing, invoiceNumber }: { a
         className="w-full h-14 text-white hover:opacity-90 rounded-full text-base font-bold font-outfit"
         disabled={isProcessing || !transferCompleted || !acceptedTerms}
         style={{ 
-          backgroundColor: '#1877F2',
+          backgroundColor: '#14462a',
         }}
       >
         {isProcessing ? (
@@ -683,7 +683,7 @@ function CardForm({ onSubmit, isProcessing }: { onSubmit: (data: any) => void; i
         <Label
           htmlFor="card-terms"
           className="text-body-sm cursor-pointer font-medium font-outfit flex-1"
-          style={{ color: '#212121', lineHeight: '1.4' }}
+          style={{ color: '#14462a', lineHeight: '1.4' }}
         >
           I authorize this payment and understand that all transactions are secure, final, and non-refundable.
         </Label>
@@ -694,7 +694,7 @@ function CardForm({ onSubmit, isProcessing }: { onSubmit: (data: any) => void; i
         className="w-full h-14 text-white hover:opacity-90 rounded-full text-base font-bold font-outfit"
         disabled={isProcessing || !cardNumber || !expiry || !cvv || !name || !acceptedTerms}
         style={{ 
-          backgroundColor: '#1877F2',
+          backgroundColor: '#14462a',
         }}
       >
         {isProcessing ? (
@@ -768,7 +768,7 @@ function ExternalPaymentForm({ onSubmit, isProcessing }: { onSubmit: (data: any)
         <Label
           htmlFor="external-terms"
           className="text-body-sm cursor-pointer font-medium font-outfit flex-1"
-          style={{ color: '#212121', lineHeight: '1.4' }}
+          style={{ color: '#14462a', lineHeight: '1.4' }}
         >
           I confirm this payment was received and understand that all records are final and non-refundable.
         </Label>
@@ -779,7 +779,7 @@ function ExternalPaymentForm({ onSubmit, isProcessing }: { onSubmit: (data: any)
         className="w-full h-14 text-white hover:opacity-90 rounded-full text-base font-bold font-outfit"
         disabled={isProcessing || !reference || !paymentDate || !acceptedTerms}
         style={{ 
-          backgroundColor: '#1877F2',
+          backgroundColor: '#14462a',
         }}
       >
         {isProcessing ? (

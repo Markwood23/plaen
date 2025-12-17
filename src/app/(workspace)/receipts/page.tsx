@@ -66,7 +66,7 @@ export default function ReceiptsPage() {
     switch (status) {
       case "Verified":
         return (
-          <Badge style={{ backgroundColor: '#1877F2', color: 'white', borderColor: '#1877F2' }}>
+          <Badge style={{ backgroundColor: '#14462a', color: 'white', borderColor: '#14462a' }}>
             <CheckmarkSquare02Icon size={14} /> Verified
           </Badge>
         );
@@ -108,7 +108,7 @@ export default function ReceiptsPage() {
           <Button
             size="sm"
             className="rounded-full shadow-sm transition-all hover:shadow-md hover:scale-105"
-            style={{ backgroundColor: '#1877F2', color: 'white' }}
+            style={{ backgroundColor: '#14462a', color: 'white' }}
           >
             <Add01Icon size={16} className="mr-2" />
             Add Receipt
@@ -158,17 +158,17 @@ export default function ReceiptsPage() {
           <p className="text-xs mt-3" style={{ color: '#B0B3B8' }}>Awaiting verification</p>
         </div>
 
-        <div className="group relative rounded-2xl p-6 transition-all duration-300 hover:scale-[1.02]" style={{ backgroundColor: 'rgba(124, 58, 237, 0.04)' }}>
+        <div className="group relative rounded-2xl p-6 transition-all duration-300 hover:scale-[1.02]" style={{ backgroundColor: 'rgba(20, 70, 42, 0.04)' }}>
           <div className="flex items-center justify-between mb-4">
             <div 
               className="h-12 w-12 rounded-xl flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110"
-              style={{ backgroundColor: 'rgba(124, 58, 237, 0.12)' }}
+              style={{ backgroundColor: 'rgba(20, 70, 42, 0.12)' }}
             >
-              <FileValidationIcon size={24} style={{ color: '#7C3AED', strokeWidth: 2 }} />
+              <FileValidationIcon size={24} style={{ color: '#14462a', strokeWidth: 2 }} />
             </div>
             <div
               className="inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-semibold"
-              style={{ backgroundColor: 'rgba(124, 58, 237, 0.12)', color: '#7C3AED' }}
+              style={{ backgroundColor: 'rgba(20, 70, 42, 0.12)', color: '#14462a' }}
             >
               48
             </div>
@@ -206,7 +206,7 @@ export default function ReceiptsPage() {
             <h3 className="text-sm font-semibold" style={{ color: '#2D2D2D' }}>Filter Receipts</h3>
             <p className="text-xs mt-0.5" style={{ color: '#B0B3B8' }}>Refine your search results</p>
           </div>
-          <button className="text-xs font-medium px-3 py-1.5 rounded-full transition-all hover:bg-white" style={{ color: '#1877F2' }}>
+          <button className="text-xs font-medium px-3 py-1.5 rounded-full transition-all hover:bg-white" style={{ color: '#14462a' }}>
             Clear all
           </button>
         </div>
@@ -264,7 +264,7 @@ export default function ReceiptsPage() {
                 </SelectItem>
                 <SelectItem value="verified" className="rounded-xl px-3 py-2.5 cursor-pointer transition-all">
                   <div className="flex items-center gap-3">
-                    <div className="h-2.5 w-2.5 rounded-full ring-2 ring-offset-1" style={{ backgroundColor: '#1877F2' }}></div>
+                    <div className="h-2.5 w-2.5 rounded-full ring-2 ring-offset-1" style={{ backgroundColor: '#14462a' }}></div>
                     <span className="font-medium" style={{ color: '#2D2D2D' }}>Verified</span>
                   </div>
                 </SelectItem>
@@ -325,10 +325,10 @@ export default function ReceiptsPage() {
       <div className="rounded-2xl overflow-hidden" style={{ backgroundColor: 'white', boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.05)' }}>
         {/* Bulk Actions Bar */}
         {selectedRows.length > 0 && (
-          <div className="flex items-center justify-between px-6 py-4 border-b" style={{ backgroundColor: 'rgba(24, 119, 242, 0.04)', borderColor: 'rgba(24, 119, 242, 0.1)' }}>
+          <div className="flex items-center justify-between px-6 py-4 border-b" style={{ backgroundColor: 'rgba(20, 70, 42, 0.04)', borderColor: 'rgba(20, 70, 42, 0.1)' }}>
             <div className="flex items-center gap-3">
-              <div className="h-8 w-8 rounded-full flex items-center justify-center" style={{ backgroundColor: 'rgba(24, 119, 242, 0.12)' }}>
-                <CheckmarkSquare02Icon size={16} style={{ color: '#1877F2' }} />
+              <div className="h-8 w-8 rounded-full flex items-center justify-center" style={{ backgroundColor: 'rgba(20, 70, 42, 0.12)' }}>
+                <CheckmarkSquare02Icon size={16} style={{ color: '#14462a' }} />
               </div>
               <div>
                 <p className="text-sm font-semibold" style={{ color: '#2D2D2D' }}>
@@ -372,23 +372,23 @@ export default function ReceiptsPage() {
                 />
               </TableHead>
               <TableHead>
-                <button className="flex items-center gap-1 hover:text-[#1877F2] transition-colors">
+                <button className="flex items-center gap-1 hover:text-[#14462a] transition-colors">
                   Receipt ID <ArrowDataTransferVerticalIcon size={14} />
                 </button>
               </TableHead>
               <TableHead>
-                <button className="flex items-center gap-1 hover:text-[#1877F2] transition-colors">
+                <button className="flex items-center gap-1 hover:text-[#14462a] transition-colors">
                   Date <ArrowDataTransferVerticalIcon size={14} />
                 </button>
               </TableHead>
               <TableHead>
-                <button className="flex items-center gap-1 hover:text-[#1877F2] transition-colors">
+                <button className="flex items-center gap-1 hover:text-[#14462a] transition-colors">
                   Vendor <ArrowDataTransferVerticalIcon size={14} />
                 </button>
               </TableHead>
               <TableHead>Category</TableHead>
               <TableHead>
-                <button className="flex items-center gap-1 hover:text-[#1877F2] transition-colors">
+                <button className="flex items-center gap-1 hover:text-[#14462a] transition-colors">
                   Amount <ArrowDataTransferVerticalIcon size={14} />
                 </button>
               </TableHead>
@@ -429,11 +429,11 @@ export default function ReceiptsPage() {
                       <DropdownMenuItem className="gap-3 rounded-xl p-3 cursor-pointer group transition-all hover:bg-[rgba(24,119,242,0.04)]">
                         <div 
                           className="h-8 w-8 rounded-full flex items-center justify-center transition-all"
-                          style={{ backgroundColor: 'rgba(24, 119, 242, 0.08)' }}
+                          style={{ backgroundColor: 'rgba(20, 70, 42, 0.08)' }}
                         >
-                          <ViewIcon size={16} style={{ color: '#1877F2' }} />
+                          <ViewIcon size={16} style={{ color: '#14462a' }} />
                         </div>
-                        <span className="text-sm font-medium group-hover:text-[#1877F2] transition-all" style={{ color: '#2D2D2D' }}>View Receipt</span>
+                        <span className="text-sm font-medium group-hover:text-[#14462a] transition-all" style={{ color: '#2D2D2D' }}>View Receipt</span>
                       </DropdownMenuItem>
                       <DropdownMenuItem className="gap-3 rounded-xl p-3 cursor-pointer group transition-all hover:bg-[rgba(24,119,242,0.04)]">
                         <div 
@@ -442,7 +442,7 @@ export default function ReceiptsPage() {
                         >
                           <Download01Icon size={16} style={{ color: '#059669' }} />
                         </div>
-                        <span className="text-sm font-medium group-hover:text-[#1877F2] transition-all" style={{ color: '#2D2D2D' }}>Download</span>
+                        <span className="text-sm font-medium group-hover:text-[#14462a] transition-all" style={{ color: '#2D2D2D' }}>Download</span>
                       </DropdownMenuItem>
                       <DropdownMenuSeparator className="my-2" />
                       <DropdownMenuItem className="gap-3 rounded-xl p-3 cursor-pointer group transition-all hover:bg-red-50">

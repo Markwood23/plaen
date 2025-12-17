@@ -5,7 +5,8 @@ import { Button } from "@/components/ui/button";
 import { MarketingHeader } from "@/components/marketing/marketing-header";
 import { MarketingFooter } from "@/components/marketing/marketing-footer";
 import { PageEffects } from "@/components/marketing/home-page-effects";
-import { ArrowRight, BookOpen, Users, Clock } from "lucide-react";
+import { ArrowRight } from "lucide-react";
+import { Book1, People, Clock } from "iconsax-react";
 import type { BlogPost } from "@/components/blog/blog-article-grid";
 import { BlogInteractiveSection } from "@/components/blog/blog-interactive-section";
 
@@ -21,19 +22,22 @@ const stats = [
     label: "Monthly readers",
     value: "24k",
     description: "Leaders and operators across Africa",
-    icon: Users,
+    icon: People,
+    color: "#4F46E5",
   },
   {
     label: "Guides published",
     value: "190+",
     description: "Deep dives on invoicing best practices",
-    icon: BookOpen,
+    icon: Book1,
+    color: "#059669",
   },
   {
     label: "Average read time",
     value: "6 min",
     description: "Bite-sized insights you can act on",
     icon: Clock,
+    color: "#D97706",
   },
 ];
 
@@ -142,10 +146,10 @@ export default function BlogPage() {
             <div className="grid items-center gap-16 lg:grid-cols-[1.15fr,0.85fr]">
               <div className="flex flex-col gap-8">
                 <div className="inline-flex items-center gap-2 self-start rounded-full border border-gray-200 px-4 py-1 text-xs uppercase tracking-[0.35em] text-gray-500">
-                  <BookOpen className="h-3 w-3" /> Weekly insights
+                  <Book1 size={14} color="#059669" variant="Bold" /> Weekly insights
                 </div>
                 <div className="space-y-6">
-                  <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">
+                  <h1 className="text-4xl font-semibold tracking-tight text-[#14462a] sm:text-5xl">
                     Field notes on making transfers official.
                   </h1>
                   <p className="max-w-2xl text-lg leading-8 text-gray-700">
@@ -173,8 +177,11 @@ export default function BlogPage() {
                     const Icon = stat.icon;
                     return (
                       <div key={stat.label} className="flex flex-col gap-3 border-gray-100">
-                        <div className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-gray-200 bg-gray-100/60">
-                          <Icon className="h-5 w-5 text-gray-700" />
+                        <div 
+                          className="inline-flex h-10 w-10 items-center justify-center rounded-full"
+                          style={{ backgroundColor: `${stat.color}12` }}
+                        >
+                          <Icon size={20} color={stat.color} variant="Bulk" />
                         </div>
                         <div>
                           <p className="text-sm uppercase tracking-[0.18em] text-gray-500">{stat.label}</p>
@@ -247,7 +254,7 @@ export default function BlogPage() {
               <div className="grid gap-10 rounded-3xl border border-gray-200 bg-gray-50/80 p-12 shadow-[0_24px_90px_rgba(15,15,15,0.08)] backdrop-blur-sm md:grid-cols-[1.4fr,1fr]">
                 <div className="space-y-6">
                   <span className="text-xs uppercase tracking-[0.35em] text-gray-500">newsletter</span>
-                  <h2 className="text-3xl font-semibold text-black">Monthly context delivery</h2>
+                  <h2 className="text-3xl font-semibold text-[#14462a]">Monthly context delivery</h2>
                   <p className="text-base leading-7 text-gray-700">
                     One calm email: practical tactics for documented transfers, on‑time rate improvements (≤3 days rule), and evolving Finance Notes into narrative reports.
                   </p>

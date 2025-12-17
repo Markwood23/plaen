@@ -1,11 +1,11 @@
 /* Override react-day-picker default colors with grayscale */
 .rdp {
-  --rdp-accent-color: #212121 !important;
+  --rdp-accent-color: #14462a !important;
   --rdp-background-color: #f3f4f6 !important;
   --rdp-accent-color-dark: #000000 !important;
   --rdp-background-color-dark: #e5e7eb !important;
-  --rdp-outline: 2px solid #212121 !important;
-  --rdp-outline-selected: 2px solid #212121 !important;
+  --rdp-outline: 2px solid #14462a !important;
+  --rdp-outline-selected: 2px solid #14462a !important;
 }
 
 /* Selected day - all states */
@@ -14,15 +14,15 @@
 .rdp-day_selected:active,
 .rdp-day_selected:hover,
 .rdp-button[aria-selected="true"] {
-  background-color: #212121 !important;
+  background-color: #14462a !important;
   color: white !important;
-  border-color: #212121 !important;
+  border-color: #14462a !important;
 }
 
 /* Today */
 .rdp-day_today:not(.rdp-day_selected) {
   background-color: #f3f4f6 !important;
-  color: #212121 !important;
+  color: #14462a !important;
   font-weight: 500 !important;
 }
 
@@ -30,27 +30,27 @@
 .rdp-button:hover:not([aria-selected="true"]),
 .rdp-day:hover:not(.rdp-day_selected) {
   background-color: #f3f4f6 !important;
-  color: #212121 !important;
+  color: #14462a !important;
 }
 
 /* Range middle */
 .rdp-day_range_middle,
 .rdp-day_range_middle:hover {
   background-color: #f3f4f6 !important;
-  color: #212121 !important;
+  color: #14462a !important;
 }
 
 /* Range start and end */
 .rdp-day_range_start,
 .rdp-day_range_end {
-  background-color: #212121 !important;
+  background-color: #14462a !important;
   color: white !important;
 }
 
 /* Navigation buttons */
 .rdp-nav_button,
 .rdp-nav button {
-  color: #212121 !important;
+  color: #14462a !important;
 }
 
 .rdp-nav_button:hover,
@@ -73,7 +73,7 @@
 /* Caption and month labels */
 .rdp-caption_label,
 .rdp-caption {
-  color: #212121 !important;
+  color: #14462a !important;
 }
 
 /* Week days header */
@@ -83,6 +83,6 @@
 
 /* Remove any blue focus rings */
 .rdp-button:focus-visible {
-  outline: 2px solid #212121 !important;
+  outline: 2px solid #14462a !important;
   outline-offset: 2px;
 }

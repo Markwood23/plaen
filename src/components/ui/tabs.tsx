@@ -55,8 +55,8 @@ function TabsTrigger({
       onMouseEnter={(e) => {
         setIsHovered(true);
         if (e.currentTarget.getAttribute('data-state') !== 'active') {
-          e.currentTarget.style.backgroundColor = 'rgba(24, 119, 242, 0.04)';
-          e.currentTarget.style.color = '#1877F2';
+          e.currentTarget.style.backgroundColor = 'rgba(20, 70, 42, 0.04)';
+          e.currentTarget.style.color = '#14462a';
         }
       }}
       onMouseLeave={(e) => {
@@ -71,8 +71,8 @@ function TabsTrigger({
         if (el) {
           const isActive = el.getAttribute('data-state') === 'active';
           if (isActive) {
-            el.style.backgroundColor = 'rgba(24, 119, 242, 0.08)';
-            el.style.color = '#1877F2';
+            el.style.backgroundColor = 'rgba(20, 70, 42, 0.08)';
+            el.style.color = '#14462a';
             el.style.fontWeight = '500';
           } else if (!isHovered) {
             el.style.backgroundColor = 'transparent';

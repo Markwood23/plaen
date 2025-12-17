@@ -94,7 +94,7 @@ export default function InvoicesPage() {
         );
       case "Refunded":
         return (
-          <Badge style={{ backgroundColor: 'rgba(124, 58, 237, 0.08)', color: '#7C3AED', borderColor: 'transparent' }}>
+          <Badge style={{ backgroundColor: 'rgba(20, 70, 42, 0.08)', color: '#14462a', borderColor: 'transparent' }}>
             <Loading03Icon size={14} /> Refunded
           </Badge>
         );
@@ -130,7 +130,7 @@ export default function InvoicesPage() {
           <Button
             size="sm"
             className="rounded-full shadow-sm transition-all hover:shadow-md hover:scale-105"
-            style={{ backgroundColor: '#1877F2', color: 'white' }}
+            style={{ backgroundColor: '#14462a', color: 'white' }}
             asChild
           >
             <Link href="/invoices/new">
@@ -203,17 +203,17 @@ export default function InvoicesPage() {
           <p className="text-xs mt-3" style={{ color: '#B0B3B8' }}>This month</p>
         </div>
 
-        <div className="group relative rounded-2xl p-6 transition-all duration-300 hover:scale-[1.02]" style={{ backgroundColor: 'rgba(24, 119, 242, 0.04)' }}>
+        <div className="group relative rounded-2xl p-6 transition-all duration-300 hover:scale-[1.02]" style={{ backgroundColor: 'rgba(20, 70, 42, 0.04)' }}>
           <div className="flex items-center justify-between mb-4">
             <div 
               className="h-12 w-12 rounded-xl flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110"
-              style={{ backgroundColor: 'rgba(24, 119, 242, 0.12)' }}
+              style={{ backgroundColor: 'rgba(20, 70, 42, 0.12)' }}
             >
-              <DollarSquareIcon size={24} style={{ color: '#1877F2', strokeWidth: 2 }} />
+              <DollarSquareIcon size={24} style={{ color: '#14462a', strokeWidth: 2 }} />
             </div>
             <div
               className="inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-semibold"
-              style={{ backgroundColor: 'rgba(24, 119, 242, 0.12)', color: '#1877F2' }}
+              style={{ backgroundColor: 'rgba(20, 70, 42, 0.12)', color: '#14462a' }}
             >
               12
             </div>
@@ -225,12 +225,12 @@ export default function InvoicesPage() {
       </div>
 
       {/* Payment Setup Banner */}
-      <div className="rounded-2xl p-6 transition-all duration-300 hover:shadow-lg" style={{ backgroundColor: 'rgba(24, 119, 242, 0.04)', border: '1px solid rgba(24, 119, 242, 0.1)' }}>
+      <div className="rounded-2xl p-6 transition-all duration-300 hover:shadow-lg" style={{ backgroundColor: 'rgba(20, 70, 42, 0.04)', border: '1px solid rgba(20, 70, 42, 0.1)' }}>
         <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
           <div className="flex-1">
             <div className="flex items-center gap-3 mb-3">
-              <div className="h-10 w-10 rounded-full flex items-center justify-center" style={{ backgroundColor: 'rgba(24, 119, 242, 0.12)' }}>
-                <DollarSquareIcon size={20} style={{ color: '#1877F2', strokeWidth: 2 }} />
+              <div className="h-10 w-10 rounded-full flex items-center justify-center" style={{ backgroundColor: 'rgba(20, 70, 42, 0.12)' }}>
+                <DollarSquareIcon size={20} style={{ color: '#14462a', strokeWidth: 2 }} />
               </div>
               <div>
                 <h3 className="text-base font-semibold" style={{ color: '#2D2D2D' }}>Get Paid 3x Faster with Mobile Money</h3>
@@ -282,7 +282,7 @@ export default function InvoicesPage() {
             <Button
               size="sm"
               className="rounded-xl shadow-sm transition-all hover:shadow-md hover:scale-105"
-              style={{ backgroundColor: '#1877F2', color: 'white' }}
+              style={{ backgroundColor: '#14462a', color: 'white' }}
             >
               Set as Default
             </Button>
@@ -297,7 +297,7 @@ export default function InvoicesPage() {
             <h3 className="text-sm font-semibold" style={{ color: '#2D2D2D' }}>Filter Invoices</h3>
             <p className="text-xs mt-0.5" style={{ color: '#B0B3B8' }}>Refine your search results</p>
           </div>
-          <button className="text-xs font-medium px-3 py-1.5 rounded-full transition-all hover:bg-white" style={{ color: '#1877F2' }}>
+          <button className="text-xs font-medium px-3 py-1.5 rounded-full transition-all hover:bg-white" style={{ color: '#14462a' }}>
             Clear all
           </button>
         </div>
@@ -402,10 +402,10 @@ export default function InvoicesPage() {
       <div className="rounded-2xl overflow-hidden" style={{ backgroundColor: 'white', boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.05)' }}>
         {/* Bulk Actions Bar */}
         {selectedRows.length > 0 && (
-          <div className="flex items-center justify-between px-6 py-4 border-b" style={{ backgroundColor: 'rgba(24, 119, 242, 0.04)', borderColor: 'rgba(24, 119, 242, 0.1)' }}>
+          <div className="flex items-center justify-between px-6 py-4 border-b" style={{ backgroundColor: 'rgba(20, 70, 42, 0.04)', borderColor: 'rgba(20, 70, 42, 0.1)' }}>
             <div className="flex items-center gap-3">
-              <div className="h-8 w-8 rounded-full flex items-center justify-center" style={{ backgroundColor: 'rgba(24, 119, 242, 0.12)' }}>
-                <CheckmarkSquare02Icon size={16} style={{ color: '#1877F2' }} />
+              <div className="h-8 w-8 rounded-full flex items-center justify-center" style={{ backgroundColor: 'rgba(20, 70, 42, 0.12)' }}>
+                <CheckmarkSquare02Icon size={16} style={{ color: '#14462a' }} />
               </div>
               <div>
                 <p className="text-sm font-semibold" style={{ color: '#2D2D2D' }}>
@@ -449,23 +449,23 @@ export default function InvoicesPage() {
                 />
               </TableHead>
               <TableHead>
-                <button className="flex items-center gap-1 hover:text-[#1877F2] transition-colors">
+                <button className="flex items-center gap-1 hover:text-[#14462a] transition-colors">
                   Invoice ID <ArrowDataTransferVerticalIcon size={14} />
                 </button>
               </TableHead>
               <TableHead>
-                <button className="flex items-center gap-1 hover:text-[#1877F2] transition-colors">
+                <button className="flex items-center gap-1 hover:text-[#14462a] transition-colors">
                   Date <ArrowDataTransferVerticalIcon size={14} />
                 </button>
               </TableHead>
               <TableHead>
-                <button className="flex items-center gap-1 hover:text-[#1877F2] transition-colors">
+                <button className="flex items-center gap-1 hover:text-[#14462a] transition-colors">
                   Contact <ArrowDataTransferVerticalIcon size={14} />
                 </button>
               </TableHead>
               <TableHead>Reason</TableHead>
               <TableHead>
-                <button className="flex items-center gap-1 hover:text-[#1877F2] transition-colors">
+                <button className="flex items-center gap-1 hover:text-[#14462a] transition-colors">
                   Amount <ArrowDataTransferVerticalIcon size={14} />
                 </button>
               </TableHead>
@@ -507,11 +507,11 @@ export default function InvoicesPage() {
                         <Link href={`/invoices/${invoice.id}`}>
                           <div 
                             className="h-8 w-8 rounded-full flex items-center justify-center transition-all"
-                            style={{ backgroundColor: 'rgba(24, 119, 242, 0.08)' }}
+                            style={{ backgroundColor: 'rgba(20, 70, 42, 0.08)' }}
                           >
-                            <ViewIcon size={16} style={{ color: '#1877F2' }} />
+                            <ViewIcon size={16} style={{ color: '#14462a' }} />
                           </div>
-                          <span className="text-sm font-medium group-hover:text-[#1877F2] transition-all" style={{ color: '#2D2D2D' }}>View Invoice</span>
+                          <span className="text-sm font-medium group-hover:text-[#14462a] transition-all" style={{ color: '#2D2D2D' }}>View Invoice</span>
                         </Link>
                       </DropdownMenuItem>
                       <DropdownMenuItem className="gap-3 rounded-xl p-3 cursor-pointer group transition-all hover:bg-[rgba(24,119,242,0.04)]">
@@ -521,7 +521,7 @@ export default function InvoicesPage() {
                         >
                           <Download01Icon size={16} style={{ color: '#059669' }} />
                         </div>
-                        <span className="text-sm font-medium group-hover:text-[#1877F2] transition-all" style={{ color: '#2D2D2D' }}>Download</span>
+                        <span className="text-sm font-medium group-hover:text-[#14462a] transition-all" style={{ color: '#2D2D2D' }}>Download</span>
                       </DropdownMenuItem>
                       <DropdownMenuSeparator className="my-2" />
                       <DropdownMenuItem className="gap-3 rounded-xl p-3 cursor-pointer group transition-all hover:bg-red-50">
@@ -567,7 +567,7 @@ export default function InvoicesPage() {
                 onClick={() => setCurrentPage(page)}
                 className="h-9 w-9 p-0 rounded-xl border-0 shadow-sm transition-all hover:shadow-md"
                 style={{
-                  backgroundColor: page === currentPage ? '#1877F2' : 'white',
+                  backgroundColor: page === currentPage ? '#14462a' : 'white',
                   color: page === currentPage ? 'white' : '#2D2D2D'
                 }}
               >

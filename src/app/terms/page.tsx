@@ -44,7 +44,7 @@ export default function TermsOfServicePage() {
                 </span>
               </div>
 
-              <h1 className="mb-4 text-4xl font-semibold tracking-tight text-black sm:text-5xl">
+              <h1 className="mb-4 text-4xl font-semibold tracking-tight text-[#14462a] sm:text-5xl">
                 Terms of Service — Professional, clear, and trustworthy
               </h1>
 

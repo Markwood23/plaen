@@ -17,7 +17,7 @@ function Switch({
         className
       )}
       style={{
-        backgroundColor: props.checked ? "#1877F2" : "#E4E6EB"
+        backgroundColor: props.checked ? "#14462a" : "#E4E6EB"
       }}
       {...props}
     >

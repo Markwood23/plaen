@@ -55,7 +55,7 @@ export default function BankTransfersPage() {
               </div>
               
               <div className="max-w-3xl">
-                <h1 className="text-4xl font-semibold tracking-tight text-black sm:text-5xl mb-6">
+                <h1 className="text-4xl font-semibold tracking-tight text-[#14462a] sm:text-5xl mb-6">
                   Bank Transfers
                 </h1>
                 <p className="text-xl leading-8 text-gray-700">

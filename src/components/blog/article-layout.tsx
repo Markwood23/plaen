@@ -76,7 +76,7 @@ export function ArticleLayout({
                 </span>
               </div>
 
-              <h1 className="mb-6 text-4xl font-semibold tracking-tight text-black sm:text-5xl">
+              <h1 className="mb-6 text-4xl font-semibold tracking-tight text-[#14462a] sm:text-5xl">
                 {title}
               </h1>
 
@@ -153,7 +153,7 @@ export function ArticleLayout({
           {relatedPosts && relatedPosts.length > 0 && (
             <section className="border-t border-gray-200 bg-gray-50 py-16" data-animate="fade-up">
               <div className="mx-auto max-w-6xl px-6">
-                <h2 className="mb-8 text-2xl font-semibold text-black">Related Articles</h2>
+                <h2 className="mb-8 text-2xl font-semibold text-[#14462a]">Related Articles</h2>
                 <div className="grid gap-6 md:grid-cols-3">
                   {relatedPosts.map((post) => (
                     <Link key={post.slug} href={`/blog/${post.slug}`}>
