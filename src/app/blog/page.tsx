@@ -8,6 +8,7 @@ import { PageEffects } from "@/components/marketing/home-page-effects";
 import { Book1, People, Clock, ArrowRight2 } from "iconsax-react";
 import type { BlogPost } from "@/components/blog/blog-article-grid";
 import { BlogInteractiveSection } from "@/components/blog/blog-interactive-section";
+import { BlogHeroActions } from "@/components/blog/blog-hero-actions";
 
 const categories = [
   { name: "All", slug: "all", count: 12 },
@@ -155,22 +156,7 @@ export default function BlogPage() {
                     Essays and guides covering Money + Meaning, frictionless paylinks, Africa-first rails, tamper-evident receipts, and using Finance Notes & Docs to build a durable finance memory.
                   </p>
                 </div>
-                <div className="flex flex-wrap gap-4">
-                  <Link href="#articles">
-                    <SmartButton size="lg" className="px-6">
-                      Explore articles
-                    </SmartButton>
-                  </Link>
-                  <Link href="/blog/freelancer-invoice-guide">
-                    <SmartButton
-                      size="lg"
-                      variant="outline"
-                      className="border-gray-300 bg-white px-6 text-gray-700 hover:border-black hover:text-black"
-                    >
-                      Download invoicing guide
-                    </SmartButton>
-                  </Link>
-                </div>
+                <BlogHeroActions posts={blogPosts} />
                 <div className="grid gap-6 rounded-3xl border border-gray-200 bg-white/70 p-8 shadow-[0_24px_80px_rgba(15,15,15,0.07)] backdrop-blur-sm sm:grid-cols-2 lg:grid-cols-3">
                   {stats.map((stat) => {
                     const Icon = stat.icon;
