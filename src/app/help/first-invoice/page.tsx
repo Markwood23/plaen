@@ -1,294 +1,221 @@
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { ArrowLeft, FileText, Plus, Send, ArrowRight, CheckCircle, Eye } from "lucide-react";
-import { MarketingHeader } from "@/components/marketing/marketing-header";
-import { MarketingFooter } from "@/components/marketing/marketing-footer";
+"use client";
+
+import { HelpArticleLayout } from "@/components/help/help-article-layout";
+import { TickCircle, DocumentText, UserAdd, DollarCircle, Send2 } from "iconsax-react";
+
+const invoiceSteps = [
+  {
+    icon: UserAdd,
+    title: "Add client details",
+    description: "Enter your client's name, email, and billing address.",
+    color: "#B45309"
+  },
+  {
+    icon: DocumentText,
+    title: "Add line items",
+    description: "Describe your services with quantities and prices.",
+    color: "#0D9488"
+  },
+  {
+    icon: DollarCircle,
+    title: "Set payment options",
+    description: "Choose how you want to receive payment.",
+    color: "#D97706"
+  },
+  {
+    icon: Send2,
+    title: "Send invoice",
+    description: "Review and send directly to your client.",
+    color: "#14462a"
+  }
+];
 
 export default function FirstInvoicePage() {
-  const year = new Date().getFullYear();
-
   return (
-    <>
-      <MarketingHeader />
-      <div className="relative min-h-screen bg-white text-black">
-        <main>
-          <section className="mx-auto max-w-4xl px-6 py-20">
-            <div className="mb-8">
-              <Link href="/help" className="inline-flex items-center text-sm text-gray-700 hover:text-black">
-                <ArrowLeft className="mr-2 h-4 w-4" />
-                Back to Help Center
-              </Link>
-            </div>
+    <HelpArticleLayout
+      title="Creating Your First Invoice"
+      description="Learn how to create and send a professional invoice to your client in just a few minutes."
+      category="Getting Started"
+      categoryColor="#14462a"
+      readTime="4 min read"
+      relatedArticles={[
+        {
+          title: "Setting up payment methods",
+          description: "Configure how you get paid",
+          slug: "payment-setup",
+          readTime: "3 min read"
+        },
+        {
+          title: "Invoice builder guide",
+          description: "Master the invoice builder",
+          slug: "invoice-builder",
+          readTime: "5 min read"
+        }
+      ]}
+    >
+      <h2>Overview</h2>
+      <p>
+        Creating an invoice with Plaen is simple and takes just a few minutes. 
+        This guide walks you through each step to create and send your first 
+        professional invoice.
+      </p>
 
-            <div className="space-y-8">
+      <div className="not-prose my-12 grid gap-6 sm:grid-cols-2">
+        {invoiceSteps.map((step, index) => {
+          const Icon = step.icon;
+          return (
+            <div key={step.title} className="flex gap-4">
+              <div 
+                className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl"
+                style={{ backgroundColor: `${step.color}15` }}
+              >
+                <Icon size={20} color={step.color} variant="Bulk" />
+              </div>
               <div>
-                <span className="inline-flex items-center gap-2 rounded-full border border-gray-200 px-3 py-1 text-xs uppercase tracking-wider text-gray-500">
-                  <FileText className="h-3 w-3" />
-                  Getting Started
-                </span>
-                <h1 className="mt-4 text-4xl font-bold tracking-tight text-[#14462a]">
-                  Your first invoice
-                </h1>
-                <p className="mt-4 text-xl text-gray-700">
-                  Walk through creating, customizing, and sending your first professional 
-                  invoice with Plaen's intuitive invoice builder.
-                </p>
-                <div className="mt-4 flex items-center gap-4 text-sm text-gray-500">
-                  <span>Last updated: November 2024</span>
-                  <span>•</span>
-                  <span>5 min read</span>
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-medium text-gray-500">Step {index + 1}</span>
                 </div>
-              </div>
-
-              <div className="article-content prose prose-xl prose-gray max-w-none leading-[2] prose-headings:text-black prose-headings:font-semibold prose-p:text-gray-700 prose-p:leading-[2] prose-li:text-gray-700 prose-li:leading-[2] prose-blockquote:text-gray-700 prose-blockquote:leading-[2] prose-strong:text-black prose-a:text-black prose-a:no-underline hover:prose-a:underline">
-                <h2>Before you start</h2>
-                <p>
-                  Make sure you've completed these setup steps:
-                </p>
-                <div className="not-prose my-6 grid gap-3 rounded-2xl border border-gray-200 bg-gray-50 p-6 sm:grid-cols-2">
-                  {["Created your Plaen account", "Verified your email address", "Connected at least one payment method", "Added your business information (if applicable)"].map((item) => (
-                    <div key={item} className="flex items-start gap-3">
-                      <CheckCircle className="mt-1 h-4 w-4 text-gray-600" aria-hidden="true" />
-                      <p className="text-sm leading-[1.8] text-gray-700">{item}</p>
-                    </div>
-                  ))}
-                </div>
-
-                <p>
-                  If you haven't completed these steps, check out our 
-                  <a href="/help/creating-account">account creation</a> and 
-                  <a href="/help/payment-setup">payment setup</a> guides first.
-                </p>
-
-                <h2>Step 1: Start a new invoice</h2>
-                <p>
-                  From your Plaen dashboard:
-                </p>
-                <ol>
-                  <li>Click the <strong>"New Invoice"</strong> button (usually a prominent button in the top right)</li>
-                  <li>Or use the <strong>Plus (+)</strong> icon in the sidebar</li>
-                  <li>Select <strong>"Create Invoice"</strong> from the menu</li>
-                </ol>
-
-                <div className="not-prose my-6 rounded-lg border border-gray-200 p-6 bg-gray-50">
-                  <div className="flex items-center gap-3 mb-3">
-                    <Plus className="h-5 w-5 text-gray-700" />
-                    <h4 className="font-semibold text-black">Pro tip</h4>
-                  </div>
-                  <p className="text-sm text-gray-700">
-                    You can also use the keyboard shortcut <kbd className="px-2 py-1 bg-white border border-gray-200 rounded text-xs">Ctrl + N</kbd> 
-                    (or <kbd className="px-2 py-1 bg-white border border-gray-200 rounded text-xs">Cmd + N</kbd> on Mac) to quickly create a new invoice.
-                  </p>
-                </div>
-
-                <h2>Step 2: Add client information</h2>
-                <p>
-                  The first section of your invoice is client details:
-                </p>
-
-                <h3>New client</h3>
-                <p>If this is a new client, you'll need to add:</p>
-                <ul>
-                  <li><strong>Client name:</strong> Individual name or company name</li>
-                  <li><strong>Email address:</strong> Where the invoice will be sent</li>
-                  <li><strong>Address:</strong> Billing address (optional but recommended)</li>
-                  <li><strong>Phone number:</strong> Contact number (optional)</li>
-                </ul>
-
-                <h3>Existing client</h3>
-                <p>
-                  If you've invoiced this client before, start typing their name and 
-                  select them from the dropdown. All their information will be auto-filled.
-                </p>
-
-                <h2>Step 3: Add invoice items</h2>
-                <p>
-                  Now add the products or services you're billing for:
-                </p>
-
-                <ol>
-                  <li><strong>Item description:</strong> Clearly describe what you're charging for</li>
-                  <li><strong>Quantity:</strong> Number of units (hours, pieces, etc.)</li>
-                  <li><strong>Rate:</strong> Price per unit</li>
-                  <li><strong>Amount:</strong> Total for this line (calculated automatically)</li>
-                </ol>
-
-                <h3>Example line items:</h3>
-                <div className="not-prose my-6 space-y-3">
-                  <div className="rounded-lg border border-gray-200 bg-white p-4 text-sm">
-                    <div className="font-medium">Web Design - Homepage</div>
-                    <div className="text-gray-700">Qty: 1 × Rate: GHS 2,500 = <strong>GHS 2,500</strong></div>
-                  </div>
-                  <div className="rounded-lg border border-gray-200 bg-white p-4 text-sm">
-                    <div className="font-medium">Consultation Hours</div>
-                    <div className="text-gray-700">Qty: 5 × Rate: GHS 200 = <strong>GHS 1,000</strong></div>
-                  </div>
-                  <div className="rounded-lg border border-gray-200 bg-white p-4 text-sm">
-                    <div className="font-medium">Logo Design Revisions</div>
-                    <div className="text-gray-700">Qty: 3 × Rate: GHS 150 = <strong>GHS 450</strong></div>
-                  </div>
-                </div>
-
-                <p>
-                  Click <strong>"Add Item"</strong> to add more line items. You can add as many 
-                  items as needed for your invoice.
-                </p>
-
-                <h2>Step 4: Set payment terms</h2>
-                <p>
-                  Configure when and how you want to be paid:
-                </p>
-
-                <h3>Due date</h3>
-                <ul>
-                  <li><strong>Due immediately:</strong> Payment expected upon receipt</li>
-                  <li><strong>Net 15:</strong> Payment due within 15 days</li>
-                  <li><strong>Net 30:</strong> Payment due within 30 days (most common)</li>
-                  <li><strong>Custom date:</strong> Pick a specific due date</li>
-                </ul>
-
-                <h3>Payment methods</h3>
-                <p>
-                  Select which payment methods to show on this invoice. You can choose 
-                  from the payment methods you've set up in your account.
-                </p>
-
-                <h2>Step 5: Add notes and customization</h2>
-                
-                <h3>Invoice notes</h3>
-                <p>Add any additional information for your client:</p>
-                <ul>
-                  <li>Project details or specifications</li>
-                  <li>Thank you message</li>
-                  <li>Next steps or deliverables</li>
-                  <li>Contact information for questions</li>
-                </ul>
-
-                <h3>Invoice number</h3>
-                <p>
-                  Plaen automatically generates invoice numbers, but you can customize 
-                  the format in your settings. Common formats include:
-                </p>
-                <ul>
-                  <li>INV-001, INV-002, INV-003</li>
-                  <li>2024-001, 2024-002, 2024-003</li>
-                  <li>Your initials + number (JD-001)</li>
-                </ul>
-
-                <h2>Step 6: Preview your invoice</h2>
-                <p>
-                  Before sending, always preview your invoice:
-                </p>
-
-                <ol>
-                  <li>Click <strong>"Preview"</strong> to see how it will look to your client</li>
-                  <li>Check all amounts and calculations</li>
-                  <li>Verify client information is correct</li>
-                  <li>Review payment methods and due date</li>
-                  <li>Read through any notes or terms</li>
-                </ol>
-
-                <div className="not-prose my-8 rounded-lg border border-gray-200 bg-gray-50 p-6">
-                  <div className="flex gap-4">
-                    <Eye className="h-5 w-5 text-gray-700 mt-0.5 flex-shrink-0" />
-                    <div>
-                      <h4 className="font-semibold text-black mb-3">Preview checklist</h4>
-                      <ul className="text-gray-700 space-y-2">
-                        <li>• Are all amounts correct?</li>
-                        <li>• Is the client email address right?</li>
-                        <li>• Do the payment methods show correctly?</li>
-                        <li>• Is the due date appropriate?</li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-
-                <h2>Step 7: Send your invoice</h2>
-                <p>
-                  When you're satisfied with the preview, you have several options:
-                </p>
-
-                <h3>Send via email</h3>
-                <ol>
-                  <li>Click <strong>"Send Invoice"</strong></li>
-                  <li>Review the email message (you can customize it)</li>
-                  <li>Click <strong>"Send Now"</strong> to deliver immediately</li>
-                  <li>Or schedule it to send later</li>
-                </ol>
-
-                <h3>Share via link</h3>
-                <ol>
-                  <li>Click <strong>"Get Shareable Link"</strong></li>
-                  <li>Copy the secure link</li>
-                  <li>Share via WhatsApp, SMS, or any messaging app</li>
-                </ol>
-
-                <h3>Download PDF</h3>
-                <ol>
-                  <li>Click <strong>"Download PDF"</strong></li>
-                  <li>Print or save the PDF</li>
-                  <li>Send via your preferred method</li>
-                </ol>
-
-                <h2>After sending</h2>
-                <p>
-                  Once your invoice is sent, you can track its progress:
-                </p>
-
-                <div className="not-prose my-6 grid gap-4 md:grid-cols-3">
-                  <div className="rounded-lg border border-gray-200 bg-white p-4 text-center">
-                    <Send className="mx-auto mb-2 h-8 w-8 text-gray-500" />
-                    <div className="font-medium text-sm">Sent</div>
-                    <div className="text-xs text-gray-500">Invoice delivered</div>
-                  </div>
-                  <div className="rounded-lg border border-gray-200 bg-white p-4 text-center">
-                    <Eye className="mx-auto mb-2 h-8 w-8 text-gray-500" />
-                    <div className="font-medium text-sm">Viewed</div>
-                    <div className="text-xs text-gray-500">Client opened it</div>
-                  </div>
-                  <div className="rounded-lg border border-gray-200 bg-white p-4 text-center">
-                    <CheckCircle className="mx-auto mb-2 h-8 w-8 text-gray-500" />
-                    <div className="font-medium text-sm">Paid</div>
-                    <div className="text-xs text-gray-500">Payment received</div>
-                  </div>
-                </div>
-
-                <h2>Payment reminders</h2>
-                <p>
-                  Plaen automatically sends payment reminders for overdue invoices. 
-                  You can also send manual reminders or follow up with clients directly.
-                </p>
-
-                <h2>Common first invoice mistakes</h2>
-                <ul>
-                  <li><strong>Wrong client email:</strong> Double-check the email address</li>
-                  <li><strong>Unclear descriptions:</strong> Be specific about what you're charging for</li>
-                  <li><strong>Missing payment methods:</strong> Make sure clients know how to pay</li>
-                  <li><strong>Unrealistic due dates:</strong> Give clients reasonable time to pay</li>
-                  <li><strong>Missing contact info:</strong> Include ways for clients to reach you with questions</li>
-                </ul>
-
-                <div className="not-prose mt-12 flex flex-col gap-4 sm:flex-row">
-                  <Link href="/contact">
-                    <Button size="lg">
-                      Talk to our team
-                      <ArrowRight className="ml-2 h-4 w-4" />
-                    </Button>
-                  </Link>
-                  <Link href="/help/invoice-builder">
-                    <Button size="lg" variant="outline">
-                      Learn about invoice builder
-                    </Button>
-                  </Link>
-                </div>
-
+                <h3 className="font-semibold text-black">{step.title}</h3>
+                <p className="text-sm text-gray-700 mt-1">{step.description}</p>
               </div>
             </div>
-          </section>
-        </main>
-
-        <MarketingFooter year={year} />
+          );
+        })}
       </div>
-    </>
+
+      <h2>Step 1: Start a New Invoice</h2>
+      <p>
+        From your dashboard, click the <strong>"Create Invoice"</strong> button. This opens 
+        the invoice builder where you'll enter all the details for your invoice.
+      </p>
+
+      <h2>Step 2: Add Client Information</h2>
+      <p>
+        Enter your client's details in the "Bill To" section:
+      </p>
+      <ul>
+        <li><strong>Client name:</strong> Individual or company name</li>
+        <li><strong>Email address:</strong> Where the invoice will be sent</li>
+        <li><strong>Billing address:</strong> Optional but recommended</li>
+        <li><strong>Phone number:</strong> For payment follow-up</li>
+      </ul>
+
+      <div className="not-prose my-6 rounded-lg border border-gray-200 bg-gray-50 p-4">
+        <p className="text-sm text-gray-700">
+          <strong className="text-black">💡 Tip:</strong> Save client details for future invoices. 
+          Next time, just select them from your contacts list.
+        </p>
+      </div>
+
+      <h2>Step 3: Add Line Items</h2>
+      <p>
+        Line items are the services or products you're billing for. For each item, add:
+      </p>
+      <ul>
+        <li><strong>Description:</strong> What you're charging for</li>
+        <li><strong>Quantity:</strong> Number of units or hours</li>
+        <li><strong>Rate:</strong> Price per unit</li>
+        <li><strong>Amount:</strong> Automatically calculated</li>
+      </ul>
+
+      <h3>Writing Good Descriptions</h3>
+      <p>
+        Be specific about what you delivered. Good descriptions help clients understand 
+        the value and reduce payment questions.
+      </p>
+
+      <div className="not-prose my-6 space-y-3">
+        <div className="flex items-start gap-3 rounded-lg border border-gray-200 p-4">
+          <TickCircle size={18} color="#14462a" variant="Bulk" className="flex-shrink-0 mt-0.5" />
+          <div>
+            <strong className="text-black text-sm">Good example:</strong>
+            <p className="text-sm text-gray-700">"Website design - 5-page responsive site with contact form and SEO optimization"</p>
+          </div>
+        </div>
+        <div className="flex items-start gap-3 rounded-lg border border-gray-200 p-4 bg-gray-50">
+          <TickCircle size={18} color="#9CA3AF" variant="Bulk" className="flex-shrink-0 mt-0.5" />
+          <div>
+            <strong className="text-black text-sm">Avoid:</strong>
+            <p className="text-sm text-gray-700">"Web work"</p>
+          </div>
+        </div>
+      </div>
+
+      <h2>Step 4: Set Payment Terms</h2>
+      <p>
+        Choose when payment is due:
+      </p>
+      <ul>
+        <li><strong>Due on receipt:</strong> Payment expected immediately</li>
+        <li><strong>Net 15:</strong> Due within 15 days</li>
+        <li><strong>Net 30:</strong> Due within 30 days (most common)</li>
+        <li><strong>Custom date:</strong> Specific due date</li>
+      </ul>
+
+      <h2>Step 5: Select Payment Methods</h2>
+      <p>
+        Choose how your client can pay. Offering multiple options increases the 
+        likelihood of faster payment:
+      </p>
+      <ul>
+        <li><strong>Mobile Money:</strong> MTN, Vodafone, AirtelTigo</li>
+        <li><strong>Bank Transfer:</strong> Local and international</li>
+        <li><strong>Cryptocurrency:</strong> Bitcoin, USDC, Ethereum</li>
+      </ul>
+
+      <div className="not-prose my-6 rounded-lg border border-[#D9770615] bg-[#D9770608] p-4">
+        <p className="text-sm text-gray-700">
+          <strong className="text-[#D97706]">⚡ Pro tip:</strong> Mobile money is the fastest 
+          payment method for clients in Ghana. Consider making it your primary option.
+        </p>
+      </div>
+
+      <h2>Step 6: Review and Send</h2>
+      <p>
+        Before sending, review your invoice for:
+      </p>
+      <ul>
+        <li>Correct client information</li>
+        <li>Accurate line item descriptions and amounts</li>
+        <li>Proper payment terms and due date</li>
+        <li>Your contact information is correct</li>
+      </ul>
+
+      <p>
+        When everything looks good, click <strong>"Send Invoice"</strong>. Your client 
+        will receive an email with a link to view and pay the invoice.
+      </p>
+
+      <h2>After Sending</h2>
+      <p>
+        Once sent, you can track your invoice status from the dashboard:
+      </p>
+      <ul>
+        <li><strong>Sent:</strong> Invoice delivered to client's email</li>
+        <li><strong>Viewed:</strong> Client has opened the invoice</li>
+        <li><strong>Partial:</strong> Part of the amount has been paid</li>
+        <li><strong>Paid:</strong> Full payment received</li>
+      </ul>
+
+      <h2>Quick Tips for Success</h2>
+      <div className="not-prose my-8 space-y-3">
+        <div className="flex items-start gap-3">
+          <TickCircle size={18} color="#14462a" variant="Bulk" className="flex-shrink-0 mt-1" />
+          <span className="text-gray-700">Send invoices promptly after completing work</span>
+        </div>
+        <div className="flex items-start gap-3">
+          <TickCircle size={18} color="#14462a" variant="Bulk" className="flex-shrink-0 mt-1" />
+          <span className="text-gray-700">Use clear, professional descriptions</span>
+        </div>
+        <div className="flex items-start gap-3">
+          <TickCircle size={18} color="#14462a" variant="Bulk" className="flex-shrink-0 mt-1" />
+          <span className="text-gray-700">Offer multiple payment options</span>
+        </div>
+        <div className="flex items-start gap-3">
+          <TickCircle size={18} color="#14462a" variant="Bulk" className="flex-shrink-0 mt-1" />
+          <span className="text-gray-700">Follow up if payment is overdue</span>
+        </div>
+      </div>
+    </HelpArticleLayout>
   );
 }

@@ -2,7 +2,7 @@ import { MarketingHeader } from "@/components/marketing/marketing-header";
 import { MarketingFooter } from "@/components/marketing/marketing-footer";
 import { PageEffects } from "@/components/marketing/home-page-effects";
 import { Breadcrumb } from "@/components/ui/breadcrumb";
-import { Shield, Calendar } from "lucide-react";
+import { SecuritySafe, Calendar } from "iconsax-react";
 
 export default function PrivacyPolicyPage() {
   const year = new Date().getFullYear();
@@ -39,7 +39,7 @@ export default function PrivacyPolicyPage() {
 
               <div className="mb-6">
                 <span className="inline-flex items-center rounded-full border border-gray-200 bg-gray-50 px-3 py-1 text-xs font-medium text-gray-600">
-                  <Shield className="mr-1 h-3 w-3" />
+                  <SecuritySafe size={12} color="currentColor" className="mr-1" variant="Bulk" />
                   Legal Document
                 </span>
               </div>
@@ -50,7 +50,7 @@ export default function PrivacyPolicyPage() {
 
               <div className="flex items-center gap-4 text-sm text-gray-500">
                 <div className="flex items-center gap-1">
-                  <Calendar className="h-4 w-4" />
+                  <Calendar size={16} color="currentColor" variant="Bulk" />
                   Last updated: November 6, 2024
                 </div>
                 <div>Effective date: November 6, 2024</div>

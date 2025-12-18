@@ -1,242 +1,268 @@
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { ArrowLeft, CheckCircle, CreditCard, Smartphone, Bitcoin, Building2, ArrowRight } from "lucide-react";
-import { MarketingHeader } from "@/components/marketing/marketing-header";
-import { MarketingFooter } from "@/components/marketing/marketing-footer";
+"use client";
 
-const paymentMethods = [
+import { HelpArticleLayout } from "@/components/help/help-article-layout";
+import { TickCircle, CloseCircle, Clock, DollarCircle, RefreshCircle } from "iconsax-react";
+
+const paymentStatuses = [
   {
-    name: "Mobile Money",
-    description: "Accept payments through MTN, Vodafone, AirtelTigo, and other mobile money services across Africa.",
-    icon: Smartphone,
-    color: "#059669", // Green
-    features: [
-      "Instant payments in seconds",
-      "No bank account required for clients", 
-      "Available 24/7 including weekends",
-      "Low transaction fees (1-3%)"
-    ]
+    status: "Pending",
+    description: "Invoice sent, awaiting payment",
+    color: "#F59E0B",
+    icon: Clock
   },
   {
-    name: "Bank Transfers",
-    description: "Direct bank-to-bank transfers for traditional banking customers and larger transactions.",
-    icon: Building2,
-    color: "#14462a", // Blue
-    features: [
-      "Secure bank-grade encryption",
-      "Support for local and international transfers",
-      "Automated reconciliation",
-      "Detailed transaction records"
-    ]
+    status: "Processing",
+    description: "Payment initiated, being processed",
+    color: "#0D9488",
+    icon: RefreshCircle
   },
   {
-    name: "Cryptocurrency",
-    description: "Accept Bitcoin, USDC, and other cryptocurrencies for global, borderless payments.",
-    icon: Bitcoin,
-    color: "#F59E0B", // Orange
-    features: [
-      "Global accessibility",
-      "Fast settlement times",
-      "Lower fees for international payments",
-      "Transparent blockchain records"
-    ]
+    status: "Paid",
+    description: "Full payment received",
+    color: "#14462a",
+    icon: TickCircle
   },
   {
-    name: "Credit & Debit Cards", 
-    description: "Traditional card payments for customers who prefer using Visa, Mastercard, or local cards.",
-    icon: CreditCard,
-    color: "#14462a", // Purple
-    features: [
-      "Wide customer acceptance",
-      "Instant payment confirmation",
-      "Fraud protection included",
-      "Support for international cards"
-    ]
+    status: "Partial",
+    description: "Part of the amount paid",
+    color: "#6B7280",
+    icon: DollarCircle
+  },
+  {
+    status: "Failed",
+    description: "Payment attempt unsuccessful",
+    color: "#DC2626",
+    icon: CloseCircle
   }
 ];
 
 export default function PaymentsPage() {
-  const year = new Date().getFullYear();
-
   return (
-    <>
-      <MarketingHeader />
-      
-      <div className="bg-white">
-        <main>
-          {/* Article Header */}
-          <section className="border-b border-gray-200 bg-gray-50 py-16">
-            <div className="mx-auto max-w-4xl px-6">
-              <div className="mb-8">
-                <Link
-                  href="/help"
-                  className="inline-flex items-center gap-2 text-sm text-gray-700 hover:text-black"
-                >
-                  <ArrowLeft className="h-4 w-4" />
-                  Back to Help Center
-                </Link>
+    <HelpArticleLayout
+      title="Understanding Payments"
+      description="Learn how payment tracking works, understand payment statuses, and manage your incoming payments effectively."
+      category="Payments"
+      categoryColor="#D97706"
+      readTime="4 min read"
+      relatedArticles={[
+        {
+          title: "Setting up payment methods",
+          description: "Configure how you get paid",
+          slug: "payment-setup",
+          readTime: "3 min read"
+        },
+        {
+          title: "Mobile money payments",
+          description: "Accept MTN, Vodafone, AirtelTigo",
+          slug: "mobile-money",
+          readTime: "4 min read"
+        }
+      ]}
+    >
+      <h2>Payment Tracking Overview</h2>
+      <p>
+        Plaen automatically tracks payments against your invoices, giving you 
+        real-time visibility into your cash flow and outstanding amounts.
+      </p>
+
+      <h2>Payment Statuses</h2>
+      <p>
+        Each invoice has a payment status that updates automatically:
+      </p>
+
+      <div className="not-prose my-8 space-y-4">
+        {paymentStatuses.map((item) => {
+          const Icon = item.icon;
+          return (
+            <div 
+              key={item.status}
+              className="flex items-center gap-4 rounded-xl border border-gray-200 p-4"
+            >
+              <div 
+                className="flex h-10 w-10 items-center justify-center rounded-lg"
+                style={{ backgroundColor: `${item.color}15` }}
+              >
+                <Icon size={20} color={item.color} variant="Bulk" />
               </div>
-              
-              <div className="max-w-3xl">
-                <h1 className="text-4xl font-semibold tracking-tight text-[#14462a] sm:text-5xl mb-6">
-                  Payment Methods
-                </h1>
-                <p className="text-xl leading-8 text-gray-700">
-                  Learn about the different ways your clients can pay you through Plaen. We support multiple 
-                  payment methods to ensure you can accept payments from customers anywhere in the world.
-                </p>
-              </div>
-            </div>
-          </section>
-
-          {/* Article Content */}
-          <section className="py-20">
-            <div className="mx-auto max-w-4xl px-6">
-              <div className="article-content prose prose-xl prose-gray max-w-none leading-[2] prose-headings:text-black prose-headings:font-semibold prose-p:text-gray-700 prose-p:leading-[2] prose-li:text-gray-700 prose-li:leading-[2] prose-blockquote:text-gray-700 prose-blockquote:leading-[2] prose-strong:text-black prose-a:text-black prose-a:no-underline hover:prose-a:underline">
-                
-                <h2 className="text-2xl font-semibold text-black mb-8 mt-16 first:mt-0">
-                  Overview
-                </h2>
-                
-                <p className="text-lg leading-8 text-gray-700 mb-8">
-                  Plaen supports multiple payment methods to give your clients flexibility and ensure you get paid 
-                  quickly and securely. Each payment method is designed to work seamlessly across different regions 
-                  and client preferences.
-                </p>
-
-                <p className="text-lg leading-8 text-gray-700 mb-12">
-                  Whether your clients prefer mobile money, bank transfers, or cryptocurrency, we've got you covered. 
-                  Our payment infrastructure handles all the complexity while you focus on delivering great work.
-                </p>
-
-                <h2 className="text-2xl font-semibold text-black mb-8 mt-16">
-                  Payment Methods
-                </h2>
-                
-                <div className="not-prose space-y-12">
-                  {paymentMethods.map((method) => {
-                    const Icon = method.icon;
-                    return (
-                      <div 
-                        key={method.name} 
-                        className="border-l-4 pl-8"
-                        style={{ borderColor: method.color }}
-                      >
-                        <div className="flex items-start gap-4 mb-6">
-                          <div 
-                            className="flex h-12 w-12 items-center justify-center rounded-xl text-white"
-                            style={{ backgroundColor: method.color }}
-                          >
-                            <Icon className="h-6 w-6" />
-                          </div>
-                          <div>
-                            <h3 className="text-2xl font-semibold text-black mb-3">{method.name}</h3>
-                            <p className="text-lg leading-7 text-gray-700">{method.description}</p>
-                          </div>
-                        </div>
-                        
-                        <div className="ml-16">
-                          <h4 className="text-lg font-semibold text-black mb-4">Key features:</h4>
-                          <div className="grid gap-3 sm:grid-cols-2">
-                            {method.features.map((feature, i) => (
-                              <div key={i} className="flex items-center gap-3">
-                                <CheckCircle 
-                                  className="h-4 w-4 flex-shrink-0" 
-                                  style={{ color: method.color }}
-                                />
-                                <span className="text-gray-700">{feature}</span>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-
-                <h2 className="text-2xl font-semibold text-black mb-8 mt-20">
-                  Setting Up Payment Methods
-                </h2>
-
-                <p className="text-lg leading-8 text-gray-700 mb-8">
-                  To start accepting payments, you'll need to set up at least one payment method in your Plaen account. 
-                  We recommend enabling multiple payment methods to give your clients options and increase your 
-                  payment success rate.
-                </p>
-
-                <h3 className="text-2xl font-semibold text-black mb-4 mt-12">
-                  Step 1: Access Payment Settings
-                </h3>
-                
-                <p className="text-lg leading-7 text-gray-700 mb-6">
-                  Navigate to your account settings and select "Payment Methods" from the menu. Here you'll see 
-                  all available payment options for your region.
-                </p>
-
-                <h3 className="text-2xl font-semibold text-black mb-4 mt-12">
-                  Step 2: Connect Your Accounts
-                </h3>
-                
-                <p className="text-lg leading-7 text-gray-700 mb-6">
-                  For each payment method you want to enable, you'll need to provide the necessary account information. 
-                  This might include bank account details, mobile money numbers, or cryptocurrency wallet addresses.
-                </p>
-
-                <h3 className="text-2xl font-semibold text-black mb-4 mt-12">
-                  Step 3: Verify and Test
-                </h3>
-                
-                <p className="text-lg leading-7 text-gray-700 mb-8">
-                  Once you've added your payment methods, we recommend sending yourself a test invoice to ensure 
-                  everything is working correctly. This helps identify any issues before your first real payment.
-                </p>
-
-                <h2 className="text-2xl font-semibold text-black mb-8 mt-20">
-                  Payment Fees
-                </h2>
-
-                <p className="text-lg leading-8 text-gray-700 mb-8">
-                  Payment processing fees vary by method and region. Generally, mobile money has the lowest fees 
-                  (1-3%), followed by bank transfers (2-4%), and card payments (2.9% + $0.30). Cryptocurrency 
-                  fees depend on network conditions but are typically very low for stablecoins.
-                </p>
-
-                <p className="text-lg leading-8 text-gray-700 mb-12">
-                  All fees are clearly displayed before you enable each payment method, and there are no hidden charges. 
-                  You can see detailed fee information in your payment settings.
-                </p>
-
-                <h2 className="text-2xl font-semibold text-black mb-8 mt-20">
-                  Need Help?
-                </h2>
-
-                <p className="text-lg leading-8 text-gray-700 mb-8">
-                  If you need assistance setting up payment methods or have questions about fees and processing times, 
-                  our support team is here to help. You can contact us through the chat widget or email us at 
-                  <a href="mailto:support@plaen.tech" className="text-black underline"> support@plaen.tech</a>.
-                </p>
-
-                <div className="not-prose mt-16 flex flex-col gap-4 sm:flex-row">
-                  <Link href="/contact">
-                    <Button size="lg">
-                      Talk to our team
-                      <ArrowRight className="ml-2 h-4 w-4" />
-                    </Button>
-                  </Link>
-                  <Link href="/help">
-                    <Button size="lg" variant="outline" className="border-gray-200 text-black hover:bg-gray-50">
-                      More guides
-                    </Button>
-                  </Link>
-                </div>
-
+              <div>
+                <h3 className="font-semibold text-black">{item.status}</h3>
+                <p className="text-sm text-gray-600">{item.description}</p>
               </div>
             </div>
-          </section>
-        </main>
-
-        <MarketingFooter year={year} />
+          );
+        })}
       </div>
-    </>
+
+      <h2>How Payment Tracking Works</h2>
+
+      <h3>Automatic Matching</h3>
+      <p>
+        When a client pays using the payment link in their invoice, Plaen 
+        automatically:
+      </p>
+      <ul>
+        <li>Records the payment amount and date</li>
+        <li>Updates the invoice status</li>
+        <li>Sends you a notification</li>
+        <li>Marks the invoice as paid (if full amount)</li>
+      </ul>
+
+      <h3>Manual Payment Recording</h3>
+      <p>
+        For payments received outside Plaen (cash, check, direct transfer):
+      </p>
+      <ol>
+        <li>Open the invoice</li>
+        <li>Click <strong>"Record Payment"</strong></li>
+        <li>Enter the amount received</li>
+        <li>Add payment method and reference</li>
+        <li>Save the payment record</li>
+      </ol>
+
+      <h2>Payment Notifications</h2>
+      <p>
+        Stay informed about your payments:
+      </p>
+      <ul>
+        <li><strong>Payment received:</strong> Instant notification when paid</li>
+        <li><strong>Payment failed:</strong> Alert if a payment attempt fails</li>
+        <li><strong>Overdue reminder:</strong> When invoices pass their due date</li>
+      </ul>
+
+      <div className="not-prose my-6 rounded-lg border border-gray-200 bg-gray-50 p-4">
+        <p className="text-sm text-gray-700">
+          <strong className="text-black">📱 Mobile notifications:</strong> Enable push 
+          notifications in your account settings to get instant payment alerts on your phone.
+        </p>
+      </div>
+
+      <h2>Viewing Payment History</h2>
+      <p>
+        Access your complete payment history from the dashboard:
+      </p>
+      <ol>
+        <li>Go to <strong>Payments</strong> in the main navigation</li>
+        <li>View all payments with filters for date, status, and client</li>
+        <li>Click any payment to see full details</li>
+        <li>Export payment data for accounting</li>
+      </ol>
+
+      <h3>Payment Details</h3>
+      <p>
+        Each payment record includes:
+      </p>
+      <ul>
+        <li>Amount received</li>
+        <li>Payment method used</li>
+        <li>Transaction reference</li>
+        <li>Date and time</li>
+        <li>Linked invoice</li>
+        <li>Payer information</li>
+      </ul>
+
+      <h2>Partial Payments</h2>
+      <p>
+        Plaen supports partial payments for flexible billing:
+      </p>
+      <ul>
+        <li>Accept deposits before starting work</li>
+        <li>Allow milestone payments</li>
+        <li>Track remaining balance automatically</li>
+        <li>Send reminders for outstanding amounts</li>
+      </ul>
+
+      <h3>How Partial Payments Work</h3>
+      <ol>
+        <li>Client pays any amount less than total</li>
+        <li>Invoice status changes to "Partial"</li>
+        <li>Balance due is calculated automatically</li>
+        <li>Client can pay remaining amount later</li>
+        <li>Status changes to "Paid" when complete</li>
+      </ol>
+
+      <h2>Payment Timeline</h2>
+      <p>
+        Different payment methods have different processing times:
+      </p>
+
+      <div className="not-prose my-8 overflow-hidden rounded-xl border border-gray-200">
+        <table className="w-full text-sm">
+          <thead className="bg-gray-50">
+            <tr>
+              <th className="px-4 py-3 text-left font-semibold text-black">Method</th>
+              <th className="px-4 py-3 text-left font-semibold text-black">Processing Time</th>
+              <th className="px-4 py-3 text-left font-semibold text-black">When You'll See It</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-gray-200">
+            <tr>
+              <td className="px-4 py-3 text-gray-700">Mobile Money</td>
+              <td className="px-4 py-3 text-gray-700">Instant</td>
+              <td className="px-4 py-3 text-gray-700">Immediately</td>
+            </tr>
+            <tr>
+              <td className="px-4 py-3 text-gray-700">Bank Transfer (local)</td>
+              <td className="px-4 py-3 text-gray-700">1-2 business days</td>
+              <td className="px-4 py-3 text-gray-700">When cleared</td>
+            </tr>
+            <tr>
+              <td className="px-4 py-3 text-gray-700">Bank Transfer (intl)</td>
+              <td className="px-4 py-3 text-gray-700">3-5 business days</td>
+              <td className="px-4 py-3 text-gray-700">When cleared</td>
+            </tr>
+            <tr>
+              <td className="px-4 py-3 text-gray-700">Cryptocurrency</td>
+              <td className="px-4 py-3 text-gray-700">Minutes to hours</td>
+              <td className="px-4 py-3 text-gray-700">After confirmations</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2>Handling Payment Issues</h2>
+
+      <h3>Payment Not Showing</h3>
+      <p>
+        If a client says they've paid but you don't see it:
+      </p>
+      <ol>
+        <li>Ask the client for their payment receipt/reference</li>
+        <li>Check if payment went to the correct account</li>
+        <li>Allow processing time (especially for bank transfers)</li>
+        <li>Record the payment manually if verified</li>
+      </ol>
+
+      <h3>Failed Payments</h3>
+      <p>
+        If a payment fails:
+      </p>
+      <ul>
+        <li>Client is notified automatically</li>
+        <li>They can retry with the same or different method</li>
+        <li>Contact support if issues persist</li>
+      </ul>
+
+      <h2>Reporting and Analytics</h2>
+      <p>
+        Track your payment performance:
+      </p>
+      <ul>
+        <li><strong>Total received:</strong> This month, quarter, year</li>
+        <li><strong>Outstanding:</strong> Unpaid invoice amounts</li>
+        <li><strong>Average payment time:</strong> Days from invoice to payment</li>
+        <li><strong>Payment methods:</strong> Which methods clients prefer</li>
+      </ul>
+
+      <h2>Exporting Payment Data</h2>
+      <p>
+        Export your payment history for accounting:
+      </p>
+      <ol>
+        <li>Go to <strong>Payments → Export</strong></li>
+        <li>Select date range</li>
+        <li>Choose format (CSV, PDF)</li>
+        <li>Download and use in your accounting software</li>
+      </ol>
+    </HelpArticleLayout>
   );
 }

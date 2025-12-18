@@ -121,7 +121,7 @@
 - **Default**: `#E4E6EB` (very light gray)
 
 ### Semantic Colors
-- **Success Green**: `#059669`
+- **Success Green**: `#0D9488`
 - **Warning Orange**: `#F59E0B`
 - **Error Red**: `#DC2626`
 - **Purple**: `#7C3AED`

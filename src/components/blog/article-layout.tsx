@@ -4,16 +4,17 @@ import { useEffect } from "react";
 import Link from "next/link";
 import { MarketingHeader } from "@/components/marketing/marketing-header";
 import { MarketingFooter } from "@/components/marketing/marketing-footer";
+import { PageEffects } from "@/components/marketing/home-page-effects";
 import { useRevealAnimation } from "@/hooks/use-reveal-animation";
 import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { Button } from "@/components/ui/button";
 import {
-  ArrowLeft,
-  BookmarkPlus,
+  ArrowLeft2,
+  ArchiveAdd,
   Calendar,
   Clock,
-  Share2,
-} from "lucide-react";
+  Send2,
+} from "iconsax-react";
 
 export type RelatedPost = {
   title: string;
@@ -57,9 +58,10 @@ export function ArticleLayout({
   return (
     <>
       <MarketingHeader />
+      <PageEffects resetScroll />
       <div className="relative min-h-screen bg-white text-black">
         <main>
-          <section className="border-b border-gray-200 bg-gradient-to-b from-gray-50 to-white py-12">
+          <section className="border-b border-gray-200 bg-gradient-to-b from-gray-50 to-white pt-32 pb-12">
             <div className="mx-auto max-w-4xl px-6">
               <div className="mb-6">
                 <Breadcrumb
@@ -88,7 +90,7 @@ export function ArticleLayout({
                   <span className="font-medium text-black">{author}</span>
                 </div>
                 <div className="flex items-center gap-1">
-                  <Calendar className="h-4 w-4" />
+                  <Calendar size={16} color="currentColor" variant="Bulk" />
                   {new Date(date).toLocaleDateString("en-US", {
                     month: "long",
                     day: "numeric",
@@ -96,16 +98,16 @@ export function ArticleLayout({
                   })}
                 </div>
                 <div className="flex items-center gap-1">
-                  <Clock className="h-4 w-4" />
+                  <Clock size={16} color="currentColor" variant="Bulk" />
                   {readTime}
                 </div>
                 <div className="flex items-center gap-3 ml-auto">
                   <Button variant="ghost" size="sm" className="text-gray-500 hover:text-black">
-                    <Share2 className="mr-1 h-4 w-4" />
+                    <Send2 size={16} color="currentColor" variant="Bulk" className="mr-1" />
                     Share
                   </Button>
                   <Button variant="ghost" size="sm" className="text-gray-500 hover:text-black">
-                    <BookmarkPlus className="mr-1 h-4 w-4" />
+                    <ArchiveAdd size={16} color="currentColor" variant="Bulk" className="mr-1" />
                     Save
                   </Button>
                 </div>
@@ -132,7 +134,7 @@ export function ArticleLayout({
                 <div className="flex flex-wrap items-center justify-between gap-4">
                   <Link href="/blog">
                     <Button variant="outline" className="border-gray-200 text-black hover:border-black hover:bg-gray-50">
-                      <ArrowLeft className="mr-2 h-4 w-4" />
+                      <ArrowLeft2 size={16} color="currentColor" variant="Bulk" className="mr-2" />
                       Back to Blog
                     </Button>
                   </Link>

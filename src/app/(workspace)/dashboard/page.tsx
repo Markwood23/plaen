@@ -37,8 +37,8 @@ export default function DashboardPage() {
       icon: Card,
       up: true,
       sparkline: "M2 20 Q10 8, 18 12 T34 8 Q42 14, 50 10 T62 6",
-      iconColor: "#059669", // Green for incoming
-      iconBg: "rgba(5, 150, 105, 0.08)",
+      iconColor: "#0D9488", // Green for incoming
+      iconBg: "rgba(13, 148, 136, 0.08)",
     },
     {
       label: "Outgoing",
@@ -81,7 +81,7 @@ export default function DashboardPage() {
                   </div>
                 <div
                   className="inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-semibold"
-                  style={kpi.up ? { backgroundColor: 'rgba(5, 150, 105, 0.12)', color: '#059669' } : { backgroundColor: 'rgba(220, 38, 38, 0.12)', color: '#DC2626' }}
+                  style={kpi.up ? { backgroundColor: 'rgba(13, 148, 136, 0.12)', color: '#0D9488' } : { backgroundColor: 'rgba(220, 38, 38, 0.12)', color: '#DC2626' }}
                     >
                       {kpi.delta}
                 </div>
@@ -348,7 +348,7 @@ export default function DashboardPage() {
               </DropdownMenuItem>
               <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer group transition-all hover:bg-[rgba(24,119,242,0.04)]">
                 <div className="flex items-center gap-3">
-                  <ArrowRight size={16} color="#059669" />
+                  <ArrowRight size={16} color="#0D9488" />
                   <span className="text-sm font-medium group-hover:text-[#14462a] transition-all" style={{ color: '#2D2D2D' }}>Weekly</span>
                 </div>
               </DropdownMenuItem>

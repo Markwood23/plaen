@@ -1,220 +1,198 @@
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { ArrowLeft, Building2, User, CheckCircle, ArrowRight, Briefcase } from "lucide-react";
-import { MarketingHeader } from "@/components/marketing/marketing-header";
-import { MarketingFooter } from "@/components/marketing/marketing-footer";
+"use client";
+
+import { HelpArticleLayout } from "@/components/help/help-article-layout";
+import { User, Building, TickCircle, CloseCircle } from "iconsax-react";
+
+const accountTypes = [
+  {
+    name: "Personal Account",
+    description: "Perfect for freelancers and independent professionals who bill clients under their own name.",
+    icon: User,
+    color: "#B45309",
+    features: [
+      "Create unlimited invoices",
+      "Accept mobile money and bank transfers",
+      "Personal branding with your name",
+      "Simple, streamlined dashboard",
+      "Track payments and expenses",
+      "Export reports for taxes"
+    ]
+  },
+  {
+    name: "Business Account",
+    description: "Designed for registered businesses, agencies, and companies with multiple team members.",
+    icon: Building,
+    color: "#14462a",
+    features: [
+      "Everything in Personal, plus:",
+      "Add your company logo and branding",
+      "Include business registration details",
+      "Multiple payment methods per invoice",
+      "Advanced reporting and analytics",
+      "Priority customer support"
+    ]
+  }
+];
 
 export default function AccountTypesPage() {
-  const year = new Date().getFullYear();
-
   return (
-    <>
-      <MarketingHeader />
-      <div className="relative min-h-screen bg-white text-black">
-        <main>
-          <section className="mx-auto max-w-4xl px-6 py-20">
-            <div className="mb-8">
-              <Link href="/help" className="inline-flex items-center text-sm text-gray-700 hover:text-black">
-                <ArrowLeft className="mr-2 h-4 w-4" />
-                Back to Help Center
-              </Link>
-            </div>
+    <HelpArticleLayout
+      title="Account Types"
+      description="Understand the differences between Personal and Business accounts to choose the right option for your invoicing needs."
+      category="Account Settings"
+      categoryColor="#6B7280"
+      readTime="3 min read"
+      relatedArticles={[
+        {
+          title: "Creating your account",
+          description: "Step-by-step guide to signing up",
+          slug: "creating-account",
+          readTime: "2 min read"
+        },
+        {
+          title: "Getting started",
+          description: "Your first steps with Plaen",
+          slug: "getting-started",
+          readTime: "5 min read"
+        }
+      ]}
+    >
+      <h2>Choosing the Right Account Type</h2>
+      <p>
+        Plaen offers two account types to match your invoicing needs: Personal and Business. 
+        Both types give you access to our powerful invoicing tools, but with features tailored 
+        to different use cases.
+      </p>
 
-            <div className="space-y-8">
-              <div>
-                <span className="inline-flex items-center gap-2 rounded-full border border-gray-200 px-3 py-1 text-xs uppercase tracking-wider text-gray-500">
-                  <User className="h-3 w-3" />
-                  Getting Started
-                </span>
-                <h1 className="mt-4 text-4xl font-bold tracking-tight text-[#14462a]">
-                  Personal vs Business setup
-                </h1>
-                <p className="mt-4 text-xl text-gray-700">
-                  Choose the right account type for your needs. You can upgrade or change 
-                  your account type at any time.
-                </p>
-                <div className="mt-4 flex items-center gap-4 text-sm text-gray-500">
-                  <span>Last updated: November 2024</span>
-                  <span>•</span>
-                  <span>3 min read</span>
+      <div className="not-prose my-12 space-y-8">
+        {accountTypes.map((type) => {
+          const Icon = type.icon;
+          return (
+            <div 
+              key={type.name}
+              className="rounded-2xl border border-gray-200 p-8"
+            >
+              <div className="flex items-start gap-4 mb-6">
+                <div 
+                  className="flex h-12 w-12 items-center justify-center rounded-xl"
+                  style={{ backgroundColor: `${type.color}15` }}
+                >
+                  <Icon size={24} color={type.color} variant="Bulk" />
+                </div>
+                <div>
+                  <h3 className="text-2xl font-semibold text-black">{type.name}</h3>
+                  <p className="text-gray-700 mt-1">{type.description}</p>
                 </div>
               </div>
 
-              <div className="article-content prose prose-xl prose-gray max-w-none leading-[2] prose-headings:text-black prose-headings:font-semibold prose-p:text-gray-700 prose-p:leading-[2] prose-li:text-gray-700 prose-li:leading-[2] prose-blockquote:text-gray-700 prose-blockquote:leading-[2] prose-strong:text-black prose-a:text-black prose-a:no-underline hover:prose-a:underline">
-                <h2>Account types overview</h2>
-                <p>
-                  Plaen offers two main account types, each designed for different use cases. 
-                  The type you choose affects your invoice templates, available features, and 
-                  how your account is organized.
-                </p>
-
-                <div className="not-prose my-8 grid gap-6 md:grid-cols-2">
-                  <div className="rounded-xl border border-gray-200 p-6 shadow-sm">
-                    <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-gray-100">
-                      <User className="h-6 w-6 text-gray-700" />
-                    </div>
-                    <h3 className="text-lg font-semibold text-black">Individual Account</h3>
-                    <p className="mt-2 text-sm text-gray-700">
-                      Perfect for freelancers, consultants, and solo professionals
-                    </p>
-                    <div className="mt-4 space-y-2">
-                      <div className="flex items-center gap-2 text-sm">
-                        <CheckCircle className="h-4 w-4 text-gray-400" />
-                        <span>Personal invoicing</span>
-                      </div>
-                      <div className="flex items-center gap-2 text-sm">
-                        <CheckCircle className="h-4 w-4 text-gray-400" />
-                        <span>Single user access</span>
-                      </div>
-                      <div className="flex items-center gap-2 text-sm">
-                        <CheckCircle className="h-4 w-4 text-gray-400" />
-                        <span>Basic reporting</span>
-                      </div>
-                    </div>
+              <div className="space-y-3">
+                {type.features.map((feature, i) => (
+                  <div key={i} className="flex items-center gap-3">
+                    <TickCircle size={18} color={type.color} variant="Bulk" />
+                    <span className="text-gray-700">{feature}</span>
                   </div>
-
-                  <div className="rounded-xl border border-gray-200 p-6 shadow-sm">
-                    <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-gray-100">
-                      <Building2 className="h-6 w-6 text-gray-700" />
-                    </div>
-                    <h3 className="text-lg font-semibold text-black">Business Account</h3>
-                    <p className="mt-2 text-sm text-gray-700">
-                      Ideal for companies, agencies, and growing teams
-                    </p>
-                    <div className="mt-4 space-y-2">
-                      <div className="flex items-center gap-2 text-sm">
-                        <CheckCircle className="h-4 w-4 text-gray-400" />
-                        <span>Company branding</span>
-                      </div>
-                      <div className="flex items-center gap-2 text-sm">
-                        <CheckCircle className="h-4 w-4 text-gray-400" />
-                        <span>Team collaboration</span>
-                      </div>
-                      <div className="flex items-center gap-2 text-sm">
-                        <CheckCircle className="h-4 w-4 text-gray-400" />
-                        <span>Advanced reporting</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <h2>Individual Account details</h2>
-                <p>
-                  Individual accounts are designed for solo professionals who need to send 
-                  invoices under their own name.
-                </p>
-
-                <h3>Best for:</h3>
-                <ul>
-                  <li>Freelance designers, developers, writers</li>
-                  <li>Independent consultants</li>
-                  <li>Tutors and coaches</li>
-                  <li>Artists and creatives</li>
-                  <li>Any solo professional</li>
-                </ul>
-
-                <h3>Features included:</h3>
-                <ul>
-                  <li>Unlimited invoices and clients</li>
-                  <li>Mobile money, bank transfer, and crypto payments</li>
-                  <li>Professional invoice templates</li>
-                  <li>Automatic payment reminders</li>
-                  <li>Basic expense tracking</li>
-                  <li>Export to PDF and Excel</li>
-                  <li>Email support</li>
-                </ul>
-
-                <h2>Business Account details</h2>
-                <p>
-                  Business accounts provide additional features for companies and teams that 
-                  need more advanced invoicing and collaboration tools.
-                </p>
-
-                <h3>Best for:</h3>
-                <ul>
-                  <li>Small and medium businesses</li>
-                  <li>Digital agencies</li>
-                  <li>Consulting firms</li>
-                  <li>E-commerce stores</li>
-                  <li>Any business with multiple team members</li>
-                </ul>
-
-                <h3>Additional features:</h3>
-                <ul>
-                  <li>Custom company branding and logo</li>
-                  <li>Team member management and permissions</li>
-                  <li>Advanced reporting and analytics</li>
-                  <li>Custom invoice templates</li>
-                  <li>API access for integrations</li>
-                  <li>Priority customer support</li>
-                  <li>White-label client portals</li>
-                </ul>
-
-                <h2>Which should you choose?</h2>
-                
-                <div className="not-prose my-6 rounded-lg border border-gray-200 p-6">
-                  <div className="mb-4 flex items-center gap-3">
-                    <Briefcase className="h-5 w-5 text-gray-700" />
-                    <h4 className="font-semibold text-black">Quick decision guide</h4>
-                  </div>
-                  <div className="space-y-3 text-sm">
-                    <p><strong>Choose Individual if:</strong> You work alone, invoice under your name, and need basic invoicing features.</p>
-                    <p><strong>Choose Business if:</strong> You have a company name, work with a team, or need advanced features like custom branding.</p>
-                  </div>
-                </div>
-
-                <h2>Pricing</h2>
-                <p>
-                  Both account types start with the same free tier, which includes:
-                </p>
-                <ul>
-                  <li>Up to 5 invoices per month</li>
-                  <li>All payment methods</li>
-                  <li>Basic templates</li>
-                  <li>Email support</li>
-                </ul>
-                <p>
-                  Paid plans unlock unlimited invoicing, advanced features, and priority support. 
-                  Business accounts include additional collaboration and branding features.
-                </p>
-
-                <h2>Switching account types</h2>
-                <p>
-                  You can change your account type at any time from your account settings. 
-                  All your invoices, clients, and data will be preserved when switching.
-                </p>
-                
-                <p>
-                  To switch account types:
-                </p>
-                <ol>
-                  <li>Go to Settings → Account</li>
-                  <li>Click "Change Account Type"</li>
-                  <li>Select your new account type</li>
-                  <li>Update your profile information if needed</li>
-                </ol>
-
-                <div className="not-prose mt-12 flex flex-col gap-4 sm:flex-row">
-                  <Link href="/contact">
-                    <Button size="lg">
-                      Talk to our team
-                      <ArrowRight className="ml-2 h-4 w-4" />
-                    </Button>
-                  </Link>
-                  <Link href="/help/creating-account">
-                    <Button size="lg" variant="outline">
-                      Account creation guide
-                    </Button>
-                  </Link>
-                </div>
-
+                ))}
               </div>
             </div>
-          </section>
-        </main>
-
-        <MarketingFooter year={year} />
+          );
+        })}
       </div>
-    </>
+
+      <h2>Personal Account</h2>
+      <p>
+        The Personal account is designed for individual professionals who work independently. 
+        This includes freelancers, consultants, contractors, and anyone who bills clients 
+        under their own name rather than a registered business.
+      </p>
+
+      <h3>Best for:</h3>
+      <ul>
+        <li>Freelance designers, writers, and developers</li>
+        <li>Independent consultants and coaches</li>
+        <li>Solo service providers</li>
+        <li>Side hustle invoicing</li>
+      </ul>
+
+      <h2>Business Account</h2>
+      <p>
+        The Business account is built for registered companies and organizations that need 
+        professional business branding on their invoices. It includes features for adding 
+        company details, logos, and business registration information.
+      </p>
+
+      <h3>Best for:</h3>
+      <ul>
+        <li>Registered businesses and LLCs</li>
+        <li>Creative agencies and studios</li>
+        <li>Professional service firms</li>
+        <li>Small and medium businesses</li>
+      </ul>
+
+      <h2>Switching Account Types</h2>
+      <p>
+        You can switch between Personal and Business accounts at any time from your 
+        account settings. When you switch:
+      </p>
+      <ul>
+        <li>All your existing invoices are preserved</li>
+        <li>Your payment methods remain connected</li>
+        <li>You'll need to update your profile with the new account type details</li>
+        <li>Previous invoices will retain their original branding</li>
+      </ul>
+
+      <div className="not-prose my-8 rounded-xl border border-gray-200 bg-gray-50 p-6">
+        <h4 className="font-semibold text-black mb-2">💡 Tip</h4>
+        <p className="text-gray-700 text-sm">
+          Not sure which to choose? Start with a Personal account—it's quick to set up 
+          and you can always upgrade to Business later as your needs grow.
+        </p>
+      </div>
+
+      <h2>Comparison at a Glance</h2>
+      
+      <div className="not-prose my-8 overflow-hidden rounded-xl border border-gray-200">
+        <table className="w-full text-sm">
+          <thead className="bg-gray-50">
+            <tr>
+              <th className="px-4 py-3 text-left font-semibold text-black">Feature</th>
+              <th className="px-4 py-3 text-center font-semibold text-black">Personal</th>
+              <th className="px-4 py-3 text-center font-semibold text-black">Business</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-gray-200">
+            <tr>
+              <td className="px-4 py-3 text-gray-700">Unlimited invoices</td>
+              <td className="px-4 py-3 text-center"><TickCircle size={18} color="#14462a" variant="Bulk" className="mx-auto" /></td>
+              <td className="px-4 py-3 text-center"><TickCircle size={18} color="#14462a" variant="Bulk" className="mx-auto" /></td>
+            </tr>
+            <tr>
+              <td className="px-4 py-3 text-gray-700">Mobile money payments</td>
+              <td className="px-4 py-3 text-center"><TickCircle size={18} color="#14462a" variant="Bulk" className="mx-auto" /></td>
+              <td className="px-4 py-3 text-center"><TickCircle size={18} color="#14462a" variant="Bulk" className="mx-auto" /></td>
+            </tr>
+            <tr>
+              <td className="px-4 py-3 text-gray-700">Company logo</td>
+              <td className="px-4 py-3 text-center"><CloseCircle size={18} color="#9CA3AF" variant="Bulk" className="mx-auto" /></td>
+              <td className="px-4 py-3 text-center"><TickCircle size={18} color="#14462a" variant="Bulk" className="mx-auto" /></td>
+            </tr>
+            <tr>
+              <td className="px-4 py-3 text-gray-700">Business registration</td>
+              <td className="px-4 py-3 text-center"><CloseCircle size={18} color="#9CA3AF" variant="Bulk" className="mx-auto" /></td>
+              <td className="px-4 py-3 text-center"><TickCircle size={18} color="#14462a" variant="Bulk" className="mx-auto" /></td>
+            </tr>
+            <tr>
+              <td className="px-4 py-3 text-gray-700">Advanced analytics</td>
+              <td className="px-4 py-3 text-center"><CloseCircle size={18} color="#9CA3AF" variant="Bulk" className="mx-auto" /></td>
+              <td className="px-4 py-3 text-center"><TickCircle size={18} color="#14462a" variant="Bulk" className="mx-auto" /></td>
+            </tr>
+            <tr>
+              <td className="px-4 py-3 text-gray-700">Priority support</td>
+              <td className="px-4 py-3 text-center"><CloseCircle size={18} color="#9CA3AF" variant="Bulk" className="mx-auto" /></td>
+              <td className="px-4 py-3 text-center"><TickCircle size={18} color="#14462a" variant="Bulk" className="mx-auto" /></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </HelpArticleLayout>
   );
 }

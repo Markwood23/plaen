@@ -73,7 +73,7 @@ const mockNotes = [
     attachmentCount: 0,
     wordCount: 892,
     icon: Chart,
-    iconColor: "#059669",
+    iconColor: "#0D9488",
   },
   {
     id: "3",
@@ -145,7 +145,7 @@ const mockNotes = [
 const categories = [
   { name: "All Notes", count: 24, icon: DocumentText, color: "#2D2D2D" },
   { name: "AR Analysis", count: 8, icon: Chart, color: "#14462a" },
-  { name: "Payment Analysis", count: 5, icon: Chart, color: "#059669" },
+  { name: "Payment Analysis", count: 5, icon: Chart, color: "#0D9488" },
   { name: "Client Notes", count: 6, icon: People, color: "#14462a" },
   { name: "Tax Records", count: 3, icon: Paperclip, color: "#F59E0B" },
   { name: "Strategy", count: 2, icon: DocumentText, color: "#14462a" },
@@ -590,8 +590,8 @@ export default function FinanceNotesPage() {
               label: "This Month",
               value: notesThisMonth,
               icon: Calendar,
-              color: "#059669",
-              bg: "rgba(5, 150, 105, 0.04)",
+              color: "#0D9488",
+              bg: "rgba(13, 148, 136, 0.04)",
             },
             {
               label: "Paperclipments",

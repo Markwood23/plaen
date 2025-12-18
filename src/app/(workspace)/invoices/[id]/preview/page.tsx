@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { LogoIcon } from "@/components/ui/logo";
 import { 
   ArrowLeft2, 
   DocumentDownload, 
@@ -190,11 +191,7 @@ export default function InvoicePreviewPage({ params }: { params: Promise<{ id: s
             <div className="flex items-start justify-between mb-8">
               <div>
                 <div className="mb-4">
-                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M3 3H12V12H3V3Z" fill="#14462a"/>
-                    <path d="M14 3H21L17.5 12H14V3Z" fill="#14462a"/>
-                    <path d="M12 14H21V21H12V14Z" fill="#14462a"/>
-                  </svg>
+                  <LogoIcon size={32} />
                 </div>
                 <h1 className="text-3xl font-bold mb-2" style={{ color: '#2D2D2D' }}>{invoice.from.businessName}</h1>
                 <p className="text-sm" style={{ color: '#B0B3B8' }}>{invoice.from.email}</p>
@@ -207,7 +204,7 @@ export default function InvoicePreviewPage({ params }: { params: Promise<{ id: s
                     className="inline-flex items-center gap-1.5 text-sm px-3 py-1.5 rounded-full"
                     style={{ 
                       backgroundColor: invoice.status === 'Paid' ? '#E8F9F1' : invoice.status === 'Partially Paid' ? '#FFF4E6' : '#F9F9F9',
-                      color: invoice.status === 'Paid' ? '#059669' : invoice.status === 'Partially Paid' ? '#F59E0B' : '#B0B3B8'
+                      color: invoice.status === 'Paid' ? '#0D9488' : invoice.status === 'Partially Paid' ? '#F59E0B' : '#B0B3B8'
                     }}
                   >
                     {invoice.status === 'Paid' && <TickSquare size={16} />}

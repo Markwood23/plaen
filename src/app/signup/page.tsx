@@ -68,13 +68,58 @@ const checkPasswordStrength = (password: string) => {
     score,
     checks,
     label: score <= 1 ? "Weak" : score <= 3 ? "Fair" : score <= 4 ? "Good" : "Strong",
-    color: score <= 1 ? "#EF4444" : score <= 3 ? "#F59E0B" : score <= 4 ? "#10B981" : "#059669"
+    color: score <= 1 ? "#EF4444" : score <= 3 ? "#F59E0B" : score <= 4 ? "#14462a" : "#14462a"
   };
 };
 
 // Validation helpers
 const isValidEmail = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-const isValidPhone = (phone: string) => phone.length >= 10;
+
+// Phone formatting for Ghana numbers
+// Supports: 0XX XXX XXXX or +233 XX XXX XXXX
+const formatGhanaPhone = (value: string): string => {
+  // Remove all non-digits except + at start
+  const hasPlus = value.startsWith('+');
+  const digits = value.replace(/\D/g, '');
+  
+  if (!digits) return hasPlus ? '+' : '';
+  
+  // Handle +233 format
+  if (hasPlus || digits.startsWith('233')) {
+    const normalized = digits.startsWith('233') ? digits : digits;
+    if (normalized.startsWith('233')) {
+      const rest = normalized.slice(3);
+      if (rest.length === 0) return '+233';
+      if (rest.length <= 2) return `+233 ${rest}`;
+      if (rest.length <= 5) return `+233 ${rest.slice(0, 2)} ${rest.slice(2)}`;
+      return `+233 ${rest.slice(0, 2)} ${rest.slice(2, 5)} ${rest.slice(5, 9)}`;
+    }
+    // User typed + but no 233 yet
+    if (digits.length <= 3) return `+${digits}`;
+    if (digits.length <= 5) return `+${digits.slice(0, 3)} ${digits.slice(3)}`;
+    if (digits.length <= 8) return `+${digits.slice(0, 3)} ${digits.slice(3, 5)} ${digits.slice(5)}`;
+    return `+${digits.slice(0, 3)} ${digits.slice(3, 5)} ${digits.slice(5, 8)} ${digits.slice(8, 12)}`;
+  }
+  
+  // Handle local 0XX format
+  if (digits.startsWith('0')) {
+    if (digits.length <= 3) return digits;
+    if (digits.length <= 6) return `${digits.slice(0, 3)} ${digits.slice(3)}`;
+    return `${digits.slice(0, 3)} ${digits.slice(3, 6)} ${digits.slice(6, 10)}`;
+  }
+  
+  // If starting with other digits (like 2, 5, etc.), assume local without 0
+  if (digits.length <= 2) return `0${digits}`;
+  if (digits.length <= 5) return `0${digits.slice(0, 2)} ${digits.slice(2)}`;
+  return `0${digits.slice(0, 2)} ${digits.slice(2, 5)} ${digits.slice(5, 9)}`;
+};
+
+// Validate formatted phone - must have 10 digits (local) or 12 digits (international)
+const isValidPhone = (phone: string): boolean => {
+  const digits = phone.replace(/\D/g, '');
+  // Local: 0XXXXXXXXX (10 digits) or International: 233XXXXXXXXX (12 digits)
+  return digits.length === 10 || (digits.startsWith('233') && digits.length === 12);
+};
 
 // Custom Checkbox component
 function CustomCheckbox({ 
@@ -159,7 +204,7 @@ function CustomDropdown({
                 : "border-gray-200 text-gray-400"
         } hover:border-gray-300 hover:bg-white`}
       >
-        {Icon && <Icon size={18} color="#0D9488" className="flex-shrink-0" />}
+        {Icon && <Icon size={18} color="#14462a" className="flex-shrink-0" />}
         <span className={`flex-1 text-left truncate ${value ? "text-gray-900" : "text-gray-400"}`}>
           {value || placeholder}
         </span>
@@ -216,7 +261,7 @@ function StepIndicator({ currentStep, totalSteps }: { currentStep: number; total
         <div className="absolute top-6 left-0 right-0 h-1 bg-gray-100 rounded-full" />
         {/* Progress line */}
         <div 
-          className="absolute top-6 left-0 h-1 bg-gradient-to-r from-[#059669] to-[#14462a] rounded-full transition-all duration-500 ease-out"
+          className="absolute top-6 left-0 h-1 bg-gradient-to-r from-[#14462a] to-[#6B7280] rounded-full transition-all duration-500 ease-out"
           style={{ width: `${((currentStep - 1) / (totalSteps - 1)) * 100}%` }}
         />
         
@@ -234,9 +279,9 @@ function StepIndicator({ currentStep, totalSteps }: { currentStep: number; total
                 <div 
                   className={`relative flex h-12 w-12 items-center justify-center rounded-2xl transition-all duration-300 ${
                     isCompleted 
-                      ? "bg-[#059669] shadow-lg shadow-[#059669]/25" 
+                      ? "bg-[#14462a] shadow-lg shadow-[#14462a]/25" 
                       : isCurrent 
-                        ? "bg-[#14462a] shadow-lg shadow-[#14462a]/25 ring-4 ring-[#14462a]/10" 
+                        ? "bg-gray-500 shadow-lg shadow-gray-500/25 ring-4 ring-gray-500/10" 
                         : "bg-gray-100 border-2 border-gray-200"
                   }`}
                 >
@@ -252,7 +297,7 @@ function StepIndicator({ currentStep, totalSteps }: { currentStep: number; total
                   
                   {/* Pulse animation for current step */}
                   {isCurrent && (
-                    <span className="absolute inset-0 rounded-2xl animate-ping bg-[#14462a]/20" style={{ animationDuration: '2s' }} />
+                    <span className="absolute inset-0 rounded-2xl animate-ping bg-gray-500/20" style={{ animationDuration: '2s' }} />
                   )}
                 </div>
                 
@@ -260,20 +305,20 @@ function StepIndicator({ currentStep, totalSteps }: { currentStep: number; total
                 <div className="mt-3 flex flex-col items-center">
                   <span className={`text-xs font-semibold transition-colors duration-300 ${
                     isCompleted 
-                      ? "text-[#059669]" 
+                      ? "text-[#14462a]" 
                       : isCurrent 
-                        ? "text-[#14462a]" 
+                        ? "text-gray-600" 
                         : "text-gray-400"
                   }`}>
                     {step.label}
                   </span>
                   {isCompleted && (
-                    <span className="mt-0.5 text-[10px] text-[#059669] font-medium">
+                    <span className="mt-0.5 text-[10px] text-[#14462a] font-medium">
                       Complete
                     </span>
                   )}
                   {isCurrent && (
-                    <span className="mt-0.5 text-[10px] text-[#14462a] font-medium">
+                    <span className="mt-0.5 text-[10px] text-gray-500 font-medium">
                       In progress
                     </span>
                   )}
@@ -319,7 +364,7 @@ function AccountTypeStep({
       title: "Business",
       description: "For companies and teams with business invoicing needs",
       features: ["Business profile", "Tax documentation", "Multiple users (coming soon)"],
-      color: "#0D9488"
+      color: "#14462a"
     }
   ];
 
@@ -344,7 +389,7 @@ function AccountTypeStep({
           >
             {selected === type && (
               <div className="absolute top-4 right-4">
-                <TickCircle size={24} color="#059669" variant="Bold" />
+                <TickCircle size={24} color="#14462a" variant="Bold" />
               </div>
             )}
             <div 
@@ -358,7 +403,7 @@ function AccountTypeStep({
             <ul className="mt-4 space-y-2">
               {features.map(feature => (
                 <li key={feature} className="flex items-center gap-2 text-sm text-gray-600">
-                  <TickCircle size={14} color="#059669" variant="Bold" />
+                  <TickCircle size={14} color={color} variant="Bold" />
                   {feature}
                 </li>
               ))}
@@ -440,7 +485,7 @@ function ProfileStep({
               className={`pl-9 ${errors.email ? "!border-red-400 !bg-red-50/50" : ""}`}
             />
             {formData.email && isValidEmail(formData.email) && (
-              <TickCircle size={18} color="#059669" variant="Bold" className="absolute right-3 top-1/2 -translate-y-1/2" />
+              <TickCircle size={18} color="#14462a" variant="Bold" className="absolute right-3 top-1/2 -translate-y-1/2" />
             )}
           </div>
           {errors.email && (
@@ -460,12 +505,12 @@ function ProfileStep({
               id="phone" 
               type="tel"
               value={formData.phone}
-              onChange={(e) => onChange("phone", e.target.value)}
-              placeholder="+233 XX XXX XXXX" 
+              onChange={(e) => onChange("phone", formatGhanaPhone(e.target.value))}
+              placeholder="024 XXX XXXX" 
               className={`pl-9 ${errors.phone ? "!border-red-400 !bg-red-50/50" : ""}`}
             />
             {formData.phone && isValidPhone(formData.phone) && (
-              <TickCircle size={18} color="#059669" variant="Bold" className="absolute right-3 top-1/2 -translate-y-1/2" />
+              <TickCircle size={18} color="#14462a" variant="Bold" className="absolute right-3 top-1/2 -translate-y-1/2" />
             )}
           </div>
           {errors.phone && (
@@ -519,7 +564,7 @@ function WorkspaceStep({
         <div className="space-y-2">
           <Label htmlFor="workspaceName" className="text-sm font-medium text-gray-700">Workspace name</Label>
           <div className="relative">
-            <Briefcase size={18} color="#0D9488" className="absolute left-3 top-1/2 -translate-y-1/2" />
+            <Briefcase size={18} color="#14462a" className="absolute left-3 top-1/2 -translate-y-1/2" />
             <Input 
               id="workspaceName" 
               value={formData.workspaceName}
@@ -546,7 +591,7 @@ function WorkspaceStep({
             <div className="space-y-2">
               <Label htmlFor="businessName" className="text-sm font-medium text-gray-700">Legal business name</Label>
               <div className="relative">
-                <Building size={18} color="#0D9488" className="absolute left-3 top-1/2 -translate-y-1/2" />
+                <Building size={18} color="#14462a" className="absolute left-3 top-1/2 -translate-y-1/2" />
                 <Input 
                   id="businessName" 
                   value={formData.businessName}
@@ -710,7 +755,7 @@ function SecurityStep({
           )}
           {formData.confirmPassword && formData.password === formData.confirmPassword && (
             <div className="flex items-center gap-2 p-3 rounded-lg bg-green-50 border border-green-100">
-              <TickCircle size={16} color="#059669" variant="Bold" />
+              <TickCircle size={16} color="#14462a" variant="Bold" />
               <p className="text-xs text-green-600 font-medium">Passwords match</p>
             </div>
           )}
@@ -790,8 +835,8 @@ function SecurityStep({
 function SuccessStep({ email }: { email: string }) {
   return (
     <div className="text-center space-y-6 py-8">
-      <div className="mx-auto w-20 h-20 rounded-full bg-[#059669]/10 flex items-center justify-center">
-        <Verify size={40} color="#059669" variant="Bulk" />
+      <div className="mx-auto w-20 h-20 rounded-full bg-[#14462a]/10 flex items-center justify-center">
+        <Verify size={40} color="#14462a" variant="Bulk" />
       </div>
       <div className="space-y-2">
         <h2 className="text-2xl font-semibold text-gray-900">Check your email</h2>
@@ -931,7 +976,7 @@ export default function SignupPage() {
             <div className="absolute right-10 top-10 h-72 w-72 rounded-full bg-[rgba(0,0,0,0.03)] blur-3xl" />
             <div className="absolute left-0 bottom-0 h-80 w-80 rounded-full bg-[rgba(0,0,0,0.02)] blur-3xl" />
           </div>
-          <div className="mx-auto max-w-lg px-6 py-20">
+          <div className="mx-auto max-w-lg px-6 pt-32 pb-20">
             <SuccessStep email={formData.email} />
           </div>
         </main>
@@ -949,7 +994,7 @@ export default function SignupPage() {
           <div className="absolute left-0 bottom-0 h-80 w-80 rounded-full bg-[rgba(0,0,0,0.02)] blur-3xl" />
         </div>
         
-        <div className="mx-auto max-w-2xl px-6 py-12">
+        <div className="mx-auto max-w-2xl px-6 pt-32 pb-12">
           {/* Header */}
           <div className="text-center mb-8">
             <Badge variant="outline" className="rounded-full border-gray-200 px-4 py-1 text-xs uppercase tracking-[0.35em] text-gray-500 mb-4">
@@ -1047,15 +1092,15 @@ export default function SignupPage() {
           {/* Security badges */}
           <div className="mt-8 flex items-center justify-center gap-6 text-xs text-gray-500">
             <span className="flex items-center gap-1.5">
-              <ShieldTick size={14} color="#059669" variant="Bulk" />
+              <ShieldTick size={14} color="#14462a" variant="Bulk" />
               256-bit encryption
             </span>
             <span className="flex items-center gap-1.5">
-              <Lock1 size={14} color="#059669" variant="Bulk" />
+              <Lock1 size={14} color="#14462a" variant="Bulk" />
               SOC2 compliant
             </span>
             <span className="flex items-center gap-1.5">
-              <SecuritySafe size={14} color="#059669" variant="Bulk" />
+              <SecuritySafe size={14} color="#14462a" variant="Bulk" />
               GDPR ready
             </span>
           </div>

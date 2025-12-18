@@ -118,17 +118,17 @@ export default function ReceiptsPage() {
 
       {/* KPI Cards */}
       <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
-        <div className="group relative rounded-2xl p-6 transition-all duration-300 hover:scale-[1.02]" style={{ backgroundColor: 'rgba(5, 150, 105, 0.04)' }}>
+        <div className="group relative rounded-2xl p-6 transition-all duration-300 hover:scale-[1.02]" style={{ backgroundColor: 'rgba(13, 148, 136, 0.04)' }}>
           <div className="flex items-center justify-between mb-4">
             <div 
               className="h-12 w-12 rounded-xl flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110"
-              style={{ backgroundColor: 'rgba(5, 150, 105, 0.12)' }}
+              style={{ backgroundColor: 'rgba(13, 148, 136, 0.12)' }}
             >
-              <TickSquare size={24} color="#059669" variant="Linear" />
+              <TickSquare size={24} color="#0D9488" variant="Linear" />
             </div>
             <div
               className="inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-semibold"
-              style={{ backgroundColor: 'rgba(5, 150, 105, 0.12)', color: '#059669' }}
+              style={{ backgroundColor: 'rgba(13, 148, 136, 0.12)', color: '#0D9488' }}
             >
               +5%
             </div>
@@ -438,9 +438,9 @@ export default function ReceiptsPage() {
                       <DropdownMenuItem className="gap-3 rounded-xl p-3 cursor-pointer group transition-all hover:bg-[rgba(24,119,242,0.04)]">
                         <div 
                           className="h-8 w-8 rounded-full flex items-center justify-center transition-all"
-                          style={{ backgroundColor: 'rgba(5, 150, 105, 0.08)' }}
+                          style={{ backgroundColor: 'rgba(13, 148, 136, 0.08)' }}
                         >
-                          <DocumentDownload size={16} color="#059669" variant="Linear" />
+                          <DocumentDownload size={16} color="#0D9488" variant="Linear" />
                         </div>
                         <span className="text-sm font-medium group-hover:text-[#14462a] transition-all" style={{ color: '#2D2D2D' }}>Download</span>
                       </DropdownMenuItem>

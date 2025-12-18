@@ -343,13 +343,13 @@ export default function PaymentsPage() {
       {/* Stats Card - PRD Metrics: On-time rate, DSO */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Total Collected */}
-        <div className="group relative rounded-2xl p-6 transition-all duration-300 hover:scale-[1.02]" style={{ backgroundColor: 'rgba(5, 150, 105, 0.04)' }}>
+        <div className="group relative rounded-2xl p-6 transition-all duration-300 hover:scale-[1.02]" style={{ backgroundColor: 'rgba(13, 148, 136, 0.04)' }}>
           <div className="flex items-center justify-between mb-4">
-            <div className="h-12 w-12 rounded-full flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110" style={{ backgroundColor: 'rgba(5, 150, 105, 0.12)' }}>
-              <DollarSquare size={24} color="#059669" />
+            <div className="h-12 w-12 rounded-full flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110" style={{ backgroundColor: 'rgba(13, 148, 136, 0.12)' }}>
+              <DollarSquare size={24} color="#0D9488" />
             </div>
-            <div className="flex items-center gap-1 px-2 py-1 rounded-full" style={{ backgroundColor: 'rgba(5, 150, 105, 0.12)' }}>
-              <span className="text-xs font-semibold" style={{ color: '#059669' }}>+12.5%</span>
+            <div className="flex items-center gap-1 px-2 py-1 rounded-full" style={{ backgroundColor: 'rgba(13, 148, 136, 0.12)' }}>
+              <span className="text-xs font-semibold" style={{ color: '#0D9488' }}>+12.5%</span>
             </div>
           </div>
           <p className="text-sm mb-2" style={{ color: '#65676B', fontWeight: 500 }}>Total Collected</p>
@@ -382,8 +382,8 @@ export default function PaymentsPage() {
             <div className="h-12 w-12 rounded-full flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110" style={{ backgroundColor: 'rgba(20, 70, 42, 0.12)' }}>
               <RefreshCircle size={24} color="#14462a" />
             </div>
-            <div className="flex items-center gap-1 px-2 py-1 rounded-full" style={{ backgroundColor: 'rgba(5, 150, 105, 0.12)' }}>
-              <span className="text-xs font-semibold" style={{ color: '#059669' }}>-2.1d</span>
+            <div className="flex items-center gap-1 px-2 py-1 rounded-full" style={{ backgroundColor: 'rgba(13, 148, 136, 0.12)' }}>
+              <span className="text-xs font-semibold" style={{ color: '#0D9488' }}>-2.1d</span>
             </div>
           </div>
           <p className="text-sm mb-2" style={{ color: '#65676B', fontWeight: 500 }}>Avg DSO</p>
@@ -452,7 +452,7 @@ export default function PaymentsPage() {
                 </SelectItem>
                 <SelectItem value="paid" className="rounded-xl px-3 py-2.5 cursor-pointer transition-all">
                   <div className="flex items-center gap-3">
-                    <div className="h-2.5 w-2.5 rounded-full ring-2 ring-offset-1" style={{ backgroundColor: '#059669' }}></div>
+                    <div className="h-2.5 w-2.5 rounded-full ring-2 ring-offset-1" style={{ backgroundColor: '#0D9488' }}></div>
                     <span className="font-medium" style={{ color: '#2D2D2D' }}>Paid</span>
                   </div>
                 </SelectItem>
@@ -688,9 +688,9 @@ export default function PaymentsPage() {
                       <span className="font-medium">{allocation.daysToPayment}d</span>
                       {allocation.isOnTime && (
                         <Badge variant="outline" style={{ 
-                          backgroundColor: 'rgba(5, 150, 105, 0.08)',
-                          color: '#059669',
-                          borderColor: '#059669',
+                          backgroundColor: 'rgba(13, 148, 136, 0.08)',
+                          color: '#0D9488',
+                          borderColor: '#0D9488',
                           fontSize: '10px',
                           padding: '2px 6px'
                         }}>
@@ -726,9 +726,9 @@ export default function PaymentsPage() {
                       <DropdownMenuItem className="gap-3 rounded-xl p-3 cursor-pointer group transition-all hover:bg-[rgba(24,119,242,0.04)]">
                         <div 
                           className="h-8 w-8 rounded-full flex items-center justify-center transition-all"
-                          style={{ backgroundColor: 'rgba(5, 150, 105, 0.08)' }}
+                          style={{ backgroundColor: 'rgba(13, 148, 136, 0.08)' }}
                         >
-                          <Eye size={16} color="#059669" />
+                          <Eye size={16} color="#0D9488" />
                         </div>
                         <span className="text-sm font-medium group-hover:text-[#14462a] transition-all" style={{ color: '#2D2D2D' }}>
                           View Receipt

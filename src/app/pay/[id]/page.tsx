@@ -11,6 +11,7 @@ import { use, useEffect, useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { LogoIcon } from "@/components/ui/logo";
 import { PayMethods } from "@/components/pay/PayMethods";
 import { Receipt } from "@/components/pay/Receipt";
 import { 
@@ -265,11 +266,7 @@ export default function PayPage({ params }: { params: Promise<{ id: string }> })
               <div className="flex justify-between items-start mb-4">
                 <div>
                   <div className="mb-4">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M3 3H12V12H3V3Z" fill="#14462a"/>
-                      <path d="M14 3H21L17.5 12H14V3Z" fill="#14462a"/>
-                      <path d="M12 14H21V21H12V14Z" fill="#14462a"/>
-                    </svg>
+                    <LogoIcon size={24} />
                   </div>
                   <h1 className="text-2xl font-bold mb-1" style={{ color: '#2D2D2D' }}>{invoice.from.business_name}</h1>
                   <p className="text-sm" style={{ color: '#B0B3B8' }}>{invoice.from.email}</p>
@@ -310,7 +307,7 @@ export default function PayPage({ params }: { params: Promise<{ id: string }> })
                 {invoice.status === 'paid' && (
                   <span 
                     className="inline-flex items-center gap-1.5 text-sm px-3 py-1.5 rounded-full"
-                    style={{ backgroundColor: '#E8F9F1', color: '#059669' }}
+                    style={{ backgroundColor: '#E8F9F1', color: '#0D9488' }}
                   >
                     <CheckCircle2 className="h-4 w-4" />
                     Paid
@@ -572,7 +569,7 @@ export default function PayPage({ params }: { params: Promise<{ id: string }> })
                             className="inline-block text-sm px-2 py-0.5 rounded"
                             style={{ 
                               backgroundColor: payment.status === 'completed' || payment.status === 'Confirmed' ? '#E8F9F1' : '#FFF4E6',
-                              color: payment.status === 'completed' || payment.status === 'Confirmed' ? '#059669' : '#F59E0B'
+                              color: payment.status === 'completed' || payment.status === 'Confirmed' ? '#0D9488' : '#F59E0B'
                             }}
                           >
                             {payment.status}

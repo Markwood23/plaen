@@ -1,346 +1,308 @@
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { ArrowLeft, FileText, Edit3, ArrowRight, Layers, Calculator, CheckCircle, XCircle } from "lucide-react";
-import { MarketingHeader } from "@/components/marketing/marketing-header";
-import { MarketingFooter } from "@/components/marketing/marketing-footer";
+"use client";
+
+import { HelpArticleLayout } from "@/components/help/help-article-layout";
+import { 
+  TickCircle, 
+  DocumentText, 
+  Edit2, 
+  Gallery, 
+  DollarCircle,
+  Calendar,
+  ReceiptEdit,
+  Brush
+} from "iconsax-react";
+
+const builderSections = [
+  {
+    icon: Edit2,
+    title: "Header Section",
+    description: "Your business details and invoice number",
+    color: "#14462a"
+  },
+  {
+    icon: ReceiptEdit,
+    title: "Client Details",
+    description: "Who you're billing",
+    color: "#B45309"
+  },
+  {
+    icon: DocumentText,
+    title: "Line Items",
+    description: "Services and products",
+    color: "#0D9488"
+  },
+  {
+    icon: DollarCircle,
+    title: "Payment Options",
+    description: "How clients can pay",
+    color: "#D97706"
+  }
+];
 
 export default function InvoiceBuilderPage() {
-  const year = new Date().getFullYear();
-
   return (
-    <>
-      <MarketingHeader />
-      <div className="relative min-h-screen bg-white text-black">
-        <main>
-          <section className="mx-auto max-w-4xl px-6 py-20">
-            <div className="mb-8">
-              <Link href="/help" className="inline-flex items-center text-sm text-gray-700 hover:text-black">
-                <ArrowLeft className="mr-2 h-4 w-4" />
-                Back to Help Center
-              </Link>
-            </div>
+    <HelpArticleLayout
+      title="Invoice Builder Guide"
+      description="Master the invoice builder to create professional, detailed invoices that help you get paid faster."
+      category="Creating Invoices"
+      categoryColor="#0D9488"
+      readTime="5 min read"
+      relatedArticles={[
+        {
+          title: "Adding items and totals",
+          description: "Line items, taxes, and discounts",
+          slug: "items-totals",
+          readTime: "3 min read"
+        },
+        {
+          title: "Saving drafts",
+          description: "Work on invoices over time",
+          slug: "drafts",
+          readTime: "3 min read"
+        }
+      ]}
+    >
+      <h2>Invoice Builder Overview</h2>
+      <p>
+        The invoice builder is your workspace for creating professional invoices. 
+        It's designed to be intuitive while giving you full control over every 
+        detail of your invoice.
+      </p>
 
-            <div className="space-y-8">
-              <div>
-                <span className="inline-flex items-center gap-2 rounded-full border border-gray-200 px-3 py-1 text-xs uppercase tracking-wider text-gray-500">
-                  <FileText className="h-3 w-3" />
-                  Creating Invoices
-                </span>
-                <h1 className="mt-4 text-4xl font-bold tracking-tight text-[#14462a]">
-                  Invoice builder walkthrough
-                </h1>
-                <p className="mt-4 text-xl text-gray-700">
-                  Master Plaen's powerful invoice builder with this comprehensive guide to 
-                  creating professional invoices efficiently.
-                </p>
-                <div className="mt-4 flex items-center gap-4 text-sm text-gray-500">
-                  <span>Last updated: November 2024</span>
-                  <span>•</span>
-                  <span>6 min read</span>
+      <div className="not-prose my-12 grid gap-4 sm:grid-cols-2">
+        {builderSections.map((section) => {
+          const Icon = section.icon;
+          return (
+            <div 
+              key={section.title}
+              className="rounded-xl border border-gray-200 p-6"
+            >
+              <div className="flex items-center gap-3 mb-2">
+                <div 
+                  className="flex h-10 w-10 items-center justify-center rounded-lg"
+                  style={{ backgroundColor: `${section.color}15` }}
+                >
+                  <Icon size={20} color={section.color} variant="Bulk" />
                 </div>
+                <h3 className="font-semibold text-black">{section.title}</h3>
               </div>
-
-              <div className="article-content prose prose-xl prose-gray max-w-none leading-[2] prose-headings:text-black prose-headings:font-semibold prose-p:text-gray-700 prose-p:leading-[2] prose-li:text-gray-700 prose-li:leading-[2] prose-blockquote:text-gray-700 prose-blockquote:leading-[2] prose-strong:text-black prose-a:text-black prose-a:no-underline hover:prose-a:underline">
-                <h2>Invoice builder overview</h2>
-                <p>
-                  Plaen's invoice builder is designed to be intuitive while providing 
-                  powerful features for creating professional invoices. The interface 
-                  is divided into logical sections that follow the natural flow of 
-                  invoice creation.
-                </p>
-
-                <div className="not-prose my-8 grid gap-6 md:grid-cols-2">
-                  <div className="rounded-xl border border-gray-200 p-6">
-                    <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-gray-100">
-                      <Edit3 className="h-6 w-6 text-gray-700" />
-                    </div>
-                    <h3 className="text-lg font-semibold text-black">Live Preview</h3>
-                    <p className="mt-2 text-sm text-gray-700">
-                      See exactly how your invoice will look as you build it
-                    </p>
-                  </div>
-
-                  <div className="rounded-xl border border-gray-200 p-6">
-                    <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-gray-100">
-                      <Calculator className="h-6 w-6 text-gray-700" />
-                    </div>
-                    <h3 className="text-lg font-semibold text-black">Auto-calculations</h3>
-                    <p className="mt-2 text-sm text-gray-700">
-                      Totals, taxes, and discounts calculated automatically
-                    </p>
-                  </div>
-                </div>
-
-                <h2>Getting started</h2>
-                <p>
-                  Access the invoice builder by:
-                </p>
-                <ol>
-                  <li>Clicking <strong>"New Invoice"</strong> from your dashboard</li>
-                  <li>Using the <strong>Plus (+)</strong> icon in the navigation</li>
-                  <li>Keyboard shortcut: <kbd className="px-2 py-1 bg-gray-100 rounded text-sm">Ctrl/Cmd + N</kbd></li>
-                  <li>From the invoices list, click <strong>"Create Invoice"</strong></li>
-                </ol>
-
-                <h2>Section 1: Invoice header</h2>
-                <p>
-                  The top section contains your business information and invoice metadata:
-                </p>
-
-                <h3>Your business details</h3>
-                <ul>
-                  <li><strong>Company name/Your name:</strong> Pulled from your account settings</li>
-                  <li><strong>Business address:</strong> Your registered business address</li>
-                  <li><strong>Contact information:</strong> Phone, email, website</li>
-                  <li><strong>Logo:</strong> Upload your company logo (Business accounts)</li>
-                </ul>
-
-                <h3>Invoice metadata</h3>
-                <ul>
-                  <li><strong>Invoice number:</strong> Auto-generated, customizable format</li>
-                  <li><strong>Invoice date:</strong> Defaults to today, adjustable</li>
-                  <li><strong>Due date:</strong> Based on your default payment terms</li>
-                  <li><strong>Reference number:</strong> Optional project or PO reference</li>
-                </ul>
-
-                <div className="not-prose my-6 rounded-lg border border-gray-200 p-6 bg-gray-50">
-                  <div className="flex items-center gap-3 mb-3">
-                    <Layers className="h-5 w-5 text-gray-700" />
-                    <h4 className="font-semibold text-black">Customization tip</h4>
-                  </div>
-                  <p className="text-sm text-gray-700">
-                    You can update your business details in Settings → Profile. 
-                    Changes apply to all new invoices automatically.
-                  </p>
-                </div>
-
-                <h2>Section 2: Client information</h2>
-                <p>
-                  Add or select client details for billing:
-                </p>
-
-                <h3>Client search</h3>
-                <p>
-                  Start typing in the client field to search existing clients. 
-                  Plaen will show matching results and auto-fill all information 
-                  when you select a client.
-                </p>
-
-                <h3>New client fields</h3>
-                <ul>
-                  <li><strong>Client name:</strong> Individual or company name</li>
-                  <li><strong>Email address:</strong> Primary contact email</li>
-                  <li><strong>Billing address:</strong> Complete address for records</li>
-                  <li><strong>Phone number:</strong> Contact number (optional)</li>
-                  <li><strong>Tax ID:</strong> Business registration number (optional)</li>
-                </ul>
-
-                <h3>Client management</h3>
-                <p>
-                  New clients are automatically saved to your contacts. You can:
-                </p>
-                <ul>
-                  <li>Edit client information before saving</li>
-                  <li>Add internal notes about the client</li>
-                  <li>Set default payment terms for this client</li>
-                  <li>Assign clients to specific projects or categories</li>
-                </ul>
-
-                <h2>Section 3: Line items</h2>
-                <p>
-                  The heart of your invoice - products and services you're billing for:
-                </p>
-
-                <h3>Adding items</h3>
-                <p>
-                  Click <strong>"Add Item"</strong> to create a new line. Each line contains:
-                </p>
-                <ul>
-                  <li><strong>Description:</strong> What you're charging for</li>
-                  <li><strong>Quantity:</strong> Number of units (hours, pieces, etc.)</li>
-                  <li><strong>Rate:</strong> Price per unit</li>
-                  <li><strong>Amount:</strong> Automatically calculated (Qty × Rate)</li>
-                </ul>
-
-                <h3 className="text-xl font-semibold text-black mt-12 mb-6">Item descriptions</h3>
-                <p className="text-lg leading-8 text-gray-700 mb-8">Write clear, professional descriptions:</p>
-                <div className="not-prose my-8 space-y-6">
-                  <div className="rounded-lg border border-gray-200 bg-gray-50 p-6">
-                    <div className="mb-3 flex items-center gap-3 font-semibold text-black">
-                      <CheckCircle className="h-5 w-5 text-gray-600" aria-hidden="true" />
-                      Good examples
-                    </div>
-                    <div className="text-gray-700 leading-6">
-                      • "Website design and development - Homepage and 5 interior pages"<br/>
-                      • "Marketing consultation - Q4 strategy planning session"<br/>
-                      • "Logo design with 3 concept variations and final files"
-                    </div>
-                  </div>
-                  <div className="rounded-lg border border-gray-200 bg-white p-6">
-                    <div className="mb-3 flex items-center gap-3 font-semibold text-black">
-                      <XCircle className="h-5 w-5 text-gray-600" aria-hidden="true" />
-                      Avoid these
-                    </div>
-                    <div className="text-gray-700 leading-6">
-                      • "Work"<br/>
-                      • "Design stuff"<br/>
-                      • "Project"
-                    </div>
-                  </div>
-                </div>
-
-                <h3>Managing multiple items</h3>
-                <ul>
-                  <li><strong>Reorder items:</strong> Drag and drop to rearrange</li>
-                  <li><strong>Duplicate items:</strong> Copy similar services or products</li>
-                  <li><strong>Delete items:</strong> Remove unwanted lines</li>
-                  <li><strong>Item templates:</strong> Save common items for reuse</li>
-                </ul>
-
-                <h2>Section 4: Calculations and totals</h2>
-                <p>
-                  Plaen automatically handles all calculations:
-                </p>
-
-                <h3>Subtotal</h3>
-                <p>
-                  Sum of all line item amounts before taxes and adjustments.
-                </p>
-
-                <h3>Discounts</h3>
-                <p>
-                  Apply discounts as:
-                </p>
-                <ul>
-                  <li><strong>Percentage:</strong> 10% off total</li>
-                  <li><strong>Fixed amount:</strong> GHS 500 discount</li>
-                  <li><strong>Per-item:</strong> Different discounts per line item</li>
-                </ul>
-
-                <h3>Taxes</h3>
-                <p>
-                  Configure tax settings:
-                </p>
-                <ul>
-                  <li><strong>VAT/Sales tax:</strong> Standard rate or custom percentage</li>
-                  <li><strong>Multiple tax rates:</strong> Different rates for different items</li>
-                  <li><strong>Tax-inclusive pricing:</strong> Include tax in the displayed rate</li>
-                  <li><strong>Tax exemptions:</strong> Mark certain items as tax-free</li>
-                </ul>
-
-                <h3>Final total</h3>
-                <p>
-                  The amount the client needs to pay, including all adjustments.
-                </p>
-
-                <h2>Section 5: Payment and terms</h2>
-
-                <h3>Payment methods</h3>
-                <p>
-                  Select which payment methods to display:
-                </p>
-                <ul>
-                  <li>Mobile money (MTN, Vodafone, AirtelTigo)</li>
-                  <li>Bank transfer details</li>
-                  <li>Cryptocurrency addresses</li>
-                  <li>Custom payment instructions</li>
-                </ul>
-
-                <h3>Payment terms</h3>
-                <p>Choose from standard terms or create custom ones:</p>
-                <ul>
-                  <li><strong>Due immediately:</strong> Payment on receipt</li>
-                  <li><strong>Net 15/30/60:</strong> Payment due within specified days</li>
-                  <li><strong>Custom due date:</strong> Specific calendar date</li>
-                  <li><strong>Partial payments:</strong> Milestone-based payments</li>
-                </ul>
-
-                <h2>Section 6: Notes and customization</h2>
-
-                <h3>Invoice notes</h3>
-                <p>Add helpful information for your client:</p>
-                <ul>
-                  <li>Project details or deliverables</li>
-                  <li>Thank you message</li>
-                  <li>Next steps or follow-up actions</li>
-                  <li>Contact information for questions</li>
-                </ul>
-
-                <h3>Terms and conditions</h3>
-                <p>
-                  Add standard terms like:
-                </p>
-                <ul>
-                  <li>Late payment fees</li>
-                  <li>Refund policy</li>
-                  <li>Intellectual property rights</li>
-                  <li>Limitation of liability</li>
-                </ul>
-
-                <h2>Preview and finalization</h2>
-                <p>
-                  Before sending, always preview your invoice:
-                </p>
-
-                <ol>
-                  <li>Click <strong>"Preview"</strong> to see the client view</li>
-                  <li>Check all calculations and totals</li>
-                  <li>Verify client contact information</li>
-                  <li>Review payment methods and terms</li>
-                  <li>Proofread all text for errors</li>
-                </ol>
-
-                <h2>Keyboard shortcuts</h2>
-                <p>Speed up invoice creation with these shortcuts:</p>
-                <div className="not-prose my-6 grid gap-3 md:grid-cols-2 text-sm">
-                  <div className="rounded-lg border border-gray-200 p-3">
-                    <div className="font-medium">Add new item</div>
-                    <kbd className="px-2 py-1 bg-gray-100 rounded text-xs">Tab</kbd> (from last field)
-                  </div>
-                  <div className="rounded-lg border border-gray-200 p-3">
-                    <div className="font-medium">Save draft</div>
-                    <kbd className="px-2 py-1 bg-gray-100 rounded text-xs">Ctrl + S</kbd>
-                  </div>
-                  <div className="rounded-lg border border-gray-200 p-3">
-                    <div className="font-medium">Preview invoice</div>
-                    <kbd className="px-2 py-1 bg-gray-100 rounded text-xs">Ctrl + P</kbd>
-                  </div>
-                  <div className="rounded-lg border border-gray-200 p-3">
-                    <div className="font-medium">Send invoice</div>
-                    <kbd className="px-2 py-1 bg-gray-100 rounded text-xs">Ctrl + Enter</kbd>
-                  </div>
-                </div>
-
-                <h2>Best practices</h2>
-                <ul>
-                  <li><strong>Save early and often:</strong> Use draft mode while building</li>
-                  <li><strong>Double-check math:</strong> Even though it's automated</li>
-                  <li><strong>Be descriptive:</strong> Clear item descriptions prevent confusion</li>
-                  <li><strong>Set realistic due dates:</strong> Give clients time to process payment</li>
-                  <li><strong>Include contact info:</strong> Make it easy for clients to reach you</li>
-                </ul>
-
-                <div className="not-prose mt-12 flex flex-col gap-4 sm:flex-row">
-                  <Link href="/contact">
-                    <Button size="lg">
-                      Talk to our team
-                      <ArrowRight className="ml-2 h-4 w-4" />
-                    </Button>
-                  </Link>
-                  <Link href="/help/items-totals">
-                    <Button size="lg" variant="outline">
-                      Learn about calculations
-                    </Button>
-                  </Link>
-                </div>
-
-              </div>
+              <p className="text-sm text-gray-700">{section.description}</p>
             </div>
-          </section>
-        </main>
-
-        <MarketingFooter year={year} />
+          );
+        })}
       </div>
-    </>
+
+      <h2>Header Section</h2>
+      <p>
+        The header establishes your professional identity and invoice details:
+      </p>
+
+      <h3>Your Business Info</h3>
+      <ul>
+        <li><strong>Name/Business name:</strong> Pulled from your profile</li>
+        <li><strong>Logo:</strong> Displayed if you have a Business account</li>
+        <li><strong>Contact details:</strong> Email, phone, address</li>
+      </ul>
+
+      <h3>Invoice Details</h3>
+      <ul>
+        <li><strong>Invoice number:</strong> Auto-generated or custom</li>
+        <li><strong>Invoice date:</strong> When the invoice is issued</li>
+        <li><strong>Due date:</strong> When payment is expected</li>
+      </ul>
+
+      <div className="not-prose my-6 rounded-lg border border-gray-200 bg-gray-50 p-4">
+        <p className="text-sm text-gray-700">
+          <strong className="text-black">💡 Invoice numbering:</strong> Plaen automatically 
+          generates sequential invoice numbers (e.g., INV-001, INV-002). You can customize 
+          the format in Settings → Invoice Preferences.
+        </p>
+      </div>
+
+      <h2>Client Details Section</h2>
+      <p>
+        Enter who you're billing. You can:
+      </p>
+      <ul>
+        <li>Select an existing client from your contacts</li>
+        <li>Add a new client (they're automatically saved)</li>
+        <li>Edit client details for this specific invoice</li>
+      </ul>
+
+      <h3>Required Information</h3>
+      <ul>
+        <li><strong>Client name:</strong> Individual or company</li>
+        <li><strong>Email address:</strong> For invoice delivery</li>
+      </ul>
+
+      <h3>Optional Information</h3>
+      <ul>
+        <li><strong>Phone number:</strong> For follow-up</li>
+        <li><strong>Billing address:</strong> For records</li>
+        <li><strong>Company registration:</strong> If required</li>
+      </ul>
+
+      <h2>Line Items Section</h2>
+      <p>
+        This is where you detail what you're charging for:
+      </p>
+
+      <h3>Adding Line Items</h3>
+      <ol>
+        <li>Click <strong>"Add Item"</strong> to create a new row</li>
+        <li>Enter a description of the service or product</li>
+        <li>Set the quantity and unit price</li>
+        <li>The total is calculated automatically</li>
+      </ol>
+
+      <h3>Line Item Fields</h3>
+      <div className="not-prose my-6 overflow-hidden rounded-xl border border-gray-200">
+        <table className="w-full text-sm">
+          <thead className="bg-gray-50">
+            <tr>
+              <th className="px-4 py-3 text-left font-semibold text-black">Field</th>
+              <th className="px-4 py-3 text-left font-semibold text-black">Description</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-gray-200">
+            <tr>
+              <td className="px-4 py-3 text-gray-700 font-medium">Description</td>
+              <td className="px-4 py-3 text-gray-700">What you're charging for</td>
+            </tr>
+            <tr>
+              <td className="px-4 py-3 text-gray-700 font-medium">Quantity</td>
+              <td className="px-4 py-3 text-gray-700">Number of units, hours, etc.</td>
+            </tr>
+            <tr>
+              <td className="px-4 py-3 text-gray-700 font-medium">Rate</td>
+              <td className="px-4 py-3 text-gray-700">Price per unit</td>
+            </tr>
+            <tr>
+              <td className="px-4 py-3 text-gray-700 font-medium">Amount</td>
+              <td className="px-4 py-3 text-gray-700">Qty × Rate (auto-calculated)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Tips for Line Items</h3>
+      <div className="not-prose my-6 space-y-3">
+        <div className="flex items-start gap-3">
+          <TickCircle size={18} color="#0D9488" variant="Bulk" className="flex-shrink-0 mt-1" />
+          <span className="text-gray-700">Be specific in descriptions—helps clients understand value</span>
+        </div>
+        <div className="flex items-start gap-3">
+          <TickCircle size={18} color="#0D9488" variant="Bulk" className="flex-shrink-0 mt-1" />
+          <span className="text-gray-700">Group related items together</span>
+        </div>
+        <div className="flex items-start gap-3">
+          <TickCircle size={18} color="#0D9488" variant="Bulk" className="flex-shrink-0 mt-1" />
+          <span className="text-gray-700">Include dates or project phases for clarity</span>
+        </div>
+        <div className="flex items-start gap-3">
+          <TickCircle size={18} color="#0D9488" variant="Bulk" className="flex-shrink-0 mt-1" />
+          <span className="text-gray-700">Save common items for quick reuse</span>
+        </div>
+      </div>
+
+      <h2>Totals Section</h2>
+      <p>
+        The totals section shows:
+      </p>
+      <ul>
+        <li><strong>Subtotal:</strong> Sum of all line items</li>
+        <li><strong>Discounts:</strong> If applicable</li>
+        <li><strong>Tax:</strong> If you charge tax</li>
+        <li><strong>Total:</strong> Final amount due</li>
+      </ul>
+
+      <h2>Payment Options Section</h2>
+      <p>
+        Select how your client can pay. Offering multiple options improves 
+        payment speed:
+      </p>
+
+      <div className="not-prose my-6 space-y-3">
+        <div className="flex items-center justify-between rounded-lg border border-gray-200 p-4">
+          <div className="flex items-center gap-3">
+            <div className="h-8 w-8 rounded-lg bg-[#F59E0B15] flex items-center justify-center">
+              <span className="text-xs font-bold text-[#F59E0B]">MM</span>
+            </div>
+            <span className="font-medium text-black">Mobile Money</span>
+          </div>
+          <span className="text-sm text-gray-500">Instant</span>
+        </div>
+        <div className="flex items-center justify-between rounded-lg border border-gray-200 p-4">
+          <div className="flex items-center gap-3">
+            <div className="h-8 w-8 rounded-lg bg-[#14462a15] flex items-center justify-center">
+              <span className="text-xs font-bold text-[#14462a]">BT</span>
+            </div>
+            <span className="font-medium text-black">Bank Transfer</span>
+          </div>
+          <span className="text-sm text-gray-500">1-3 days</span>
+        </div>
+        <div className="flex items-center justify-between rounded-lg border border-gray-200 p-4">
+          <div className="flex items-center gap-3">
+            <div className="h-8 w-8 rounded-lg bg-[#0D948815] flex items-center justify-center">
+              <span className="text-xs font-bold text-[#0D9488]">₿</span>
+            </div>
+            <span className="font-medium text-black">Cryptocurrency</span>
+          </div>
+          <span className="text-sm text-gray-500">Minutes</span>
+        </div>
+      </div>
+
+      <h2>Notes Section</h2>
+      <p>
+        Add additional information to your invoice:
+      </p>
+      <ul>
+        <li><strong>Notes:</strong> Thank you messages, project details</li>
+        <li><strong>Terms:</strong> Payment conditions, late fees</li>
+        <li><strong>Footer:</strong> Company registration, tax ID</li>
+      </ul>
+
+      <h2>Preview and Send</h2>
+      <p>
+        Before sending, use the <strong>Preview</strong> button to see exactly what 
+        your client will receive. Check for:
+      </p>
+      <ul>
+        <li>Spelling and accuracy</li>
+        <li>Correct amounts and calculations</li>
+        <li>Professional appearance</li>
+        <li>All necessary details included</li>
+      </ul>
+
+      <h2>Keyboard Shortcuts</h2>
+      <div className="not-prose my-6 overflow-hidden rounded-xl border border-gray-200">
+        <table className="w-full text-sm">
+          <thead className="bg-gray-50">
+            <tr>
+              <th className="px-4 py-3 text-left font-semibold text-black">Shortcut</th>
+              <th className="px-4 py-3 text-left font-semibold text-black">Action</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-gray-200">
+            <tr>
+              <td className="px-4 py-3"><kbd className="px-2 py-1 bg-gray-100 rounded text-xs">Cmd/Ctrl + S</kbd></td>
+              <td className="px-4 py-3 text-gray-700">Save draft</td>
+            </tr>
+            <tr>
+              <td className="px-4 py-3"><kbd className="px-2 py-1 bg-gray-100 rounded text-xs">Cmd/Ctrl + P</kbd></td>
+              <td className="px-4 py-3 text-gray-700">Preview invoice</td>
+            </tr>
+            <tr>
+              <td className="px-4 py-3"><kbd className="px-2 py-1 bg-gray-100 rounded text-xs">Cmd/Ctrl + Enter</kbd></td>
+              <td className="px-4 py-3 text-gray-700">Send invoice</td>
+            </tr>
+            <tr>
+              <td className="px-4 py-3"><kbd className="px-2 py-1 bg-gray-100 rounded text-xs">Tab</kbd></td>
+              <td className="px-4 py-3 text-gray-700">Move to next field</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </HelpArticleLayout>
   );
 }

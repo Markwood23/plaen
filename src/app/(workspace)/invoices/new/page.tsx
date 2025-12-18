@@ -606,7 +606,7 @@ export default function CreateInvoicePage() {
                   <h2 className="text-lg font-semibold text-[#2D2D2D] mb-1">Bill To (Customer)</h2>
                   <p className="text-sm text-[#B0B3B8]">Select from saved contacts or enter new customer details</p>
                 </div>
-                <div className="space-y-4 p-6" style={{ backgroundColor: 'rgba(247, 249, 250, 0.3)', borderLeft: '3px solid #059669' }}>
+                <div className="space-y-4 p-6" style={{ backgroundColor: 'rgba(247, 249, 250, 0.3)', borderLeft: '3px solid #0D9488' }}>
                   {/* Contact Selector */}
                   <div>
                     <Label className="text-sm text-[#2D2D2D] font-medium mb-2 block">Select Contact</Label>

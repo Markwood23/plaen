@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
+import { Logo } from "@/components/ui/logo";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -58,15 +59,8 @@ export default function WorkspaceLayout({
       {/* Desktop sidebar */}
       <aside className="hidden md:flex w-64 shrink-0 flex-col bg-white h-screen" style={{ borderRight: '1px solid #E4E6EB' }}>
         <div className="h-16 px-6 flex items-center" style={{ borderBottom: '1px solid #E4E6EB' }}>
-          <Link href="/" className="flex items-center gap-2.5 group">
-            <div className="relative">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="transition-transform group-hover:scale-110">
-                <path d="M3 3H12V12H3V3Z" fill="#14462a"/>
-                <path d="M14 3H21L17.5 12H14V3Z" fill="#14462a"/>
-                <path d="M12 14H21V21H12V14Z" fill="#14462a"/>
-              </svg>
-            </div>
-            <span style={{ fontWeight: 700, fontSize: '18px' }} className="tracking-tight group-hover:text-[#14462a] transition-colors">Plaen</span>
+          <Link href="/" className="group">
+            <Logo size={28} className="transition-transform group-hover:scale-105" />
           </Link>
         </div>
         <nav className="flex-1 p-3 space-y-8 overflow-y-auto">
@@ -266,13 +260,8 @@ function MobileNav({
       </SheetTrigger>
       <SheetContent side="left" className="p-0 w-72" style={{ backgroundColor: 'white' }}>
         <div className="h-16 px-5 flex items-center" style={{ borderBottom: '1px solid #E4E6EB' }}>
-          <Link href="/" className="flex items-center gap-2 group transition-all hover:opacity-80">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="transition-transform group-hover:scale-110">
-              <path d="M3 3H12V12H3V3Z" fill="#14462a"/>
-              <path d="M14 3H21L17.5 12H14V3Z" fill="#14462a"/>
-              <path d="M12 14H21V21H12V14Z" fill="#14462a"/>
-            </svg>
-            <span style={{ fontWeight: 700, fontSize: '18px', color: '#14462a' }} className="tracking-tight transition-colors hover:text-[#14462a]">Plaen</span>
+          <Link href="/" className="group transition-all hover:opacity-80">
+            <Logo size={28} className="transition-transform group-hover:scale-105" />
           </Link>
         </div>
         <nav className="p-3 space-y-6 overflow-y-auto h-[calc(100vh-64px)]">
@@ -348,9 +337,9 @@ function UserMenu() {
           <Link href="/workspace/billing" className="flex items-center">
             <div 
               className="h-8 w-8 rounded-full flex items-center justify-center transition-all"
-              style={{ backgroundColor: 'rgba(5, 150, 105, 0.08)' }}
+              style={{ backgroundColor: 'rgba(13, 148, 136, 0.08)' }}
             >
-              <Card size={16} color="#059669" />
+              <Card size={16} color="#0D9488" />
             </div>
             <span className="text-base font-medium group-hover:text-[#14462a] transition-all" style={{ color: '#2D2D2D' }}>Billing</span>
           </Link>

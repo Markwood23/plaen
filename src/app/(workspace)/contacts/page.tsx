@@ -285,15 +285,15 @@ export default function ContactsPage() {
         </div>
 
         {/* Active Contacts */}
-        <div className="group relative rounded-2xl p-6 transition-all duration-300 hover:scale-[1.02]" style={{ backgroundColor: 'rgba(5, 150, 105, 0.04)' }}>
+        <div className="group relative rounded-2xl p-6 transition-all duration-300 hover:scale-[1.02]" style={{ backgroundColor: 'rgba(13, 148, 136, 0.04)' }}>
           <div className="flex items-center justify-between mb-4">
-            <div className="h-12 w-12 rounded-xl flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110" style={{ backgroundColor: 'rgba(5, 150, 105, 0.12)' }}>
-              <svg className="h-6 w-6" style={{ color: '#059669' }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+            <div className="h-12 w-12 rounded-xl flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110" style={{ backgroundColor: 'rgba(13, 148, 136, 0.12)' }}>
+              <svg className="h-6 w-6" style={{ color: '#0D9488' }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
-            <div className="flex items-center gap-1 px-2 py-1 rounded-full" style={{ backgroundColor: 'rgba(5, 150, 105, 0.12)' }}>
-              <span className="text-xs font-semibold" style={{ color: '#059669' }}>
+            <div className="flex items-center gap-1 px-2 py-1 rounded-full" style={{ backgroundColor: 'rgba(13, 148, 136, 0.12)' }}>
+              <span className="text-xs font-semibold" style={{ color: '#0D9488' }}>
                 {Math.round((contactsData.filter(c => c.status === "Active").length / contactsData.length) * 100)}%
               </span>
             </div>
@@ -329,15 +329,15 @@ export default function ContactsPage() {
         </div>
 
         {/* Total Revenue */}
-        <div className="group relative rounded-2xl p-6 transition-all duration-300 hover:scale-[1.02]" style={{ backgroundColor: 'rgba(5, 150, 105, 0.04)' }}>
+        <div className="group relative rounded-2xl p-6 transition-all duration-300 hover:scale-[1.02]" style={{ backgroundColor: 'rgba(13, 148, 136, 0.04)' }}>
           <div className="flex items-center justify-between mb-4">
-            <div className="h-12 w-12 rounded-xl flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110" style={{ backgroundColor: 'rgba(5, 150, 105, 0.12)' }}>
-              <svg className="h-6 w-6" style={{ color: '#059669' }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+            <div className="h-12 w-12 rounded-xl flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110" style={{ backgroundColor: 'rgba(13, 148, 136, 0.12)' }}>
+              <svg className="h-6 w-6" style={{ color: '#0D9488' }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
-            <div className="flex items-center gap-1 px-2 py-1 rounded-full" style={{ backgroundColor: 'rgba(5, 150, 105, 0.12)' }}>
-              <span className="text-xs font-semibold" style={{ color: '#059669' }}>+22.4%</span>
+            <div className="flex items-center gap-1 px-2 py-1 rounded-full" style={{ backgroundColor: 'rgba(13, 148, 136, 0.12)' }}>
+              <span className="text-xs font-semibold" style={{ color: '#0D9488' }}>+22.4%</span>
             </div>
           </div>
           <p className="text-sm mb-2" style={{ color: '#65676B', fontWeight: 500 }}>Total Revenue</p>
@@ -430,7 +430,7 @@ export default function ContactsPage() {
                 </SelectItem>
                 <SelectItem value="active" className="rounded-xl px-3 py-2.5 cursor-pointer transition-all">
                   <div className="flex items-center gap-3">
-                    <div className="h-2.5 w-2.5 rounded-full ring-2 ring-offset-1" style={{ backgroundColor: '#059669' }}></div>
+                    <div className="h-2.5 w-2.5 rounded-full ring-2 ring-offset-1" style={{ backgroundColor: '#0D9488' }}></div>
                     <span className="font-medium" style={{ color: '#2D2D2D' }}>Active</span>
                   </div>
                 </SelectItem>
@@ -597,9 +597,9 @@ export default function ContactsPage() {
                         <DropdownMenuItem className="gap-3 rounded-xl p-3 cursor-pointer group transition-all hover:bg-[rgba(24,119,242,0.04)]">
                           <div 
                             className="h-8 w-8 rounded-full flex items-center justify-center transition-all"
-                            style={{ backgroundColor: 'rgba(5, 150, 105, 0.08)' }}
+                            style={{ backgroundColor: 'rgba(13, 148, 136, 0.08)' }}
                           >
-                            <Sms size={16} color="#059669" />
+                            <Sms size={16} color="#0D9488" />
                           </div>
                           <span className="text-sm font-medium group-hover:text-[#14462a] transition-all" style={{ color: '#2D2D2D' }}>Send Email</span>
                         </DropdownMenuItem>

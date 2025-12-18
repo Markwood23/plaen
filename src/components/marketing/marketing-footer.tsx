@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Logo } from "@/components/ui/logo";
 
 export function MarketingFooter({ year }: { year: number }) {
   return (
@@ -8,8 +9,8 @@ export function MarketingFooter({ year }: { year: number }) {
         <div className="grid gap-12 lg:grid-cols-12">
           {/* Brand Column */}
           <div className="space-y-4 lg:col-span-4">
-            <Link href="/" className="text-xl font-semibold tracking-tight text-black">
-              plæn.
+            <Link href="/" className="inline-block">
+              <Logo size={28} />
             </Link>
             <p className="text-sm leading-6 text-gray-600">
               Professional structure + human context. Money + Meaning and Finance Notes in one calm workspace.

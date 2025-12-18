@@ -202,7 +202,7 @@ export default function NewNotePage() {
               className="h-7 w-7 p-0 rounded-full"
               onClick={handleAddTag}
             >
-              <TickSquare size={14} color="#059669" variant="Linear" />
+              <TickSquare size={14} color="#0D9488" variant="Linear" />
             </Button>
             <Button
               size="sm"
@@ -340,7 +340,7 @@ export default function NewNotePage() {
                 </div>
               </DropdownMenuItem>
               <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer">
-                <DocumentText size={16} color="#059669" variant="Linear" className="mr-2" />
+                <DocumentText size={16} color="#0D9488" variant="Linear" className="mr-2" />
                 <div>
                   <div className="font-medium text-sm">Invoice Table</div>
                   <div className="text-xs" style={{ color: "#B0B3B8" }}>

@@ -24,7 +24,7 @@ export default function ComingSoonPage() {
           />
         </div>
 
-        <main className="mx-auto flex max-w-5xl flex-col items-center gap-10 px-6 pb-24 pt-24 text-center">
+        <main className="mx-auto flex max-w-5xl flex-col items-center gap-10 px-6 pb-24 pt-32 text-center">
           <span className="inline-flex items-center gap-2 rounded-full border border-gray-200 px-4 py-1 text-xs uppercase tracking-[0.35em] text-gray-500">
             <Lovely size={14} color="#E11D48" variant="Bold" /> Coming Soon
           </span>
@@ -36,8 +36,8 @@ export default function ComingSoonPage() {
           <div className="grid w-full gap-4 text-left sm:grid-cols-3">
             <div className="rounded-2xl border border-gray-200 bg-white/80 p-4">
               <div className="flex items-center gap-3">
-                <div className="h-8 w-8 rounded-lg bg-[#059669]/10 flex items-center justify-center">
-                  <Setting2 size={18} color="#059669" variant="Bulk" />
+                <div className="h-8 w-8 rounded-lg bg-[#0D9488]/10 flex items-center justify-center">
+                  <Setting2 size={18} color="#0D9488" variant="Bulk" />
                 </div>
                 <div className="text-sm font-medium text-black">In progress</div>
               </div>

@@ -1027,7 +1027,7 @@ export default function SettingsPage() {
                         <Badge
                           variant="secondary"
                           className="rounded-full px-2 py-0.5 text-sm"
-                          style={{ backgroundColor: "rgba(5, 150, 105, 0.08)", color: "#059669" }}
+                          style={{ backgroundColor: "rgba(13, 148, 136, 0.08)", color: "#0D9488" }}
                         >
                           Active
                         </Badge>
@@ -1146,7 +1146,7 @@ export default function SettingsPage() {
                     <Badge
                       variant="secondary"
                       className="rounded-full px-2 py-0.5 text-sm"
-                      style={{ backgroundColor: "rgba(5, 150, 105, 0.08)", color: "#059669" }}
+                      style={{ backgroundColor: "rgba(13, 148, 136, 0.08)", color: "#0D9488" }}
                     >
                       Connected
                     </Badge>
@@ -1323,7 +1323,7 @@ export default function SettingsPage() {
             <div className="grid grid-cols-3 gap-x-8 gap-y-6">
               {[
                 { label: "Monthly Cost", value: "$29/mo", icon: DollarSquare, color: "#14462a" },
-                { label: "Next Billing", value: "Dec 18, 2024", icon: Card, color: "#059669" },
+                { label: "Next Billing", value: "Dec 18, 2024", icon: Card, color: "#0D9488" },
                 { label: "Invoices Sent", value: "247 / ∞", icon: Paperclip, color: "#F59E0B" },
               ].map((stat) => {
                 const Icon = stat.icon;
@@ -1600,7 +1600,7 @@ export default function SettingsPage() {
             <div className="flex justify-end">
               <Button
                 className="rounded-full h-11 px-6 font-normal"
-                style={{ backgroundColor: "#059669", color: "white" }}
+                style={{ backgroundColor: "#0D9488", color: "white" }}
                 onClick={() => setShow2FAModal(true)}
               >
                 Enable 2FA
@@ -1636,7 +1636,7 @@ export default function SettingsPage() {
                         {session.current && (
                           <Badge 
                             className="rounded-full px-2 py-0.5 text-xs"
-                            style={{ backgroundColor: 'rgba(5, 150, 105, 0.12)', color: '#059669', border: 'none' }}
+                            style={{ backgroundColor: 'rgba(13, 148, 136, 0.12)', color: '#0D9488', border: 'none' }}
                           >
                             Current
                           </Badge>
@@ -1699,7 +1699,7 @@ export default function SettingsPage() {
                     <div 
                       className="h-2 w-2 rounded-full"
                       style={{ 
-                        backgroundColor: activity.status === 'success' ? '#059669' : 
+                        backgroundColor: activity.status === 'success' ? '#0D9488' : 
                                        activity.status === 'warning' ? '#F59E0B' : '#14462a' 
                       }}
                     />
@@ -1747,7 +1747,7 @@ export default function SettingsPage() {
                   <ul className="space-y-2 mb-6">
                     {plan.features.map((feature) => (
                       <li key={feature} className="flex items-start gap-2 text-sm" style={{ color: '#65676B' }}>
-                        <TickCircle size={16} className="mt-0.5 flex-shrink-0" style={{ color: '#059669' }} />
+                        <TickCircle size={16} className="mt-0.5 flex-shrink-0" style={{ color: '#0D9488' }} />
                         {feature}
                       </li>
                     ))}
@@ -1819,7 +1819,7 @@ export default function SettingsPage() {
                       <p className="text-sm font-semibold" style={{ color: '#2D2D2D' }}>{invoice.amount}</p>
                       <Badge 
                         className="rounded-full px-2 py-0.5 text-xs mt-1" 
-                        style={{ backgroundColor: 'rgba(5, 150, 105, 0.12)', color: '#059669', border: 'none' }}
+                        style={{ backgroundColor: 'rgba(13, 148, 136, 0.12)', color: '#0D9488', border: 'none' }}
                       >
                         <TickCircle size={12} className="mr-1" />
                         Paid

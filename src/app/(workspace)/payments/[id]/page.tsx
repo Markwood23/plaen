@@ -130,7 +130,7 @@ export default function PaymentDetailPage({ params }: { params: Promise<{ id: st
   const getActivityIcon = (type: string) => {
     switch (type) {
       case "confirmed":
-        return <TickSquare size={12} color="#059669" />;
+        return <TickSquare size={12} color="#0D9488" />;
       case "received":
         return <DollarSquare size={12} color="#14462a" />;
       case "initiated":
@@ -143,7 +143,7 @@ export default function PaymentDetailPage({ params }: { params: Promise<{ id: st
   const getActivityIconBackground = (type: string) => {
     switch (type) {
       case "confirmed":
-        return 'rgba(5, 150, 105, 0.08)';
+        return 'rgba(13, 148, 136, 0.08)';
       case "received":
         return 'rgba(20, 70, 42, 0.08)';
       case "initiated":
@@ -204,9 +204,9 @@ export default function PaymentDetailPage({ params }: { params: Promise<{ id: st
                 )}
                 {payment.isOnTime && (
                   <Badge variant="outline" className="px-3 py-1 rounded-full" style={{ 
-                    backgroundColor: 'rgba(5, 150, 105, 0.08)',
-                    color: '#059669',
-                    borderColor: '#059669',
+                    backgroundColor: 'rgba(13, 148, 136, 0.08)',
+                    color: '#0D9488',
+                    borderColor: '#0D9488',
                     fontSize: '12px',
                     fontWeight: 500
                   }}>    <Clock size={12} className="mr-1" /> On-time (≤3 days)
@@ -244,8 +244,8 @@ export default function PaymentDetailPage({ params }: { params: Promise<{ id: st
             >
               {copiedRef ? (
                 <>
-                  <TickSquare size={16} color="#059669" />
-                  <span style={{ color: '#059669' }}>Copied</span>
+                  <TickSquare size={16} color="#0D9488" />
+                  <span style={{ color: '#0D9488' }}>Copied</span>
                 </>
               ) : (
                 <>
@@ -288,9 +288,9 @@ export default function PaymentDetailPage({ params }: { params: Promise<{ id: st
                 <DropdownMenuItem className="gap-3 rounded-xl p-3 cursor-pointer group transition-all hover:bg-[rgba(24,119,242,0.04)]">
                   <div 
                     className="h-8 w-8 rounded-full flex items-center justify-center transition-all"
-                    style={{ backgroundColor: 'rgba(5, 150, 105, 0.08)' }}
+                    style={{ backgroundColor: 'rgba(13, 148, 136, 0.08)' }}
                   >
-                    <Sms size={16} color="#059669" />
+                    <Sms size={16} color="#0D9488" />
                   </div>
                   <span className="text-sm font-medium group-hover:text-[#14462a] transition-all" style={{ color: '#2D2D2D' }}>
                     Email Receipt
@@ -387,9 +387,9 @@ export default function PaymentDetailPage({ params }: { params: Promise<{ id: st
                   <p className="text-sm" style={{ color: '#2D2D2D', fontWeight: 500 }}>{payment.daysToPayment} days</p>
                   {payment.isOnTime && (
                     <Badge variant="outline" style={{ 
-                      backgroundColor: 'rgba(5, 150, 105, 0.08)',
-                      color: '#059669',
-                      borderColor: '#059669',
+                      backgroundColor: 'rgba(13, 148, 136, 0.08)',
+                      color: '#0D9488',
+                      borderColor: '#0D9488',
                       fontSize: '10px',
                       padding: '2px 6px'
                     }}>
@@ -593,9 +593,9 @@ export default function PaymentDetailPage({ params }: { params: Promise<{ id: st
               >
                 <div 
                   className="h-10 w-10 rounded-full flex items-center justify-center transition-all"
-                  style={{ backgroundColor: 'rgba(5, 150, 105, 0.08)' }}
+                  style={{ backgroundColor: 'rgba(13, 148, 136, 0.08)' }}
                 >
-                  <Sms size={20} color="#059669" />
+                  <Sms size={20} color="#0D9488" />
                 </div>
                 <div className="flex-1 text-left">
                   <p className="text-sm font-medium transition-all group-hover:text-[#14462a]" style={{ color: '#2D2D2D' }}>

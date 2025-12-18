@@ -173,7 +173,7 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
       case "sent":
         return <Send2 size={12} color="#14462a" />;
       case "finalized":
-        return <TickSquare size={12} color="#059669" />;
+        return <TickSquare size={12} color="#0D9488" />;
       case "created":
         return <DocumentText size={12} color="#14462a" />;
       default:
@@ -186,7 +186,7 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
       case "sent":
         return 'rgba(20, 70, 42, 0.08)'; // Blue
       case "finalized":
-        return 'rgba(5, 150, 105, 0.08)'; // Green
+        return 'rgba(13, 148, 136, 0.08)'; // Green
       case "created":
         return 'rgba(20, 70, 42, 0.08)'; // Purple
       default:
@@ -455,9 +455,9 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
               <DropdownMenuItem className="gap-3 rounded-xl p-3 cursor-pointer group transition-all hover:bg-[rgba(24,119,242,0.04)]">
                 <div 
                   className="h-8 w-8 rounded-full flex items-center justify-center transition-all"
-                  style={{ backgroundColor: 'rgba(5, 150, 105, 0.08)' }}
+                  style={{ backgroundColor: 'rgba(13, 148, 136, 0.08)' }}
                 >
-                  <Eye size={16} color="#059669" />
+                  <Eye size={16} color="#0D9488" />
                 </div>
                 <span className="text-sm font-medium group-hover:text-[#14462a] transition-all" style={{ color: '#2D2D2D' }}>View public page</span>
               </DropdownMenuItem>
@@ -614,12 +614,12 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
             {amountPaid > 0 && (
               <div className="grid grid-cols-2 gap-8 items-center py-2">
                 <span className="text-base text-right" style={{ color: '#B0B3B8' }}>Amount Paid</span>
-                <span className="text-base text-right" style={{ color: '#059669', fontWeight: 500 }}>-₵{amountPaid.toFixed(2)}</span>
+                <span className="text-base text-right" style={{ color: '#0D9488', fontWeight: 500 }}>-₵{amountPaid.toFixed(2)}</span>
               </div>
             )}
             <div className="grid grid-cols-2 gap-8 items-center pt-4">
               <span className="text-base font-semibold text-right" style={{ color: '#2D2D2D' }}>Balance Due</span>
-              <span className="text-base font-bold text-right" style={{ color: balanceDue > 0 ? '#2D2D2D' : '#059669' }}>₵{balanceDue.toFixed(2)}</span>
+              <span className="text-base font-bold text-right" style={{ color: balanceDue > 0 ? '#2D2D2D' : '#0D9488' }}>₵{balanceDue.toFixed(2)}</span>
             </div>
           </div>
         </div>

@@ -37,7 +37,7 @@ const helpCategories = [
   {
     title: "Invoices & Payments",
     icon: FileText,
-    color: "#059669",
+    color: "#0D9488",
     articles: [
       { title: "How to create an invoice", href: "/help/invoice-builder", views: "4.1K" },
       { title: "Setting payment terms", href: "/help/payment-terms-guide", views: "2.7K" },
@@ -127,7 +127,7 @@ export default function SupportPage() {
             title: "Email Support",
             description: "support@plaen.tech",
             action: "Send Email",
-            color: "#059669",
+            color: "#0D9488",
             available: true,
           },
           {
@@ -157,9 +157,9 @@ export default function SupportPage() {
                   <Badge
                     variant="secondary"
                     className="rounded-full px-2.5 py-0.5 text-xs"
-                    style={{ backgroundColor: "rgba(5, 150, 105, 0.08)", color: "#059669" }}
+                    style={{ backgroundColor: "rgba(13, 148, 136, 0.08)", color: "#0D9488" }}
                   >
-                    <div className="h-1.5 w-1.5 rounded-full mr-1.5" style={{ backgroundColor: "#059669" }} />
+                    <div className="h-1.5 w-1.5 rounded-full mr-1.5" style={{ backgroundColor: "#0D9488" }} />
                     Available
                   </Badge>
                 )}

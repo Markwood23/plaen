@@ -1,163 +1,200 @@
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { ArrowLeft, User, ArrowRight } from "lucide-react";
-import { MarketingHeader } from "@/components/marketing/marketing-header";
-import { MarketingFooter } from "@/components/marketing/marketing-footer";
+"use client";
+
+import { HelpArticleLayout } from "@/components/help/help-article-layout";
+import { TickCircle, User, Building, SecuritySafe, Sms } from "iconsax-react";
+
+const steps = [
+  {
+    step: 1,
+    title: "Visit the signup page",
+    description: "Go to plaen.co/signup to begin creating your account."
+  },
+  {
+    step: 2,
+    title: "Enter your email",
+    description: "Use a professional email address that you check regularly."
+  },
+  {
+    step: 3,
+    title: "Create a password",
+    description: "Choose a strong password with at least 8 characters."
+  },
+  {
+    step: 4,
+    title: "Choose account type",
+    description: "Select Personal for freelancers or Business for companies."
+  },
+  {
+    step: 5,
+    title: "Complete your profile",
+    description: "Add your name, contact details, and profile information."
+  }
+];
 
 export default function CreatingAccountPage() {
-  const year = new Date().getFullYear();
-
   return (
-    <>
-      <MarketingHeader />
-      <div className="relative min-h-screen bg-white text-black">
-        <main>
-          <section className="mx-auto max-w-4xl px-6 py-20">
-            <div className="mb-8">
-              <Link href="/help" className="inline-flex items-center text-sm text-gray-700 hover:text-black">
-                <ArrowLeft className="mr-2 h-4 w-4" />
-                Back to Help Center
-              </Link>
+    <HelpArticleLayout
+      title="Creating Your Account"
+      description="A step-by-step guide to setting up your Plaen account and getting ready to send your first invoice."
+      category="Getting Started"
+      categoryColor="#14462a"
+      readTime="2 min read"
+      relatedArticles={[
+        {
+          title: "Account types",
+          description: "Personal vs Business accounts",
+          slug: "account-types",
+          readTime: "3 min read"
+        },
+        {
+          title: "Your first invoice",
+          description: "Send your first invoice in minutes",
+          slug: "first-invoice",
+          readTime: "4 min read"
+        }
+      ]}
+    >
+      <h2>Quick Start</h2>
+      <p>
+        Creating your Plaen account takes less than 2 minutes. Follow these simple steps 
+        to get started with professional invoicing.
+      </p>
+
+      <div className="not-prose my-12 space-y-6">
+        {steps.map((item) => (
+          <div key={item.step} className="flex gap-4">
+            <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-[#14462a] text-sm font-semibold text-white">
+              {item.step}
             </div>
-
-            <div className="space-y-8">
-              <div>
-                <span className="inline-flex items-center gap-2 rounded-full border border-gray-200 px-3 py-1 text-xs uppercase tracking-wider text-gray-500">
-                  <User className="h-3 w-3" />
-                  Getting Started
-                </span>
-                <h1 className="mt-4 text-4xl font-bold tracking-tight text-[#14462a]">
-                  Creating your Plaen account
-                </h1>
-                <p className="mt-4 text-xl text-gray-700">
-                  Get started with Plaen by creating your account in just a few simple steps. 
-                  No credit card required.
-                </p>
-                <div className="mt-4 flex items-center gap-4 text-sm text-gray-500">
-                  <span>Last updated: November 2024</span>
-                  <span>•</span>
-                  <span>2 min read</span>
-                </div>
-              </div>
-
-              <div className="article-content prose prose-xl prose-gray max-w-none leading-[2] prose-headings:text-black prose-headings:font-semibold prose-p:text-gray-700 prose-p:leading-[2] prose-li:text-gray-700 prose-li:leading-[2] prose-blockquote:text-gray-700 prose-blockquote:leading-[2] prose-strong:text-black prose-a:text-black prose-a:no-underline hover:prose-a:underline">
-                <h2 className="text-2xl font-semibold text-black mt-16 mb-8 first:mt-0">What you'll need</h2>
-                <p className="text-lg leading-8 text-gray-700 mb-6">
-                  Before you begin, make sure you have:
-                </p>
-                <ul className="mb-12 space-y-2">
-                  <li className="text-gray-700">A valid email address</li>
-                  <li className="text-gray-700">Access to your email for verification</li>
-                  <li className="text-gray-700">Basic business or personal information</li>
-                  <li className="text-gray-700">About 5 minutes to complete setup</li>
-                </ul>
-
-                <h2 className="text-2xl font-semibold text-black mt-16 mb-8">Step-by-step account creation</h2>
-
-                <h3 className="text-xl font-semibold text-black mt-12 mb-6">1. Request access</h3>
-                <p className="text-lg leading-8 text-gray-700 mb-8">
-                  Go to <a href="/contact" className="text-black font-medium hover:underline">plaen.tech/contact</a> or click "Contact Team" 
-                  from our homepage. Share a few details about your business and we'll set up your workspace.
-                </p>
-
-                <h3>2. Choose your account type</h3>
-                <p>
-                  Plaen offers different account types to match your needs:
-                </p>
-                <div className="not-prose my-6 space-y-4">
-                  <div className="rounded-lg border border-gray-200 p-4">
-                    <h4 className="font-semibold text-black">Individual</h4>
-                    <p className="text-sm text-gray-700">Perfect for freelancers and solo professionals</p>
-                  </div>
-                  <div className="rounded-lg border border-gray-200 p-4">
-                    <h4 className="font-semibold text-black">Business</h4>
-                    <p className="text-sm text-gray-700">For companies and growing teams</p>
-                  </div>
-                </div>
-
-                <h3>3. Enter your information</h3>
-                <p>
-                  Fill out the required fields:
-                </p>
-                <ul>
-                  <li><strong>Full name:</strong> Your legal name or business name</li>
-                  <li><strong>Email address:</strong> This will be your login and where we send notifications</li>
-                  <li><strong>Password:</strong> Choose a strong password (8+ characters)</li>
-                  <li><strong>Location:</strong> Select your country for tax and currency settings</li>
-                </ul>
-
-                <h3>4. Verify your email</h3>
-                <p>
-                  After submitting the form, you'll receive a verification email. Click the link 
-                  in the email to activate your account. Check your spam folder if you don't 
-                  see it within a few minutes.
-                </p>
-
-                <h3>5. Complete your profile</h3>
-                <p>
-                  Once verified, you'll be guided through setting up:
-                </p>
-                <ul>
-                  <li>Business details (if applicable)</li>
-                  <li>Default currency preference</li>
-                  <li>Payment method preferences</li>
-                  <li>Invoice template style</li>
-                </ul>
-
-                <h2>Account security</h2>
-                <p>
-                  Your Plaen account is protected with industry-standard security measures:
-                </p>
-                <ul>
-                  <li>256-bit SSL encryption for all data transmission</li>
-                  <li>Secure password requirements</li>
-                  <li>Email verification for account access</li>
-                  <li>Regular security audits and updates</li>
-                </ul>
-
-                <h2>Next steps</h2>
-                <p>
-                  Once your account is created, you can:
-                </p>
-                <ul>
-                  <li>Create your first invoice</li>
-                  <li>Set up payment methods</li>
-                  <li>Customize your invoice templates</li>
-                  <li>Invite team members (Business accounts)</li>
-                </ul>
-
-                <h2>Having trouble?</h2>
-                <p>
-                  If you encounter any issues during account creation:
-                </p>
-                <ul>
-                  <li>Clear your browser cache and try again</li>
-                  <li>Make sure you're using a supported browser (Chrome, Firefox, Safari, Edge)</li>
-                  <li>Check that your email address is entered correctly</li>
-                  <li>Contact our support team if problems persist</li>
-                </ul>
-
-                <div className="not-prose mt-12 flex flex-col gap-4 sm:flex-row">
-                  <Link href="/contact">
-                    <Button size="lg">
-                      Talk to our team
-                      <ArrowRight className="ml-2 h-4 w-4" />
-                    </Button>
-                  </Link>
-                  <Link href="/help/account-types">
-                    <Button size="lg" variant="outline">
-                      Learn about account types
-                    </Button>
-                  </Link>
-                </div>
-
-              </div>
+            <div>
+              <h3 className="font-semibold text-black">{item.title}</h3>
+              <p className="text-gray-700 mt-1">{item.description}</p>
             </div>
-          </section>
-        </main>
-
-        <MarketingFooter year={year} />
+          </div>
+        ))}
       </div>
-    </>
+
+      <h2>Choosing Your Account Type</h2>
+      <p>
+        During signup, you'll choose between two account types:
+      </p>
+
+      <div className="not-prose my-8 grid gap-4 sm:grid-cols-2">
+        <div className="rounded-xl border border-gray-200 p-6">
+          <div className="flex items-center gap-3 mb-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#B4530915]">
+              <User size={20} color="#B45309" variant="Bulk" />
+            </div>
+            <h3 className="font-semibold text-black">Personal</h3>
+          </div>
+          <p className="text-sm text-gray-700">
+            For freelancers and individuals billing under their own name.
+          </p>
+        </div>
+
+        <div className="rounded-xl border border-gray-200 p-6">
+          <div className="flex items-center gap-3 mb-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#14462a15]">
+              <Building size={20} color="#14462a" variant="Bulk" />
+            </div>
+            <h3 className="font-semibold text-black">Business</h3>
+          </div>
+          <p className="text-sm text-gray-700">
+            For registered companies with business branding needs.
+          </p>
+        </div>
+      </div>
+
+      <h2>Email Verification</h2>
+      <p>
+        After signing up, you'll receive a verification email. Click the link in the email 
+        to verify your account and unlock all features.
+      </p>
+
+      <div className="not-prose my-6 flex items-start gap-3 rounded-lg border border-gray-200 bg-gray-50 p-4">
+        <Sms size={20} color="#6B7280" variant="Bulk" className="flex-shrink-0 mt-0.5" />
+        <div className="text-sm text-gray-700">
+          <strong className="text-black">Can't find the email?</strong> Check your spam folder or 
+          request a new verification email from the login page.
+        </div>
+      </div>
+
+      <h2>Completing Your Profile</h2>
+      <p>
+        After verification, complete your profile to personalize your invoices:
+      </p>
+
+      <ul>
+        <li><strong>Full name:</strong> As it should appear on invoices</li>
+        <li><strong>Phone number:</strong> For account recovery and client contact</li>
+        <li><strong>Address:</strong> Your business or billing address</li>
+        <li><strong>Profile photo:</strong> Optional, adds a personal touch</li>
+      </ul>
+
+      <h3>For Business Accounts</h3>
+      <p>
+        If you chose a Business account, you'll also need:
+      </p>
+      <ul>
+        <li><strong>Business name:</strong> Your registered company name</li>
+        <li><strong>Business logo:</strong> Upload your company logo</li>
+        <li><strong>Registration number:</strong> If applicable in your country</li>
+        <li><strong>Tax ID:</strong> For tax-compliant invoices</li>
+      </ul>
+
+      <h2>Account Security</h2>
+      <p>
+        We take security seriously. Here's how we protect your account:
+      </p>
+
+      <div className="not-prose my-8 space-y-4">
+        <div className="flex items-start gap-3">
+          <SecuritySafe size={20} color="#14462a" variant="Bulk" className="flex-shrink-0 mt-1" />
+          <div>
+            <strong className="text-black">Secure passwords</strong>
+            <p className="text-sm text-gray-700 mt-1">
+              All passwords are encrypted and never stored in plain text.
+            </p>
+          </div>
+        </div>
+        <div className="flex items-start gap-3">
+          <SecuritySafe size={20} color="#14462a" variant="Bulk" className="flex-shrink-0 mt-1" />
+          <div>
+            <strong className="text-black">Session management</strong>
+            <p className="text-sm text-gray-700 mt-1">
+              Active sessions are monitored and you can log out remotely.
+            </p>
+          </div>
+        </div>
+        <div className="flex items-start gap-3">
+          <SecuritySafe size={20} color="#14462a" variant="Bulk" className="flex-shrink-0 mt-1" />
+          <div>
+            <strong className="text-black">Data encryption</strong>
+            <p className="text-sm text-gray-700 mt-1">
+              All data is encrypted in transit and at rest.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <h2>What's Next?</h2>
+      <p>
+        Once your account is set up, you're ready to:
+      </p>
+      <ul>
+        <li>Set up your payment methods (mobile money, bank transfer)</li>
+        <li>Create your first invoice</li>
+        <li>Add your first client</li>
+        <li>Customize your invoice template</li>
+      </ul>
+
+      <div className="not-prose my-8 rounded-xl border border-gray-200 bg-gray-50 p-6">
+        <h4 className="font-semibold text-black mb-2">🎉 Welcome to Plaen!</h4>
+        <p className="text-gray-700 text-sm">
+          You're all set to start sending professional invoices and getting paid faster. 
+          Check out our guide on creating your first invoice to get started.
+        </p>
+      </div>
+    </HelpArticleLayout>
   );
 }

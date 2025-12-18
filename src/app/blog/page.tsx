@@ -5,8 +5,7 @@ import { Button } from "@/components/ui/button";
 import { MarketingHeader } from "@/components/marketing/marketing-header";
 import { MarketingFooter } from "@/components/marketing/marketing-footer";
 import { PageEffects } from "@/components/marketing/home-page-effects";
-import { ArrowRight } from "lucide-react";
-import { Book1, People, Clock } from "iconsax-react";
+import { Book1, People, Clock, ArrowRight2 } from "iconsax-react";
 import type { BlogPost } from "@/components/blog/blog-article-grid";
 import { BlogInteractiveSection } from "@/components/blog/blog-interactive-section";
 
@@ -30,7 +29,7 @@ const stats = [
     value: "190+",
     description: "Deep dives on invoicing best practices",
     icon: Book1,
-    color: "#059669",
+    color: "#0D9488",
   },
   {
     label: "Average read time",
@@ -142,11 +141,11 @@ export default function BlogPage() {
         <main>
           {/* SEO: Blog narrative coverage handled via layout defaults; consider dynamic OG image per post in future */}
           {/* Hero */}
-          <section data-animate="fade-up" className="mx-auto max-w-6xl px-6 pb-24 pt-20">
+          <section data-animate="fade-up" className="mx-auto max-w-6xl px-6 pb-24 pt-32">
             <div className="grid items-center gap-16 lg:grid-cols-[1.15fr,0.85fr]">
               <div className="flex flex-col gap-8">
                 <div className="inline-flex items-center gap-2 self-start rounded-full border border-gray-200 px-4 py-1 text-xs uppercase tracking-[0.35em] text-gray-500">
-                  <Book1 size={14} color="#059669" variant="Bold" /> Weekly insights
+                  <Book1 size={14} color="#0D9488" variant="Bold" /> Weekly insights
                 </div>
                 <div className="space-y-6">
                   <h1 className="text-4xl font-semibold tracking-tight text-[#14462a] sm:text-5xl">
@@ -226,7 +225,7 @@ export default function BlogPage() {
                         </div>
                         <div className="inline-flex items-center gap-2 rounded-full border border-gray-200 px-3 py-1 text-xs font-medium text-gray-600 group-hover:border-black group-hover:text-black">
                           Read story
-                          <ArrowRight className="h-3 w-3 transition group-hover:translate-x-1" />
+                          <ArrowRight2 size={12} color="currentColor" className="transition group-hover:translate-x-1" />
                         </div>
                       </div>
                     </div>

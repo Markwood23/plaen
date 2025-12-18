@@ -1,241 +1,248 @@
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { ArrowLeft, CreditCard, Smartphone, Building2, ArrowRight, CheckCircle, AlertCircle } from "lucide-react";
-import { MarketingHeader } from "@/components/marketing/marketing-header";
-import { MarketingFooter } from "@/components/marketing/marketing-footer";
+"use client";
+
+import { HelpArticleLayout } from "@/components/help/help-article-layout";
+import { DollarCircle, Mobile, Bank, Bitcoin } from "iconsax-react";
+
+const paymentMethods = [
+  {
+    icon: Mobile,
+    name: "Mobile Money",
+    description: "MTN, Vodafone, AirtelTigo",
+    color: "#F59E0B",
+    speed: "Instant",
+    fees: "Low"
+  },
+  {
+    icon: Bank,
+    name: "Bank Transfer",
+    description: "Local and international",
+    color: "#14462a",
+    speed: "1-3 days",
+    fees: "Variable"
+  },
+  {
+    icon: Bitcoin,
+    name: "Cryptocurrency",
+    description: "Bitcoin, USDC, Ethereum",
+    color: "#0D9488",
+    speed: "Minutes",
+    fees: "Low"
+  }
+];
 
 export default function PaymentSetupPage() {
-  const year = new Date().getFullYear();
-
   return (
-    <>
-      <MarketingHeader />
-      <div className="relative min-h-screen bg-white text-black">
-        <main>
-          <section className="mx-auto max-w-4xl px-6 py-20">
-            <div className="mb-8">
-              <Link href="/help" className="inline-flex items-center text-sm text-gray-700 hover:text-black">
-                <ArrowLeft className="mr-2 h-4 w-4" />
-                Back to Help Center
-              </Link>
-            </div>
+    <HelpArticleLayout
+      title="Setting Up Payment Methods"
+      description="Configure your preferred payment methods to receive money from clients quickly and securely."
+      category="Payments"
+      categoryColor="#D97706"
+      readTime="3 min read"
+      relatedArticles={[
+        {
+          title: "Mobile money payments",
+          description: "Accept MTN, Vodafone, AirtelTigo",
+          slug: "mobile-money",
+          readTime: "4 min read"
+        },
+        {
+          title: "Bank transfers",
+          description: "Set up bank payment options",
+          slug: "bank-transfers",
+          readTime: "3 min read"
+        }
+      ]}
+    >
+      <h2>Available Payment Methods</h2>
+      <p>
+        Plaen supports multiple payment methods so your clients can pay in the way 
+        that's most convenient for them. Offering multiple options can significantly 
+        improve payment speed.
+      </p>
 
-            <div className="space-y-8">
-              <div>
-                <span className="inline-flex items-center gap-2 rounded-full border border-gray-200 px-3 py-1 text-xs uppercase tracking-wider text-gray-500">
-                  <CreditCard className="h-3 w-3" />
-                  Getting Started
-                </span>
-                <h1 className="mt-4 text-4xl font-bold tracking-tight text-[#14462a]">
-                  Setting up payment methods
-                </h1>
-                <p className="mt-4 text-xl text-gray-700">
-                  Configure your preferred payment methods to start receiving payments 
-                  from clients quickly and securely.
-                </p>
-                <div className="mt-4 flex items-center gap-4 text-sm text-gray-500">
-                  <span>Last updated: November 2024</span>
-                  <span>•</span>
-                  <span>4 min read</span>
+      <div className="not-prose my-12 space-y-4">
+        {paymentMethods.map((method) => {
+          const Icon = method.icon;
+          return (
+            <div 
+              key={method.name}
+              className="flex items-center justify-between rounded-xl border border-gray-200 p-6"
+            >
+              <div className="flex items-center gap-4">
+                <div 
+                  className="flex h-12 w-12 items-center justify-center rounded-xl"
+                  style={{ backgroundColor: `${method.color}15` }}
+                >
+                  <Icon size={24} color={method.color} variant="Bulk" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-black">{method.name}</h3>
+                  <p className="text-sm text-gray-600">{method.description}</p>
                 </div>
               </div>
-
-              <div className="article-content prose prose-xl prose-gray max-w-none leading-[2] prose-headings:text-black prose-headings:font-semibold prose-p:text-gray-700 prose-p:leading-[2] prose-li:text-gray-700 prose-li:leading-[2] prose-blockquote:text-gray-700 prose-blockquote:leading-[2] prose-strong:text-black prose-a:text-black prose-a:no-underline hover:prose-a:underline">
-                <h2>Available payment methods</h2>
-                <p>
-                  Plaen supports multiple payment methods to accommodate different client 
-                  preferences and regional requirements. You can enable any combination 
-                  of these methods for your invoices.
-                </p>
-
-                <div className="not-prose my-8 space-y-6">
-                  <div className="rounded-xl border border-gray-200 p-6">
-                    <div className="mb-4 flex items-center gap-3">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-100">
-                        <Smartphone className="h-5 w-5 text-gray-700" />
-                      </div>
-                      <div>
-                        <h3 className="font-semibold text-black">Mobile Money</h3>
-                        <p className="text-sm text-gray-700">MTN, Vodafone, AirtelTigo</p>
-                      </div>
-                    </div>
-                    <p className="text-sm text-gray-700 mb-3">
-                      Most popular payment method in Ghana with instant transfers and low fees.
-                    </p>
-                    <div className="flex items-center gap-2 text-sm text-gray-500">
-                      <CheckCircle className="h-4 w-4 text-gray-400" />
-                      <span>Instant payments • Low fees • High acceptance</span>
-                    </div>
-                  </div>
-
-                  <div className="rounded-xl border border-gray-200 p-6">
-                    <div className="mb-4 flex items-center gap-3">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-100">
-                        <Building2 className="h-5 w-5 text-gray-700" />
-                      </div>
-                      <div>
-                        <h3 className="font-semibold text-black">Bank Transfers</h3>
-                        <p className="text-sm text-gray-700">Local and international banks</p>
-                      </div>
-                    </div>
-                    <p className="text-sm text-gray-700 mb-3">
-                      Traditional banking for larger amounts and international clients.
-                    </p>
-                    <div className="flex items-center gap-2 text-sm text-gray-500">
-                      <CheckCircle className="h-4 w-4 text-gray-400" />
-                      <span>Large amounts • International • Secure</span>
-                    </div>
-                  </div>
-
-                  <div className="rounded-xl border border-gray-200 p-6">
-                    <div className="mb-4 flex items-center gap-3">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-100">
-                        <CreditCard className="h-5 w-5 text-gray-700" />
-                      </div>
-                      <div>
-                        <h3 className="font-semibold text-black">Cryptocurrency</h3>
-                        <p className="text-sm text-gray-700">Bitcoin, Ethereum, USDC</p>
-                      </div>
-                    </div>
-                    <p className="text-sm text-gray-700 mb-3">
-                      Global payments with fast settlement and low cross-border fees.
-                    </p>
-                    <div className="flex items-center gap-2 text-sm text-gray-500">
-                      <CheckCircle className="h-4 w-4 text-gray-400" />
-                      <span>Global • Fast • Low fees</span>
-                    </div>
-                  </div>
-                </div>
-
-                <h2>Setting up mobile money</h2>
-                <p>
-                  Mobile money is the fastest and most convenient payment method for 
-                  Ghanaian clients. Here's how to set it up:
-                </p>
-
-                <ol>
-                  <li><strong>Go to Payment Settings:</strong> From your dashboard, click Settings → Payment Methods</li>
-                  <li><strong>Enable Mobile Money:</strong> Toggle on the mobile money option</li>
-                  <li><strong>Add your numbers:</strong> Enter your MTN, Vodafone, and/or AirtelTigo numbers</li>
-                  <li><strong>Verify ownership:</strong> We'll send a small test transaction to verify each number</li>
-                  <li><strong>Set preferences:</strong> Choose which networks to display on invoices</li>
-                </ol>
-
-                <div className="not-prose my-8 rounded-lg border border-gray-200 bg-gray-50 p-6">
-                  <div className="flex gap-4">
-                    <AlertCircle className="h-5 w-5 text-gray-700 mt-0.5 flex-shrink-0" />
-                    <div>
-                      <h4 className="font-semibold text-black mb-2">Important</h4>
-                      <p className="text-gray-700 leading-6">
-                        Make sure the mobile money numbers you add are registered in your name 
-                        and have sufficient transaction limits for your business needs.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                <h2>Setting up bank transfers</h2>
-                <p>
-                  Bank transfers are ideal for larger payments and international clients:
-                </p>
-
-                <ol>
-                  <li><strong>Add bank details:</strong> Go to Settings → Payment Methods → Bank Transfer</li>
-                  <li><strong>Enter account information:</strong> Bank name, account number, routing/sort code</li>
-                  <li><strong>Add international details:</strong> SWIFT code for international transfers (optional)</li>
-                  <li><strong>Set currency preferences:</strong> Choose which currencies you accept</li>
-                  <li><strong>Enable automatic matching:</strong> We'll help match payments to invoices</li>
-                </ol>
-
-                <h3>Required information:</h3>
-                <ul>
-                  <li>Bank name and branch</li>
-                  <li>Account holder name (must match your Plaen account)</li>
-                  <li>Account number</li>
-                  <li>Routing or sort code</li>
-                  <li>SWIFT code (for international transfers)</li>
-                </ul>
-
-                <h2>Setting up cryptocurrency</h2>
-                <p>
-                  Cryptocurrency payments offer global reach and fast settlement:
-                </p>
-
-                <ol>
-                  <li><strong>Create wallet addresses:</strong> Set up wallets for supported cryptocurrencies</li>
-                  <li><strong>Add to Plaen:</strong> Go to Settings → Payment Methods → Cryptocurrency</li>
-                  <li><strong>Enter addresses:</strong> Add your Bitcoin, Ethereum, and stablecoin addresses</li>
-                  <li><strong>Set conversion preferences:</strong> Choose how to handle price conversions</li>
-                  <li><strong>Enable notifications:</strong> Get alerts when payments are received</li>
-                </ol>
-
-                <h3>Supported cryptocurrencies:</h3>
-                <ul>
-                  <li>Bitcoin (BTC)</li>
-                  <li>Ethereum (ETH)</li>
-                  <li>USD Coin (USDC)</li>
-                  <li>Tether (USDT)</li>
-                </ul>
-
-                <h2>Payment method recommendations</h2>
-                
-                <h3>For local Ghanaian clients:</h3>
-                <ul>
-                  <li>Enable all three mobile money networks (MTN, Vodafone, AirtelTigo)</li>
-                  <li>Add at least one local bank account</li>
-                  <li>Consider cryptocurrency for tech-savvy clients</li>
-                </ul>
-
-                <h3>For international clients:</h3>
-                <ul>
-                  <li>Set up bank transfers with SWIFT details</li>
-                  <li>Enable major cryptocurrencies (Bitcoin, Ethereum, USDC)</li>
-                  <li>Consider USD-pegged stablecoins for price stability</li>
-                </ul>
-
-                <h2>Testing your setup</h2>
-                <p>
-                  Before sending your first invoice, test your payment setup:
-                </p>
-
-                <ol>
-                  <li>Create a test invoice with a small amount</li>
-                  <li>Send it to yourself or a trusted friend</li>
-                  <li>Make a small test payment using each method</li>
-                  <li>Verify that payments are received and tracked correctly</li>
-                  <li>Check that payment confirmations work properly</li>
-                </ol>
-
-                <h2>Security considerations</h2>
-                <ul>
-                  <li>Never share your private keys or wallet seeds</li>
-                  <li>Use strong passwords for your bank and mobile money accounts</li>
-                  <li>Enable two-factor authentication where available</li>
-                  <li>Regularly monitor your accounts for unauthorized transactions</li>
-                  <li>Keep your Plaen account login credentials secure</li>
-                </ul>
-
-                <div className="not-prose mt-12 flex flex-col gap-4 sm:flex-row">
-                  <Link href="/help/first-invoice">
-                    <Button size="lg">
-                      Create your first invoice
-                      <ArrowRight className="ml-2 h-4 w-4" />
-                    </Button>
-                  </Link>
-                  <Link href="/help/payments">
-                    <Button size="lg" variant="outline">
-                      Learn about payment methods
-                    </Button>
-                  </Link>
-                </div>
-
+              <div className="text-right text-sm">
+                <div className="text-gray-700">Speed: <span className="font-medium text-black">{method.speed}</span></div>
+                <div className="text-gray-500">Fees: {method.fees}</div>
               </div>
             </div>
-          </section>
-        </main>
-
-        <MarketingFooter year={year} />
+          );
+        })}
       </div>
-    </>
+
+      <h2>Setting Up Mobile Money</h2>
+      <p>
+        Mobile money is the fastest and most popular payment method for clients in Ghana.
+      </p>
+
+      <h3>MTN Mobile Money</h3>
+      <ol>
+        <li>Go to <strong>Settings → Payment Methods</strong></li>
+        <li>Click <strong>"Add Mobile Money"</strong></li>
+        <li>Select <strong>MTN Mobile Money</strong></li>
+        <li>Enter your MTN phone number</li>
+        <li>Verify with the code sent to your phone</li>
+        <li>Save and enable for invoices</li>
+      </ol>
+
+      <h3>Vodafone Cash</h3>
+      <ol>
+        <li>Follow the same steps as MTN</li>
+        <li>Select <strong>Vodafone Cash</strong></li>
+        <li>Enter your Vodafone number</li>
+        <li>Complete verification</li>
+      </ol>
+
+      <h3>AirtelTigo Money</h3>
+      <ol>
+        <li>Select <strong>AirtelTigo Money</strong></li>
+        <li>Enter your AirtelTigo number</li>
+        <li>Verify and enable</li>
+      </ol>
+
+      <h2>Setting Up Bank Transfer</h2>
+      <p>
+        Bank transfers are ideal for larger payments and international clients.
+      </p>
+
+      <h3>Local Bank Account</h3>
+      <ol>
+        <li>Go to <strong>Settings → Payment Methods</strong></li>
+        <li>Click <strong>"Add Bank Account"</strong></li>
+        <li>Enter your bank name</li>
+        <li>Add your account number</li>
+        <li>Enter branch code (if required)</li>
+        <li>Verify account details</li>
+      </ol>
+
+      <h3>Required Information</h3>
+      <ul>
+        <li><strong>Bank name:</strong> e.g., GCB Bank, Ecobank, Stanbic</li>
+        <li><strong>Account name:</strong> As registered with the bank</li>
+        <li><strong>Account number:</strong> Your bank account number</li>
+        <li><strong>Branch:</strong> Your bank branch (if applicable)</li>
+      </ul>
+
+      <h3>International Transfers</h3>
+      <p>
+        For international clients, you may also need:
+      </p>
+      <ul>
+        <li><strong>SWIFT/BIC code:</strong> For international wire transfers</li>
+        <li><strong>IBAN:</strong> If your bank supports it</li>
+        <li><strong>Correspondent bank:</strong> For USD transactions</li>
+      </ul>
+
+      <h2>Setting Up Cryptocurrency</h2>
+      <p>
+        Accept crypto for fast, borderless payments.
+      </p>
+
+      <h3>Adding a Crypto Wallet</h3>
+      <ol>
+        <li>Go to <strong>Settings → Payment Methods</strong></li>
+        <li>Click <strong>"Add Cryptocurrency"</strong></li>
+        <li>Select the cryptocurrencies you want to accept</li>
+        <li>Enter your wallet addresses</li>
+        <li>Enable for invoices</li>
+      </ol>
+
+      <h3>Supported Cryptocurrencies</h3>
+      <ul>
+        <li><strong>Bitcoin (BTC):</strong> Most widely accepted</li>
+        <li><strong>USD Coin (USDC):</strong> Stable value, pegged to USD</li>
+        <li><strong>Ethereum (ETH):</strong> Popular, fast transactions</li>
+      </ul>
+
+      <div className="not-prose my-6 rounded-lg border border-[#0D948815] bg-[#0D948808] p-4">
+        <p className="text-sm text-gray-700">
+          <strong className="text-[#0D9488]">💡 Stablecoins recommended:</strong> USDC maintains 
+          a stable value tied to USD, eliminating price volatility concerns for you and your clients.
+        </p>
+      </div>
+
+      <h2>Managing Payment Methods</h2>
+
+      <h3>Default Payment Methods</h3>
+      <p>
+        Set which payment methods appear by default on new invoices:
+      </p>
+      <ol>
+        <li>Go to <strong>Settings → Invoice Preferences</strong></li>
+        <li>Find <strong>"Default Payment Methods"</strong></li>
+        <li>Check the methods you want enabled by default</li>
+        <li>Drag to reorder (top = most prominent)</li>
+      </ol>
+
+      <h3>Per-Invoice Customization</h3>
+      <p>
+        You can customize payment methods for each invoice:
+      </p>
+      <ul>
+        <li>Enable/disable specific methods for a client</li>
+        <li>Add special instructions for payment</li>
+        <li>Set preferred payment method for the client</li>
+      </ul>
+
+      <h2>Best Practices</h2>
+      <div className="not-prose my-8 space-y-4">
+        <div className="rounded-lg border border-gray-200 p-4">
+          <h4 className="font-semibold text-black mb-2">Offer Multiple Options</h4>
+          <p className="text-sm text-gray-700">
+            Clients are more likely to pay quickly when they can use their preferred method.
+          </p>
+        </div>
+        <div className="rounded-lg border border-gray-200 p-4">
+          <h4 className="font-semibold text-black mb-2">Highlight Mobile Money for Ghana</h4>
+          <p className="text-sm text-gray-700">
+            Most Ghanaian clients prefer mobile money for its speed and convenience.
+          </p>
+        </div>
+        <div className="rounded-lg border border-gray-200 p-4">
+          <h4 className="font-semibold text-black mb-2">Use Bank for Large Amounts</h4>
+          <p className="text-sm text-gray-700">
+            For invoices over GHS 10,000, bank transfer may be more practical.
+          </p>
+        </div>
+        <div className="rounded-lg border border-gray-200 p-4">
+          <h4 className="font-semibold text-black mb-2">Verify All Details</h4>
+          <p className="text-sm text-gray-700">
+            Double-check account numbers and wallet addresses to avoid payment issues.
+          </p>
+        </div>
+      </div>
+
+      <h2>Troubleshooting</h2>
+
+      <h3>Payment Not Received?</h3>
+      <p>
+        If a client says they've paid but you haven't received it:
+      </p>
+      <ul>
+        <li>Ask for their transaction reference/receipt</li>
+        <li>Check the correct account was used</li>
+        <li>Allow time for processing (especially bank transfers)</li>
+        <li>Contact our support if issues persist</li>
+      </ul>
+    </HelpArticleLayout>
   );
 }

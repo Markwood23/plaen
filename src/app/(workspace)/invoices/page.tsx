@@ -82,8 +82,8 @@ export default function InvoicesPage() {
     switch (status) {
       case "Paid":
         return (
-          <Badge style={{ backgroundColor: 'rgba(5, 150, 105, 0.08)', color: '#059669', borderColor: 'transparent' }}>
-            <TickSquare size={14} color="#059669" /> Paid
+          <Badge style={{ backgroundColor: 'rgba(13, 148, 136, 0.08)', color: '#0D9488', borderColor: 'transparent' }}>
+            <TickSquare size={14} color="#0D9488" /> Paid
           </Badge>
         );
       case "Cancelled":
@@ -183,17 +183,17 @@ export default function InvoicesPage() {
           <p className="text-xs mt-3" style={{ color: '#B0B3B8' }}>Awaiting payment</p>
         </div>
 
-        <div className="group relative rounded-2xl p-6 transition-all duration-300 hover:scale-[1.02]" style={{ backgroundColor: 'rgba(5, 150, 105, 0.04)' }}>
+        <div className="group relative rounded-2xl p-6 transition-all duration-300 hover:scale-[1.02]" style={{ backgroundColor: 'rgba(13, 148, 136, 0.04)' }}>
           <div className="flex items-center justify-between mb-4">
             <div 
               className="h-12 w-12 rounded-xl flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110"
-              style={{ backgroundColor: 'rgba(5, 150, 105, 0.12)' }}
+              style={{ backgroundColor: 'rgba(13, 148, 136, 0.12)' }}
             >
-              <TickSquare size={24} color="#059669" variant="Bulk" />
+              <TickSquare size={24} color="#0D9488" variant="Bulk" />
             </div>
             <div
               className="inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-semibold"
-              style={{ backgroundColor: 'rgba(5, 150, 105, 0.12)', color: '#059669' }}
+              style={{ backgroundColor: 'rgba(13, 148, 136, 0.12)', color: '#0D9488' }}
             >
               +12%
             </div>
@@ -265,8 +265,8 @@ export default function InvoicesPage() {
                 </div>
               </div>
               <div className="flex items-center gap-2 ml-2">
-                <div className="h-1 w-1 rounded-full" style={{ backgroundColor: '#059669' }}></div>
-                <span className="text-xs font-medium" style={{ color: '#059669' }}>Active & Ready</span>
+                <div className="h-1 w-1 rounded-full" style={{ backgroundColor: '#0D9488' }}></div>
+                <span className="text-xs font-medium" style={{ color: '#0D9488' }}>Active & Ready</span>
               </div>
             </div>
           </div>
@@ -517,9 +517,9 @@ export default function InvoicesPage() {
                       <DropdownMenuItem className="gap-3 rounded-xl p-3 cursor-pointer group transition-all hover:bg-[rgba(24,119,242,0.04)]">
                         <div 
                           className="h-8 w-8 rounded-full flex items-center justify-center transition-all"
-                          style={{ backgroundColor: 'rgba(5, 150, 105, 0.08)' }}
+                          style={{ backgroundColor: 'rgba(13, 148, 136, 0.08)' }}
                         >
-                          <DocumentDownload size={16} color="#059669" />
+                          <DocumentDownload size={16} color="#0D9488" />
                         </div>
                         <span className="text-sm font-medium group-hover:text-[#14462a] transition-all" style={{ color: '#2D2D2D' }}>Download</span>
                       </DropdownMenuItem>

@@ -5,23 +5,23 @@ import { MarketingFooter } from "@/components/marketing/marketing-footer";
 import { PageEffects } from "@/components/marketing/home-page-effects";
 import { HelpSearch, type HelpArticleSummary } from "@/components/help/help-search";
 import {
-  BookOpen,
-  FileText,
-  CreditCard,
-  Settings,
-  HelpCircle,
-  ArrowRight,
-  ChevronRight,
+  Book1,
+  DocumentText,
+  Card,
+  Setting2,
+  MessageQuestion,
+  ArrowRight2,
+  ArrowRight3,
   User,
-  Smartphone,
-} from "lucide-react";
-import { IconFrame } from "@/components/ui/icon-frame";
+  Mobile,
+} from "iconsax-react";
 
 const categories = [
   {
     name: "Getting Started",
-    icon: BookOpen,
+    icon: Book1,
     description: "Set up your account and create your first invoice",
+    color: "#14462a",
     articles: [
       { title: "Creating your Plaen account", slug: "creating-account", readTime: "2 min" },
       { title: "Personal vs Business setup", slug: "account-types", readTime: "3 min" },
@@ -31,8 +31,9 @@ const categories = [
   },
   {
     name: "Creating Invoices",
-    icon: FileText,
+    icon: DocumentText,
     description: "Everything about building professional invoices",
+    color: "#0D9488",
     articles: [
       { title: "Invoice builder walkthrough", slug: "invoice-builder", readTime: "6 min" },
       { title: "Adding items and calculating totals", slug: "items-totals", readTime: "3 min" },
@@ -43,8 +44,9 @@ const categories = [
   },
   {
     name: "Payments & Processing",
-    icon: CreditCard,
+    icon: Card,
     description: "How payments work and managing transactions",
+    color: "#D97706",
     articles: [
       { title: "Mobile money payments", slug: "mobile-money", readTime: "5 min" },
       { title: "Bank transfer setup", slug: "bank-transfers", readTime: "4 min" },
@@ -55,8 +57,9 @@ const categories = [
   },
   {
     name: "Account Settings",
-    icon: Settings,
+    icon: Setting2,
     description: "Manage your profile and preferences",
+    color: "#6B7280",
     articles: [
       { title: "Updating your profile", slug: "update-profile", readTime: "2 min" },
       { title: "Company branding and logo", slug: "branding", readTime: "4 min" },
@@ -71,6 +74,7 @@ const popularArticles = [
     title: "How to get paid faster with mobile money",
     description: "Learn why mobile money payments are processed faster than traditional methods",
     category: "Payments",
+    categoryColor: "#D97706",
     readTime: "5 min",
     slug: "mobile-money-faster",
     popular: true
@@ -79,6 +83,7 @@ const popularArticles = [
     title: "Creating professional invoices as a freelancer",
     description: "Best practices for freelancers to create invoices that look professional",
     category: "Getting Started",
+    categoryColor: "#14462a",
     readTime: "7 min",
     slug: "freelancer-invoices",
     popular: true
@@ -87,6 +92,7 @@ const popularArticles = [
     title: "Understanding dual currency invoicing",
     description: "When and how to use GHS and USD on the same invoice",
     category: "Creating Invoices",
+    categoryColor: "#0D9488",
     readTime: "4 min",
     slug: "dual-currency-guide",
     popular: true
@@ -95,6 +101,7 @@ const popularArticles = [
     title: "Setting up MTN Mobile Money for business",
     description: "Step-by-step guide to accepting MTN Mobile Money payments",
     category: "Payments",
+    categoryColor: "#D97706",
     readTime: "6 min",
     slug: "mtn-setup",
     popular: true
@@ -153,10 +160,10 @@ export default function HelpPage() {
           {/* Hero Section */}
           <section
             data-animate="fade-up"
-            className="relative z-30 mx-auto flex max-w-6xl flex-col items-center gap-8 px-6 pb-16 pt-20 text-center"
+            className="relative z-30 mx-auto flex max-w-6xl flex-col items-center gap-8 px-6 pb-16 pt-32 text-center"
           >
             <span className="inline-flex items-center gap-2 rounded-full border border-gray-200 px-4 py-1 text-xs uppercase tracking-[0.35em] text-gray-500">
-              <IconFrame icon={HelpCircle} size="sm" variant="plain" /> Help Center
+              <MessageQuestion size={16} color="#6B7280" variant="Bulk" /> Help Center
             </span>
             <h1 className="text-4xl font-semibold tracking-tight text-[#14462a] sm:text-5xl">
               Support for structure + context.
@@ -177,7 +184,10 @@ export default function HelpPage() {
                     <div className="absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                       <div className="absolute -right-8 top-4 h-20 w-20 rounded-full bg-gradient-to-br from-black/5 to-transparent blur-xl" />
                     </div>
-                      <IconFrame icon={User} size="md" variant="subtle" className="relative mb-4 transition bg-[#14462a]/10 border-[#14462a]/20 group-hover:bg-[#14462a] group-hover:border-[#14462a] group-hover:text-white group-hover:scale-105" />
+                      <div className="relative mb-4 h-10 w-10 rounded-full bg-[#14462a]/10 border border-[#14462a]/20 flex items-center justify-center transition group-hover:bg-[#14462a] group-hover:border-[#14462a] group-hover:scale-105">
+                        <User size={20} color="#14462a" variant="Bulk" className="group-hover:hidden" />
+                        <User size={20} color="white" variant="Bulk" className="hidden group-hover:block" />
+                      </div>
                     <h3 className="mb-2 text-lg font-semibold text-black group-hover:text-gray-700">I'm new to Plaen</h3>
                     <p className="mb-4 flex-1 text-sm text-gray-700 leading-relaxed">Get started with account setup and your first invoice</p>
                     {/* Progress visualization */}
@@ -192,7 +202,7 @@ export default function HelpPage() {
                       ))}
                     </div>
                     <div className="flex items-center text-sm font-medium text-gray-700 group-hover:text-gray-700">
-                      Start here <ArrowRight className="ml-1 h-4 w-4 transition group-hover:translate-x-1" />
+                      Start here <ArrowRight2 size={16} color="currentColor" className="ml-1 transition group-hover:translate-x-1" />
                     </div>
                   </div>
                 </Link>
@@ -202,20 +212,23 @@ export default function HelpPage() {
                     <div className="absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                       <div className="absolute -right-8 top-4 h-20 w-20 rounded-full bg-gradient-to-br from-black/5 to-transparent blur-xl" />
                     </div>
-                    <IconFrame icon={Smartphone} size="md" variant="subtle" className="relative mb-4 transition bg-[#14462a]/10 border-[#14462a]/20 group-hover:bg-[#14462a] group-hover:border-[#14462a] group-hover:text-white group-hover:scale-105" />
+                    <div className="relative mb-4 h-10 w-10 rounded-full bg-[#14462a]/10 border border-[#14462a]/20 flex items-center justify-center transition group-hover:bg-[#14462a] group-hover:border-[#14462a] group-hover:scale-105">
+                      <Mobile size={20} color="#14462a" variant="Bulk" className="group-hover:hidden" />
+                      <Mobile size={20} color="white" variant="Bulk" className="hidden group-hover:block" />
+                    </div>
                     <h3 className="mb-2 text-lg font-semibold text-black group-hover:text-gray-700">Payment questions</h3>
                     <p className="mb-4 flex-1 text-sm text-gray-700 leading-relaxed">Learn about mobile money, bank transfers, and crypto</p>
                     {/* Payment method indicators */}
                     <div className="mb-4 flex items-center gap-2">
                       <div className="flex -space-x-1">
-                        <div className="h-6 w-6 rounded-full bg-gray-300 border-2 border-white shadow-sm" />
-                        <div className="h-6 w-6 rounded-full bg-gray-400 border-2 border-white shadow-sm" />
-                        <div className="h-6 w-6 rounded-full bg-gray-500 border-2 border-white shadow-sm" />
+                        <div className="h-6 w-6 rounded-full bg-[#FFCC00] border-2 border-white shadow-sm flex items-center justify-center text-[8px] font-bold text-black">MM</div>
+                        <div className="h-6 w-6 rounded-full bg-[#14462a] border-2 border-white shadow-sm flex items-center justify-center text-[8px] font-bold text-white">BK</div>
+                        <div className="h-6 w-6 rounded-full bg-[#F7931A] border-2 border-white shadow-sm flex items-center justify-center text-[8px] font-bold text-white">₿</div>
                       </div>
                       <span className="text-xs text-gray-500">3 payment methods</span>
                     </div>
                     <div className="flex items-center text-sm font-medium text-gray-700 group-hover:text-gray-700">
-                      Explore payments <ArrowRight className="ml-1 h-4 w-4 transition group-hover:translate-x-1" />
+                      Explore payments <ArrowRight2 size={16} color="currentColor" className="ml-1 transition group-hover:translate-x-1" />
                     </div>
                   </div>
                 </Link>
@@ -225,20 +238,23 @@ export default function HelpPage() {
                     <div className="absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                       <div className="absolute -right-8 top-4 h-20 w-20 rounded-full bg-gradient-to-br from-black/5 to-transparent blur-xl" />
                     </div>
-                    <IconFrame icon={HelpCircle} size="md" variant="subtle" className="relative mb-4 transition bg-[#14462a]/10 border-[#14462a]/20 group-hover:bg-[#14462a] group-hover:border-[#14462a] group-hover:text-white group-hover:scale-105" />
+                    <div className="relative mb-4 h-10 w-10 rounded-full bg-[#14462a]/10 border border-[#14462a]/20 flex items-center justify-center transition group-hover:bg-[#14462a] group-hover:border-[#14462a] group-hover:scale-105">
+                      <MessageQuestion size={20} color="#14462a" variant="Bulk" className="group-hover:hidden" />
+                      <MessageQuestion size={20} color="white" variant="Bulk" className="hidden group-hover:block" />
+                    </div>
                     <h3 className="mb-2 text-lg font-semibold text-black group-hover:text-gray-700">Still need help?</h3>
                     <p className="mb-4 flex-1 text-sm text-gray-700 leading-relaxed">Contact our support team directly</p>
                     {/* Response time indicator */}
                     <div className="mb-4 flex items-center gap-2 text-xs text-gray-500">
                       <div className="flex items-center gap-1">
-                        <div className="h-2 w-2 rounded-full bg-gray-400 animate-pulse" />
+                        <div className="h-2 w-2 rounded-full bg-[#14462a] animate-pulse" />
                         <span>Online now</span>
                       </div>
                       <div className="h-3 w-px bg-gray-300" />
                       <span>&lt; 2h response</span>
                     </div>
                     <div className="flex items-center text-sm font-medium text-gray-700 group-hover:text-gray-700">
-                      Get support <ArrowRight className="ml-1 h-4 w-4 transition group-hover:translate-x-1" />
+                      Get support <ArrowRight2 size={16} color="currentColor" className="ml-1 transition group-hover:translate-x-1" />
                     </div>
                   </div>
                 </Link>
@@ -257,7 +273,13 @@ export default function HelpPage() {
                   <Link key={article.slug} href={`/help/${article.slug}`}>
                     <article className="group flex h-full cursor-pointer flex-col rounded-2xl border border-gray-200 bg-white p-6 transition hover:-translate-y-1 hover:border-black/20 hover:shadow-lg">
                       <div className="mb-3 flex items-center gap-3">
-                        <span className="rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-700">
+                        <span 
+                          className="rounded-full px-3 py-1 text-xs font-medium"
+                          style={{ 
+                            backgroundColor: `${article.categoryColor}15`,
+                            color: article.categoryColor 
+                          }}
+                        >
                           {article.category}
                         </span>
                         <span className="text-xs text-gray-500">{article.readTime}</span>
@@ -268,7 +290,7 @@ export default function HelpPage() {
                       <p className="mb-4 flex-1 text-sm text-gray-700">{article.description}</p>
                       <div className="flex items-center justify-between">
                         <span className="text-sm font-medium text-gray-500">Read article</span>
-                        <ArrowRight className="h-4 w-4 text-gray-400 transition group-hover:translate-x-1 group-hover:text-black" />
+                        <ArrowRight2 size={16} color="#9CA3AF" className="transition group-hover:translate-x-1 group-hover:text-black" />
                       </div>
                     </article>
                   </Link>
@@ -287,7 +309,12 @@ export default function HelpPage() {
                   return (
                     <div key={category.name} className="rounded-3xl border border-gray-200 bg-white p-8 shadow-[0_16px_60px_rgba(15,15,15,0.05)]">
                       <div className="mb-6 flex items-center gap-4">
-                        <IconFrame icon={Icon} size="md" variant="subtle" />
+                        <div 
+                          className="h-10 w-10 rounded-full flex items-center justify-center"
+                          style={{ backgroundColor: `${category.color}15` }}
+                        >
+                          <Icon size={20} color={category.color} variant="Bulk" />
+                        </div>
                         <div>
                           <h3 className="text-xl font-semibold text-black">{category.name}</h3>
                           <p className="text-sm text-gray-700">{category.description}</p>
@@ -299,7 +326,7 @@ export default function HelpPage() {
                             <Link href={`/help/${article.slug}`}>
                               <div className="group flex items-center justify-between rounded-lg border border-gray-200 bg-gray-50 p-3 transition hover:border-gray-300 hover:bg-white hover:shadow-sm">
                                 <div className="flex items-center gap-3">
-                                  <ChevronRight className="h-4 w-4 text-gray-400 transition group-hover:translate-x-1 group-hover:text-black" />
+                                  <ArrowRight3 size={16} color="#9CA3AF" className="transition group-hover:translate-x-1 group-hover:text-black" />
                                   <span className="text-sm font-medium text-black group-hover:text-gray-700">
                                     {article.title}
                                   </span>
