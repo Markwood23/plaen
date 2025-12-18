@@ -105,10 +105,7 @@ export function HelpArticleLayout({
           {/* Article Content */}
           <section className="py-16">
             <div className="mx-auto max-w-3xl px-6">
-              <div 
-                className="article-content" 
-                data-animate="fade-up"
-              >
+              <div className="article-content">
                 {children}
               </div>
 
