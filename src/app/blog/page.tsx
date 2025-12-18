@@ -248,42 +248,48 @@ export default function BlogPage() {
           {/* Removed pillars here to avoid duplication; blog content itself expresses the narrative */}
 
           {/* Newsletter */}
-          <section className="border-t border-gray-200 bg-white py-20" data-animate="fade-up">
+          <section className="border-t border-gray-200 bg-gradient-to-b from-gray-50 to-white py-24" data-animate="fade-up">
             <div className="mx-auto max-w-5xl px-6">
-              <div className="grid gap-10 rounded-3xl border border-gray-200 bg-gray-50/80 p-12 shadow-[0_24px_90px_rgba(15,15,15,0.08)] backdrop-blur-sm md:grid-cols-[1.4fr,1fr]">
-                <div className="space-y-6">
-                  <span className="text-xs uppercase tracking-[0.35em] text-gray-500">newsletter</span>
-                  <h2 className="text-3xl font-semibold text-[#14462a]">Monthly context delivery</h2>
-                  <p className="text-base leading-7 text-gray-700">
-                    One calm email: practical tactics for documented transfers, on‑time rate improvements (≤3 days rule), and evolving Finance Notes into narrative reports.
-                  </p>
-                  <ul className="space-y-3 text-sm leading-6 text-gray-600">
-                    <li className="flex items-start gap-2">
-                      <span className="mt-1 h-1.5 w-1.5 rounded-full bg-gray-500" />
-                      Playbooks for attaching meaning to everyday transfers
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="mt-1 h-1.5 w-1.5 rounded-full bg-gray-500" />
-                      On‑time rate tactics and paylink conversion insights
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="mt-1 h-1.5 w-1.5 rounded-full bg-gray-500" />
-                      Zero spam. One email. Durable value.
-                    </li>
-                  </ul>
+              <div className="overflow-hidden rounded-3xl border border-gray-200 bg-white shadow-[0_24px_90px_rgba(15,15,15,0.06)]">
+                <div className="grid md:grid-cols-[1.4fr,1fr]">
+                  <div className="p-10 md:p-12 space-y-6">
+                    <span className="inline-flex items-center rounded-full bg-[#14462a]/10 px-4 py-1.5 text-xs font-medium text-[#14462a]">
+                      Newsletter
+                    </span>
+                    <h2 className="text-3xl font-semibold text-[#14462a]">Monthly context delivery</h2>
+                    <p className="text-base leading-7 text-gray-600">
+                      One calm email: practical tactics for documented transfers, on‑time rate improvements, and evolving Finance Notes into narrative reports.
+                    </p>
+                    <ul className="space-y-3 text-sm leading-6 text-gray-600">
+                      <li className="flex items-start gap-3">
+                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-[#14462a]" />
+                        Playbooks for attaching meaning to everyday transfers
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-[#14462a]" />
+                        On‑time rate tactics and paylink conversion insights
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-[#14462a]" />
+                        Zero spam. One email. Durable value.
+                      </li>
+                    </ul>
+                  </div>
+                  <div className="flex flex-col justify-center bg-gradient-to-br from-[#14462a]/5 to-[#14462a]/10 p-10 md:p-12">
+                    <form className="flex flex-col gap-4" action="#" method="post">
+                      <Input
+                        type="email"
+                        placeholder="you@company.com"
+                        className="rounded-xl border-gray-200 bg-white px-4 py-3 text-sm text-gray-700 focus:border-[#14462a] focus:ring-[#14462a]"
+                        required
+                      />
+                      <Button type="submit" className="rounded-xl py-3 text-white">
+                        Subscribe now
+                      </Button>
+                      <p className="text-xs text-gray-500 text-center">You can unsubscribe at any time.</p>
+                    </form>
+                  </div>
                 </div>
-                <form className="flex flex-col gap-4" action="#" method="post">
-                  <Input
-                    type="email"
-                    placeholder="you@company.com"
-                    className="rounded-xl border-gray-200 bg-white px-4 py-3 text-sm text-gray-700 focus:border-black focus:ring-black"
-                    required
-                  />
-                  <Button type="submit" className="rounded-xl bg-black py-3 text-white hover:bg-gray-900">
-                    Subscribe now
-                  </Button>
-                  <p className="text-xs text-gray-500">You can unsubscribe at any time.</p>
-                </form>
               </div>
             </div>
           </section>

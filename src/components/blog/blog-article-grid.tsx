@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { ArrowLeft, ArrowRight, Calendar } from "lucide-react";
+import { ArrowLeft2, ArrowRight2, Calendar } from "iconsax-react";
 
 export type BlogPost = {
   id: string;
@@ -65,27 +65,27 @@ export function BlogArticleGrid({ orderedPosts, pageSize = 3 }: BlogArticleGridP
       <div className="mx-auto max-w-6xl px-6">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <h2 className="text-2xl font-semibold text-black">Latest research and tutorials</h2>
-            <p className="max-w-2xl text-sm leading-6 text-gray-600">
+            <h2 className="text-2xl font-semibold text-[#14462a]">Latest research and tutorials</h2>
+            <p className="max-w-2xl text-sm leading-6 text-gray-600 mt-2">
               Fresh perspectives on offer-based billing, currency management, and the systems founders use to keep receivables predictable.
             </p>
           </div>
-          <Link href="/pricing" className="text-sm text-gray-600 hover:text-black">
-            See platform features
+          <Link href="/pricing" className="text-sm text-gray-600 hover:text-[#14462a] transition">
+            See platform features →
           </Link>
         </div>
 
         <div className="mt-12 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
           {paginatedPosts.map((post) => (
             <Link key={post.id} href={`/blog/${post.id}`}>
-              <article className="group flex h-full flex-col overflow-hidden rounded-2xl border border-gray-200 bg-gray-50/80 transition hover:-translate-y-1 hover:border-black/30">
-                <div className="relative aspect-[3/2] bg-gradient-to-br from-gray-100 to-gray-200">
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent" />
-                  <div className="absolute left-4 top-4 inline-flex items-center gap-2 rounded-full border border-gray-200 bg-white/80 px-3 py-1 text-[11px] uppercase tracking-[0.3em] text-gray-500">
+              <article className="group flex h-full flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white transition hover:-translate-y-1 hover:border-[#14462a]/30 hover:shadow-lg">
+                <div className="relative aspect-[3/2] bg-gradient-to-br from-[#14462a]/5 to-[#14462a]/15">
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/5 to-transparent" />
+                  <div className="absolute left-4 top-4 inline-flex items-center gap-2 rounded-full bg-white/90 px-3 py-1 text-xs font-medium text-gray-700 backdrop-blur-sm">
                     {post.category}
                   </div>
-                  <div className="absolute bottom-4 left-4 flex items-center gap-2 text-xs text-gray-500">
-                    <Calendar className="h-3 w-3" />
+                  <div className="absolute bottom-4 left-4 flex items-center gap-2 rounded-full bg-white/80 px-2.5 py-1 text-xs text-gray-600 backdrop-blur-sm">
+                    <Calendar size={12} color="#6B7280" variant="Bold" />
                     {new Date(post.date).toLocaleDateString("en-US", {
                       month: "short",
                       day: "numeric",
@@ -93,11 +93,11 @@ export function BlogArticleGrid({ orderedPosts, pageSize = 3 }: BlogArticleGridP
                   </div>
                 </div>
                 <div className="flex flex-1 flex-col gap-4 p-6">
-                  <h3 className="text-lg font-semibold text-black group-hover:text-gray-700">{post.title}</h3>
-                  <p className="flex-1 text-sm leading-6 text-gray-700 line-clamp-3">{post.excerpt}</p>
-                  <div className="flex items-center justify-between border-t border-gray-200 pt-4 text-xs text-gray-500">
+                  <h3 className="text-lg font-semibold text-black group-hover:text-[#14462a] transition">{post.title}</h3>
+                  <p className="flex-1 text-sm leading-6 text-gray-600 line-clamp-3">{post.excerpt}</p>
+                  <div className="flex items-center justify-between border-t border-gray-100 pt-4 text-xs text-gray-500">
                     <span>{post.author}</span>
-                    <span>{post.readTime}</span>
+                    <span className="text-[#14462a] font-medium">{post.readTime}</span>
                   </div>
                 </div>
               </article>
@@ -118,12 +118,12 @@ export function BlogArticleGrid({ orderedPosts, pageSize = 3 }: BlogArticleGridP
               className={`flex h-9 w-9 items-center justify-center rounded-full border text-sm font-medium transition ${
                 safePage === 1
                   ? "cursor-not-allowed border-gray-200 text-gray-300"
-                  : "border-gray-200 text-gray-600 hover:border-black hover:text-black"
+                  : "border-gray-200 text-gray-600 hover:border-[#14462a] hover:text-[#14462a]"
               }`}
               disabled={safePage === 1}
               aria-label="Previous page"
             >
-              <ArrowLeft className="h-4 w-4" />
+              <ArrowLeft2 size={16} color="currentColor" />
             </button>
             {pageNumbers.map((pageNumber) => (
               <button
@@ -132,8 +132,8 @@ export function BlogArticleGrid({ orderedPosts, pageSize = 3 }: BlogArticleGridP
                 onClick={() => setCurrentPage(pageNumber)}
                 className={`h-9 w-9 rounded-full border text-sm font-medium transition ${
                   pageNumber === safePage
-                    ? "border-black bg-black text-white"
-                    : "border-gray-200 text-gray-600 hover:border-black hover:text-black"
+                    ? "border-[#14462a] bg-[#14462a] text-white"
+                    : "border-gray-200 text-gray-600 hover:border-[#14462a] hover:text-[#14462a]"
                 }`}
                 aria-label={`Go to page ${pageNumber}`}
               >
@@ -146,12 +146,12 @@ export function BlogArticleGrid({ orderedPosts, pageSize = 3 }: BlogArticleGridP
               className={`flex h-9 w-9 items-center justify-center rounded-full border text-sm font-medium transition ${
                 safePage === totalPages
                   ? "cursor-not-allowed border-gray-200 text-gray-300"
-                  : "border-gray-200 text-gray-600 hover:border-black hover:text-black"
+                  : "border-gray-200 text-gray-600 hover:border-[#14462a] hover:text-[#14462a]"
               }`}
               disabled={safePage === totalPages}
               aria-label="Next page"
             >
-              <ArrowRight className="h-4 w-4" />
+              <ArrowRight2 size={16} color="currentColor" />
             </button>
           </div>
         </div>
