@@ -8,6 +8,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { Input } from "@/components/ui/input";
 import { SearchNormal1, Clock, Book1, ArrowRight2, CloseCircle } from "iconsax-react";
 import type { BlogPost } from "@/components/blog/blog-article-grid";
@@ -83,9 +84,13 @@ export function BlogSearchModal({ open, onOpenChange, posts }: BlogSearchModalPr
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent 
-        className="max-w-2xl gap-0 overflow-hidden rounded-2xl border-gray-200 bg-white p-0 shadow-2xl"
+        className="w-full max-w-4xl gap-0 overflow-hidden rounded-2xl border-gray-200 bg-white p-0 shadow-2xl sm:max-w-4xl"
         showCloseButton={false}
       >
+        <VisuallyHidden>
+          <DialogTitle>Search articles</DialogTitle>
+        </VisuallyHidden>
+        
         {/* Search Header */}
         <div className="border-b border-gray-100 p-4">
           <div className="relative">
@@ -125,7 +130,7 @@ export function BlogSearchModal({ open, onOpenChange, posts }: BlogSearchModalPr
         </div>
 
         {/* Results */}
-        <div className="max-h-[400px] overflow-y-auto">
+        <div className="max-h-[480px] overflow-y-auto">
           {filteredPosts.length > 0 ? (
             <div className="p-2">
               <p className="px-3 py-2 text-xs font-medium uppercase tracking-wider text-gray-400">
