@@ -7,6 +7,7 @@ export default function PaymentMethodsComparisonPage() {
       description="A practical comparison of the payment rails available to African businesses and how to pick the right mix for your clients."
       category="Payments"
       author="David Mensah"
+      authorImage="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=150&h=150&fit=crop&crop=face"
       date="2024-10-25"
       readTime="6 min read"
       tags={["Payments", "Comparison", "Strategy"]}

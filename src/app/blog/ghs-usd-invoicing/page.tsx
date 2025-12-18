@@ -7,6 +7,7 @@ export default function DualCurrencyInvoicingPage() {
       description="When clients ask for pricing in both Ghana Cedis and US Dollars, your invoice needs to stay accurate and easy to reconcile."
       category="Invoicing"
       author="Kwame Asante"
+      authorImage="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face"
       date="2024-10-20"
       readTime="7 min read"
       tags={["Currency", "Ghana", "Invoicing"]}

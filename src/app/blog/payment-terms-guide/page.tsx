@@ -7,6 +7,7 @@ export default function PaymentTermsGuidePage() {
       description="Translate your pricing strategy into payment terms that protect cash flow without damaging client relationships."
       category="Business Tips"
       author="Plaen Team"
+      authorImage="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=150&h=150&fit=crop&crop=face"
       date="2024-10-18"
       readTime="5 min read"
       tags={["Payment Terms", "Cash Flow", "Operations"]}

@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { MarketingHeader } from "@/components/marketing/marketing-header";
 import { MarketingFooter } from "@/components/marketing/marketing-footer";
 import { PageEffects } from "@/components/marketing/home-page-effects";
@@ -28,6 +29,7 @@ export type ArticleLayoutProps = {
   description: string;
   category: string;
   author: string;
+  authorImage?: string;
   date: string;
   readTime: string;
   tags: string[];
@@ -41,6 +43,7 @@ export function ArticleLayout({
   description,
   category,
   author,
+  authorImage,
   date,
   readTime,
   tags,
@@ -86,7 +89,19 @@ export function ArticleLayout({
 
               <div className="flex flex-wrap items-center gap-6 text-sm text-gray-500">
                 <div className="flex items-center gap-2">
-                  <div className="h-10 w-10 rounded-full bg-gray-200" />
+                  {authorImage ? (
+                    <Image 
+                      src={authorImage}
+                      alt={author}
+                      width={40}
+                      height={40}
+                      className="h-10 w-10 rounded-full object-cover"
+                    />
+                  ) : (
+                    <div className="h-10 w-10 rounded-full bg-[#14462a]/10 flex items-center justify-center text-sm font-semibold text-[#14462a]">
+                      {author.split(' ').map(n => n[0]).join('')}
+                    </div>
+                  )}
                   <span className="font-medium text-black">{author}</span>
                 </div>
                 <div className="flex items-center gap-1">

@@ -7,6 +7,7 @@ export default function BlogPostPage() {
       description="How mobile money is transforming the way businesses get paid across Africa, and why traditional invoicing tools are falling behind."
       category="Payments"
       author="Plaen Team"
+      authorImage="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=150&h=150&fit=crop&crop=face"
       date="2024-11-01"
       readTime="5 min read"
       tags={["Mobile Money", "Africa", "Payments"]}

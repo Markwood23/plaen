@@ -7,6 +7,7 @@ export default function FreelancerInvoiceGuidePage() {
       description="Everything independent professionals need to build invoices that look credible, protect scope, and get paid on time."
       category="Invoicing"
       author="Sarah Johnson"
+      authorImage="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop&crop=face"
       date="2024-10-28"
       readTime="8 min read"
       tags={["Freelancing", "Invoicing", "Cash Flow"]}

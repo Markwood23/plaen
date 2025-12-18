@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { SmartButton } from "@/components/ui/smart-button";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -47,6 +48,7 @@ const blogPosts = [
     title: "The Rise of Mobile Money in African Business",
     excerpt: "How mobile money is transforming the way businesses get paid across Africa, and why traditional invoicing tools are falling behind.",
     author: "Plaen Team",
+    authorImage: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=150&h=150&fit=crop&crop=face",
     date: "2024-11-01",
     category: "Payments",
     readTime: "5 min read",
@@ -59,6 +61,7 @@ const blogPosts = [
     title: "The Complete Guide to Professional Freelance Invoicing",
     excerpt: "Everything freelancers need to know about creating professional invoices that get paid faster.",
     author: "Sarah Johnson",
+    authorImage: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop&crop=face",
     date: "2024-10-28",
     category: "Invoicing",
     readTime: "8 min read",
@@ -71,6 +74,7 @@ const blogPosts = [
     title: "Bank Transfer vs Mobile Money vs Crypto: Which is Best?",
     excerpt: "A comprehensive comparison of payment methods available to African businesses and freelancers.",
     author: "David Mensah",
+    authorImage: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=150&h=150&fit=crop&crop=face",
     date: "2024-10-25",
     category: "Payments",
     readTime: "6 min read",
@@ -83,6 +87,7 @@ const blogPosts = [
     title: "The Psychology of Invoice Design: Why Clean Matters",
     excerpt: "How the visual design of your invoices affects payment behavior and what you can do about it.",
     author: "Ama Osei",
+    authorImage: "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=150&h=150&fit=crop&crop=face",
     date: "2024-10-22",
     category: "Business Tips",
     readTime: "4 min read",
@@ -95,6 +100,7 @@ const blogPosts = [
     title: "Dual Currency Invoicing: GHS and USD Best Practices",
     excerpt: "How to handle multi-currency invoicing in Ghana and when to offer dual currency options.",
     author: "Kwame Asante",
+    authorImage: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face",
     date: "2024-10-20",
     category: "Invoicing",
     readTime: "7 min read",
@@ -107,6 +113,7 @@ const blogPosts = [
     title: "Setting Payment Terms That Actually Work",
     excerpt: "The art and science of choosing payment terms that protect your cash flow without scaring away clients.",
     author: "Plaen Team",
+    authorImage: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=150&h=150&fit=crop&crop=face",
     date: "2024-10-18",
     category: "Business Tips",
     readTime: "5 min read",
@@ -197,7 +204,13 @@ export default function BlogPage() {
                       </div>
                       <div className="flex items-center justify-between border-t border-gray-200 pt-6 text-sm text-gray-500">
                         <div className="flex items-center gap-3">
-                          <div className="h-10 w-10 rounded-full bg-gray-200" />
+                          <Image 
+                            src={primaryFeatured.authorImage}
+                            alt={primaryFeatured.author}
+                            width={40}
+                            height={40}
+                            className="h-10 w-10 rounded-full object-cover"
+                          />
                           <div>
                             <p className="font-medium text-gray-700">{primaryFeatured.author}</p>
                             <p className="text-xs text-gray-500">

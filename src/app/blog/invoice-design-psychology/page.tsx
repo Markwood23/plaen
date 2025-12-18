@@ -7,6 +7,7 @@ export default function InvoiceDesignPsychologyPage() {
       description="Layout choices influence how quickly clients approve and pay your invoices. Here is how to design with intention."
       category="Business Tips"
       author="Ama Osei"
+      authorImage="https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=150&h=150&fit=crop&crop=face"
       date="2024-10-22"
       readTime="4 min read"
       tags={["Design", "Behavior", "Invoicing"]}
