@@ -146,7 +146,7 @@ export default function TestimonialsPage() {
                   return (
                     <div 
                       key={stat.label} 
-                      className="group rounded-2xl border border-gray-200 bg-white p-6 text-center transition-all hover:border-gray-300 hover:shadow-lg"
+                      className="group rounded-2xl bg-white p-6 text-center"
                     >
                       <div 
                         className="mx-auto mb-4 h-14 w-14 rounded-2xl flex items-center justify-center transition-transform group-hover:scale-110"
