@@ -117,7 +117,7 @@ export function ArticleLayout({
 
           <section className="py-16">
             <div className="mx-auto max-w-3xl px-6">
-              <div className="article-content prose prose-xl prose-gray max-w-none leading-[2] prose-headings:text-black prose-headings:font-semibold prose-p:text-gray-700 prose-p:leading-[2] prose-li:text-gray-700 prose-li:leading-[2] prose-blockquote:text-gray-700 prose-blockquote:leading-[2] prose-strong:text-black prose-a:text-black prose-a:no-underline hover:prose-a:underline" data-animate="fade-up">
+              <div className="article-content" data-animate="fade-up">
                 {hero ?? (
                   <div className="mb-10 aspect-video rounded-2xl bg-gradient-to-br from-gray-100 to-gray-200">
                     <div className="flex h-full items-center justify-center">
