@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { MarketingHeader } from "@/components/marketing/marketing-header";
 import { MarketingFooter } from "@/components/marketing/marketing-footer";
 import { PageEffects } from "@/components/marketing/home-page-effects";
+import Image from "next/image";
 import { 
   Star1, 
   TrendUp, 
@@ -27,6 +28,7 @@ const testimonials = [
     company: "Independent",
     type: "freelancer",
     initials: "KA",
+    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face",
     color: "#14462a",
     quote: "Plaen changed how I handle invoicing. My clients love the clean interface and I get paid 40% faster since switching to mobile money payments.",
     metrics: { label: "Faster payments", value: "40%" },
@@ -39,6 +41,7 @@ const testimonials = [
     company: "TechFlow Solutions",
     type: "business",
     initials: "AO",
+    image: "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=150&h=150&fit=crop&crop=face",
     color: "#0D9488",
     quote: "We needed professional invoicing without the complexity. Plaen delivers exactly that: clean, structured, and our clients take us more seriously.",
     metrics: { label: "Client satisfaction", value: "95%" },
@@ -51,6 +54,7 @@ const testimonials = [
     company: "Mensah & Associates",
     type: "business",
     initials: "DM",
+    image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=150&h=150&fit=crop&crop=face",
     color: "#14462a",
     quote: "The dual currency feature is perfect for our international clients. We can invoice in GHS and USD seamlessly.",
     metrics: { label: "International clients", value: "60%" },
@@ -63,6 +67,7 @@ const testimonials = [
     company: "Freelancer",
     type: "freelancer",
     initials: "SA",
+    image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop&crop=face",
     color: "#0D9488",
     quote: "Before Plaen, I was using Word documents for invoices. Now my clients see me as a real professional. The mobile money integration is a game-changer.",
     metrics: { label: "Professional image", value: "100%" },
@@ -75,6 +80,7 @@ const testimonials = [
     company: "Pixel Studios",
     type: "business",
     initials: "MA",
+    image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face",
     color: "#14462a",
     quote: "Our payment process was a mess before Plaen. Now everything is automated, professional, and our cash flow has improved dramatically.",
     metrics: { label: "Cash flow improvement", value: "65%" },
@@ -87,6 +93,7 @@ const testimonials = [
     company: "Independent",
     type: "freelancer",
     initials: "EB",
+    image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=150&h=150&fit=crop&crop=face",
     color: "#0D9488",
     quote: "I love that my clients don't need to create accounts to pay. The secure link system is brilliant and removes so much friction.",
     metrics: { label: "Payment completion", value: "92%" },
@@ -190,12 +197,13 @@ export default function TestimonialsPage() {
                       {/* Header */}
                       <div className="mb-6 flex items-start justify-between">
                         <div className="flex items-center gap-4">
-                          <div 
-                            className="h-14 w-14 rounded-full flex items-center justify-center text-lg font-bold text-white shadow-lg"
-                            style={{ backgroundColor: testimonial.color }}
-                          >
-                            {testimonial.initials}
-                          </div>
+                          <Image 
+                            src={testimonial.image}
+                            alt={testimonial.name}
+                            width={56}
+                            height={56}
+                            className="h-14 w-14 rounded-full object-cover shadow-lg"
+                          />
                           <div>
                             <div className="font-semibold text-black">{testimonial.name}</div>
                             <div className="text-sm text-gray-600">
@@ -278,12 +286,13 @@ export default function TestimonialsPage() {
                     <div className="border-t border-gray-100 pt-4">
                       {/* Author */}
                       <div className="flex items-center gap-3">
-                        <div 
-                          className="h-9 w-9 rounded-full flex items-center justify-center text-xs font-bold text-white"
-                          style={{ backgroundColor: testimonial.color }}
-                        >
-                          {testimonial.initials}
-                        </div>
+                        <Image 
+                          src={testimonial.image}
+                          alt={testimonial.name}
+                          width={36}
+                          height={36}
+                          className="h-9 w-9 rounded-full object-cover"
+                        />
                         <div className="flex-1 min-w-0">
                           <div className="font-medium text-gray-900 text-sm truncate">{testimonial.name}</div>
                           <div className="text-xs text-gray-500 truncate">{testimonial.role}</div>
