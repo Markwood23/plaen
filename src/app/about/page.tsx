@@ -127,7 +127,7 @@ export default function AboutPage() {
         <section className="border-t border-gray-100 bg-gray-50/50 py-20" data-animate="fade-up">
           <div className="mx-auto max-w-5xl px-6">
             <div className="text-center space-y-4 mb-16">
-              <h2 className="text-3xl font-semibold tracking-tight text-gray-900">
+              <h2 className="text-3xl font-semibold tracking-tight text-[#14462a]">
                 Principles that guide us
               </h2>
               <p className="mx-auto max-w-2xl text-base text-gray-600">
@@ -162,7 +162,7 @@ export default function AboutPage() {
           <div className="mx-auto max-w-4xl px-6">
             <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
               <div className="space-y-4">
-                <h2 className="text-3xl font-semibold tracking-tight text-gray-900">
+                <h2 className="text-3xl font-semibold tracking-tight text-[#14462a]">
                   What makes Plaen different
                 </h2>
                 <p className="text-base leading-7 text-gray-600">

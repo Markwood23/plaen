@@ -390,7 +390,7 @@ export default function Home() {
       <main>
         {/* Hero - Clean & Minimal */}
         <section className="relative mx-auto max-w-4xl px-6 pt-32 pb-20 text-center">
-          <h1 className="text-4xl font-semibold tracking-tight text-gray-900 sm:text-5xl lg:text-6xl">
+          <h1 className="text-4xl font-semibold tracking-tight text-[#14462a] sm:text-5xl lg:text-6xl">
             Invoicing made simple.
           </h1>
           <p className="mx-auto mt-6 max-w-2xl text-lg text-gray-600 sm:text-xl">
