@@ -11,6 +11,7 @@ import {
   SearchNormal1,
   TrendUp,
   Flash,
+  ArrowRight2,
 } from "iconsax-react";
 
 interface Category {
@@ -343,30 +344,60 @@ export function BlogInteractiveSection({
           <aside className="space-y-6">
             <div className="flex items-center justify-between">
               <h3 className="text-lg font-semibold text-[#14462a]">Trending now</h3>
-              <span className="text-xs uppercase tracking-[0.2em] text-gray-400">Updated daily</span>
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-50 px-3 py-1 text-xs font-medium text-amber-700">
+                <span className="h-1.5 w-1.5 rounded-full bg-amber-500 animate-pulse" />
+                Live
+              </span>
             </div>
-            <div className="space-y-4">
-              {trendingPosts.map((post, index) => (
-                <Link key={post.id} href={`/blog/${post.id}`}>
-                  <article className="group flex items-start gap-4 rounded-2xl border border-gray-200 bg-white p-5 transition hover:-translate-y-1 hover:border-[#14462a]/30 hover:shadow-md">
-                    <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-[#14462a]/10 text-sm font-bold text-[#14462a]">
-                      {String(index + 1).padStart(2, '0')}
-                    </div>
-                    <div className="flex flex-1 flex-col gap-2">
-                      <h4 className="text-sm font-semibold text-black group-hover:text-[#14462a] transition">
-                        {post.title}
-                      </h4>
-                      <p className="text-xs leading-5 text-gray-500 line-clamp-2">{post.excerpt}</p>
-                      <div className="flex items-center gap-3 text-[11px] text-gray-400">
-                        <span>{post.category}</span>
-                        <span className="h-1 w-1 rounded-full bg-gray-300" />
-                        <span>{post.readTime}</span>
+            <div className="space-y-3">
+              {trendingPosts.map((post, index) => {
+                const colors = [
+                  { bg: "bg-[#14462a]/10", text: "text-[#14462a]", border: "border-[#14462a]/20" },
+                  { bg: "bg-amber-50", text: "text-amber-700", border: "border-amber-200" },
+                  { bg: "bg-teal-50", text: "text-teal-700", border: "border-teal-200" },
+                ];
+                const color = colors[index] || colors[0];
+                
+                return (
+                  <Link key={post.id} href={`/blog/${post.id}`}>
+                    <article className={`group relative overflow-hidden rounded-2xl border ${color.border} bg-white p-5 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg`}>
+                      {/* Subtle gradient overlay */}
+                      <div className={`absolute inset-0 ${color.bg} opacity-30`} />
+                      
+                      <div className="relative flex items-start gap-4">
+                        {/* Rank number */}
+                        <div className={`flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl ${color.bg} ${color.text}`}>
+                          <span className="text-xl font-bold">{index + 1}</span>
+                        </div>
+                        
+                        {/* Content */}
+                        <div className="flex flex-1 flex-col gap-2 min-w-0">
+                          <h4 className="text-sm font-semibold text-black group-hover:text-[#14462a] transition line-clamp-2">
+                            {post.title}
+                          </h4>
+                          <div className="flex items-center gap-2 text-xs text-gray-500">
+                            <span className={`inline-block rounded-full px-2 py-0.5 ${color.bg} ${color.text} font-medium`}>
+                              {post.category}
+                            </span>
+                            <span>•</span>
+                            <span>{post.readTime}</span>
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  </article>
-                </Link>
-              ))}
+                    </article>
+                  </Link>
+                );
+              })}
             </div>
+            
+            {/* View all link */}
+            <Link 
+              href="#articles" 
+              className="flex items-center justify-center gap-2 rounded-xl border border-gray-200 bg-gray-50 py-3 text-sm font-medium text-gray-600 transition hover:border-[#14462a] hover:bg-[#14462a]/5 hover:text-[#14462a]"
+            >
+              View all articles
+              <ArrowRight2 size={14} color="currentColor" />
+            </Link>
           </aside>
         </div>
       </section>
