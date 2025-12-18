@@ -214,7 +214,7 @@ export function Pillars({ heading = "Five product pillars" }: PillarsProps) {
           <span className="inline-flex items-center rounded-full bg-[#14462a]/10 px-4 py-1.5 text-xs font-medium text-[#14462a]">
             Features
           </span>
-          <h2 className="text-3xl font-semibold tracking-tight text-gray-900 sm:text-4xl">
+          <h2 className="text-3xl font-semibold tracking-tight text-[#14462a] sm:text-4xl">
             {heading}
           </h2>
           <p className="mx-auto max-w-2xl text-base text-gray-600">
