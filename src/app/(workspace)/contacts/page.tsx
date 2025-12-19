@@ -14,7 +14,7 @@ import {
   Call,
   ArrowLeft2,
   ArrowRight2,
-  DocumentText,
+  Receipt21,
   Edit2,
   Tag,
   Flash,
@@ -22,13 +22,15 @@ import {
   ArrowUp2,
   Trash,
   Building,
-  TickSquare,
+  TickCircle,
   DocumentDownload,
-  SearchNormal1
+  SearchNormal1,
+  MinusCirlce
 } from "iconsax-react";
 import Link from "next/link";
 import { useState } from "react";
 import { ContactDetailModal } from "@/components/contacts/contact-detail-modal";
+import { useBalanceVisibility } from "@/contexts/balance-visibility-context";
 
 const contactsData = [
   { 
@@ -38,7 +40,7 @@ const contactsData = [
     phone: "+233 24 123 4567", 
     company: "Murlo Industries", 
     totalInvoices: 12, 
-    totalPaid: "$8,475.69", 
+    totalPaid: "₵8,475.69", 
     status: "Active", 
     avatar: "",
     tags: ["VIP", "Corporate"],
@@ -54,7 +56,7 @@ const contactsData = [
     phone: "+233 24 234 5678", 
     company: "Norton & Co", 
     totalInvoices: 8, 
-    totalPaid: "$5,477.14", 
+    totalPaid: "₵5,477.14", 
     status: "Active", 
     avatar: "",
     tags: ["Regular"],
@@ -70,7 +72,7 @@ const contactsData = [
     phone: "+233 24 345 6789", 
     company: "Smith Ventures", 
     totalInvoices: 15, 
-    totalPaid: "$12,250.00", 
+    totalPaid: "₵12,250.00", 
     status: "Active", 
     avatar: "",
     tags: ["VIP"],
@@ -86,7 +88,7 @@ const contactsData = [
     phone: "+233 24 456 7890", 
     company: "Acme Corporation", 
     totalInvoices: 24, 
-    totalPaid: "$32,200.00", 
+    totalPaid: "₵32,200.00", 
     status: "Active", 
     avatar: "",
     tags: ["VIP", "International"],
@@ -102,7 +104,7 @@ const contactsData = [
     phone: "+233 24 567 8901", 
     company: "Johnson LLC", 
     totalInvoices: 6, 
-    totalPaid: "$4,925.00", 
+    totalPaid: "₵4,925.00", 
     status: "Inactive", 
     avatar: "",
     tags: [],
@@ -118,7 +120,7 @@ const contactsData = [
     phone: "+233 24 678 9012", 
     company: "Chen Solutions", 
     totalInvoices: 18, 
-    totalPaid: "$16,680.75", 
+    totalPaid: "₵16,680.75", 
     status: "Active", 
     avatar: "",
     tags: ["Tech"],
@@ -134,7 +136,7 @@ const contactsData = [
     phone: "+233 24 789 0123", 
     company: "Williams Group", 
     totalInvoices: 22, 
-    totalPaid: "$23,250.50", 
+    totalPaid: "₵23,250.50", 
     status: "Active", 
     avatar: "",
     tags: ["VIP", "Regular"],
@@ -150,7 +152,7 @@ const contactsData = [
     phone: "+233 24 890 1234", 
     company: "Martinez Inc", 
     totalInvoices: 4, 
-    totalPaid: "$1,890.00", 
+    totalPaid: "₵1,890.00", 
     status: "Inactive", 
     avatar: "",
     tags: ["New"],
@@ -166,7 +168,7 @@ const contactsData = [
     phone: "+233 24 901 2345", 
     company: "Digital Ventures LLC", 
     totalInvoices: 30, 
-    totalPaid: "$46,800.00", 
+    totalPaid: "₵46,800.00", 
     status: "Active", 
     avatar: "",
     tags: ["VIP", "International", "Tech"],
@@ -182,7 +184,7 @@ const contactsData = [
     phone: "+233 24 012 3456", 
     company: "Anderson Co", 
     totalInvoices: 10, 
-    totalPaid: "$7,500.25", 
+    totalPaid: "₵7,500.25", 
     status: "Active", 
     avatar: "",
     tags: ["Regular"],
@@ -200,6 +202,7 @@ export default function ContactsPage() {
   const [modalOpen, setModalOpen] = useState(false);
   const [modalMode, setModalMode] = useState<"view" | "edit" | "create">("view");
   const itemsPerPage = 10;
+  const { maskAmount } = useBalanceVisibility();
 
   // Calculate pagination
   const totalPages = Math.ceil(contactsData.length / itemsPerPage);
@@ -342,7 +345,7 @@ export default function ContactsPage() {
           </div>
           <p className="text-sm mb-2" style={{ color: '#65676B', fontWeight: 500 }}>Total Revenue</p>
           <p className="text-3xl tracking-tight" style={{ color: '#2D2D2D', fontWeight: 700 }}>
-            $159,449<span style={{ color: '#B0B3B8', fontWeight: 400 }}>.33</span>
+            {maskAmount("₵159,449.33")}
           </p>
           <p className="text-xs mt-2" style={{ color: '#B0B3B8' }}>From all contacts</p>
         </div>
@@ -453,7 +456,7 @@ export default function ContactsPage() {
           <div className="flex items-center justify-between px-6 py-4 border-b" style={{ backgroundColor: 'rgba(20, 70, 42, 0.04)', borderColor: 'rgba(20, 70, 42, 0.1)' }}>
             <div className="flex items-center gap-3">
               <div className="h-8 w-8 rounded-full flex items-center justify-center" style={{ backgroundColor: 'rgba(20, 70, 42, 0.12)' }}>
-                <TickSquare size={16} color="#14462a" />
+                <TickCircle size={16} color="#14462a" />
               </div>
               <div>
                 <p className="text-sm font-semibold" style={{ color: '#2D2D2D' }}>
@@ -471,7 +474,7 @@ export default function ContactsPage() {
                 className="rounded-xl border-0 shadow-sm transition-all hover:shadow-md hover:scale-105" 
                 style={{ backgroundColor: 'white' }}
               >
-                <Sms size={16} className="mr-2" /> Email Selected
+                <Sms size={16} color="currentColor" className="mr-2" /> Email Selected
               </Button>
               <Button 
                 variant="outline" 
@@ -479,7 +482,7 @@ export default function ContactsPage() {
                 className="rounded-xl border-0 shadow-sm transition-all hover:shadow-md hover:scale-105" 
                 style={{ backgroundColor: 'white' }}
               >
-                <DocumentDownload size={16} className="mr-2" /> Export
+                <DocumentDownload size={16} color="currentColor" className="mr-2" /> Export
               </Button>
               <Button 
                 variant="ghost" 
@@ -544,40 +547,37 @@ export default function ContactsPage() {
                   </TableCell>
                   <TableCell className="text-[#65676B]">{contact.email}</TableCell>
                   <TableCell>
-                    <Badge variant="outline" style={{ backgroundColor: 'rgba(20, 70, 42, 0.04)', borderColor: 'rgba(20, 70, 42, 0.2)', color: '#14462a', fontWeight: 500 }}>
+                    <Badge variant="success">
                       {contact.category}
                     </Badge>
                   </TableCell>
-                  <TableCell className="font-medium">{contact.totalPaid}</TableCell>
+                  <TableCell className="font-medium">{maskAmount(contact.totalPaid)}</TableCell>
                   <TableCell>
-                    <Badge 
-                      style={{
-                        backgroundColor: contact.status === 'Active' 
-                          ? 'rgba(34, 197, 94, 0.1)' 
-                          : 'rgba(107, 114, 128, 0.1)',
-                        color: contact.status === 'Active' ? '#22C55E' : '#6B7280',
-                        borderColor: contact.status === 'Active' ? '#BBF7D0' : '#E5E7EB',
-                        fontWeight: 500,
-                      }}
-                    >
-                      {contact.status}
-                    </Badge>
+                    {contact.status === 'Active' ? (
+                      <Badge variant="paid">
+                        <TickCircle size={14} color="#14462a" variant="Bold" /> Active
+                      </Badge>
+                    ) : (
+                      <Badge variant="cancelled">
+                        <MinusCirlce size={14} color="#65676B" variant="Bold" /> Inactive
+                      </Badge>
+                    )}
                   </TableCell>
                   <TableCell onClick={(e) => e.stopPropagation()}>
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
-                        <button className="inline-flex items-center justify-center rounded-full p-1.5 transition-all hover:bg-[rgba(24,119,242,0.04)]" style={{ color: '#B0B3B8' }}>
+                        <button className="inline-flex items-center justify-center rounded-full p-1.5 transition-all hover:bg-[rgba(20,70,42,0.06)]" style={{ color: '#B0B3B8' }}>
                           <More size={16} />
                         </button>
                       </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end" className="rounded-2xl w-56 p-2" style={{ boxShadow: '0 4px 16px rgba(0, 0, 0, 0.1)' }}>
-                        <DropdownMenuItem asChild className="gap-3 rounded-xl p-3 cursor-pointer group transition-all hover:bg-[rgba(24,119,242,0.04)]">
+                      <DropdownMenuContent align="end" className="rounded-2xl w-56 p-2" style={{ boxShadow: '0 4px 20px rgba(0, 0, 0, 0.12)', border: '1px solid rgba(0, 0, 0, 0.06)' }}>
+                        <DropdownMenuItem asChild className="gap-3 rounded-xl p-3 cursor-pointer group transition-all hover:bg-[rgba(20,70,42,0.06)]">
                           <Link href="/invoices/new" className="flex items-center">
                             <div 
                               className="h-8 w-8 rounded-full flex items-center justify-center transition-all"
                               style={{ backgroundColor: 'rgba(20, 70, 42, 0.08)' }}
                             >
-                              <DocumentText size={16} color="#14462a" />
+                              <Receipt21 size={16} color="#14462a" />
                             </div>
                             <span className="text-sm font-medium group-hover:text-[#14462a] transition-all" style={{ color: '#2D2D2D' }}>Create Invoice</span>
                           </Link>
@@ -585,7 +585,7 @@ export default function ContactsPage() {
                         <DropdownMenuItem onClick={(e) => {
                           e.stopPropagation();
                           openContactModal(contact, "edit");
-                        }} className="gap-3 rounded-xl p-3 cursor-pointer group transition-all hover:bg-[rgba(24,119,242,0.04)]">
+                        }} className="gap-3 rounded-xl p-3 cursor-pointer group transition-all hover:bg-[rgba(20,70,42,0.06)]">
                           <div 
                             className="h-8 w-8 rounded-full flex items-center justify-center transition-all"
                             style={{ backgroundColor: 'rgba(245, 158, 11, 0.08)' }}
@@ -594,7 +594,7 @@ export default function ContactsPage() {
                           </div>
                           <span className="text-sm font-medium group-hover:text-[#14462a] transition-all" style={{ color: '#2D2D2D' }}>Edit Contact</span>
                         </DropdownMenuItem>
-                        <DropdownMenuItem className="gap-3 rounded-xl p-3 cursor-pointer group transition-all hover:bg-[rgba(24,119,242,0.04)]">
+                        <DropdownMenuItem className="gap-3 rounded-xl p-3 cursor-pointer group transition-all hover:bg-[rgba(20,70,42,0.06)]">
                           <div 
                             className="h-8 w-8 rounded-full flex items-center justify-center transition-all"
                             style={{ backgroundColor: 'rgba(13, 148, 136, 0.08)' }}
@@ -603,7 +603,7 @@ export default function ContactsPage() {
                           </div>
                           <span className="text-sm font-medium group-hover:text-[#14462a] transition-all" style={{ color: '#2D2D2D' }}>Send Email</span>
                         </DropdownMenuItem>
-                        <DropdownMenuItem className="gap-3 rounded-xl p-3 cursor-pointer group transition-all hover:bg-[rgba(24,119,242,0.04)]">
+                        <DropdownMenuItem className="gap-3 rounded-xl p-3 cursor-pointer group transition-all hover:bg-[rgba(20,70,42,0.06)]">
                           <div 
                             className="h-8 w-8 rounded-full flex items-center justify-center transition-all"
                             style={{ backgroundColor: 'rgba(20, 70, 42, 0.08)' }}

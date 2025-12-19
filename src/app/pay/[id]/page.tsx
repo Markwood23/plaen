@@ -288,8 +288,8 @@ export default function PayPage({ params }: { params: Promise<{ id: string }> })
               <div className="hidden lg:flex gap-2 mt-4">
                 {isOverdue && (
                   <span 
-                    className="inline-flex items-center gap-1.5 text-sm px-3 py-1.5 rounded-full"
-                    style={{ backgroundColor: '#FEE2E2', color: '#DC2626' }}
+                    className="inline-flex items-center gap-1.5 text-sm px-3 py-1.5 rounded-full font-medium"
+                    style={{ backgroundColor: 'rgba(220, 38, 38, 0.1)', color: '#DC2626' }}
                   >
                     <AlertTriangle className="h-4 w-4" />
                     Overdue
@@ -297,8 +297,8 @@ export default function PayPage({ params }: { params: Promise<{ id: string }> })
                 )}
                 {invoice.status === 'partially_paid' && (
                   <span 
-                    className="inline-flex items-center gap-1.5 text-sm px-3 py-1.5 rounded-full"
-                    style={{ backgroundColor: '#FFF4E6', color: '#F59E0B' }}
+                    className="inline-flex items-center gap-1.5 text-sm px-3 py-1.5 rounded-full font-medium"
+                    style={{ backgroundColor: 'rgba(13, 148, 136, 0.1)', color: '#0D9488' }}
                   >
                     <Clock className="h-4 w-4" />
                     Partially Paid
@@ -306,8 +306,8 @@ export default function PayPage({ params }: { params: Promise<{ id: string }> })
                 )}
                 {invoice.status === 'paid' && (
                   <span 
-                    className="inline-flex items-center gap-1.5 text-sm px-3 py-1.5 rounded-full"
-                    style={{ backgroundColor: '#E8F9F1', color: '#0D9488' }}
+                    className="inline-flex items-center gap-1.5 text-sm px-3 py-1.5 rounded-full font-medium"
+                    style={{ backgroundColor: 'rgba(20, 70, 42, 0.1)', color: '#14462a' }}
                   >
                     <CheckCircle2 className="h-4 w-4" />
                     Paid

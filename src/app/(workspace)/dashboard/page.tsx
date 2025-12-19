@@ -10,10 +10,10 @@ import {
   More,
   Copy,
   ArrowSwapVertical,
-  TickSquare,
-  CloseSquare,
+  TickCircle,
+  CloseCircle,
   RefreshCircle,
-  DocumentText,
+  Receipt21,
   Danger,
   Clock,
   ArrowDown2,
@@ -21,14 +21,20 @@ import {
   Eye,
   Trash,
   Card,
-  Send2
+  Send2,
+  Calendar,
+  Calendar1,
+  CalendarTick
 } from "iconsax-react";
 import Link from "next/link";
 import ProfitRevenueChart from "@/components/dashboard/profit-revenue-chart";
 import { useState } from "react";
+import { useBalanceVisibility } from "@/contexts/balance-visibility-context";
 
 export default function DashboardPage() {
   const [isARAgingExpanded, setIsARAgingExpanded] = useState(true);
+  const { isBalanceHidden, maskAmount } = useBalanceVisibility();
+  
   const kpis = [
     {
       label: "Incoming",
@@ -53,9 +59,9 @@ export default function DashboardPage() {
   ];
 
   const rows = [
-    { id: "#12594", customer: "Frank Murlo", date: "Dec 1, 2021", reason: "312 S Wilmette Ave", status: "Paid", amount: "₵9,273.14" },
-    { id: "#12306", customer: "Bill Norton", date: "Nov 02, 2021", reason: "5685 Bruce Ave, Portage", status: "Cancelled", amount: "₵5,220.31" },
-    { id: "#12306", customer: "Bill Norton", date: "Nov 02, 2021", reason: "5685 Bruce Ave, Portage", status: "Refunded", amount: "₵5,220.31" },
+    { id: "PL-A7K9X2", customer: "Frank Murlo", date: "Dec 1, 2021", reason: "312 S Wilmette Ave", status: "Paid", amount: "₵9,273.14" },
+    { id: "PL-B3M4N8", customer: "Bill Norton", date: "Nov 02, 2021", reason: "5685 Bruce Ave, Portage", status: "Cancelled", amount: "₵5,220.31" },
+    { id: "PL-C5P2Q7", customer: "Bill Norton", date: "Nov 02, 2021", reason: "5685 Bruce Ave, Portage", status: "Refunded", amount: "₵5,220.31" },
   ];
 
   return (
@@ -88,7 +94,7 @@ export default function DashboardPage() {
               </div>
               <p className="text-sm mb-2" style={{ color: '#65676B', fontWeight: 500 }}>{kpi.label}</p>
               <div className="flex items-end justify-between">
-                <div className="text-3xl tracking-tight" style={{ color: '#2D2D2D', fontWeight: 700 }}>{kpi.value}</div>
+                <div className="text-3xl tracking-tight" style={{ color: '#2D2D2D', fontWeight: 700 }}>{maskAmount(kpi.value)}</div>
                 {/* sparkline */}
                 <svg className="h-10 w-24 opacity-40" viewBox="0 0 64 32" fill="none">
                   <defs>
@@ -149,25 +155,49 @@ export default function DashboardPage() {
             </div>
             <div className="flex items-center gap-3">
               {!isARAgingExpanded && (
-                <div className="flex items-center gap-3 mr-2">
-                  <div className="text-center">
-                    <div className="text-xs mb-0.5" style={{ color: '#B0B3B8', fontWeight: 500 }}>Current</div>
-                    <div className="text-lg" style={{ color: '#2D2D2D', fontWeight: 600 }}>3</div>
+                <div className="flex items-center gap-2 mr-2">
+                  {/* Current - Green */}
+                  <div className="flex items-center gap-2.5 px-3 py-2 rounded-xl" style={{ backgroundColor: 'rgba(20, 70, 42, 0.06)' }}>
+                    <div className="flex items-center justify-center h-9 w-9 rounded-lg" style={{ backgroundColor: 'rgba(20, 70, 42, 0.12)' }}>
+                      <span className="text-base font-bold" style={{ color: '#14462a' }}>3</span>
+                    </div>
+                    <div>
+                      <div className="text-xs font-medium" style={{ color: '#14462a' }}>Current</div>
+                      <div className="text-sm font-semibold" style={{ color: '#2D2D2D' }}>{maskAmount("₵31.1k")}</div>
+                    </div>
                   </div>
-                  <div className="h-8 w-px" style={{ backgroundColor: '#E4E6EB' }}></div>
-                  <div className="text-center">
-                    <div className="text-xs mb-0.5" style={{ color: '#B0B3B8', fontWeight: 500 }}>Attention</div>
-                    <div className="text-lg" style={{ color: '#2D2D2D', fontWeight: 600 }}>1</div>
+                  
+                  {/* Attention - Yellow */}
+                  <div className="flex items-center gap-2.5 px-3 py-2 rounded-xl" style={{ backgroundColor: 'rgba(245, 158, 11, 0.06)' }}>
+                    <div className="flex items-center justify-center h-9 w-9 rounded-lg" style={{ backgroundColor: 'rgba(245, 158, 11, 0.15)' }}>
+                      <span className="text-base font-bold" style={{ color: '#D97706' }}>1</span>
+                    </div>
+                    <div>
+                      <div className="text-xs font-medium" style={{ color: '#D97706' }}>Attention</div>
+                      <div className="text-sm font-semibold" style={{ color: '#2D2D2D' }}>{maskAmount("₵9.5k")}</div>
+                    </div>
                   </div>
-                  <div className="h-8 w-px" style={{ backgroundColor: '#E4E6EB' }}></div>
-                  <div className="text-center">
-                    <div className="text-xs mb-0.5" style={{ color: '#B0B3B8', fontWeight: 500 }}>Concerning</div>
-                    <div className="text-lg" style={{ color: '#2D2D2D', fontWeight: 600 }}>0</div>
+                  
+                  {/* Concerning - Orange */}
+                  <div className="flex items-center gap-2.5 px-3 py-2 rounded-xl" style={{ backgroundColor: 'rgba(249, 115, 22, 0.06)' }}>
+                    <div className="flex items-center justify-center h-9 w-9 rounded-lg" style={{ backgroundColor: 'rgba(249, 115, 22, 0.15)' }}>
+                      <span className="text-base font-bold" style={{ color: '#EA580C' }}>0</span>
+                    </div>
+                    <div>
+                      <div className="text-xs font-medium" style={{ color: '#EA580C' }}>Overdue</div>
+                      <div className="text-sm font-semibold" style={{ color: '#2D2D2D' }}>{maskAmount("₵0")}</div>
+                    </div>
                   </div>
-                  <div className="h-8 w-px" style={{ backgroundColor: '#E4E6EB' }}></div>
-                  <div className="text-center">
-                    <div className="text-xs mb-0.5" style={{ color: '#B0B3B8', fontWeight: 500 }}>Critical</div>
-                    <div className="text-lg" style={{ color: '#2D2D2D', fontWeight: 600 }}>0</div>
+                  
+                  {/* Critical - Red */}
+                  <div className="flex items-center gap-2.5 px-3 py-2 rounded-xl" style={{ backgroundColor: 'rgba(220, 38, 38, 0.06)' }}>
+                    <div className="flex items-center justify-center h-9 w-9 rounded-lg" style={{ backgroundColor: 'rgba(220, 38, 38, 0.15)' }}>
+                      <span className="text-base font-bold" style={{ color: '#DC2626' }}>0</span>
+                    </div>
+                    <div>
+                      <div className="text-xs font-medium" style={{ color: '#DC2626' }}>Critical</div>
+                      <div className="text-sm font-semibold" style={{ color: '#2D2D2D' }}>{maskAmount("₵0")}</div>
+                    </div>
                   </div>
                 </div>
               )}
@@ -201,7 +231,7 @@ export default function DashboardPage() {
                     <div className="text-xs px-2 py-1 rounded-full" style={{ color: '#14462a', backgroundColor: 'rgba(20, 70, 42, 0.1)', fontWeight: 500 }}>0-30 days</div>
                   </div>
                   <div className="text-3xl font-bold mb-2" style={{ color: '#14462a' }}>3</div>
-                  <div className="text-sm mb-3" style={{ color: '#2D2D2D', fontWeight: 600 }}>₵31,159.34</div>
+                  <div className="text-sm mb-3" style={{ color: '#2D2D2D', fontWeight: 600 }}>{maskAmount("₵31,159.34")}</div>
                   <div className="text-xs leading-relaxed" style={{ color: '#B0B3B8' }}>
                     Recently issued invoices. Still within normal payment terms.
                   </div>
@@ -214,7 +244,7 @@ export default function DashboardPage() {
                     <div className="text-xs px-2 py-1 rounded-full" style={{ color: '#F59E0B', backgroundColor: 'rgba(245, 158, 11, 0.1)', fontWeight: 500 }}>31-60 days</div>
                   </div>
                   <div className="text-3xl font-bold mb-2" style={{ color: '#F59E0B' }}>1</div>
-                  <div className="text-sm mb-3" style={{ color: '#2D2D2D', fontWeight: 600 }}>₵9,565.02</div>
+                  <div className="text-sm mb-3" style={{ color: '#2D2D2D', fontWeight: 600 }}>{maskAmount("₵9,565.02")}</div>
                   <div className="text-xs leading-relaxed" style={{ color: '#B0B3B8' }}>
                     Slightly overdue. Consider sending a friendly payment reminder.
                   </div>
@@ -227,7 +257,7 @@ export default function DashboardPage() {
                     <div className="text-xs px-2 py-1 rounded-full" style={{ color: '#F97316', backgroundColor: 'rgba(249, 115, 22, 0.1)', fontWeight: 500 }}>61-90 days</div>
                   </div>
                   <div className="text-3xl font-bold mb-2" style={{ color: '#F97316' }}>0</div>
-                  <div className="text-sm mb-3" style={{ color: '#2D2D2D', fontWeight: 600 }}>₵0.00</div>
+                  <div className="text-sm mb-3" style={{ color: '#2D2D2D', fontWeight: 600 }}>{maskAmount("₵0.00")}</div>
                   <div className="text-xs leading-relaxed" style={{ color: '#B0B3B8' }}>
                     Significantly overdue. Follow up urgently with the customer.
                   </div>
@@ -240,7 +270,7 @@ export default function DashboardPage() {
                     <div className="text-xs px-2 py-1 rounded-full" style={{ color: '#DC2626', backgroundColor: 'rgba(220, 38, 38, 0.1)', fontWeight: 500 }}>90+ days</div>
                   </div>
                   <div className="text-3xl font-bold mb-2" style={{ color: '#DC2626' }}>0</div>
-                  <div className="text-sm mb-3" style={{ color: '#2D2D2D', fontWeight: 600 }}>₵0.00</div>
+                  <div className="text-sm mb-3" style={{ color: '#2D2D2D', fontWeight: 600 }}>{maskAmount("₵0.00")}</div>
                   <div className="text-xs leading-relaxed" style={{ color: '#B0B3B8' }}>
                     Severely overdue. May require debt collection or write-off.
                   </div>
@@ -277,39 +307,51 @@ export default function DashboardPage() {
             <h2 className="text-lg" style={{ color: '#2D2D2D', fontWeight: 600 }}>Profit & Revenue</h2>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <button className="rounded-xl px-3 py-1.5 text-xs transition-all border-0 shadow-sm hover:shadow-md" style={{ color: '#65676B', fontWeight: 500, backgroundColor: 'white' }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor = 'rgba(20, 70, 42, 0.04)';
-                    e.currentTarget.style.color = '#14462a';
+                <button 
+                  className="inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm transition-all border hover:border-[#14462a]/30 focus:outline-none focus:ring-2 focus:ring-[#14462a]/20" 
+                  style={{ 
+                    color: '#14462a', 
+                    fontWeight: 500, 
+                    backgroundColor: 'rgba(20, 70, 42, 0.06)',
+                    borderColor: 'rgba(20, 70, 42, 0.15)'
                   }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.backgroundColor = 'white';
-                    e.currentTarget.style.color = '#65676B';
-                  }}
-                >Weekly</button>
+                >
+                  <Calendar1 size={16} color="#14462a" variant="Bulk" />
+                  <span>Weekly</span>
+                  <ArrowDown2 size={14} color="#14462a" />
+                </button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="rounded-2xl w-40 p-2" style={{ boxShadow: '0 4px 16px rgba(0, 0, 0, 0.1)' }}>
-                <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer group transition-all hover:bg-[rgba(24,119,242,0.04)]">
+              <DropdownMenuContent align="end" className="rounded-2xl w-44 p-2" style={{ boxShadow: '0 4px 20px rgba(0, 0, 0, 0.12)', border: '1px solid rgba(0, 0, 0, 0.06)' }}>
+                <DropdownMenuLabel className="px-3 py-2 text-xs font-medium" style={{ color: '#B0B3B8' }}>Time Period</DropdownMenuLabel>
+                <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer group transition-all hover:bg-[rgba(20,70,42,0.06)]">
                   <div className="flex items-center gap-3">
-                    <Clock size={16} color="#14462a" />
+                    <div className="h-7 w-7 rounded-full flex items-center justify-center" style={{ backgroundColor: 'rgba(20, 70, 42, 0.08)' }}>
+                      <Clock size={14} color="#14462a" />
+                    </div>
                     <span className="text-sm font-medium group-hover:text-[#14462a] transition-all" style={{ color: '#2D2D2D' }}>Daily</span>
                   </div>
                 </DropdownMenuItem>
-                <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer group transition-all hover:bg-[rgba(24,119,242,0.04)]">
+                <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer group transition-all hover:bg-[rgba(20,70,42,0.06)]">
                   <div className="flex items-center gap-3">
-                    <ArrowUp2 size={16} color="#14462a" />
+                    <div className="h-7 w-7 rounded-full flex items-center justify-center" style={{ backgroundColor: 'rgba(20, 70, 42, 0.08)' }}>
+                      <Calendar1 size={14} color="#14462a" />
+                    </div>
                     <span className="text-sm font-medium group-hover:text-[#14462a] transition-all" style={{ color: '#2D2D2D' }}>Weekly</span>
                   </div>
                 </DropdownMenuItem>
-                <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer group transition-all hover:bg-[rgba(24,119,242,0.04)]">
+                <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer group transition-all hover:bg-[rgba(20,70,42,0.06)]">
                   <div className="flex items-center gap-3">
-                    <DocumentText size={16} color="#14462a" />
+                    <div className="h-7 w-7 rounded-full flex items-center justify-center" style={{ backgroundColor: 'rgba(20, 70, 42, 0.08)' }}>
+                      <Calendar size={14} color="#14462a" />
+                    </div>
                     <span className="text-sm font-medium group-hover:text-[#14462a] transition-all" style={{ color: '#2D2D2D' }}>Monthly</span>
                   </div>
                 </DropdownMenuItem>
-                <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer group transition-all hover:bg-[rgba(24,119,242,0.04)]">
+                <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer group transition-all hover:bg-[rgba(20,70,42,0.06)]">
                   <div className="flex items-center gap-3">
-                    <ArrowRight size={16} color="#14462a" />
+                    <div className="h-7 w-7 rounded-full flex items-center justify-center" style={{ backgroundColor: 'rgba(20, 70, 42, 0.08)' }}>
+                      <CalendarTick size={14} color="#14462a" />
+                    </div>
                     <span className="text-sm font-medium group-hover:text-[#14462a] transition-all" style={{ color: '#2D2D2D' }}>Yearly</span>
                   </div>
                 </DropdownMenuItem>
@@ -326,38 +368,46 @@ export default function DashboardPage() {
           <h2 className="text-lg" style={{ color: '#2D2D2D', fontWeight: 600 }}>Recent Invoices</h2>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-              <button className="rounded-xl px-3 py-1.5 text-xs transition-all border-0 shadow-sm hover:shadow-md" style={{ color: '#65676B', fontWeight: 500, backgroundColor: 'white' }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = 'rgba(20, 70, 42, 0.04)';
-                  e.currentTarget.style.color = '#14462a';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = 'white';
-                  e.currentTarget.style.color = '#65676B';
-                }}
-              >Monthly</button>
+                <button 
+                  className="inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm transition-all border hover:border-[#14462a]/30 focus:outline-none focus:ring-2 focus:ring-[#14462a]/20" 
+                  style={{ 
+                    color: '#14462a', 
+                    fontWeight: 500, 
+                    backgroundColor: 'rgba(20, 70, 42, 0.06)',
+                    borderColor: 'rgba(20, 70, 42, 0.15)'
+                  }}
+                >
+                  <Calendar size={16} color="#14462a" variant="Bulk" />
+                  <span>Monthly</span>
+                  <ArrowDown2 size={14} color="#14462a" />
+                </button>
               </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="rounded-2xl w-40 p-2" style={{ boxShadow: '0 4px 16px rgba(0, 0, 0, 0.1)' }}>
-              <DropdownMenuLabel className="px-2 py-1.5 text-xs font-medium" style={{ color: '#B0B3B8' }}>Group by</DropdownMenuLabel>
-              <DropdownMenuSeparator className="my-1" />
-              <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer group transition-all hover:bg-[rgba(24,119,242,0.04)]">
-                <div className="flex items-center gap-3">
-                  <Clock size={16} color="#14462a" />
-                  <span className="text-sm font-medium group-hover:text-[#14462a] transition-all" style={{ color: '#2D2D2D' }}>Daily</span>
-                </div>
-              </DropdownMenuItem>
-              <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer group transition-all hover:bg-[rgba(24,119,242,0.04)]">
-                <div className="flex items-center gap-3">
-                  <ArrowRight size={16} color="#0D9488" />
-                  <span className="text-sm font-medium group-hover:text-[#14462a] transition-all" style={{ color: '#2D2D2D' }}>Weekly</span>
-                </div>
-              </DropdownMenuItem>
-              <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer group transition-all hover:bg-[rgba(24,119,242,0.04)]">
-                <div className="flex items-center gap-3">
-                  <DocumentText size={16} color="#14462a" />
-                  <span className="text-sm font-medium group-hover:text-[#14462a] transition-all" style={{ color: '#2D2D2D' }}>Monthly</span>
-                </div>
-              </DropdownMenuItem>
+              <DropdownMenuContent align="end" className="rounded-2xl w-44 p-2" style={{ boxShadow: '0 4px 20px rgba(0, 0, 0, 0.12)', border: '1px solid rgba(0, 0, 0, 0.06)' }}>
+                <DropdownMenuLabel className="px-3 py-2 text-xs font-medium" style={{ color: '#B0B3B8' }}>Group by</DropdownMenuLabel>
+                <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer group transition-all hover:bg-[rgba(20,70,42,0.06)]">
+                  <div className="flex items-center gap-3">
+                    <div className="h-7 w-7 rounded-full flex items-center justify-center" style={{ backgroundColor: 'rgba(20, 70, 42, 0.08)' }}>
+                      <Clock size={14} color="#14462a" />
+                    </div>
+                    <span className="text-sm font-medium group-hover:text-[#14462a] transition-all" style={{ color: '#2D2D2D' }}>Daily</span>
+                  </div>
+                </DropdownMenuItem>
+                <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer group transition-all hover:bg-[rgba(20,70,42,0.06)]">
+                  <div className="flex items-center gap-3">
+                    <div className="h-7 w-7 rounded-full flex items-center justify-center" style={{ backgroundColor: 'rgba(20, 70, 42, 0.08)' }}>
+                      <Calendar1 size={14} color="#14462a" />
+                    </div>
+                    <span className="text-sm font-medium group-hover:text-[#14462a] transition-all" style={{ color: '#2D2D2D' }}>Weekly</span>
+                  </div>
+                </DropdownMenuItem>
+                <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer group transition-all hover:bg-[rgba(20,70,42,0.06)]">
+                  <div className="flex items-center gap-3">
+                    <div className="h-7 w-7 rounded-full flex items-center justify-center" style={{ backgroundColor: 'rgba(20, 70, 42, 0.08)' }}>
+                      <Calendar size={14} color="#14462a" />
+                    </div>
+                    <span className="text-sm font-medium group-hover:text-[#14462a] transition-all" style={{ color: '#2D2D2D' }}>Monthly</span>
+                  </div>
+                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
         </div>
@@ -406,31 +456,31 @@ export default function DashboardPage() {
                     <TableCell>{row.date}</TableCell>
                     <TableCell>{row.customer}</TableCell>
                   <TableCell className="text-[#65676B]">{row.reason}</TableCell>
-                  <TableCell className="font-medium">{row.amount}</TableCell>
+                  <TableCell className="font-medium">{maskAmount(row.amount)}</TableCell>
                     <TableCell>
                       {row.status === "Paid" ? (
-                      <Badge style={{ backgroundColor: '#14462a', color: 'white', borderColor: '#14462a' }}>
-                          <TickSquare size={14} color="white" /> Paid
+                        <Badge variant="paid">
+                          <TickCircle size={14} color="#14462a" variant="Bold" /> Paid
                         </Badge>
                       ) : row.status === "Cancelled" ? (
-                      <Badge style={{ backgroundColor: 'rgba(240, 242, 245, 0.5)', color: '#2D2D2D', borderColor: '#E4E6EB' }}>
-                          <CloseSquare size={14} color="#2D2D2D" /> Cancelled
+                        <Badge variant="cancelled">
+                          <CloseCircle size={14} color="#65676B" variant="Bold" /> Cancelled
                         </Badge>
                       ) : row.status === "Refunded" ? (
-                      <Badge style={{ backgroundColor: '#B0B3B8', color: 'white', borderColor: '#B0B3B8' }}>
-                          <RefreshCircle size={14} color="white" /> Refunded
+                        <Badge variant="refunded">
+                          <RefreshCircle size={14} color="#BE123C" variant="Bold" /> Refunded
                         </Badge>
                       ) : null}
                     </TableCell>
                   <TableCell onClick={(e) => e.stopPropagation()}>
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                        <button className="inline-flex items-center rounded-full p-1.5 transition-all hover:bg-[rgba(24,119,242,0.04)]">
+                        <button className="inline-flex items-center rounded-full p-1.5 transition-all hover:bg-[rgba(20,70,42,0.06)]">
                           <More size={16} color="#B0B3B8" />
                           </button>
                         </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end" className="rounded-2xl w-48 p-2" style={{ boxShadow: '0 4px 16px rgba(0, 0, 0, 0.1)' }}>
-                        <DropdownMenuItem asChild className="gap-3 rounded-xl p-3 cursor-pointer group transition-all hover:bg-[rgba(24,119,242,0.04)]">
+                      <DropdownMenuContent align="end" className="rounded-2xl w-48 p-2" style={{ boxShadow: '0 4px 20px rgba(0, 0, 0, 0.12)', border: '1px solid rgba(0, 0, 0, 0.06)' }}>
+                        <DropdownMenuItem asChild className="gap-3 rounded-xl p-3 cursor-pointer group transition-all hover:bg-[rgba(20,70,42,0.06)]">
                           <Link href={`/invoices/${row.id.replace('#', '')}`} className="flex items-center">
                             <div 
                               className="h-8 w-8 rounded-full flex items-center justify-center transition-all"
@@ -441,7 +491,7 @@ export default function DashboardPage() {
                             <span className="text-sm font-medium group-hover:text-[#14462a] transition-all" style={{ color: '#2D2D2D' }}>View</span>
                           </Link>
                           </DropdownMenuItem>
-                        <DropdownMenuItem className="gap-3 rounded-xl p-3 cursor-pointer group transition-all hover:bg-[rgba(24,119,242,0.04)]">
+                        <DropdownMenuItem className="gap-3 rounded-xl p-3 cursor-pointer group transition-all hover:bg-[rgba(20,70,42,0.06)]">
                           <div 
                             className="h-8 w-8 rounded-full flex items-center justify-center transition-all"
                             style={{ backgroundColor: 'rgba(20, 70, 42, 0.08)' }}

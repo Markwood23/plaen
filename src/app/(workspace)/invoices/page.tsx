@@ -6,8 +6,8 @@ import {
   RefreshCircle,
   More,
   ArrowSwapVertical,
-  TickSquare,
-  CloseSquare,
+  TickCircle,
+  CloseCircle,
   Clock,
   ArrowLeft2,
   ArrowRight2,
@@ -16,8 +16,8 @@ import {
   Eye,
   Trash,
   DocumentDownload,
-  DollarSquare,
-  DocumentText
+  Coin1,
+  Receipt21
 } from "iconsax-react";
 import Image from "next/image";
 import { Input } from "@/components/ui/input";
@@ -32,20 +32,21 @@ import { Badge } from "@/components/ui/badge";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import Link from "next/link";
 import { Checkbox } from "@/components/ui/checkbox";
+import { useBalanceVisibility } from "@/contexts/balance-visibility-context";
 
 const invoicesData = [
-  { id: 1, invoiceId: "#12594", date: "Dec 1, 2021", contact: "Frank Murlo", reason: "312 S Wilmette Ave", amount: "$847.69", status: "Paid" },
-  { id: 2, invoiceId: "#12306", date: "Nov 02, 2021", contact: "Bill Norton", reason: "5685 Bruce Ave, Portage", amount: "$477.14", status: "Cancelled" },
-  { id: 3, invoiceId: "#12305", date: "Nov 02, 2021", contact: "Jane Smith", reason: "1234 Main Street", amount: "$1,250.00", status: "Refunded" },
-  { id: 4, invoiceId: "#12304", date: "Oct 28, 2021", contact: "Acme Corp", reason: "789 Business Blvd", amount: "$3,200.00", status: "Paid" },
-  { id: 5, invoiceId: "#12303", date: "Oct 25, 2021", contact: "Tech Solutions Ltd", reason: "456 Innovation Drive", amount: "$2,100.50", status: "Pending" },
-  { id: 6, invoiceId: "#12302", date: "Oct 20, 2021", contact: "Global Industries", reason: "9012 Commerce Way", amount: "$4,750.25", status: "Paid" },
-  { id: 7, invoiceId: "#12301", date: "Oct 18, 2021", contact: "Sarah Johnson", reason: "321 Park Avenue", amount: "$925.00", status: "Paid" },
-  { id: 8, invoiceId: "#12300", date: "Oct 15, 2021", contact: "Michael Chen", reason: "567 Elm Street", amount: "$1,680.75", status: "Refunded" },
-  { id: 9, invoiceId: "#12299", date: "Oct 12, 2021", contact: "Creative Agency Inc", reason: "890 Design Plaza", amount: "$5,500.00", status: "Pending" },
-  { id: 10, invoiceId: "#12298", date: "Oct 08, 2021", contact: "Emma Williams", reason: "234 Oak Lane", amount: "$3,250.50", status: "Paid" },
-  { id: 11, invoiceId: "#12297", date: "Oct 05, 2021", contact: "Robert Martinez", reason: "678 Maple Drive", amount: "$890.00", status: "Cancelled" },
-  { id: 12, invoiceId: "#12296", date: "Oct 01, 2021", contact: "Digital Ventures LLC", reason: "123 Tech Boulevard", amount: "$6,800.00", status: "Paid" },
+  { id: 1, invoiceId: "PL-A7K9X2", date: "Dec 1, 2021", contact: "Frank Murlo", reason: "312 S Wilmette Ave", amount: "₵847.69", status: "Paid" },
+  { id: 2, invoiceId: "PL-B3M4N8", date: "Nov 02, 2021", contact: "Bill Norton", reason: "5685 Bruce Ave, Portage", amount: "₵477.14", status: "Cancelled" },
+  { id: 3, invoiceId: "PL-C5P2Q7", date: "Nov 02, 2021", contact: "Jane Smith", reason: "1234 Main Street", amount: "₵1,250.00", status: "Refunded" },
+  { id: 4, invoiceId: "PL-D8R6S1", date: "Oct 28, 2021", contact: "Acme Corp", reason: "789 Business Blvd", amount: "₵3,200.00", status: "Paid" },
+  { id: 5, invoiceId: "PL-E2T9U4", date: "Oct 25, 2021", contact: "Tech Solutions Ltd", reason: "456 Innovation Drive", amount: "₵2,100.50", status: "Pending" },
+  { id: 6, invoiceId: "PL-F6V3W0", date: "Oct 20, 2021", contact: "Global Industries", reason: "9012 Commerce Way", amount: "₵4,750.25", status: "Paid" },
+  { id: 7, invoiceId: "PL-G1X7Y5", date: "Oct 18, 2021", contact: "Sarah Johnson", reason: "321 Park Avenue", amount: "₵925.00", status: "Paid" },
+  { id: 8, invoiceId: "PL-H4Z8A9", date: "Oct 15, 2021", contact: "Michael Chen", reason: "567 Elm Street", amount: "₵1,680.75", status: "Refunded" },
+  { id: 9, invoiceId: "PL-J9B2C6", date: "Oct 12, 2021", contact: "Creative Agency Inc", reason: "890 Design Plaza", amount: "₵5,500.00", status: "Pending" },
+  { id: 10, invoiceId: "PL-K3D5E1", date: "Oct 08, 2021", contact: "Emma Williams", reason: "234 Oak Lane", amount: "₵3,250.50", status: "Paid" },
+  { id: 11, invoiceId: "PL-L7F8G2", date: "Oct 05, 2021", contact: "Robert Martinez", reason: "678 Maple Drive", amount: "₵890.00", status: "Cancelled" },
+  { id: 12, invoiceId: "PL-M0H4I3", date: "Oct 01, 2021", contact: "Digital Ventures LLC", reason: "123 Tech Boulevard", amount: "₵6,800.00", status: "Paid" },
 ];
 
 export default function InvoicesPage() {
@@ -53,6 +54,7 @@ export default function InvoicesPage() {
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
+  const { isBalanceHidden, maskAmount } = useBalanceVisibility();
 
   // Calculate pagination
   const totalPages = Math.ceil(invoicesData.length / itemsPerPage);
@@ -82,26 +84,26 @@ export default function InvoicesPage() {
     switch (status) {
       case "Paid":
         return (
-          <Badge style={{ backgroundColor: 'rgba(13, 148, 136, 0.08)', color: '#0D9488', borderColor: 'transparent' }}>
-            <TickSquare size={14} color="#0D9488" /> Paid
+          <Badge variant="paid">
+            <TickCircle size={14} color="#14462a" variant="Bold" /> Paid
           </Badge>
         );
       case "Cancelled":
         return (
-          <Badge style={{ backgroundColor: 'rgba(176, 179, 184, 0.08)', color: '#65676B', borderColor: 'transparent' }}>
-            <CloseSquare size={14} color="#65676B" /> Cancelled
+          <Badge variant="cancelled">
+            <CloseCircle size={14} color="#65676B" variant="Bold" /> Cancelled
           </Badge>
         );
       case "Refunded":
         return (
-          <Badge style={{ backgroundColor: 'rgba(20, 70, 42, 0.08)', color: '#14462a', borderColor: 'transparent' }}>
-            <RefreshCircle size={14} color="#14462a" /> Refunded
+          <Badge variant="refunded">
+            <RefreshCircle size={14} color="#BE123C" variant="Bold" /> Refunded
           </Badge>
         );
       case "Pending":
         return (
-          <Badge style={{ backgroundColor: 'rgba(245, 158, 11, 0.08)', color: '#F59E0B', borderColor: 'transparent' }}>
-            <Clock size={14} color="#F59E0B" /> Pending
+          <Badge variant="pending">
+            <Clock size={14} color="#D97706" variant="Bold" /> Pending
           </Badge>
         );
       default:
@@ -159,7 +161,7 @@ export default function InvoicesPage() {
             </div>
           </div>
           <p className="text-sm mb-2" style={{ color: '#65676B', fontWeight: 500 }}>Overdue</p>
-          <div className="text-3xl tracking-tight" style={{ color: '#2D2D2D', fontWeight: 700 }}>₵16,935.80</div>
+          <div className="text-3xl tracking-tight" style={{ color: '#2D2D2D', fontWeight: 700 }}>{maskAmount("₵16,935.80")}</div>
           <p className="text-xs mt-3" style={{ color: '#B0B3B8' }}>Needs attention</p>
         </div>
 
@@ -169,7 +171,7 @@ export default function InvoicesPage() {
               className="h-12 w-12 rounded-xl flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110"
               style={{ backgroundColor: 'rgba(245, 158, 11, 0.12)' }}
             >
-              <DocumentText size={24} color="#F59E0B" variant="Bulk" />
+              <Receipt21 size={24} color="#F59E0B" variant="Bulk" />
             </div>
             <div
               className="inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-semibold"
@@ -179,7 +181,7 @@ export default function InvoicesPage() {
             </div>
           </div>
           <p className="text-sm mb-2" style={{ color: '#65676B', fontWeight: 500 }}>Pending</p>
-          <div className="text-3xl tracking-tight" style={{ color: '#2D2D2D', fontWeight: 700 }}>₵8,750.50</div>
+          <div className="text-3xl tracking-tight" style={{ color: '#2D2D2D', fontWeight: 700 }}>{maskAmount("₵8,750.50")}</div>
           <p className="text-xs mt-3" style={{ color: '#B0B3B8' }}>Awaiting payment</p>
         </div>
 
@@ -189,7 +191,7 @@ export default function InvoicesPage() {
               className="h-12 w-12 rounded-xl flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110"
               style={{ backgroundColor: 'rgba(13, 148, 136, 0.12)' }}
             >
-              <TickSquare size={24} color="#0D9488" variant="Bulk" />
+              <TickCircle size={24} color="#0D9488" variant="Bulk" />
             </div>
             <div
               className="inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-semibold"
@@ -199,7 +201,7 @@ export default function InvoicesPage() {
             </div>
           </div>
           <p className="text-sm mb-2" style={{ color: '#65676B', fontWeight: 500 }}>Paid</p>
-          <div className="text-3xl tracking-tight" style={{ color: '#2D2D2D', fontWeight: 700 }}>₵45,320.00</div>
+          <div className="text-3xl tracking-tight" style={{ color: '#2D2D2D', fontWeight: 700 }}>{maskAmount("₵45,320.00")}</div>
           <p className="text-xs mt-3" style={{ color: '#B0B3B8' }}>This month</p>
         </div>
 
@@ -209,7 +211,7 @@ export default function InvoicesPage() {
               className="h-12 w-12 rounded-xl flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110"
               style={{ backgroundColor: 'rgba(20, 70, 42, 0.12)' }}
             >
-              <DollarSquare size={24} color="#14462a" variant="Bulk" />
+              <Coin1 size={24} color="#14462a" variant="Bulk" />
             </div>
             <div
               className="inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-semibold"
@@ -219,7 +221,7 @@ export default function InvoicesPage() {
             </div>
           </div>
           <p className="text-sm mb-2" style={{ color: '#65676B', fontWeight: 500 }}>Total Invoices</p>
-          <div className="text-3xl tracking-tight" style={{ color: '#2D2D2D', fontWeight: 700 }}>₵71,006.30</div>
+          <div className="text-3xl tracking-tight" style={{ color: '#2D2D2D', fontWeight: 700 }}>{maskAmount("₵71,006.30")}</div>
           <p className="text-xs mt-3" style={{ color: '#B0B3B8' }}>All time</p>
         </div>
       </div>
@@ -230,7 +232,7 @@ export default function InvoicesPage() {
           <div className="flex-1">
             <div className="flex items-center gap-3 mb-3">
               <div className="h-10 w-10 rounded-full flex items-center justify-center" style={{ backgroundColor: 'rgba(20, 70, 42, 0.12)' }}>
-                <DollarSquare size={20} color="#14462a" variant="Bulk" />
+                <Coin1 size={20} color="#14462a" variant="Bulk" />
               </div>
               <div>
                 <h3 className="text-base font-semibold" style={{ color: '#2D2D2D' }}>Get Paid 3x Faster with Mobile Money</h3>
@@ -405,7 +407,7 @@ export default function InvoicesPage() {
           <div className="flex items-center justify-between px-6 py-4 border-b" style={{ backgroundColor: 'rgba(20, 70, 42, 0.04)', borderColor: 'rgba(20, 70, 42, 0.1)' }}>
             <div className="flex items-center gap-3">
               <div className="h-8 w-8 rounded-full flex items-center justify-center" style={{ backgroundColor: 'rgba(20, 70, 42, 0.12)' }}>
-                <TickSquare size={16} color="#14462a" />
+                <TickCircle size={16} color="#14462a" />
               </div>
               <div>
                 <p className="text-sm font-semibold" style={{ color: '#2D2D2D' }}>
@@ -491,19 +493,19 @@ export default function InvoicesPage() {
                 <TableCell className="text-[#65676B]">{invoice.date}</TableCell>
                 <TableCell>{invoice.contact}</TableCell>
                 <TableCell className="text-[#65676B]">{invoice.reason}</TableCell>
-                <TableCell className="font-medium">{invoice.amount}</TableCell>
+                <TableCell className="font-medium">{maskAmount(invoice.amount)}</TableCell>
                 <TableCell>
                   {getStatusBadge(invoice.status)}
                 </TableCell>
                 <TableCell onClick={(e) => e.stopPropagation()}>
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                      <button className="inline-flex items-center rounded-full p-1.5 transition-all hover:bg-[rgba(24,119,242,0.08)]">
+                      <button className="inline-flex items-center rounded-full p-1.5 transition-all hover:bg-[rgba(20,70,42,0.06)]">
                         <More size={16} color="#B0B3B8" />
                       </button>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end" className="rounded-2xl w-56 p-2" style={{ boxShadow: '0 4px 16px rgba(0, 0, 0, 0.1)' }}>
-                      <DropdownMenuItem className="gap-3 rounded-xl p-3 cursor-pointer group transition-all hover:bg-[rgba(24,119,242,0.04)]" asChild>
+                    <DropdownMenuContent align="end" className="rounded-2xl w-56 p-2" style={{ boxShadow: '0 4px 20px rgba(0, 0, 0, 0.12)', border: '1px solid rgba(0, 0, 0, 0.06)' }}>
+                      <DropdownMenuItem className="gap-3 rounded-xl p-3 cursor-pointer group transition-all hover:bg-[rgba(20,70,42,0.06)]" asChild>
                         <Link href={`/invoices/${invoice.id}`}>
                           <div 
                             className="h-8 w-8 rounded-full flex items-center justify-center transition-all"
@@ -514,7 +516,7 @@ export default function InvoicesPage() {
                           <span className="text-sm font-medium group-hover:text-[#14462a] transition-all" style={{ color: '#2D2D2D' }}>View Invoice</span>
                         </Link>
                       </DropdownMenuItem>
-                      <DropdownMenuItem className="gap-3 rounded-xl p-3 cursor-pointer group transition-all hover:bg-[rgba(24,119,242,0.04)]">
+                      <DropdownMenuItem className="gap-3 rounded-xl p-3 cursor-pointer group transition-all hover:bg-[rgba(20,70,42,0.06)]">
                         <div 
                           className="h-8 w-8 rounded-full flex items-center justify-center transition-all"
                           style={{ backgroundColor: 'rgba(13, 148, 136, 0.08)' }}

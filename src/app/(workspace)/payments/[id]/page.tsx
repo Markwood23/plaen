@@ -13,9 +13,8 @@ import Image from "next/image";
 import { 
   ArrowLeft2, 
   DocumentDownload, 
-  TickSquare, 
-  DollarSquare,
-  DocumentText,
+  TickCircle, 
+  Receipt21,
   Sms,
   Call,
   Building,
@@ -24,15 +23,19 @@ import {
   Printer,
   RefreshCircle,
   Clock,
-  CloseSquare,
-  InfoCircle
+  CloseCircle,
+  InfoCircle,
+  Coin1
 } from "iconsax-react";
+import { CedisCircle } from "@/components/icons/cedis-icon";
 import Link from "next/link";
 import { use, useState } from "react";
+import { useBalanceVisibility } from "@/contexts/balance-visibility-context";
 
 export default function PaymentDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
   const [copiedRef, setCopiedRef] = useState(false);
+  const { maskAmount } = useBalanceVisibility();
 
   const copyReference = () => {
     navigator.clipboard.writeText(payment.reference);
@@ -49,8 +52,8 @@ export default function PaymentDetailPage({ params }: { params: Promise<{ id: st
     
     // Invoice details
     invoice: {
-      id: "12594",
-      invoiceNumber: "INV-2024-12594",
+      id: "A7K9X2",
+      invoiceNumber: "PL-A7K9X2",
       invoiceDate: "Dec 1, 2024",
       dueDate: "Dec 31, 2024",
       contact: "Frank Murlo",
@@ -130,9 +133,9 @@ export default function PaymentDetailPage({ params }: { params: Promise<{ id: st
   const getActivityIcon = (type: string) => {
     switch (type) {
       case "confirmed":
-        return <TickSquare size={12} color="#0D9488" />;
+        return <TickCircle size={12} color="#0D9488" />;
       case "received":
-        return <DollarSquare size={12} color="#14462a" />;
+        return <CedisCircle size={12} color="#14462a" />;
       case "initiated":
         return <RefreshCircle size={12} color="#14462a" />;
       default:
@@ -173,49 +176,29 @@ export default function PaymentDetailPage({ params }: { params: Promise<{ id: st
                   Payment {payment.reference}
                 </h1>
                 {payment.status === "Paid" && (
-                  <Badge variant="outline" className="px-3 py-1 rounded-full" style={{ 
-                    backgroundColor: 'rgba(20, 70, 42, 0.08)',
-                    color: '#14462a',
-                    borderColor: '#14462a',
-                    fontSize: '12px',
-                    fontWeight: 500
-                  }}>    <TickSquare size={12} className="mr-1" /> Paid
+                  <Badge variant="paid">
+                    <TickCircle size={12} color="#14462a" /> Paid
                   </Badge>
                 )}
                 {payment.status === "Partially Paid" && (
-                  <Badge variant="outline" className="px-3 py-1 rounded-full" style={{ 
-                    backgroundColor: 'rgba(245, 158, 11, 0.08)',
-                    color: '#F59E0B',
-                    borderColor: '#F59E0B',
-                    fontSize: '12px',
-                    fontWeight: 500
-                  }}>    <DollarSquare size={12} className="mr-1" /> Partial Payment
+                  <Badge variant="pending">
+                    <Coin1 size={12} color="#D97706" /> Partial Payment
                   </Badge>
                 )}
                 {payment.status === "Failed" && (
-                  <Badge variant="outline" className="px-3 py-1 rounded-full" style={{ 
-                    backgroundColor: 'rgba(220, 38, 38, 0.08)',
-                    color: '#DC2626',
-                    borderColor: '#DC2626',
-                    fontSize: '12px',
-                    fontWeight: 500
-                  }}>    <CloseSquare size={12} className="mr-1" /> Failed
+                  <Badge variant="failed">
+                    <CloseCircle size={12} color="#DC2626" /> Failed
                   </Badge>
                 )}
                 {payment.isOnTime && (
-                  <Badge variant="outline" className="px-3 py-1 rounded-full" style={{ 
-                    backgroundColor: 'rgba(13, 148, 136, 0.08)',
-                    color: '#0D9488',
-                    borderColor: '#0D9488',
-                    fontSize: '12px',
-                    fontWeight: 500
-                  }}>    <Clock size={12} className="mr-1" /> On-time (≤3 days)
+                  <Badge variant="partial">
+                    <Clock size={12} color="#0D9488" /> On-time (≤3 days)
                   </Badge>
                 )}
               </div>
               <div className="flex items-center gap-2">
                 <p className="text-base" style={{ color: '#2D2D2D', fontWeight: 500 }}>
-                  ₵{payment.amountPaid.toFixed(2)}
+                  {maskAmount(`₵${payment.amountPaid.toFixed(2)}`)}
                 </p>
                 <span style={{ color: '#B0B3B8' }}>•</span>
                 <p className="text-sm" style={{ color: '#B0B3B8' }}>
@@ -244,7 +227,7 @@ export default function PaymentDetailPage({ params }: { params: Promise<{ id: st
             >
               {copiedRef ? (
                 <>
-                  <TickSquare size={16} color="#0D9488" />
+                  <TickCircle size={16} color="#0D9488" />
                   <span style={{ color: '#0D9488' }}>Copied</span>
                 </>
               ) : (
@@ -267,14 +250,14 @@ export default function PaymentDetailPage({ params }: { params: Promise<{ id: st
                 <Button 
                   variant="outline" 
                   size="sm" 
-                  className="rounded-full hover:bg-[rgba(24,119,242,0.04)] hover:text-[#14462a] hover:border-[#14462a] transition-all" 
+                  className="rounded-full hover:bg-[rgba(20,70,42,0.06)] hover:text-[#14462a] hover:border-[#14462a] transition-all" 
                   style={{ borderColor: '#E4E6EB' }}
                 >
                   <More size={16} />
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="rounded-2xl w-56 p-2" style={{ boxShadow: '0 4px 16px rgba(0, 0, 0, 0.1)' }}>
-                <DropdownMenuItem className="gap-3 rounded-xl p-3 cursor-pointer group transition-all hover:bg-[rgba(24,119,242,0.04)]">
+              <DropdownMenuContent align="end" className="rounded-2xl w-56 p-2" style={{ boxShadow: '0 4px 20px rgba(0, 0, 0, 0.12)', border: '1px solid rgba(0, 0, 0, 0.06)' }}>
+                <DropdownMenuItem className="gap-3 rounded-xl p-3 cursor-pointer group transition-all hover:bg-[rgba(20,70,42,0.06)]">
                   <div 
                     className="h-8 w-8 rounded-full flex items-center justify-center transition-all"
                     style={{ backgroundColor: 'rgba(20, 70, 42, 0.08)' }}
@@ -285,7 +268,7 @@ export default function PaymentDetailPage({ params }: { params: Promise<{ id: st
                     Print Receipt
                   </span>
                 </DropdownMenuItem>
-                <DropdownMenuItem className="gap-3 rounded-xl p-3 cursor-pointer group transition-all hover:bg-[rgba(24,119,242,0.04)]">
+                <DropdownMenuItem className="gap-3 rounded-xl p-3 cursor-pointer group transition-all hover:bg-[rgba(20,70,42,0.06)]">
                   <div 
                     className="h-8 w-8 rounded-full flex items-center justify-center transition-all"
                     style={{ backgroundColor: 'rgba(13, 148, 136, 0.08)' }}
@@ -329,13 +312,13 @@ export default function PaymentDetailPage({ params }: { params: Promise<{ id: st
                 <div>
                   <p className="text-sm mb-1" style={{ color: '#B0B3B8', fontWeight: 500 }}>Amount Paid</p>
                   <p className="text-2xl tracking-tight" style={{ color: '#2D2D2D', fontWeight: 600 }}>
-                    ₵{payment.amountPaid.toFixed(2)}
+                    {maskAmount(`₵${payment.amountPaid.toFixed(2)}`)}
                   </p>
                 </div>
                 <div className="text-right">
                   <p className="text-sm mb-1" style={{ color: '#B0B3B8', fontWeight: 500 }}>Invoice Amount</p>
                   <p className="text-base" style={{ color: '#2D2D2D', fontWeight: 500 }}>
-                    ₵{payment.invoice.invoiceAmount.toFixed(2)}
+                    {maskAmount(`₵${payment.invoice.invoiceAmount.toFixed(2)}`)}
                   </p>
                 </div>
               </div>
@@ -386,13 +369,7 @@ export default function PaymentDetailPage({ params }: { params: Promise<{ id: st
                 <div className="flex items-center gap-2">
                   <p className="text-sm" style={{ color: '#2D2D2D', fontWeight: 500 }}>{payment.daysToPayment} days</p>
                   {payment.isOnTime && (
-                    <Badge variant="outline" style={{ 
-                      backgroundColor: 'rgba(13, 148, 136, 0.08)',
-                      color: '#0D9488',
-                      borderColor: '#0D9488',
-                      fontSize: '10px',
-                      padding: '2px 6px'
-                    }}>
+                    <Badge variant="partial">
                       ✓
                     </Badge>
                   )}
@@ -443,7 +420,7 @@ export default function PaymentDetailPage({ params }: { params: Promise<{ id: st
 
               <div className="flex items-center justify-between py-3">
                 <p className="text-sm" style={{ color: '#B0B3B8', fontWeight: 500 }}>Invoice Total</p>
-                <p className="text-sm" style={{ color: '#2D2D2D', fontWeight: 600 }}>₵{payment.invoice.invoiceAmount.toFixed(2)}</p>
+                <p className="text-sm" style={{ color: '#2D2D2D', fontWeight: 600 }}>{maskAmount(`₵${payment.invoice.invoiceAmount.toFixed(2)}`)}</p>
               </div>
             </div>
           </div>
@@ -532,17 +509,17 @@ export default function PaymentDetailPage({ params }: { params: Promise<{ id: st
             <div className="space-y-3">
               <div className="flex items-center justify-between py-3">
                 <p className="text-sm" style={{ color: '#B0B3B8' }}>Gross Amount</p>
-                <p className="text-sm" style={{ color: '#2D2D2D', fontWeight: 500 }}>₵{payment.amountPaid.toFixed(2)}</p>
+                <p className="text-sm" style={{ color: '#2D2D2D', fontWeight: 500 }}>{maskAmount(`₵${payment.amountPaid.toFixed(2)}`)}</p>
               </div>
 
               <div className="flex items-center justify-between py-3">
                 <p className="text-sm" style={{ color: '#B0B3B8' }}>Processing Fee</p>
-                <p className="text-sm" style={{ color: '#2D2D2D', fontWeight: 500 }}>₵{payment.processingFee.toFixed(2)}</p>
+                <p className="text-sm" style={{ color: '#2D2D2D', fontWeight: 500 }}>{maskAmount(`₵${payment.processingFee.toFixed(2)}`)}</p>
               </div>
 
               <div className="flex items-center justify-between py-3">
                 <p className="text-sm" style={{ color: '#2D2D2D', fontWeight: 600 }}>Net Amount</p>
-                <p className="text-sm" style={{ color: '#2D2D2D', fontWeight: 600 }}>₵{payment.netAmount.toFixed(2)}</p>
+                <p className="text-sm" style={{ color: '#2D2D2D', fontWeight: 600 }}>{maskAmount(`₵${payment.netAmount.toFixed(2)}`)}</p>
               </div>
             </div>
           </div>

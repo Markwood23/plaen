@@ -9,10 +9,12 @@ import {
   Add, 
   More, 
   ArrowSwapVertical, 
-  TickSquare, 
+  TickCircle, 
   Eye, 
   Trash, 
-  DocumentText 
+  ReceiptText,
+  Clock,
+  Danger
 } from "iconsax-react";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -26,6 +28,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSepara
 import Link from "next/link";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Calendar } from "@/components/ui/calendar";
+import { useBalanceVisibility } from "@/contexts/balance-visibility-context";
 
 const receiptsData = [
   { id: 1, receiptId: "#REC001", date: "Dec 15, 2024", vendor: "Office Supplies Co", category: "Office Supplies", amount: "₵523.45", status: "Verified", paymentMethod: "MTN MoMo" },
@@ -39,6 +42,7 @@ const receiptsData = [
 export default function ReceiptsPage() {
   const [dateRange, setDateRange] = useState<DateRange | undefined>();
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
+  const { maskAmount } = useBalanceVisibility();
   
   const currentReceipts = receiptsData;
   
@@ -66,20 +70,20 @@ export default function ReceiptsPage() {
     switch (status) {
       case "Verified":
         return (
-          <Badge style={{ backgroundColor: '#14462a', color: 'white', borderColor: '#14462a' }}>
-            <TickSquare size={14} color="white" variant="Linear" /> Verified
+          <Badge variant="verified">
+            <TickCircle size={14} color="#14462a" variant="Bold" /> Verified
           </Badge>
         );
       case "Pending":
         return (
-          <Badge style={{ backgroundColor: 'rgba(240, 242, 245, 0.5)', color: '#2D2D2D', borderColor: '#E4E6EB' }}>
-            <DocumentText size={14} color="#2D2D2D" variant="Linear" /> Pending
+          <Badge variant="pending">
+            <Clock size={14} color="#D97706" variant="Bold" /> Pending
           </Badge>
         );
       case "Flagged":
         return (
-          <Badge style={{ backgroundColor: 'rgba(220, 38, 38, 0.1)', color: '#DC2626', borderColor: 'rgba(220, 38, 38, 0.2)' }}>
-            Flagged
+          <Badge variant="flagged">
+            <Danger size={14} color="#DC2626" variant="Bold" /> Flagged
           </Badge>
         );
       default:
@@ -124,7 +128,7 @@ export default function ReceiptsPage() {
               className="h-12 w-12 rounded-xl flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110"
               style={{ backgroundColor: 'rgba(13, 148, 136, 0.12)' }}
             >
-              <TickSquare size={24} color="#0D9488" variant="Linear" />
+              <TickCircle size={24} color="#0D9488" variant="Linear" />
             </div>
             <div
               className="inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-semibold"
@@ -134,7 +138,7 @@ export default function ReceiptsPage() {
             </div>
           </div>
           <p className="text-sm mb-2" style={{ color: '#65676B', fontWeight: 500 }}>Verified</p>
-          <div className="text-3xl tracking-tight" style={{ color: '#2D2D2D', fontWeight: 700 }}>₵5,238.65</div>
+          <div className="text-3xl tracking-tight" style={{ color: '#2D2D2D', fontWeight: 700 }}>{maskAmount("₵5,238.65")}</div>
           <p className="text-xs mt-3" style={{ color: '#B0B3B8' }}>This month</p>
         </div>
 
@@ -144,7 +148,7 @@ export default function ReceiptsPage() {
               className="h-12 w-12 rounded-xl flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110"
               style={{ backgroundColor: 'rgba(245, 158, 11, 0.12)' }}
             >
-              <DocumentText size={24} color="#F59E0B" variant="Linear" />
+              <Clock size={24} color="#F59E0B" variant="Bulk" />
             </div>
             <div
               className="inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-semibold"
@@ -154,7 +158,7 @@ export default function ReceiptsPage() {
             </div>
           </div>
           <p className="text-sm mb-2" style={{ color: '#65676B', fontWeight: 500 }}>Pending Review</p>
-          <div className="text-3xl tracking-tight" style={{ color: '#2D2D2D', fontWeight: 700 }}>₵4,650.00</div>
+          <div className="text-3xl tracking-tight" style={{ color: '#2D2D2D', fontWeight: 700 }}>{maskAmount("₵4,650.00")}</div>
           <p className="text-xs mt-3" style={{ color: '#B0B3B8' }}>Awaiting verification</p>
         </div>
 
@@ -164,7 +168,7 @@ export default function ReceiptsPage() {
               className="h-12 w-12 rounded-xl flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110"
               style={{ backgroundColor: 'rgba(20, 70, 42, 0.12)' }}
             >
-              <DocumentText size={24} color="#14462a" variant="Linear" />
+              <ReceiptText size={24} color="#14462a" variant="Bulk" />
             </div>
             <div
               className="inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-semibold"
@@ -184,7 +188,7 @@ export default function ReceiptsPage() {
               className="h-12 w-12 rounded-xl flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110"
               style={{ backgroundColor: 'rgba(220, 38, 38, 0.12)' }}
             >
-              <DocumentText size={24} color="#DC2626" variant="Linear" />
+              <Danger size={24} color="#DC2626" variant="Bulk" />
             </div>
             <div
               className="inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-semibold"
@@ -194,7 +198,7 @@ export default function ReceiptsPage() {
             </div>
           </div>
           <p className="text-sm mb-2" style={{ color: '#65676B', fontWeight: 500 }}>Flagged</p>
-          <div className="text-3xl tracking-tight" style={{ color: '#2D2D2D', fontWeight: 700 }}>₵265.20</div>
+          <div className="text-3xl tracking-tight" style={{ color: '#2D2D2D', fontWeight: 700 }}>{maskAmount("₵265.20")}</div>
           <p className="text-xs mt-3" style={{ color: '#B0B3B8' }}>Requires attention</p>
         </div>
       </div>
@@ -328,7 +332,7 @@ export default function ReceiptsPage() {
           <div className="flex items-center justify-between px-6 py-4 border-b" style={{ backgroundColor: 'rgba(20, 70, 42, 0.04)', borderColor: 'rgba(20, 70, 42, 0.1)' }}>
             <div className="flex items-center gap-3">
               <div className="h-8 w-8 rounded-full flex items-center justify-center" style={{ backgroundColor: 'rgba(20, 70, 42, 0.12)' }}>
-                <TickSquare size={16} color="#14462a" variant="Linear" />
+                <TickCircle size={16} color="#14462a" variant="Linear" />
               </div>
               <div>
                 <p className="text-sm font-semibold" style={{ color: '#2D2D2D' }}>
@@ -414,19 +418,19 @@ export default function ReceiptsPage() {
                 <TableCell className="text-[#65676B]">{receipt.date}</TableCell>
                 <TableCell>{receipt.vendor}</TableCell>
                 <TableCell className="text-[#65676B]">{receipt.category}</TableCell>
-                <TableCell className="font-medium">{receipt.amount}</TableCell>
+                <TableCell className="font-medium">{maskAmount(receipt.amount)}</TableCell>
                 <TableCell>
                   {getStatusBadge(receipt.status)}
                 </TableCell>
                 <TableCell onClick={(e) => e.stopPropagation()}>
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                      <button className="inline-flex items-center rounded-full p-1.5 transition-all hover:bg-[rgba(24,119,242,0.08)]">
+                      <button className="inline-flex items-center rounded-full p-1.5 transition-all hover:bg-[rgba(20,70,42,0.06)]">
                         <More size={16} color="#B0B3B8" variant="Linear" />
                       </button>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end" className="rounded-2xl w-56 p-2" style={{ boxShadow: '0 4px 16px rgba(0, 0, 0, 0.1)' }}>
-                      <DropdownMenuItem className="gap-3 rounded-xl p-3 cursor-pointer group transition-all hover:bg-[rgba(24,119,242,0.04)]">
+                    <DropdownMenuContent align="end" className="rounded-2xl w-56 p-2" style={{ boxShadow: '0 4px 20px rgba(0, 0, 0, 0.12)', border: '1px solid rgba(0, 0, 0, 0.06)' }}>
+                      <DropdownMenuItem className="gap-3 rounded-xl p-3 cursor-pointer group transition-all hover:bg-[rgba(20,70,42,0.06)]">
                         <div 
                           className="h-8 w-8 rounded-full flex items-center justify-center transition-all"
                           style={{ backgroundColor: 'rgba(20, 70, 42, 0.08)' }}
@@ -435,7 +439,7 @@ export default function ReceiptsPage() {
                         </div>
                         <span className="text-sm font-medium group-hover:text-[#14462a] transition-all" style={{ color: '#2D2D2D' }}>View Receipt</span>
                       </DropdownMenuItem>
-                      <DropdownMenuItem className="gap-3 rounded-xl p-3 cursor-pointer group transition-all hover:bg-[rgba(24,119,242,0.04)]">
+                      <DropdownMenuItem className="gap-3 rounded-xl p-3 cursor-pointer group transition-all hover:bg-[rgba(20,70,42,0.06)]">
                         <div 
                           className="h-8 w-8 rounded-full flex items-center justify-center transition-all"
                           style={{ backgroundColor: 'rgba(13, 148, 136, 0.08)' }}

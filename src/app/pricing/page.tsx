@@ -124,7 +124,7 @@ function TeamsPreview() {
 const pricingTiers = [
   {
     name: "Free",
-    price: "$0",
+    price: "₵0",
     cadence: "forever",
     description: "Create and send unlimited invoices. Pay only when you get paid.",
     features: [
@@ -142,7 +142,7 @@ const pricingTiers = [
   },
   {
     name: "Pro",
-    price: "$19",
+    price: "₵19",
     cadence: "/month",
     description: "Advanced features for growing businesses and power users.",
     features: [
@@ -161,7 +161,7 @@ const pricingTiers = [
   },
   {
     name: "Teams",
-    price: "$49",
+    price: "₵49",
     cadence: "/month",
     description: "Collaboration features for teams that invoice together.",
     features: [

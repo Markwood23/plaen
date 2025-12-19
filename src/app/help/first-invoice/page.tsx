@@ -1,7 +1,7 @@
 "use client";
 
 import { HelpArticleLayout } from "@/components/help/help-article-layout";
-import { TickCircle, DocumentText, UserAdd, DollarCircle, Send2 } from "iconsax-react";
+import { TickCircle, DocumentText, UserAdd, Wallet, Send2 } from "iconsax-react";
 
 const invoiceSteps = [
   {
@@ -17,7 +17,7 @@ const invoiceSteps = [
     color: "#0D9488"
   },
   {
-    icon: DollarCircle,
+    icon: Wallet,
     title: "Set payment options",
     description: "Choose how you want to receive payment.",
     color: "#D97706"

@@ -85,15 +85,15 @@ function InvoiceBuilderPreview() {
       <div className="space-y-1.5 rounded-lg border border-gray-200 bg-white p-2">
         <div className="flex items-center justify-between text-[8px]">
           <span className="text-gray-600">Design Services</span>
-          <span className="font-semibold text-gray-800">$1,200</span>
+          <span className="font-semibold text-gray-800">₵1,200</span>
         </div>
         <div className="flex items-center justify-between text-[8px]">
           <span className="text-gray-600">Development</span>
-          <span className="font-semibold text-gray-800">$2,400</span>
+          <span className="font-semibold text-gray-800">₵2,400</span>
         </div>
         <div className="border-t border-dashed border-gray-200 pt-1.5 flex items-center justify-between text-[9px]">
           <span className="font-medium text-gray-700">Total</span>
-          <span className="font-bold text-[#14462a]">$3,600</span>
+          <span className="font-bold text-[#14462a]">₵3,600</span>
         </div>
       </div>
     </div>
@@ -178,7 +178,7 @@ function CalmInvoicePreview() {
         </div>
         <div className="mt-3 flex justify-end">
           <div className="rounded bg-gray-900 px-2 py-0.5">
-            <span className="text-[8px] font-semibold text-white">$4,200</span>
+            <span className="text-[8px] font-semibold text-white">₵4,200</span>
           </div>
         </div>
       </div>
@@ -213,17 +213,17 @@ function LiveFeedbackPreview() {
       <div className="flex-1 space-y-1.5">
         <div className="flex items-center justify-between text-[8px]">
           <span className="text-gray-500">Subtotal</span>
-          <span className="text-gray-700">$3,400</span>
+          <span className="text-gray-700">₵3,400</span>
         </div>
         <div className="flex items-center justify-between text-[8px]">
           <span className="text-gray-500">Tax (12.5%)</span>
-          <span className="text-gray-700">$425</span>
+          <span className="text-gray-700">₵425</span>
         </div>
         <div className="flex items-center justify-between text-[9px] font-semibold border-t border-gray-200 pt-1.5">
           <span className="text-gray-800">Total</span>
           <span className="text-[#14462a] flex items-center gap-1">
             <span className="inline-block h-1.5 w-1.5 rounded-full bg-teal-500 animate-pulse" />
-            $3,825
+            ₵3,825
           </span>
         </div>
       </div>
@@ -239,9 +239,9 @@ function LiveFeedbackPreview() {
 // Receipt ledger preview
 function ReceiptLedgerPreview() {
   const receipts = [
-    { status: 'verified', amount: '$2,400' },
-    { status: 'verified', amount: '$1,800' },
-    { status: 'pending', amount: '$3,200' },
+    { status: 'verified', amount: '₵2,400' },
+    { status: 'verified', amount: '₵1,800' },
+    { status: 'pending', amount: '₵3,200' },
   ];
   return (
     <div className="space-y-1.5">

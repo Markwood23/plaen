@@ -2,8 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 
 // Mock invoice data for testing - FULL FEATURED VERSION
 const mockInvoice = {
-  id: 'INV-001',
-  invoice_number: 'INV-2024-001',
+  id: 'PL-A7K9X2',
+  invoice_number: 'PL-A7K9X2',
   issue_date: '2024-11-01',
   due_date: '2024-11-15', // Past due to show overdue badge
   status: 'partially_paid' as const, // Show partially paid badge
@@ -54,7 +54,7 @@ const mockInvoice = {
   payment_methods: ['momo', 'bank', 'card', 'external'] as const,
   
   // PRD features - ALL ENABLED
-  notes: "Thank you for your business! Payment is due within 30 days.\n\nPlease reference invoice number INV-2024-001 in your payment description.\n\nAccepted payment methods:\n• MTN Mobile Money: 024-123-4567\n• Bank Transfer: See payment page for details\n• Card: Pay securely online\n\nFor any questions or concerns, please don't hesitate to contact us at info@plaen.tech or call +233 24 123 4567.\n\nWe appreciate your prompt payment!",
+  notes: "Thank you for your business! Payment is due within 30 days.\n\nPlease reference invoice number PL-A7K9X2 in your payment description.\n\nAccepted payment methods:\n• MTN Mobile Money: 024-123-4567\n• Bank Transfer: See payment page for details\n• Card: Pay securely online\n\nFor any questions or concerns, please don't hesitate to contact us at info@plaen.tech or call +233 24 123 4567.\n\nWe appreciate your prompt payment!",
   
   attachments: [
     {

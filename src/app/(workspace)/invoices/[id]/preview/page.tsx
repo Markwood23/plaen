@@ -8,9 +8,9 @@ import {
   DocumentDownload, 
   Send2,
   Printer,
-  TickSquare,
+  TickCircle,
   Clock,
-  DollarSquare,
+  Coin1,
   Sms,
   Call,
   Building,
@@ -20,14 +20,16 @@ import {
 } from "iconsax-react";
 import Link from "next/link";
 import { use } from "react";
+import { useBalanceVisibility } from "@/contexts/balance-visibility-context";
 
 export default function InvoicePreviewPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
+  const { maskAmount } = useBalanceVisibility();
 
   // Mock data - will be replaced with API call
   const invoice = {
     id: id,
-    invoiceNumber: "INV-2025-001",
+    invoiceNumber: "PL-A7K9X2",
     issueDate: "Nov 15, 2025",
     dueDate: "Dec 15, 2025",
     paymentTerms: "Net 30",
@@ -113,20 +115,20 @@ export default function InvoicePreviewPage({ params }: { params: Promise<{ id: s
     switch (status) {
       case "Paid":
         return (
-          <Badge className="bg-[#14462a] text-white hover:bg-[#14462a]/90">
-            <TickSquare size={14} className="mr-1" /> Paid
+          <Badge variant="paid">
+            <TickCircle size={14} color="#14462a" variant="Bold" /> Paid
           </Badge>
         );
       case "Partially Paid":
         return (
-          <Badge className="bg-[#F9F9F9] text-[#14462a] border-[#EBECE7] hover:bg-[#EBECE7]">
-            <DollarSquare size={14} className="mr-1" /> Partially Paid
+          <Badge variant="partial">
+            <Coin1 size={14} color="#0D9488" variant="Bold" /> Partially Paid
           </Badge>
         );
       case "Pending":
         return (
-          <Badge className="bg-[#F9F9F9] text-[#949494] border-[#EBECE7] hover:bg-[#EBECE7]">
-            <Clock size={14} className="mr-1" /> Pending
+          <Badge variant="pending">
+            <Clock size={14} color="#D97706" variant="Bold" /> Pending
           </Badge>
         );
       default:
@@ -146,7 +148,7 @@ export default function InvoicePreviewPage({ params }: { params: Promise<{ id: s
           <div className="flex items-center justify-between">
             <Button variant="ghost" size="sm" asChild className="gap-2 -ml-2 rounded-full hover:bg-[rgba(240,242,245,0.5)]">
               <Link href={`/invoices/${id}`}>
-                <ArrowLeft2 size={16} />
+                <ArrowLeft2 size={16} color="currentColor" />
                 Back
               </Link>
             </Button>
@@ -158,7 +160,7 @@ export default function InvoicePreviewPage({ params }: { params: Promise<{ id: s
                 style={{ borderColor: '#E4E6EB', color: '#2D2D2D', fontWeight: 400 }}
                 onClick={handlePrint}
               >
-                <Printer size={14} className="mr-1.5" />
+                <Printer size={14} color="currentColor" className="mr-1.5" />
                 Print
               </Button>
               <Button 
@@ -167,7 +169,7 @@ export default function InvoicePreviewPage({ params }: { params: Promise<{ id: s
                 className="rounded-full px-5 h-9 hover:bg-[rgba(240,242,245,0.8)]"
                 style={{ borderColor: '#E4E6EB', color: '#2D2D2D', fontWeight: 400 }}
               >
-                <DocumentDownload size={14} className="mr-1.5" />
+                <DocumentDownload size={14} color="currentColor" className="mr-1.5" />
                 Download PDF
               </Button>
               <Button 
@@ -175,7 +177,7 @@ export default function InvoicePreviewPage({ params }: { params: Promise<{ id: s
                 className="rounded-full px-5 h-9" 
                 style={{ backgroundColor: '#14462a', color: 'white', fontWeight: 500 }}
               >
-                <Send2 size={14} className="mr-1.5" />
+                <Send2 size={14} color="currentColor" className="mr-1.5" />
                 Send to Customer
               </Button>
             </div>
@@ -207,9 +209,9 @@ export default function InvoicePreviewPage({ params }: { params: Promise<{ id: s
                       color: invoice.status === 'Paid' ? '#0D9488' : invoice.status === 'Partially Paid' ? '#F59E0B' : '#B0B3B8'
                     }}
                   >
-                    {invoice.status === 'Paid' && <TickSquare size={16} />}
-                    {invoice.status === 'Partially Paid' && <Clock size={16} />}
-                    {invoice.status === 'Pending' && <Clock size={16} />}
+                    {invoice.status === 'Paid' && <TickCircle size={16} color="currentColor" />}
+                    {invoice.status === 'Partially Paid' && <Clock size={16} color="currentColor" />}
+                    {invoice.status === 'Pending' && <Clock size={16} color="currentColor" />}
                     {invoice.status}
                   </span>
                 </div>
@@ -276,10 +278,10 @@ export default function InvoicePreviewPage({ params }: { params: Promise<{ id: s
                       <p className="text-base" style={{ color: '#2D2D2D', fontWeight: 500 }}>{item.quantity}</p>
                     </div>
                     <div className="col-span-2 text-right">
-                      <p className="text-base" style={{ color: '#2D2D2D', fontWeight: 500 }}>₵{item.unitPrice.toFixed(2)}</p>
+                      <p className="text-base" style={{ color: '#2D2D2D', fontWeight: 500 }}>{maskAmount(`₵${item.unitPrice.toFixed(2)}`)}</p>
                     </div>
                     <div className="col-span-2 text-right">
-                      <p className="text-base" style={{ color: '#2D2D2D', fontWeight: 500 }}>₵{calculateItemTotal(item).toFixed(2)}</p>
+                      <p className="text-base" style={{ color: '#2D2D2D', fontWeight: 500 }}>{maskAmount(`₵${calculateItemTotal(item).toFixed(2)}`)}</p>
                     </div>
                   </div>
                 ))}
@@ -291,25 +293,25 @@ export default function InvoicePreviewPage({ params }: { params: Promise<{ id: s
               <div className="w-full max-w-sm space-y-3">
                 <div className="grid grid-cols-2 gap-8 items-center py-2">
                   <span className="text-base text-right" style={{ color: '#B0B3B8' }}>Subtotal</span>
-                  <span className="text-base text-right" style={{ color: '#2D2D2D', fontWeight: 500 }}>₵{subtotal.toFixed(2)}</span>
+                  <span className="text-base text-right" style={{ color: '#2D2D2D', fontWeight: 500 }}>{maskAmount(`₵${subtotal.toFixed(2)}`)}</span>
                 </div>
                 {totalTax > 0 && (
                   <div className="grid grid-cols-2 gap-8 items-center py-2">
                     <span className="text-base text-right" style={{ color: '#B0B3B8' }}>Tax</span>
-                    <span className="text-base text-right" style={{ color: '#2D2D2D', fontWeight: 500 }}>₵{totalTax.toFixed(2)}</span>
+                    <span className="text-base text-right" style={{ color: '#2D2D2D', fontWeight: 500 }}>{maskAmount(`₵${totalTax.toFixed(2)}`)}</span>
                   </div>
                 )}
                 {totalDiscount > 0 && (
                   <div className="grid grid-cols-2 gap-8 items-center py-2">
                     <span className="text-base text-right" style={{ color: '#B0B3B8' }}>Discount</span>
-                    <span className="text-base text-right" style={{ color: '#2D2D2D', fontWeight: 500 }}>-₵{totalDiscount.toFixed(2)}</span>
+                    <span className="text-base text-right" style={{ color: '#2D2D2D', fontWeight: 500 }}>{maskAmount(`-₵${totalDiscount.toFixed(2)}`)}</span>
                   </div>
                 )}
                 
                 {/* Total */}
                 <div className="grid grid-cols-2 gap-8 items-center pt-4">
                   <span className="text-lg font-semibold text-right" style={{ color: '#2D2D2D' }}>Total</span>
-                  <span className="text-2xl font-bold text-right" style={{ color: '#2D2D2D' }}>₵{total.toFixed(2)}</span>
+                  <span className="text-2xl font-bold text-right" style={{ color: '#2D2D2D' }}>{maskAmount(`₵${total.toFixed(2)}`)}</span>
                 </div>
               </div>
             </div>
@@ -324,7 +326,7 @@ export default function InvoicePreviewPage({ params }: { params: Promise<{ id: s
                   className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full text-white font-medium hover:opacity-90 transition-opacity"
                   style={{ backgroundColor: '#14462a' }}
                 >
-                  <Card size={20} />
+                  <Card size={20} color="currentColor" />
                   Pay Invoice Now
                 </a>
                 <p className="text-sm mt-3" style={{ color: '#B0B3B8' }}>

@@ -1,7 +1,7 @@
 "use client";
 
 import { HelpArticleLayout } from "@/components/help/help-article-layout";
-import { DollarCircle, Global, TrendUp } from "iconsax-react";
+import { Global, TrendUp } from "iconsax-react";
 
 export default function DualCurrencyPage() {
   return (

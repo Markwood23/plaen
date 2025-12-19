@@ -10,7 +10,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Separator } from "@/components/ui/separator";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { X, FileText, Mail, Phone, Building2, MapPin, Hash, Calendar, DollarSign, Clock, Zap, TrendingUp, Check, RotateCcw } from "lucide-react";
+import { X, FileText, Mail, Phone, Building2, MapPin, Hash, Calendar, Zap, TrendingUp, DollarSign } from "lucide-react";
+import { TickCircle, CloseCircle, RefreshCircle, Clock, Coin1 } from "iconsax-react";
 import { useState } from "react";
 
 type Contact = {
@@ -55,10 +56,10 @@ interface ContactDetailModalProps {
 
 // Mock invoice history data
 const mockInvoiceHistory: Invoice[] = [
-  { id: "INV-1024", date: "2024-11-10", amount: "$2,450.00", status: "Paid", dueDate: "2024-11-25", purpose: "Web design services", balanceDue: "$0.00" },
-  { id: "INV-1018", date: "2024-10-15", amount: "$1,850.00", status: "Partially Paid", dueDate: "2024-10-30", purpose: "Monthly retainer", balanceDue: "$850.00" },
-  { id: "INV-1009", date: "2024-09-20", amount: "$3,200.00", status: "Paid", dueDate: "2024-10-05", purpose: "Consulting services", balanceDue: "$0.00" },
-  { id: "INV-0998", date: "2024-08-18", amount: "$2,100.00", status: "Paid", dueDate: "2024-09-02", purpose: "Development work", balanceDue: "$0.00" },
+  { id: "PL-R4T8W2", date: "2024-11-10", amount: "₵2,450.00", status: "Paid", dueDate: "2024-11-25", purpose: "Web design services", balanceDue: "₵0.00" },
+  { id: "PL-K9M3P6", date: "2024-10-15", amount: "₵1,850.00", status: "Partially Paid", dueDate: "2024-10-30", purpose: "Monthly retainer", balanceDue: "₵850.00" },
+  { id: "PL-J2N7Q1", date: "2024-09-20", amount: "₵3,200.00", status: "Paid", dueDate: "2024-10-05", purpose: "Consulting services", balanceDue: "₵0.00" },
+  { id: "PL-H5L9S4", date: "2024-08-18", amount: "₵2,100.00", status: "Paid", dueDate: "2024-09-02", purpose: "Development work", balanceDue: "₵0.00" },
 ];
 
 const availableTags = ["VIP", "New", "International", "Tech", "Regular", "Corporate"];
@@ -76,7 +77,7 @@ export function ContactDetailModal({ contact, isOpen, onClose, onSave, mode = "v
       phone: "",
       company: "",
       totalInvoices: 0,
-      totalPaid: "$0.00",
+      totalPaid: "₵0.00",
       status: "Active",
       avatar: "",
       tags: [],
@@ -135,32 +136,32 @@ export function ContactDetailModal({ contact, isOpen, onClose, onSave, mode = "v
     switch (status) {
       case "Paid":
         return (
-          <Badge className="bg-[#14462a] text-white border-[#14462a]">
-            <Check className="h-3.5 w-3.5" /> Paid
+          <Badge className="gap-1.5 px-2.5 py-1 rounded-full font-medium" style={{ backgroundColor: 'rgba(20, 70, 42, 0.1)', color: '#14462a', borderColor: 'transparent' }}>
+            <TickCircle size={14} color="#14462a" variant="Bold" /> Paid
           </Badge>
         );
       case "Partially Paid":
         return (
-          <Badge className="bg-gray-100 text-gray-700 border-[#EBECE7]">
-            <DollarSign className="h-3.5 w-3.5" /> Partially Paid
+          <Badge className="gap-1.5 px-2.5 py-1 rounded-full font-medium" style={{ backgroundColor: 'rgba(13, 148, 136, 0.1)', color: '#0D9488', borderColor: 'transparent' }}>
+            <Coin1 size={14} color="#0D9488" variant="Bold" /> Partial
           </Badge>
         );
       case "Cancelled":
         return (
-          <Badge className="bg-gray-100 text-gray-700 border-[#EBECE7]">
-            <X className="h-3.5 w-3.5" /> Cancelled
+          <Badge className="gap-1.5 px-2.5 py-1 rounded-full font-medium" style={{ backgroundColor: 'rgba(101, 103, 107, 0.1)', color: '#65676B', borderColor: 'transparent' }}>
+            <CloseCircle size={14} color="#65676B" variant="Bold" /> Cancelled
           </Badge>
         );
       case "Refunded":
         return (
-          <Badge className="bg-gray-400 text-white border-gray-400">
-            <RotateCcw className="h-3.5 w-3.5" /> Refunded
+          <Badge className="gap-1.5 px-2.5 py-1 rounded-full font-medium" style={{ backgroundColor: 'rgba(225, 29, 72, 0.1)', color: '#BE123C', borderColor: 'transparent' }}>
+            <RefreshCircle size={14} color="#BE123C" variant="Bold" /> Refunded
           </Badge>
         );
       case "Pending":
         return (
-          <Badge className="bg-gray-100 text-gray-700 border-[#EBECE7]">
-            <Clock className="h-3.5 w-3.5" /> Pending
+          <Badge className="gap-1.5 px-2.5 py-1 rounded-full font-medium" style={{ backgroundColor: 'rgba(245, 158, 11, 0.1)', color: '#D97706', borderColor: 'transparent' }}>
+            <Clock size={14} color="#D97706" variant="Bold" /> Pending
           </Badge>
         );
       default:
@@ -529,7 +530,7 @@ export function ContactDetailModal({ contact, isOpen, onClose, onSave, mode = "v
                         <TableCell className="text-[#949494] font-normal">{invoice.dueDate}</TableCell>
                         <TableCell className="text-[#2D2D2D]">{invoice.purpose || "—"}</TableCell>
                         <TableCell className="font-medium text-[#2D2D2D]">{invoice.amount}</TableCell>
-                        <TableCell className="font-medium text-[#2D2D2D]">{invoice.balanceDue || "$0.00"}</TableCell>
+                        <TableCell className="font-medium text-[#2D2D2D]">{invoice.balanceDue || "₵0.00"}</TableCell>
                         <TableCell>
                           {getStatusBadge(invoice.status)}
                         </TableCell>

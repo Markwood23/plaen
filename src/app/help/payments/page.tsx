@@ -1,7 +1,7 @@
 "use client";
 
 import { HelpArticleLayout } from "@/components/help/help-article-layout";
-import { TickCircle, CloseCircle, Clock, DollarCircle, RefreshCircle } from "iconsax-react";
+import { TickCircle, CloseCircle, Clock, Coin1, RefreshCircle } from "iconsax-react";
 
 const paymentStatuses = [
   {
@@ -26,7 +26,7 @@ const paymentStatuses = [
     status: "Partial",
     description: "Part of the amount paid",
     color: "#6B7280",
-    icon: DollarCircle
+    icon: Coin1
   },
   {
     status: "Failed",

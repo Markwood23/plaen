@@ -93,7 +93,7 @@ function BuilderPreview() {
       </div>
       <div className="rounded-xl border border-gray-200 bg-white p-3 shadow-sm">
         <div className="flex items-center justify-between mb-2">
-          <span className="text-[9px] font-semibold text-gray-800">INV-2025-001</span>
+          <span className="text-[9px] font-semibold text-gray-800">PL-A7K9X2</span>
           <span className="text-[8px] text-gray-400">Dec 15, 2025</span>
         </div>
         <div className="space-y-1.5 border-t border-dashed border-gray-200 pt-2">
@@ -104,7 +104,7 @@ function BuilderPreview() {
               </div>
               <span className="text-[8px] text-gray-600">Design Services</span>
             </div>
-            <span className="text-[8px] font-semibold text-gray-800">$1,200</span>
+            <span className="text-[8px] font-semibold text-gray-800">₵1,200</span>
           </div>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-1.5">
@@ -113,12 +113,12 @@ function BuilderPreview() {
               </div>
               <span className="text-[8px] text-gray-600">Development</span>
             </div>
-            <span className="text-[8px] font-semibold text-gray-800">$2,400</span>
+            <span className="text-[8px] font-semibold text-gray-800">₵2,400</span>
           </div>
         </div>
         <div className="mt-2 pt-2 border-t border-gray-200 flex items-center justify-between">
           <span className="text-[9px] font-medium text-gray-700">Total</span>
-          <span className="text-[11px] font-bold text-[#14462a]">$3,600.00</span>
+          <span className="text-[11px] font-bold text-[#14462a]">₵3,600.00</span>
         </div>
       </div>
     </div>

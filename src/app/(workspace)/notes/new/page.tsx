@@ -21,10 +21,10 @@ import {
   Code,
   Grid1,
   Chart,
-  DocumentText,
+  Note,
   Sms,
-  TickSquare,
-  CloseSquare,
+  TickCircle,
+  CloseCircle,
 } from "iconsax-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -115,32 +115,32 @@ export default function NewNotePage() {
               <Button
                 variant="ghost"
                 size="sm"
-                className="h-9 w-9 p-0 rounded-full"
+                className="h-9 w-9 p-0 rounded-full hover:bg-[rgba(20,70,42,0.06)]"
               >
                 <More size={16} color="#B0B3B8" variant="Linear" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="rounded-2xl p-2">
-              <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer">
-                <Paperclip size={16} color="#2D2D2D" variant="Linear" className="mr-2" />
-                <span>Pin Note</span>
+            <DropdownMenuContent align="end" className="rounded-2xl p-2" style={{ boxShadow: '0 4px 20px rgba(0, 0, 0, 0.12)', border: '1px solid rgba(0, 0, 0, 0.06)' }}>
+              <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer hover:bg-[rgba(20,70,42,0.06)] group transition-all">
+                <Paperclip size={16} color="#2D2D2D" variant="Linear" className="mr-2 group-hover:text-[#14462a]" />
+                <span className="group-hover:text-[#14462a]">Pin Note</span>
               </DropdownMenuItem>
-              <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer">
-                <Share size={16} color="#2D2D2D" variant="Linear" className="mr-2" />
-                <span>Share</span>
+              <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer hover:bg-[rgba(20,70,42,0.06)] group transition-all">
+                <Share size={16} color="#2D2D2D" variant="Linear" className="mr-2 group-hover:text-[#14462a]" />
+                <span className="group-hover:text-[#14462a]">Share</span>
               </DropdownMenuItem>
-              <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer">
-                <DocumentDownload size={16} color="#2D2D2D" variant="Linear" className="mr-2" />
-                <span>Export PDF</span>
+              <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer hover:bg-[rgba(20,70,42,0.06)] group transition-all">
+                <DocumentDownload size={16} color="#2D2D2D" variant="Linear" className="mr-2 group-hover:text-[#14462a]" />
+                <span className="group-hover:text-[#14462a]">Export PDF</span>
               </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer">
-                <Archive size={16} color="#2D2D2D" variant="Linear" className="mr-2" />
-                <span>Archive</span>
+              <DropdownMenuSeparator className="my-1" />
+              <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer hover:bg-[rgba(20,70,42,0.06)] group transition-all">
+                <Archive size={16} color="#2D2D2D" variant="Linear" className="mr-2 group-hover:text-[#14462a]" />
+                <span className="group-hover:text-[#14462a]">Archive</span>
               </DropdownMenuItem>
-              <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer text-red-600">
+              <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer hover:bg-red-50 group transition-all">
                 <Trash size={16} color="#DC2626" variant="Linear" className="mr-2" />
-                <span>Delete</span>
+                <span className="text-red-600">Delete</span>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -176,7 +176,7 @@ export default function NewNotePage() {
               onClick={() => handleRemoveTag(tag)}
               className="hover:opacity-70"
             >
-              <CloseSquare size={12} color="#14462a" variant="Linear" />
+              <CloseCircle size={12} color="#14462a" variant="Linear" />
             </button>
           </Badge>
         ))}
@@ -202,7 +202,7 @@ export default function NewNotePage() {
               className="h-7 w-7 p-0 rounded-full"
               onClick={handleAddTag}
             >
-              <TickSquare size={14} color="#0D9488" variant="Linear" />
+              <TickCircle size={14} color="#0D9488" variant="Linear" />
             </Button>
             <Button
               size="sm"
@@ -213,7 +213,7 @@ export default function NewNotePage() {
                 setNewTag("");
               }}
             >
-              <CloseSquare size={14} color="#B0B3B8" variant="Linear" />
+              <CloseCircle size={14} color="#B0B3B8" variant="Linear" />
             </Button>
           </div>
         ) : (
@@ -322,36 +322,36 @@ export default function NewNotePage() {
               <Button
                 variant="ghost"
                 size="sm"
-                className="h-8 px-3 rounded-full hover:bg-white text-xs font-medium"
+                className="h-8 px-3 rounded-full hover:bg-[rgba(20,70,42,0.06)] text-xs font-medium"
                 style={{ color: "#14462a" }}
               >
                 <Add size={16} color="#14462a" variant="Linear" className="mr-1.5" />
                 Insert Block
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="start" className="rounded-2xl p-2 w-64">
-              <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer">
+            <DropdownMenuContent align="start" className="rounded-2xl p-2 w-64" style={{ boxShadow: '0 4px 20px rgba(0, 0, 0, 0.12)', border: '1px solid rgba(0, 0, 0, 0.06)' }}>
+              <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer hover:bg-[rgba(20,70,42,0.06)] group transition-all">
                 <Chart size={16} color="#14462a" variant="Linear" className="mr-2" />
                 <div>
-                  <div className="font-medium text-sm">AR Metrics</div>
+                  <div className="font-medium text-sm group-hover:text-[#14462a]">AR Metrics</div>
                   <div className="text-xs" style={{ color: "#B0B3B8" }}>
                     Live accounts receivable data
                   </div>
                 </div>
               </DropdownMenuItem>
-              <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer">
-                <DocumentText size={16} color="#0D9488" variant="Linear" className="mr-2" />
+              <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer hover:bg-[rgba(20,70,42,0.06)] group transition-all">
+                <Note size={16} color="#0D9488" variant="Linear" className="mr-2" />
                 <div>
-                  <div className="font-medium text-sm">Invoice Table</div>
+                  <div className="font-medium text-sm group-hover:text-[#14462a]">Invoice Table</div>
                   <div className="text-xs" style={{ color: "#B0B3B8" }}>
                     Recent invoices with filters
                   </div>
                 </div>
               </DropdownMenuItem>
-              <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer">
+              <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer hover:bg-[rgba(20,70,42,0.06)] group transition-all">
                 <Sms size={16} color="#F59E0B" variant="Linear" className="mr-2" />
                 <div>
-                  <div className="font-medium text-sm">Payment Summary</div>
+                  <div className="font-medium text-sm group-hover:text-[#14462a]">Payment Summary</div>
                   <div className="text-xs" style={{ color: "#B0B3B8" }}>
                     Payment method breakdown
                   </div>

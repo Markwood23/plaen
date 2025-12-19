@@ -9,9 +9,11 @@ import {
   Card,
   Calendar 
 } from "iconsax-react";
+import { useBalanceVisibility } from "@/contexts/balance-visibility-context";
 
 export default function WorkspaceBillingPage() {
   const [showChangePlanModal, setShowChangePlanModal] = useState(false);
+  const { maskAmount } = useBalanceVisibility();
 
   console.log('Billing page rendered, showChangePlanModal:', showChangePlanModal);
 
@@ -142,7 +144,7 @@ export default function WorkspaceBillingPage() {
               </div>
               <div className="flex items-center gap-4">
                 <div className="text-right">
-                  <p className="text-sm font-semibold" style={{ color: '#2D2D2D' }}>{invoice.amount}</p>
+                  <p className="text-sm font-semibold" style={{ color: '#2D2D2D' }}>{maskAmount(invoice.amount)}</p>
                   <Badge 
                     className="rounded-full px-2 py-0.5 text-xs mt-1" 
                     style={{ backgroundColor: 'rgba(13, 148, 136, 0.12)', color: '#0D9488', border: 'none' }}
@@ -211,7 +213,7 @@ export default function WorkspaceBillingPage() {
                 >
                   <h3 className="text-lg font-semibold mb-2" style={{ color: '#2D2D2D' }}>{plan.name}</h3>
                   <p className="text-3xl font-bold mb-4" style={{ color: '#2D2D2D' }}>
-                    {plan.price}
+                    {plan.price === "Custom" ? plan.price : maskAmount(plan.price)}
                     {plan.price !== "Custom" && <span className="text-sm font-normal" style={{ color: '#B0B3B8' }}>/mo</span>}
                   </p>
                   <ul className="space-y-2 mb-6">

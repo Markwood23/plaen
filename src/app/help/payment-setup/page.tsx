@@ -1,7 +1,7 @@
 "use client";
 
 import { HelpArticleLayout } from "@/components/help/help-article-layout";
-import { DollarCircle, Mobile, Bank, Bitcoin } from "iconsax-react";
+import { Mobile, Bank, Bitcoin } from "iconsax-react";
 
 const paymentMethods = [
   {

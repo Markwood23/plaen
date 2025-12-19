@@ -6,7 +6,7 @@ import {
   DocumentText, 
   Edit2, 
   Gallery, 
-  DollarCircle,
+  Wallet,
   Calendar,
   ReceiptEdit,
   Brush
@@ -32,7 +32,7 @@ const builderSections = [
     color: "#0D9488"
   },
   {
-    icon: DollarCircle,
+    icon: Wallet,
     title: "Payment Options",
     description: "How clients can pay",
     color: "#D97706"
@@ -114,7 +114,7 @@ export default function InvoiceBuilderPage() {
       <div className="not-prose my-6 rounded-lg border border-gray-200 bg-gray-50 p-4">
         <p className="text-sm text-gray-700">
           <strong className="text-black">💡 Invoice numbering:</strong> Plaen automatically 
-          generates sequential invoice numbers (e.g., INV-001, INV-002). You can customize 
+          generates unique invoice numbers with the PL- prefix (e.g., PL-A7K9X2, PL-B3M4N8). You can customize 
           the format in Settings → Invoice Preferences.
         </p>
       </div>

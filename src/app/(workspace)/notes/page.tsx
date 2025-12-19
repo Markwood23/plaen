@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import {
-  DocumentText,
+  Note,
   Add,
   SearchNormal1,
   Filter,
@@ -24,8 +24,8 @@ import {
   Category2,
   Element3,
   ArrowSwapVertical,
-  TickSquare,
-  CloseSquare,
+  TickCircle,
+  CloseCircle,
   Eye,
 } from "iconsax-react";
 import { Button } from "@/components/ui/button";
@@ -46,7 +46,7 @@ const mockNotes = [
   {
     id: "1",
     title: "Q4 2024 AR Review",
-    preview: "Outstanding invoices analysis showing $45.2K overdue across 12 clients. DSO trending upward...",
+    preview: "Outstanding invoices analysis showing ₵45.2K overdue across 12 clients. DSO trending upward...",
     category: "AR Analysis",
     tags: ["monthly-review", "ar", "q4-2024"],
     createdAt: "2024-11-15T10:30:00Z",
@@ -120,7 +120,7 @@ const mockNotes = [
     hasPaperclipments: false,
     attachmentCount: 0,
     wordCount: 678,
-    icon: DocumentText,
+    icon: Note,
     iconColor: "#14462a",
   },
   {
@@ -136,19 +136,19 @@ const mockNotes = [
     hasPaperclipments: true,
     attachmentCount: 5,
     wordCount: 1089,
-    icon: DocumentText,
+    icon: Note,
     iconColor: "#DC2626",
   },
 ];
 
 // Categories/folders
 const categories = [
-  { name: "All Notes", count: 24, icon: DocumentText, color: "#2D2D2D" },
+  { name: "All Notes", count: 24, icon: Note, color: "#2D2D2D" },
   { name: "AR Analysis", count: 8, icon: Chart, color: "#14462a" },
   { name: "Payment Analysis", count: 5, icon: Chart, color: "#0D9488" },
   { name: "Client Notes", count: 6, icon: People, color: "#14462a" },
   { name: "Tax Records", count: 3, icon: Paperclip, color: "#F59E0B" },
-  { name: "Strategy", count: 2, icon: DocumentText, color: "#14462a" },
+  { name: "Strategy", count: 2, icon: Note, color: "#14462a" },
 ];
 export default function FinanceNotesPage() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -244,7 +244,7 @@ export default function FinanceNotesPage() {
           >
             <Icon
               size={20}
-              style={{ color: note.iconColor }}
+              color={note.iconColor}
             />
           </div>
           <DropdownMenu>
@@ -252,33 +252,33 @@ export default function FinanceNotesPage() {
               <Button
                 variant="ghost"
                 size="sm"
-                className="h-8 w-8 p-0 rounded-full"
+                className="h-8 w-8 p-0 rounded-full hover:bg-[rgba(20,70,42,0.06)]"
                 onClick={(e) => e.preventDefault()}
               >
                 <More size={16} color="#B0B3B8" variant="Linear" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="rounded-2xl p-2">
-              <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer">
-                <Paperclip size={16} className="mr-2" color="#2D2D2D" variant="Linear" />
-                <span>{note.isPinned ? "Unpin" : "Pin"}</span>
+            <DropdownMenuContent align="end" className="rounded-2xl p-2" style={{ boxShadow: '0 4px 20px rgba(0, 0, 0, 0.12)', border: '1px solid rgba(0, 0, 0, 0.06)' }}>
+              <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer hover:bg-[rgba(20,70,42,0.06)] group transition-all">
+                <Paperclip size={16} className="mr-2 group-hover:text-[#14462a]" color="#2D2D2D" variant="Linear" />
+                <span className="group-hover:text-[#14462a]">{note.isPinned ? "Unpin" : "Pin"}</span>
               </DropdownMenuItem>
-              <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer">
-                <Share size={16} className="mr-2" color="#2D2D2D" variant="Linear" />
-                <span>Share</span>
+              <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer hover:bg-[rgba(20,70,42,0.06)] group transition-all">
+                <Share size={16} className="mr-2 group-hover:text-[#14462a]" color="#2D2D2D" variant="Linear" />
+                <span className="group-hover:text-[#14462a]">Share</span>
               </DropdownMenuItem>
-              <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer">
-                <DocumentDownload size={16} className="mr-2" color="#2D2D2D" variant="Linear" />
-                <span>Export PDF</span>
+              <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer hover:bg-[rgba(20,70,42,0.06)] group transition-all">
+                <DocumentDownload size={16} className="mr-2 group-hover:text-[#14462a]" color="#2D2D2D" variant="Linear" />
+                <span className="group-hover:text-[#14462a]">Export PDF</span>
               </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer">
-                <Archive size={16} className="mr-2" color="#2D2D2D" variant="Linear" />
-                <span>Archive</span>
+              <DropdownMenuSeparator className="my-1" />
+              <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer hover:bg-[rgba(20,70,42,0.06)] group transition-all">
+                <Archive size={16} className="mr-2 group-hover:text-[#14462a]" color="#2D2D2D" variant="Linear" />
+                <span className="group-hover:text-[#14462a]">Archive</span>
               </DropdownMenuItem>
-              <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer text-red-600">
+              <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer hover:bg-red-50 group transition-all">
                 <Trash size={16} className="mr-2" color="#DC2626" variant="Linear" />
-                <span>Delete</span>
+                <span className="text-red-600">Delete</span>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -337,7 +337,7 @@ export default function FinanceNotesPage() {
             </div>
             {note.hasPaperclipments && (
               <div className="flex items-center gap-1">
-                <DocumentText size={14} />
+                <Note size={14} />
                 <span>{note.attachmentCount}</span>
               </div>
             )}
@@ -394,7 +394,7 @@ export default function FinanceNotesPage() {
                         className="h-9 w-9 rounded-full flex items-center justify-center shrink-0"
                         style={{ backgroundColor: `${note.iconColor}12` }}
                       >
-                        <Icon size={16} style={{ color: note.iconColor }} />
+                        <Icon size={16} color={note.iconColor} />
                       </div>
                       <div className="min-w-0">
                         <div className="font-medium truncate" style={{ color: "#2D2D2D" }}>
@@ -452,7 +452,7 @@ export default function FinanceNotesPage() {
                   <TableCell>
                     {note.hasPaperclipments && (
                       <div className="flex items-center gap-1.5 text-sm" style={{ color: "#B0B3B8" }}>
-                        <DocumentText size={14} />
+                        <Note size={14} />
                         <span>{note.attachmentCount}</span>
                       </div>
                     )}
@@ -460,35 +460,35 @@ export default function FinanceNotesPage() {
                   <TableCell onClick={(e) => e.stopPropagation()}>
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
-                        <button className="inline-flex items-center rounded-full p-1.5 transition-all hover:bg-[rgba(24,119,242,0.04)]">
+                        <button className="inline-flex items-center rounded-full p-1.5 transition-all hover:bg-[rgba(20,70,42,0.06)]">
                           <More size={16} color="#B0B3B8" variant="Linear" />
                         </button>
                       </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end" className="rounded-2xl p-2">
-                        <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer">
-                          <Eye size={16} className="mr-2" color="#2D2D2D" variant="Linear" />
-                          <span>View Note</span>
+                      <DropdownMenuContent align="end" className="rounded-2xl p-2" style={{ boxShadow: '0 4px 20px rgba(0, 0, 0, 0.12)', border: '1px solid rgba(0, 0, 0, 0.06)' }}>
+                        <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer hover:bg-[rgba(20,70,42,0.06)] group transition-all">
+                          <Eye size={16} className="mr-2 group-hover:text-[#14462a]" color="#2D2D2D" variant="Linear" />
+                          <span className="group-hover:text-[#14462a]">View Note</span>
                         </DropdownMenuItem>
-                        <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer">
-                          <Paperclip size={16} className="mr-2" color="#2D2D2D" variant="Linear" />
-                          <span>{note.isPinned ? "Unpin" : "Pin"}</span>
+                        <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer hover:bg-[rgba(20,70,42,0.06)] group transition-all">
+                          <Paperclip size={16} className="mr-2 group-hover:text-[#14462a]" color="#2D2D2D" variant="Linear" />
+                          <span className="group-hover:text-[#14462a]">{note.isPinned ? "Unpin" : "Pin"}</span>
                         </DropdownMenuItem>
-                        <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer">
-                          <Share size={16} className="mr-2" color="#2D2D2D" variant="Linear" />
-                          <span>Share</span>
+                        <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer hover:bg-[rgba(20,70,42,0.06)] group transition-all">
+                          <Share size={16} className="mr-2 group-hover:text-[#14462a]" color="#2D2D2D" variant="Linear" />
+                          <span className="group-hover:text-[#14462a]">Share</span>
                         </DropdownMenuItem>
-                        <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer">
-                          <DocumentDownload size={16} className="mr-2" color="#2D2D2D" variant="Linear" />
-                          <span>Export PDF</span>
+                        <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer hover:bg-[rgba(20,70,42,0.06)] group transition-all">
+                          <DocumentDownload size={16} className="mr-2 group-hover:text-[#14462a]" color="#2D2D2D" variant="Linear" />
+                          <span className="group-hover:text-[#14462a]">Export PDF</span>
                         </DropdownMenuItem>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer">
-                          <Archive size={16} className="mr-2" color="#2D2D2D" variant="Linear" />
-                          <span>Archive</span>
+                        <DropdownMenuSeparator className="my-1" />
+                        <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer hover:bg-[rgba(20,70,42,0.06)] group transition-all">
+                          <Archive size={16} className="mr-2 group-hover:text-[#14462a]" color="#2D2D2D" variant="Linear" />
+                          <span className="group-hover:text-[#14462a]">Archive</span>
                         </DropdownMenuItem>
-                        <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer text-red-600">
+                        <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer hover:bg-red-50 group transition-all">
                           <Trash size={16} className="mr-2" color="#DC2626" variant="Linear" />
-                          <span>Delete</span>
+                          <span className="text-red-600">Delete</span>
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
@@ -575,7 +575,7 @@ export default function FinanceNotesPage() {
             {
               label: "Total Notes",
               value: totalNotes,
-              icon: DocumentText,
+              icon: Note,
               color: "#14462a",
               bg: "rgba(20, 70, 42, 0.04)",
             },
@@ -596,7 +596,7 @@ export default function FinanceNotesPage() {
             {
               label: "Paperclipments",
               value: totalPaperclipments,
-              icon: DocumentText,
+              icon: Note,
               color: "#14462a",
               bg: "rgba(20, 70, 42, 0.04)",
             },
@@ -616,7 +616,7 @@ export default function FinanceNotesPage() {
                     className="h-12 w-12 rounded-full flex items-center justify-center"
                     style={{ backgroundColor: `${kpi.color}20` }}
                   >
-                    <Icon className="h-6 w-6" style={{ color: kpi.color }} />
+                    <Icon size={24} color={kpi.color} />
                   </div>
                 </div>
                 <div className="text-3xl font-bold mb-1" style={{ color: "#2D2D2D" }}>
@@ -801,7 +801,7 @@ export default function FinanceNotesPage() {
                     }}
                     onClick={() => setShowPaperclipmentsOnly(!showPaperclipmentsOnly)}
                   >
-                    <DocumentText size={14} color="#2D2D2D" variant="Linear" className="mr-1.5" />
+                    <Note size={14} color="#2D2D2D" variant="Linear" className="mr-1.5" />
                     With attachments
                   </Button>
                 </div>
@@ -839,7 +839,7 @@ export default function FinanceNotesPage() {
       <Tabs defaultValue="all" className="flex-1 flex flex-col">
         <TabsList className="mb-6" style={{ backgroundColor: "#FAFBFC" }}>
           <TabsTrigger value="all">
-            <DocumentText size={16} color="#2D2D2D" variant="Linear" />
+            <Note size={16} color="#2D2D2D" variant="Linear" />
             All Notes
           </TabsTrigger>
           <TabsTrigger value="ar">

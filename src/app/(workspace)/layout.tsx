@@ -17,11 +17,11 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import {
   Category2,
-  DocumentText,
+  Receipt21,
   People,
-  Card,
-  Document,
-  DocumentText1,
+  WalletMoney,
+  ReceiptText,
+  Note,
   Setting2,
   MessageQuestion,
   HambergerMenu,
@@ -30,8 +30,34 @@ import {
   User,
   SearchNormal1,
   Notification,
-  InfoCircle,
+  Eye,
+  EyeSlash,
+  Wallet,
 } from "iconsax-react";
+import { BalanceVisibilityProvider, useBalanceVisibility } from "@/contexts/balance-visibility-context";
+
+// Balance toggle button component (must be inside the provider)
+function BalanceToggleButton() {
+  const { isBalanceHidden, toggleBalanceVisibility } = useBalanceVisibility();
+  
+  return (
+    <button 
+      onClick={toggleBalanceVisibility}
+      className="h-10 w-10 rounded-full flex items-center justify-center transition-all hover:scale-105"
+      style={{ 
+        backgroundColor: isBalanceHidden ? 'rgba(220, 38, 38, 0.08)' : 'rgba(20, 70, 42, 0.06)',
+      }}
+      aria-label={isBalanceHidden ? "Show balances" : "Hide balances"}
+      title={isBalanceHidden ? "Show balances" : "Hide balances"}
+    >
+      {isBalanceHidden ? (
+        <EyeSlash size={20} color="#DC2626" />
+      ) : (
+        <Eye size={20} color="#14462a" />
+      )}
+    </button>
+  );
+}
 
 export default function WorkspaceLayout({
   children,
@@ -42,11 +68,11 @@ export default function WorkspaceLayout({
   const nav = {
     main: [
       { href: "/dashboard", label: "Dashboard", icon: Category2 },
-      { href: "/invoices", label: "Invoices", icon: DocumentText },
+      { href: "/invoices", label: "Invoices", icon: Receipt21 },
       { href: "/contacts", label: "Contacts", icon: People },
-      { href: "/payments", label: "Payments", icon: Card },
-      { href: "/receipts", label: "Receipts", icon: Document },
-      { href: "/notes", label: "Finance Notes & Docs", icon: DocumentText1 },
+      { href: "/payments", label: "Payments", icon: WalletMoney },
+      { href: "/receipts", label: "Receipts", icon: ReceiptText },
+      { href: "/notes", label: "Finance Notes & Docs", icon: Note },
     ],
     account: [
       { href: "/settings", label: "Settings", icon: Setting2 },
@@ -55,6 +81,7 @@ export default function WorkspaceLayout({
   } as const;
 
   return (
+    <BalanceVisibilityProvider>
     <div className="min-h-screen bg-white flex overflow-hidden" style={{ color: '#2D2D2D' }}>
       {/* Desktop sidebar */}
       <aside className="hidden md:flex w-64 shrink-0 flex-col bg-white h-screen" style={{ borderRight: '1px solid #E4E6EB' }}>
@@ -218,22 +245,20 @@ export default function WorkspaceLayout({
               </span>
             </button>
             
-            {/* Help */}
-            <button 
-              className="h-10 w-10 rounded-full flex items-center justify-center transition-all hover:bg-[rgba(240,242,245,0.8)] hover:scale-105"
-              aria-label="Help"
-            >
-              <InfoCircle size={20} color="#2D2D2D" />
-            </button>
+            {/* Balance Visibility Toggle */}
+            <BalanceToggleButton />
             
             <div className="h-8 w-px mx-1" style={{ backgroundColor: '#E4E6EB' }} />
             
             <UserMenu />
           </div>
         </header>
-        <main className="flex-1 p-4 md:p-6 overflow-y-auto">{children}</main>
+        <main className="flex-1 p-4 md:p-6 overflow-y-auto">
+            {children}
+        </main>
       </div>
     </div>
+    </BalanceVisibilityProvider>
   );
 }
 
@@ -317,12 +342,12 @@ function UserMenu() {
           </Avatar>
         </button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="rounded-2xl w-56 p-2" style={{ boxShadow: '0 4px 16px rgba(0, 0, 0, 0.1)' }}>
+      <DropdownMenuContent align="end" className="rounded-2xl w-56 p-2" style={{ boxShadow: '0 4px 20px rgba(0, 0, 0, 0.12)', border: '1px solid rgba(0, 0, 0, 0.06)' }}>
         <DropdownMenuLabel className="px-3 py-2">Signed in as
           <div className="font-medium">you@plaen.tech</div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator className="my-1" />
-        <DropdownMenuItem asChild className="gap-3 rounded-xl p-3 cursor-pointer group transition-all hover:bg-[rgba(24,119,242,0.04)]">
+        <DropdownMenuItem asChild className="gap-3 rounded-xl p-3 cursor-pointer group transition-all hover:bg-[rgba(20,70,42,0.06)]">
           <Link href="/workspace/profile" className="flex items-center">
             <div 
               className="h-8 w-8 rounded-full flex items-center justify-center transition-all"
@@ -333,18 +358,18 @@ function UserMenu() {
             <span className="text-base font-medium group-hover:text-[#14462a] transition-all" style={{ color: '#2D2D2D' }}>Profile</span>
           </Link>
         </DropdownMenuItem>
-        <DropdownMenuItem asChild className="gap-3 rounded-xl p-3 cursor-pointer group transition-all hover:bg-[rgba(24,119,242,0.04)]">
+        <DropdownMenuItem asChild className="gap-3 rounded-xl p-3 cursor-pointer group transition-all hover:bg-[rgba(20,70,42,0.06)]">
           <Link href="/workspace/billing" className="flex items-center">
             <div 
               className="h-8 w-8 rounded-full flex items-center justify-center transition-all"
               style={{ backgroundColor: 'rgba(13, 148, 136, 0.08)' }}
             >
-              <Card size={16} color="#0D9488" />
+              <Wallet size={16} color="#0D9488" />
             </div>
             <span className="text-base font-medium group-hover:text-[#14462a] transition-all" style={{ color: '#2D2D2D' }}>Billing</span>
           </Link>
         </DropdownMenuItem>
-        <DropdownMenuItem asChild className="gap-3 rounded-xl p-3 cursor-pointer group transition-all hover:bg-[rgba(24,119,242,0.04)]">
+        <DropdownMenuItem asChild className="gap-3 rounded-xl p-3 cursor-pointer group transition-all hover:bg-[rgba(20,70,42,0.06)]">
           <Link href="/workspace/settings" className="flex items-center">
             <div 
               className="h-8 w-8 rounded-full flex items-center justify-center transition-all"
@@ -356,7 +381,19 @@ function UserMenu() {
           </Link>
         </DropdownMenuItem>
         <DropdownMenuSeparator className="my-2" />
-        <DropdownMenuItem className="gap-3 rounded-xl p-3 cursor-pointer group transition-all hover:bg-red-50">
+        <DropdownMenuItem 
+          className="gap-3 rounded-xl p-3 cursor-pointer group transition-all hover:bg-red-50"
+          onClick={() => {
+            // Clear any stored session data
+            if (typeof window !== 'undefined') {
+              localStorage.removeItem('user');
+              localStorage.removeItem('token');
+              sessionStorage.clear();
+            }
+            // Redirect to login page
+            window.location.href = '/login';
+          }}
+        >
           <div 
             className="h-8 w-8 rounded-full flex items-center justify-center transition-all"
             style={{ backgroundColor: 'rgba(220, 38, 38, 0.08)' }}

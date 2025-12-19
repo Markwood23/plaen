@@ -20,12 +20,11 @@ import {
   Code,
   Grid1,
   Chart,
-  DocumentText,
+  Note,
   Sms,
-  TickSquare,
-  CloseSquare,
+  TickCircle,
+  CloseCircle,
   Calendar,
-  DollarCircle,
   Edit2,
   Printer,
   Clock,
@@ -41,6 +40,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
+import { CedisCircle } from "@/components/icons/cedis-icon";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -59,36 +59,36 @@ import {
 
 // Mock data
 const mockInvoiceData = [
-  { id: "INV-001", client: "TechCorp Ghana", amount: "$12,500.00", status: "Paid", dueDate: "2024-11-15" },
-  { id: "INV-002", client: "StartupXYZ", amount: "$8,200.00", status: "Overdue", dueDate: "2024-10-30" },
-  { id: "INV-003", client: "ConsultCo", amount: "$15,000.00", status: "Pending", dueDate: "2024-11-25" },
+  { id: "PL-T5X2M8", client: "TechCorp Ghana", amount: "₵12,500.00", status: "Paid", dueDate: "2024-11-15" },
+  { id: "PL-W3Y9N4", client: "StartupXYZ", amount: "₵8,200.00", status: "Overdue", dueDate: "2024-10-30" },
+  { id: "PL-Z1A6P7", client: "ConsultCo", amount: "₵15,000.00", status: "Pending", dueDate: "2024-11-25" },
 ];
 
 const mockARMetrics = {
-  totalOutstanding: "$45,200.00",
-  overdue: "$18,700.00",
+  totalOutstanding: "₵45,200.00",
+  overdue: "₵18,700.00",
   dso: 42,
   onTimeRate: "76%",
 };
 
 const mockPaymentMethods = [
-  { method: "MTN MoMo", count: 42, amount: "$28,450.00", percentage: 62 },
-  { method: "Bank Transfer", count: 18, amount: "$15,230.00", percentage: 26 },
-  { method: "Cash", count: 8, amount: "$5,420.00", percentage: 12 },
+  { method: "MTN MoMo", count: 42, amount: "₵28,450.00", percentage: 62 },
+  { method: "Bank Transfer", count: 18, amount: "₵15,230.00", percentage: 26 },
+  { method: "Cash", count: 8, amount: "₵5,420.00", percentage: 12 },
 ];
 
 const mockClientList = [
-  { name: "TechCorp Ghana", outstanding: "$12,500.00", invoices: 3, status: "Good" },
-  { name: "StartupXYZ", outstanding: "$8,200.00", invoices: 2, status: "Attention" },
-  { name: "ConsultCo", outstanding: "$15,000.00", invoices: 4, status: "Good" },
-  { name: "AgencyPlus", outstanding: "$9,500.00", invoices: 2, status: "Overdue" },
+  { name: "TechCorp Ghana", outstanding: "₵12,500.00", invoices: 3, status: "Good" },
+  { name: "StartupXYZ", outstanding: "₵8,200.00", invoices: 2, status: "Attention" },
+  { name: "ConsultCo", outstanding: "₵15,000.00", invoices: 4, status: "Good" },
+  { name: "AgencyPlus", outstanding: "₵9,500.00", invoices: 2, status: "Overdue" },
 ];
 
 const mockExpenses = [
-  { category: "Software & Tools", amount: "$2,450.00", percentage: 35 },
-  { category: "Equipment", amount: "$1,800.00", percentage: 26 },
-  { category: "Marketing", amount: "$1,200.00", percentage: 17 },
-  { category: "Other", amount: "$1,550.00", percentage: 22 },
+  { category: "Software & Tools", amount: "₵2,450.00", percentage: 35 },
+  { category: "Equipment", amount: "₵1,800.00", percentage: 26 },
+  { category: "Marketing", amount: "₵1,200.00", percentage: 17 },
+  { category: "Other", amount: "₵1,550.00", percentage: 22 },
 ];
 
 export default function NoteDetailPage({ params }: { params: { id: string } }) {
@@ -128,7 +128,7 @@ export default function NoteDetailPage({ params }: { params: { id: string } }) {
       borderColor?: string;
     };
   }>>([
-    { id: '1', type: 'text', content: 'This quarter has shown significant improvements in our accounts receivable management. We\'ve implemented several new strategies that have positively impacted our collection efficiency.\n\n## Key Highlights\n\n- Reduced DSO (Days Sales Outstanding) from 52 to 42 days\n- Improved on-time payment rate to 76%\n- Successfully collected $28,500 in overdue invoices\n\n## Analysis\n\nThe implementation of automated payment reminders has been particularly effective. We\'re seeing a 23% increase in on-time payments compared to Q3 2024.\n\n### Outstanding Invoices\n\nBelow is a summary of our current outstanding invoices:' },
+    { id: '1', type: 'text', content: 'This quarter has shown significant improvements in our accounts receivable management. We\'ve implemented several new strategies that have positively impacted our collection efficiency.\n\n## Key Highlights\n\n- Reduced DSO (Days Sales Outstanding) from 52 to 42 days\n- Improved on-time payment rate to 76%\n- Successfully collected ₵28,500 in overdue invoices\n\n## Analysis\n\nThe implementation of automated payment reminders has been particularly effective. We\'re seeing a 23% increase in on-time payments compared to Q3 2024.\n\n### Outstanding Invoices\n\nBelow is a summary of our current outstanding invoices:' },
     { id: '2', type: 'invoice-table' },
     { id: '3', type: 'ar-metrics' },
   ]);
@@ -144,7 +144,7 @@ export default function NoteDetailPage({ params }: { params: { id: string } }) {
 
 - Reduced DSO (Days Sales Outstanding) from 52 to 42 days
 - Improved on-time payment rate to 76%
-- Successfully collected $28,500 in overdue invoices
+- Successfully collected ₵28,500 in overdue invoices
 
 ## Analysis
 
@@ -391,7 +391,7 @@ Below is a summary of our current outstanding invoices:`);
               className="h-7 w-7 p-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
               onClick={onRemove}
             >
-              <CloseSquare size={16} style={{ color: "#B0B3B8" }} />
+              <CloseCircle size={16} style={{ color: "#B0B3B8" }} />
             </Button>
           </div>
         )}
@@ -403,7 +403,7 @@ Below is a summary of our current outstanding invoices:`);
       case 'invoice-table':
         return widgetWrapper(
           "Invoice Table Widget",
-          <DocumentText size={16} color="#0D9488" variant="Linear" />,
+          <Note size={16} color="#0D9488" variant="Linear" />,
           "#0D9488",
           <div className="rounded-2xl overflow-hidden" style={{ backgroundColor: "white", boxShadow: "0 1px 3px 0 rgba(0, 0, 0, 0.05)" }}>
             <Table>
@@ -433,7 +433,7 @@ Below is a summary of our current outstanding invoices:`);
                           borderColor: invoice.status === "Paid" ? "#14462a" : "transparent"
                         }}
                       >
-                        {invoice.status === "Paid" && <TickSquare size={14} />}
+                        {invoice.status === "Paid" && <TickCircle size={14} />}
                         {invoice.status}
                       </Badge>
                     </TableCell>
@@ -451,10 +451,10 @@ Below is a summary of our current outstanding invoices:`);
           "#14462a",
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {[
-              { label: "Total Outstanding", value: mockARMetrics.totalOutstanding, icon: DollarCircle, color: "#14462a", bg: "rgba(20, 70, 42, 0.04)" },
+              { label: "Total Outstanding", value: mockARMetrics.totalOutstanding, icon: CedisCircle, color: "#14462a", bg: "rgba(20, 70, 42, 0.04)" },
               { label: "Overdue Amount", value: mockARMetrics.overdue, icon: Chart, color: "#EF4444", bg: "rgba(239, 68, 68, 0.04)" },
               { label: "DSO", value: `${mockARMetrics.dso} days`, icon: Calendar, color: "#F59E0B", bg: "rgba(245, 158, 11, 0.04)" },
-              { label: "On-Time Rate", value: mockARMetrics.onTimeRate, icon: TickSquare, color: "#0D9488", bg: "rgba(13, 148, 136, 0.04)" },
+              { label: "On-Time Rate", value: mockARMetrics.onTimeRate, icon: TickCircle, color: "#0D9488", bg: "rgba(13, 148, 136, 0.04)" },
             ].map((metric) => {
               const Icon = metric.icon;
               return (
@@ -624,27 +624,27 @@ Below is a summary of our current outstanding invoices:`);
                 </Button>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="sm" className="h-9 w-9 p-0 rounded-full">
+                    <Button variant="ghost" size="sm" className="h-9 w-9 p-0 rounded-full hover:bg-[rgba(20,70,42,0.06)]">
                       <More size={16} color="#B0B3B8" variant="Linear" />
                     </Button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end" className="rounded-2xl p-2">
-                    <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer">
-                      <Paperclip size={16} color="#2D2D2D" variant="Linear" className="mr-2" />
-                      <span>Pin Note</span>
+                  <DropdownMenuContent align="end" className="rounded-2xl p-2" style={{ boxShadow: '0 4px 20px rgba(0, 0, 0, 0.12)', border: '1px solid rgba(0, 0, 0, 0.06)' }}>
+                    <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer hover:bg-[rgba(20,70,42,0.06)] group transition-all">
+                      <Paperclip size={16} color="#2D2D2D" variant="Linear" className="mr-2 group-hover:text-[#14462a]" />
+                      <span className="group-hover:text-[#14462a]">Pin Note</span>
                     </DropdownMenuItem>
-                    <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer">
-                      <Share size={16} color="#2D2D2D" variant="Linear" className="mr-2" />
-                      <span>Share</span>
+                    <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer hover:bg-[rgba(20,70,42,0.06)] group transition-all">
+                      <Share size={16} color="#2D2D2D" variant="Linear" className="mr-2 group-hover:text-[#14462a]" />
+                      <span className="group-hover:text-[#14462a]">Share</span>
                     </DropdownMenuItem>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer">
-                      <Archive size={16} color="#2D2D2D" variant="Linear" className="mr-2" />
-                      <span>Archive</span>
+                    <DropdownMenuSeparator className="my-1" />
+                    <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer hover:bg-[rgba(20,70,42,0.06)] group transition-all">
+                      <Archive size={16} color="#2D2D2D" variant="Linear" className="mr-2 group-hover:text-[#14462a]" />
+                      <span className="group-hover:text-[#14462a]">Archive</span>
                     </DropdownMenuItem>
-                    <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer text-red-600">
+                    <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer hover:bg-red-50 group transition-all">
                       <Trash size={16} color="#DC2626" variant="Linear" className="mr-2" />
-                      <span>Delete</span>
+                      <span className="text-red-600">Delete</span>
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
@@ -662,7 +662,7 @@ Below is a summary of our current outstanding invoices:`);
             
             <div className="flex flex-wrap gap-2 mb-4 print:hidden">
               {tags.map((tag) => (
-                <Badge key={tag} variant="secondary" className="rounded-full px-3 py-1 text-xs" style={{ backgroundColor: "rgba(20, 70, 42, 0.08)", color: "#14462a" }}>
+                <Badge key={tag} variant="success">
                   {tag}
                 </Badge>
               ))}
@@ -758,7 +758,7 @@ Below is a summary of our current outstanding invoices:`);
                               borderColor: invoice.status === "Paid" ? "#14462a" : "transparent"
                             }}
                           >
-                            {invoice.status === "Paid" && <TickSquare size={14} />}
+                            {invoice.status === "Paid" && <TickCircle size={14} />}
                             {invoice.status}
                           </Badge>
                         </TableCell>
@@ -786,7 +786,7 @@ Below is a summary of our current outstanding invoices:`);
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
           <Button variant="ghost" size="sm" className="h-9 w-9 p-0 rounded-full" onClick={() => setIsEditMode(false)}>
-            <CloseSquare size={16} color="#B0B3B8" variant="Linear" />
+            <CloseCircle size={16} color="#B0B3B8" variant="Linear" />
           </Button>
           <div>
             <h1 className="text-lg font-semibold" style={{ color: "#2D2D2D" }}>Edit Note</h1>
@@ -817,10 +817,10 @@ Below is a summary of our current outstanding invoices:`);
 
       <div className="flex flex-wrap gap-2 mb-6">
         {tags.map((tag) => (
-          <Badge key={tag} variant="secondary" className="rounded-full px-3 py-1 text-xs flex items-center gap-1.5" style={{ backgroundColor: "rgba(20, 70, 42, 0.08)", color: "#14462a" }}>
+          <Badge key={tag} variant="success" className="flex items-center gap-1.5">
             {tag}
             <button onClick={() => handleRemoveTag(tag)} className="hover:opacity-70">
-              <CloseSquare size={12} color="#14462a" variant="Linear" />
+              <CloseCircle size={12} color="#14462a" variant="Linear" />
             </button>
           </Badge>
         ))}
@@ -837,10 +837,10 @@ Below is a summary of our current outstanding invoices:`);
               autoFocus
             />
             <Button size="sm" variant="ghost" className="h-7 w-7 p-0 rounded-full" onClick={handleAddTag}>
-              <TickSquare size={14} color="#0D9488" variant="Linear" />
+              <TickCircle size={14} color="#0D9488" variant="Linear" />
             </Button>
             <Button size="sm" variant="ghost" className="h-7 w-7 p-0 rounded-full" onClick={() => { setIsAddingTag(false); setNewTag(""); }}>
-              <CloseSquare size={14} color="#B0B3B8" variant="Linear" />
+              <CloseCircle size={14} color="#B0B3B8" variant="Linear" />
             </Button>
           </div>
         ) : (
@@ -974,64 +974,64 @@ Below is a summary of our current outstanding invoices:`);
           <div className="h-6 w-px mx-1" style={{ backgroundColor: "#E4E6EB" }} />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="sm" className="rounded-full h-8 px-3 hover:bg-white text-xs font-medium" style={{ color: "#14462a" }}>
+              <Button variant="ghost" size="sm" className="rounded-full h-8 px-3 hover:bg-[rgba(20,70,42,0.06)] text-xs font-medium" style={{ color: "#14462a" }}>
                 <Add size={16} color="#14462a" variant="Linear" className="mr-1.5" />
                 Insert Widget
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="start" className="rounded-2xl p-2 w-64">
+            <DropdownMenuContent align="start" className="rounded-2xl p-2 w-64" style={{ boxShadow: '0 4px 20px rgba(0, 0, 0, 0.12)', border: '1px solid rgba(0, 0, 0, 0.06)' }}>
               <DropdownMenuItem 
-                className="rounded-xl px-3 py-2.5 cursor-pointer"
+                className="rounded-xl px-3 py-2.5 cursor-pointer hover:bg-[rgba(20,70,42,0.06)] group transition-all"
                 onClick={() => setShowARMetrics(true)}
                 disabled={showARMetrics}
               >
                 <Chart size={16} className="mr-2" style={{ color: "#14462a" }} />
                 <div>
-                  <div className="font-medium text-sm">AR Metrics</div>
+                  <div className="font-medium text-sm group-hover:text-[#14462a]">AR Metrics</div>
                   <div className="text-xs" style={{ color: "#B0B3B8" }}>Live accounts receivable data</div>
                 </div>
               </DropdownMenuItem>
               <DropdownMenuItem 
-                className="rounded-xl px-3 py-2.5 cursor-pointer"
+                className="rounded-xl px-3 py-2.5 cursor-pointer hover:bg-[rgba(20,70,42,0.06)] group transition-all"
                 onClick={() => setShowInvoiceTable(true)}
                 disabled={showInvoiceTable}
               >
-                <DocumentText size={16} color="#0D9488" variant="Linear" className="mr-2" />
+                <Note size={16} color="#0D9488" variant="Linear" className="mr-2" />
                 <div>
-                  <div className="font-medium text-sm">Invoice Table</div>
+                  <div className="font-medium text-sm group-hover:text-[#14462a]">Invoice Table</div>
                   <div className="text-xs" style={{ color: "#B0B3B8" }}>Recent invoices overview</div>
                 </div>
               </DropdownMenuItem>
               <DropdownMenuItem 
-                className="rounded-xl px-3 py-2.5 cursor-pointer"
+                className="rounded-xl px-3 py-2.5 cursor-pointer hover:bg-[rgba(20,70,42,0.06)] group transition-all"
                 onClick={() => setShowPaymentMethods(true)}
                 disabled={showPaymentMethods}
               >
                 <Card size={16} color="#14462a" variant="Linear" className="mr-2" />
                 <div>
-                  <div className="font-medium text-sm">Payment Methods</div>
+                  <div className="font-medium text-sm group-hover:text-[#14462a]">Payment Methods</div>
                   <div className="text-xs" style={{ color: "#B0B3B8" }}>Payment method breakdown</div>
                 </div>
               </DropdownMenuItem>
               <DropdownMenuItem 
-                className="rounded-xl px-3 py-2.5 cursor-pointer"
+                className="rounded-xl px-3 py-2.5 cursor-pointer hover:bg-[rgba(20,70,42,0.06)] group transition-all"
                 onClick={() => setShowClientList(true)}
                 disabled={showClientList}
               >
                 <People size={16} color="#F59E0B" variant="Linear" className="mr-2" />
                 <div>
-                  <div className="font-medium text-sm">Client Overview</div>
+                  <div className="font-medium text-sm group-hover:text-[#14462a]">Client Overview</div>
                   <div className="text-xs" style={{ color: "#B0B3B8" }}>Top clients and status</div>
                 </div>
               </DropdownMenuItem>
               <DropdownMenuItem 
-                className="rounded-xl px-3 py-2.5 cursor-pointer"
+                className="rounded-xl px-3 py-2.5 cursor-pointer hover:bg-[rgba(20,70,42,0.06)] group transition-all"
                 onClick={() => setShowExpenses(true)}
                 disabled={showExpenses}
               >
                 <Wallet size={16} color="#EF4444" variant="Linear" className="mr-2" />
                 <div>
-                  <div className="font-medium text-sm">Expense Breakdown</div>
+                  <div className="font-medium text-sm group-hover:text-[#14462a]">Expense Breakdown</div>
                   <div className="text-xs" style={{ color: "#B0B3B8" }}>Expense categories summary</div>
                 </div>
               </DropdownMenuItem>
@@ -1120,7 +1120,7 @@ Below is a summary of our current outstanding invoices:`);
                       className="h-7 w-7 p-0 rounded-full"
                       onClick={() => removeBlock(block.id)}
                     >
-                      <CloseSquare size={16} color="#B0B3B8" variant="Linear" />
+                      <CloseCircle size={16} color="#B0B3B8" variant="Linear" />
                     </Button>
                   )}
                 </div>
@@ -1139,55 +1139,55 @@ Below is a summary of our current outstanding invoices:`);
                   <Button
                     variant="ghost"
                     size="sm"
-                    className="h-7 px-3 rounded-full opacity-0 group-hover:opacity-100 transition-opacity text-xs"
+                    className="h-7 px-3 rounded-full opacity-0 group-hover:opacity-100 transition-opacity text-xs hover:bg-[rgba(20,70,42,0.06)]"
                     style={{ color: "#B0B3B8" }}
                   >
                     <Add size={14} color="#B0B3B8" variant="Linear" className="mr-1" />
                     Insert Widget
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="center" className="rounded-2xl p-2 w-56">
+                <DropdownMenuContent align="center" className="rounded-2xl p-2 w-56" style={{ boxShadow: '0 4px 20px rgba(0, 0, 0, 0.12)', border: '1px solid rgba(0, 0, 0, 0.06)' }}>
                   <DropdownMenuItem 
-                    className="rounded-xl px-3 py-2 cursor-pointer text-sm"
+                    className="rounded-xl px-3 py-2 cursor-pointer text-sm hover:bg-[rgba(20,70,42,0.06)] group transition-all"
                     onClick={() => addBlock(block.id, 'text')}
                   >
-                    <DocumentText size={16} color="#2D2D2D" variant="Linear" className="mr-2" />
-                    Text Block
+                    <Note size={16} color="#2D2D2D" variant="Linear" className="mr-2" />
+                    <span className="group-hover:text-[#14462a]">Text Block</span>
                   </DropdownMenuItem>
                   <DropdownMenuItem 
-                    className="rounded-xl px-3 py-2 cursor-pointer text-sm"
+                    className="rounded-xl px-3 py-2 cursor-pointer text-sm hover:bg-[rgba(20,70,42,0.06)] group transition-all"
                     onClick={() => addBlock(block.id, 'ar-metrics')}
                   >
                     <Chart size={16} color="#14462a" variant="Linear" className="mr-2" />
-                    AR Metrics
+                    <span className="group-hover:text-[#14462a]">AR Metrics</span>
                   </DropdownMenuItem>
                   <DropdownMenuItem 
-                    className="rounded-xl px-3 py-2 cursor-pointer text-sm"
+                    className="rounded-xl px-3 py-2 cursor-pointer text-sm hover:bg-[rgba(20,70,42,0.06)] group transition-all"
                     onClick={() => addBlock(block.id, 'invoice-table')}
                   >
-                    <DocumentText size={16} color="#0D9488" variant="Linear" className="mr-2" />
-                    Invoice Table
+                    <Note size={16} color="#0D9488" variant="Linear" className="mr-2" />
+                    <span className="group-hover:text-[#14462a]">Invoice Table</span>
                   </DropdownMenuItem>
                   <DropdownMenuItem 
-                    className="rounded-xl px-3 py-2 cursor-pointer text-sm"
+                    className="rounded-xl px-3 py-2 cursor-pointer text-sm hover:bg-[rgba(20,70,42,0.06)] group transition-all"
                     onClick={() => addBlock(block.id, 'payment-methods')}
                   >
                     <Card size={16} color="#14462a" variant="Linear" className="mr-2" />
-                    Payment Methods
+                    <span className="group-hover:text-[#14462a]">Payment Methods</span>
                   </DropdownMenuItem>
                   <DropdownMenuItem 
-                    className="rounded-xl px-3 py-2 cursor-pointer text-sm"
+                    className="rounded-xl px-3 py-2 cursor-pointer text-sm hover:bg-[rgba(20,70,42,0.06)] group transition-all"
                     onClick={() => addBlock(block.id, 'client-list')}
                   >
                     <People size={16} color="#F59E0B" variant="Linear" className="mr-2" />
-                    Client Overview
+                    <span className="group-hover:text-[#14462a]">Client Overview</span>
                   </DropdownMenuItem>
                   <DropdownMenuItem 
-                    className="rounded-xl px-3 py-2 cursor-pointer text-sm"
+                    className="rounded-xl px-3 py-2 cursor-pointer text-sm hover:bg-[rgba(20,70,42,0.06)] group transition-all"
                     onClick={() => addBlock(block.id, 'expenses')}
                   >
                     <Wallet size={16} color="#EF4444" variant="Linear" className="mr-2" />
-                    Expense Breakdown
+                    <span className="group-hover:text-[#14462a]">Expense Breakdown</span>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
@@ -1223,7 +1223,7 @@ Below is a summary of our current outstanding invoices:`);
             className="w-full text-left px-3 py-2 rounded-xl hover:bg-gray-50 flex items-center gap-2 text-sm"
             onClick={() => addWidgetAtCursor(contextMenu.blockId, 'invoice-table')}
           >
-            <DocumentText size={16} color="#0D9488" variant="Linear" />
+            <Note size={16} color="#0D9488" variant="Linear" />
             Invoice Table
           </button>
           <button

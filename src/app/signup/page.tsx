@@ -26,9 +26,7 @@ import {
   CloseCircle,
   ArrowDown2,
   Global,
-  Briefcase,
-  TickSquare,
-  CloseSquare
+  Briefcase
 } from "iconsax-react";
 
 // Types

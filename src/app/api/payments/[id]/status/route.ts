@@ -13,7 +13,7 @@ export async function GET(
     status: 'success',
     amount: 2000,
     timestamp: new Date().toISOString(),
-    invoice_number: 'INV-2024-001',
+    invoice_number: 'PL-A7K9X2',
     reference: 'MTN-' + Math.random().toString(36).substr(2, 9).toUpperCase(),
   });
 }

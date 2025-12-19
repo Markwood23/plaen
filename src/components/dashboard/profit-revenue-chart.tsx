@@ -50,14 +50,14 @@ export default function ProfitRevenueChart() {
                   </feMerge>
                 </filter>
                 <linearGradient id="revenueGradient" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#000000" stopOpacity={0.5}/>
-                  <stop offset="50%" stopColor="#000000" stopOpacity={0.15}/>
-                  <stop offset="100%" stopColor="#000000" stopOpacity={0}/>
+                  <stop offset="0%" stopColor="#14462a" stopOpacity={0.5}/>
+                  <stop offset="50%" stopColor="#14462a" stopOpacity={0.15}/>
+                  <stop offset="100%" stopColor="#14462a" stopOpacity={0}/>
                 </linearGradient>
                 <linearGradient id="profitGradient" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#9ca3af" stopOpacity={0.4}/>
-                  <stop offset="50%" stopColor="#9ca3af" stopOpacity={0.12}/>
-                  <stop offset="100%" stopColor="#9ca3af" stopOpacity={0}/>
+                  <stop offset="0%" stopColor="#14462a" stopOpacity={0.2}/>
+                  <stop offset="50%" stopColor="#14462a" stopOpacity={0.06}/>
+                  <stop offset="100%" stopColor="#14462a" stopOpacity={0}/>
                 </linearGradient>
               </defs>
               
@@ -92,7 +92,7 @@ export default function ProfitRevenueChart() {
                 ticks={[20000, 40000, 60000, 80000]}
                 dx={-5}
                 label={{ 
-                  value: 'Amount (USD)', 
+                  value: 'Amount (GHS)', 
                   angle: -90, 
                   position: 'insideLeft',
                   offset: -50,
@@ -127,16 +127,16 @@ export default function ProfitRevenueChart() {
                 fill="url(#revenueGradient)"
               />
               
-              {/* Profit line (gray) - behind */}
+              {/* Profit line (lighter green) - behind */}
               <Line 
                 type="monotone" 
                 dataKey="profit" 
-                stroke="#9ca3af" 
+                stroke="#65a37a" 
                 strokeWidth={3.5}
                 dot={false}
                 activeDot={{ 
                   r: 7, 
-                  fill: '#9ca3af', 
+                  fill: '#65a37a', 
                   strokeWidth: 4,
                   stroke: '#ffffff',
                   style: { filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.1))' }
@@ -145,16 +145,16 @@ export default function ProfitRevenueChart() {
                 strokeLinejoin="round"
               />
               
-              {/* Revenue line (black) - in front */}
+              {/* Revenue line (brand green) - in front */}
               <Line 
                 type="monotone" 
                 dataKey="revenue" 
-                stroke="#000000" 
+                stroke="#14462a" 
                 strokeWidth={3.5}
                 dot={false}
                 activeDot={{ 
                   r: 8, 
-                  fill: '#000000', 
+                  fill: '#14462a', 
                   strokeWidth: 5,
                   stroke: '#ffffff',
                   style: { filter: 'drop-shadow(0 3px 6px rgba(0,0,0,0.15))' }
@@ -169,17 +169,17 @@ export default function ProfitRevenueChart() {
           <div className="flex justify-center gap-10 mt-8 pt-6 border-t border-gray-100">
             <div className="flex items-center gap-3 group cursor-pointer">
               <div className="relative">
-                <div className="w-2.5 h-2.5 rounded-full bg-black group-hover:scale-110 transition-transform duration-200"></div>
-                <div className="absolute inset-0 w-2.5 h-2.5 rounded-full bg-black opacity-20 blur-sm"></div>
+                <div className="w-2.5 h-2.5 rounded-full bg-[#14462a] group-hover:scale-110 transition-transform duration-200"></div>
+                <div className="absolute inset-0 w-2.5 h-2.5 rounded-full bg-[#14462a] opacity-20 blur-sm"></div>
               </div>
-              <span className="text-sm font-semibold text-gray-900 group-hover:text-black transition-colors">Revenue</span>
+              <span className="text-sm font-semibold text-gray-900 group-hover:text-[#14462a] transition-colors">Revenue</span>
             </div>
             <div className="flex items-center gap-3 group cursor-pointer">
               <div className="relative">
-                <div className="w-2.5 h-2.5 rounded-full bg-gray-400 group-hover:scale-110 transition-transform duration-200"></div>
-                <div className="absolute inset-0 w-2.5 h-2.5 rounded-full bg-gray-400 opacity-20 blur-sm"></div>
+                <div className="w-2.5 h-2.5 rounded-full bg-[#65a37a] group-hover:scale-110 transition-transform duration-200"></div>
+                <div className="absolute inset-0 w-2.5 h-2.5 rounded-full bg-[#65a37a] opacity-20 blur-sm"></div>
               </div>
-              <span className="text-sm font-semibold text-gray-900 group-hover:text-black transition-colors">Profit</span>
+              <span className="text-sm font-semibold text-gray-900 group-hover:text-[#14462a] transition-colors">Profit</span>
           </div>
         </div>
       </div>

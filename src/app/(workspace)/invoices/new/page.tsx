@@ -1,31 +1,62 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Input, NumberInput } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Calendar as CalendarComponent } from "@/components/ui/calendar";
+import { format } from "date-fns";
 import { 
   ArrowLeft2, 
   Add, 
-  Trash, 
   Send2,
   Building,
-  DocumentText,
+  Receipt21,
   Calendar,
   User,
   Card,
   InfoCircle,
-  Edit2
+  Edit2,
+  Warning2,
+  Note
 } from "iconsax-react";
+import { Trash2 } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useCallback } from "react";
+import { useBalanceVisibility } from "@/contexts/balance-visibility-context";
+
+// Validation helper functions
+const isValidEmail = (email: string): boolean => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+};
+
+const isValidPhone = (phone: string): boolean => {
+  // Allow various phone formats: +233 XX XXX XXXX, (XXX) XXX-XXXX, etc.
+  const phoneRegex = /^[+]?[(]?[0-9]{1,4}[)]?[-\s./0-9]*$/;
+  return phone === "" || (phoneRegex.test(phone) && phone.replace(/\D/g, '').length >= 9);
+};
+
+const isPositiveNumber = (value: number): boolean => {
+  return !isNaN(value) && value >= 0;
+};
+
+const isValidQuantity = (value: number): boolean => {
+  return !isNaN(value) && value > 0;
+};
+
+const isValidPercentage = (value: number): boolean => {
+  return !isNaN(value) && value >= 0 && value <= 100;
+};
 
 export default function CreateInvoicePage() {
   const [template, setTemplate] = useState("standard");
   const [selectedContact, setSelectedContact] = useState<string>("");
+  const { maskAmount } = useBalanceVisibility();
   const [customerData, setCustomerData] = useState({
     name: "",
     email: "",
@@ -60,6 +91,140 @@ export default function CreateInvoicePage() {
   const [secondaryCurrency, setSecondaryCurrency] = useState("");
   const [exchangeRate, setExchangeRate] = useState("");
   const [loadingRate, setLoadingRate] = useState(false);
+
+  // Invoice Number State - Auto-generated with brand prefix
+  const [invoiceNumber] = useState<string>(() => {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let code = 'PL-';
+    for (let i = 0; i < 6; i++) {
+      code += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return code;
+  });
+
+  // Date State
+  const [issueDate, setIssueDate] = useState<Date>(new Date());
+  const [dueDate, setDueDate] = useState<Date>(() => {
+    const date = new Date();
+    date.setDate(date.getDate() + 30);
+    return date;
+  });
+  const [exchangeRateDate, setExchangeRateDate] = useState<Date>(new Date());
+
+  // Validation State
+  const [errors, setErrors] = useState<{
+    customerName?: string;
+    customerEmail?: string;
+    customerPhone?: string;
+    lineItems?: { [key: number]: { description?: string; quantity?: string; unitPrice?: string; tax?: string; discount?: string } };
+    paymentMethods?: string;
+    general?: string;
+  }>({});
+  const [touched, setTouched] = useState<{
+    customerName?: boolean;
+    customerEmail?: boolean;
+    customerPhone?: boolean;
+    lineItems?: { [key: number]: { description?: boolean; quantity?: boolean; unitPrice?: boolean; tax?: boolean; discount?: boolean } };
+  }>({});
+
+  // Mark field as touched
+  const markTouched = (field: string) => {
+    setTouched(prev => ({ ...prev, [field]: true }));
+  };
+
+  // Validate customer name
+  const validateCustomerName = useCallback((name: string): string | undefined => {
+    if (!name.trim()) return "Customer name is required";
+    if (name.trim().length < 2) return "Name must be at least 2 characters";
+    return undefined;
+  }, []);
+
+  // Validate customer email
+  const validateCustomerEmail = useCallback((email: string): string | undefined => {
+    if (!email.trim()) return "Email address is required";
+    if (!isValidEmail(email)) return "Please enter a valid email address";
+    return undefined;
+  }, []);
+
+  // Validate customer phone
+  const validateCustomerPhone = useCallback((phone: string): string | undefined => {
+    if (phone && !isValidPhone(phone)) return "Please enter a valid phone number";
+    return undefined;
+  }, []);
+
+  // Validate all line items
+  const validateLineItems = useCallback((): { [key: number]: { description?: string; quantity?: string; unitPrice?: string; tax?: string; discount?: string } } => {
+    const itemErrors: { [key: number]: { description?: string; quantity?: string; unitPrice?: string; tax?: string; discount?: string } } = {};
+    
+    lineItems.forEach(item => {
+      const errors: { description?: string; quantity?: string; unitPrice?: string; tax?: string; discount?: string } = {};
+      
+      if (!item.description.trim()) errors.description = "Description is required";
+      if (!isValidQuantity(item.quantity)) errors.quantity = "Quantity must be greater than 0";
+      if (!isPositiveNumber(item.unitPrice)) errors.unitPrice = "Invalid price";
+      if (item.unitPrice <= 0) errors.unitPrice = "Price must be greater than 0";
+      if (!isValidPercentage(item.tax)) errors.tax = "Tax must be 0-100%";
+      if (item.discountType === "percent" && !isValidPercentage(item.discount)) {
+        errors.discount = "Discount must be 0-100%";
+      } else if (item.discountType === "fixed" && !isPositiveNumber(item.discount)) {
+        errors.discount = "Invalid discount";
+      }
+      
+      if (Object.keys(errors).length > 0) {
+        itemErrors[item.id] = errors;
+      }
+    });
+    
+    return itemErrors;
+  }, [lineItems]);
+
+  // Validate entire form before submission
+  const validateForm = (): boolean => {
+    const newErrors: typeof errors = {};
+    
+    // Validate customer info
+    const nameError = validateCustomerName(customerData.name);
+    if (nameError) newErrors.customerName = nameError;
+    
+    const emailError = validateCustomerEmail(customerData.email);
+    if (emailError) newErrors.customerEmail = emailError;
+    
+    const phoneError = validateCustomerPhone(customerData.phone);
+    if (phoneError) newErrors.customerPhone = phoneError;
+    
+    // Validate line items
+    const lineItemErrors = validateLineItems();
+    if (Object.keys(lineItemErrors).length > 0) {
+      newErrors.lineItems = lineItemErrors;
+    }
+    
+    // Validate payment methods
+    if (paymentMethods.length === 0) {
+      newErrors.paymentMethods = "Please select at least one payment method";
+    }
+    
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  // Handle form submission
+  const handleSubmit = () => {
+    // Mark all fields as touched
+    setTouched({
+      customerName: true,
+      customerEmail: true,
+      customerPhone: true,
+    });
+    
+    if (validateForm()) {
+      // Form is valid, proceed with submission
+      console.log("Form is valid, submitting...");
+      // TODO: Submit invoice
+    } else {
+      // Scroll to first error
+      setErrors(prev => ({ ...prev, general: "Please fix the errors before sending the invoice" }));
+    }
+  };
 
   // Sample contacts - in production, this would come from your database/API
   const savedContacts = [
@@ -204,12 +369,43 @@ export default function CreateInvoicePage() {
   const removeLineItem = (id: number) => {
     if (lineItems.length > 1) {
       setLineItems(lineItems.filter(item => item.id !== id));
+      // Clear errors for removed item
+      if (errors.lineItems?.[id]) {
+        const newLineItemErrors = { ...errors.lineItems };
+        delete newLineItemErrors[id];
+        setErrors(prev => ({ ...prev, lineItems: newLineItemErrors }));
+      }
     }
   };
 
   const updateLineItem = (id: number, field: string, value: string | number) => {
+    let processedValue = value;
+    
+    // Validate and constrain numeric fields
+    if (field === 'quantity') {
+      const numValue = typeof value === 'string' ? parseFloat(value) || 0 : value;
+      processedValue = Math.max(0, numValue); // Cannot be negative
+    }
+    if (field === 'unitPrice') {
+      const numValue = typeof value === 'string' ? parseFloat(value) || 0 : value;
+      processedValue = Math.max(0, numValue); // Cannot be negative
+    }
+    if (field === 'tax') {
+      const numValue = typeof value === 'string' ? parseFloat(value) || 0 : value;
+      processedValue = Math.min(100, Math.max(0, numValue)); // 0-100%
+    }
+    if (field === 'discount') {
+      const numValue = typeof value === 'string' ? parseFloat(value) || 0 : value;
+      const item = lineItems.find(i => i.id === id);
+      if (item?.discountType === 'percent') {
+        processedValue = Math.min(100, Math.max(0, numValue)); // 0-100% for percentage
+      } else {
+        processedValue = Math.max(0, numValue); // Cannot be negative for fixed
+      }
+    }
+    
     setLineItems(lineItems.map(item =>
-      item.id === id ? { ...item, [field]: value } : item
+      item.id === id ? { ...item, [field]: processedValue } : item
     ));
   };
 
@@ -304,36 +500,46 @@ export default function CreateInvoicePage() {
 
   return (
     <div className="space-y-6">
-      {/* Page Header - Adapted for workspace layout */}
+      {/* Page Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
           <Button 
             variant="ghost" 
+            size="sm"
             asChild 
-            className="rounded-full px-5 h-9 hover:bg-[rgba(240,242,245,0.5)]"
+            className="rounded-full h-9 w-9 p-0 hover:bg-[rgba(240,242,245,0.8)]"
           >
             <Link href="/invoices">
-              <ArrowLeft2 size={16} className="mr-2" />
-              Back
+              <ArrowLeft2 size={18} color="#2D2D2D" />
             </Link>
           </Button>
           <div>
-            <h1 className="text-3xl font-semibold text-[#2D2D2D]">New Invoice</h1>
+            <h1 className="text-2xl font-semibold tracking-tight" style={{ color: '#2D2D2D' }}>New Invoice</h1>
+            <p className="text-sm mt-0.5" style={{ color: '#B0B3B8' }}>Create a professional invoice for your client</p>
           </div>
         </div>
         <div className="flex items-center gap-3">
+          {errors.general && (
+            <p className="text-sm text-red-500 flex items-center gap-1.5 mr-2">
+              <Warning2 size={16} />
+              {errors.general}
+            </p>
+          )}
           <Button 
             variant="outline" 
-            className="rounded-full px-5 h-10 border-none hover:bg-[rgba(240,242,245,0.5)]"
+            size="sm"
+            className="rounded-full px-5 h-10 border-[#E4E6EB] hover:bg-[rgba(240,242,245,0.5)] hover:border-[#B0B3B8]"
           >
-            <DocumentText size={16} className="mr-2" />
+            <Note size={16} color="currentColor" className="mr-2" />
             Save Draft
           </Button>
           <Button 
-            className="rounded-full px-5 h-10"
+            size="sm"
+            className="rounded-full px-5 h-10 shadow-sm transition-all hover:shadow-md hover:scale-105"
             style={{ backgroundColor: '#14462a', color: 'white', fontWeight: 500 }}
+            onClick={handleSubmit}
           >
-            <Send2 size={16} className="mr-2" />
+            <Send2 size={16} color="currentColor" className="mr-2" />
             Send Invoice
           </Button>
         </div>
@@ -343,39 +549,39 @@ export default function CreateInvoicePage() {
       <Tabs defaultValue="details" className="w-full">
         <TabsList>
           <TabsTrigger value="details">
-            <DocumentText size={16} />
+            <Receipt21 size={16} color="currentColor" />
             Invoice Details
           </TabsTrigger>
           <TabsTrigger value="parties">
-            <User size={16} />
+            <User size={16} color="currentColor" />
             Parties
           </TabsTrigger>
           <TabsTrigger value="items">
-            <DocumentText size={16} />
+            <Note size={16} color="currentColor" />
             Line Items
           </TabsTrigger>
           <TabsTrigger value="payment">
-            <Card size={16} />
+            <Card size={16} color="currentColor" />
             Payment & Currency
           </TabsTrigger>
           <TabsTrigger value="additional">
-            <InfoCircle size={16} />
+            <InfoCircle size={16} color="currentColor" />
             Additional Info
           </TabsTrigger>
         </TabsList>
 
           {/* Tab 1: Details - Enhanced */}
-          <TabsContent value="details" className="space-y-10 mt-8">
+          <TabsContent value="details" className="space-y-8 mt-8">
             {/* Template Selection */}
-            <div className="p-6" style={{ backgroundColor: 'rgba(247, 249, 250, 0.3)', borderLeft: '3px solid #14462a' }}>
-              <div className="mb-6 flex items-start justify-between">
+            <div className="rounded-2xl p-6 transition-all duration-300" style={{ backgroundColor: 'rgba(20, 70, 42, 0.03)' }}>
+              <div className="mb-5 flex items-start justify-between">
                 <div>
-                  <h2 className="text-lg font-semibold text-[#2D2D2D] mb-1">Invoice Template</h2>
+                  <h2 className="text-base font-semibold text-[#2D2D2D] mb-1">Invoice Template</h2>
                   <p className="text-sm text-[#B0B3B8]">Choose a professional template that matches your brand</p>
                 </div>
-                <div className="w-80">
+                <div className="w-72">
                   <Select value={template} onValueChange={setTemplate}>
-                    <SelectTrigger className="border-[#E4E6EB] h-11">
+                    <SelectTrigger className="border-[#E4E6EB] h-11 rounded-xl bg-white hover:border-[#14462a] transition-colors">
                       <SelectValue>
                         <div className="flex flex-col items-start gap-0.5">
                           <span className="font-medium text-sm">
@@ -383,12 +589,6 @@ export default function CreateInvoicePage() {
                             {template === "minimal" && "Minimal"}
                             {template === "professional" && "Professional"}
                             {template === "modern" && "Modern"}
-                          </span>
-                          <span className="text-xs text-[#B0B3B8]">
-                            {template === "standard" && "Classic business format"}
-                            {template === "minimal" && "Clean and simple"}
-                            {template === "professional" && "Corporate style"}
-                            {template === "modern" && "Contemporary design"}
                           </span>
                         </div>
                       </SelectValue>
@@ -425,27 +625,26 @@ export default function CreateInvoicePage() {
               </div>
             </div>
 
-            <div className="h-px bg-[#E4E6EB]" />
-
             {/* Invoice Details */}
-            <div>
-              <div className="mb-6">
-                <h2 className="text-lg font-semibold text-[#2D2D2D] mb-1">Invoice Information</h2>
+            <div className="rounded-2xl p-6" style={{ backgroundColor: 'rgba(247, 249, 250, 0.5)' }}>
+              <div className="mb-5">
+                <h2 className="text-base font-semibold text-[#2D2D2D] mb-1">Invoice Information</h2>
                 <p className="text-sm text-[#B0B3B8]">Basic details about this invoice</p>
               </div>
-              <div className="grid grid-cols-2 gap-6">
+              <div className="grid grid-cols-2 gap-5">
                 <div>
-                  <Label className="text-sm text-[#2D2D2D] font-medium mb-2 block">Invoice Number*</Label>
+                  <Label className="text-sm text-[#2D2D2D] font-medium mb-2 block">Invoice Number</Label>
                   <Input 
-                    placeholder="INV-001"
-                    className="h-11 font-mono"
+                    value={invoiceNumber}
+                    readOnly
+                    className="h-11 font-mono rounded-xl border-[#E4E6EB] bg-gray-50 text-[#65676B] cursor-not-allowed"
                   />
-                  <p className="text-xs text-[#B0B3B8] mt-1.5">Unique identifier for this invoice</p>
+                  <p className="text-xs text-[#B0B3B8] mt-1.5">Auto-generated • Cannot be changed</p>
                 </div>
                 <div>
                   <Label className="text-sm text-[#2D2D2D] font-medium mb-2 block">Payment Terms*</Label>
                   <Select defaultValue="net_30">
-                    <SelectTrigger className="border-[#E4E6EB] h-11">
+                    <SelectTrigger className="border-[#E4E6EB] h-11 rounded-xl hover:border-[#14462a] transition-colors">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -460,43 +659,83 @@ export default function CreateInvoicePage() {
                 </div>
                 <div>
                   <Label className="text-sm text-[#2D2D2D] font-medium mb-2 block">Issue Date*</Label>
-                  <Button 
-                    variant="outline" 
-                    className="w-full h-11 justify-start text-left border-[#E4E6EB] font-normal rounded-full"
-                  >
-                    <Calendar size={16} className="mr-2 text-[#B0B3B8]" />
-                    Nov 16, 2025
-                  </Button>
-                  <p className="text-xs text-[#B0B3B8] mt-1.5">Date invoice was created</p>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button 
+                        variant="outline" 
+                        className="w-full h-11 justify-start text-left border-[#E4E6EB] font-normal rounded-xl hover:border-[#14462a] transition-colors bg-white"
+                      >
+                        <Calendar size={16} color="#B0B3B8" className="mr-2" />
+                        {issueDate ? format(issueDate, "MMM d, yyyy") : "Select date"}
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <CalendarComponent
+                        mode="single"
+                        selected={issueDate}
+                        onSelect={(date) => {
+                          if (date) {
+                            setIssueDate(date);
+                            // Auto-adjust due date if it's before the new issue date
+                            if (dueDate < date) {
+                              const newDueDate = new Date(date);
+                              newDueDate.setDate(newDueDate.getDate() + 30);
+                              setDueDate(newDueDate);
+                            }
+                          }
+                        }}
+                        disabled={(date) => {
+                          const thirtyDaysAgo = new Date();
+                          thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+                          return date < thirtyDaysAgo;
+                        }}
+                        showOutsideDays={false}
+                        initialFocus
+                      />
+                    </PopoverContent>
+                  </Popover>
+                  <p className="text-xs text-[#B0B3B8] mt-1.5">Date invoice was created (up to 30 days back)</p>
                 </div>
                 <div>
                   <Label className="text-sm text-[#2D2D2D] font-medium mb-2 block">Due Date*</Label>
-                  <Button 
-                    variant="outline" 
-                    className="w-full h-11 justify-start text-left border-[#E4E6EB] font-normal rounded-full"
-                  >
-                    <Calendar size={16} className="mr-2 text-[#B0B3B8]" />
-                    Dec 16, 2025
-                  </Button>
-                  <p className="text-xs text-[#B0B3B8] mt-1.5">Calculated based on payment terms</p>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button 
+                        variant="outline" 
+                        className="w-full h-11 justify-start text-left border-[#E4E6EB] font-normal rounded-xl hover:border-[#14462a] transition-colors bg-white"
+                      >
+                        <Calendar size={16} color="#B0B3B8" className="mr-2" />
+                        {dueDate ? format(dueDate, "MMM d, yyyy") : "Select date"}
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <CalendarComponent
+                        mode="single"
+                        selected={dueDate}
+                        onSelect={(date) => date && setDueDate(date)}
+                        disabled={(date) => date < issueDate}
+                        showOutsideDays={false}
+                        initialFocus
+                      />
+                    </PopoverContent>
+                  </Popover>
+                  <p className="text-xs text-[#B0B3B8] mt-1.5">Must be on or after issue date</p>
                 </div>
               </div>
             </div>
 
-            <div className="h-px bg-[#E4E6EB]" />
-
             {/* Invoice Reference Information */}
-            <div>
-              <div className="mb-6">
-                <h2 className="text-lg font-semibold text-[#2D2D2D] mb-1">Additional Reference</h2>
+            <div className="rounded-2xl p-6" style={{ backgroundColor: 'rgba(247, 249, 250, 0.5)' }}>
+              <div className="mb-5">
+                <h2 className="text-base font-semibold text-[#2D2D2D] mb-1">Additional Reference</h2>
                 <p className="text-sm text-[#B0B3B8]">Add reference information for this invoice (optional)</p>
               </div>
-              <div className="grid grid-cols-2 gap-6">
+              <div className="grid grid-cols-2 gap-5">
                 <div>
                   <Label className="text-sm text-[#2D2D2D] font-medium mb-2 block">Reference Name</Label>
                   <Input 
                     placeholder="e.g., Website Redesign, Product Order #123"
-                    className="border-[#E4E6EB] h-11"
+                    className="border-[#E4E6EB] h-11 rounded-xl hover:border-[#14462a] focus:border-[#14462a] transition-colors"
                   />
                   <p className="text-xs text-[#B0B3B8] mt-1.5">Project name, order number, or service description</p>
                 </div>
@@ -504,14 +743,14 @@ export default function CreateInvoicePage() {
                   <Label className="text-sm text-[#2D2D2D] font-medium mb-2 block">Reference ID</Label>
                   <Input 
                     placeholder="e.g., PROJ-2025-042, ORD-12345"
-                    className="border-[#E4E6EB] h-11"
+                    className="border-[#E4E6EB] h-11 rounded-xl hover:border-[#14462a] focus:border-[#14462a] transition-colors"
                   />
                   <p className="text-xs text-[#B0B3B8] mt-1.5">Internal reference or tracking number</p>
                 </div>
                 <div>
                   <Label className="text-sm text-[#2D2D2D] font-medium mb-2 block">Invoice Category</Label>
                   <Select>
-                    <SelectTrigger className="border-[#E4E6EB] h-11">
+                    <SelectTrigger className="border-[#E4E6EB] h-11 rounded-xl hover:border-[#14462a] transition-colors">
                       <SelectValue placeholder="Select category" />
                     </SelectTrigger>
                     <SelectContent>
@@ -530,7 +769,7 @@ export default function CreateInvoicePage() {
                   <Label className="text-sm text-[#2D2D2D] font-medium mb-2 block">Purchase Order (PO) Number</Label>
                   <Input 
                     placeholder="Client's PO number if applicable"
-                    className="border-[#E4E6EB] h-11"
+                    className="border-[#E4E6EB] h-11 rounded-xl hover:border-[#14462a] focus:border-[#14462a] transition-colors"
                   />
                   <p className="text-xs text-[#B0B3B8] mt-1.5">Required by some clients for payment processing</p>
                 </div>
@@ -539,44 +778,45 @@ export default function CreateInvoicePage() {
           </TabsContent>
 
           {/* Tab 2: Parties - Enhanced */}
-          <TabsContent value="parties" className="space-y-10 mt-8">
-            <div className="grid grid-cols-2 gap-12">
+          <TabsContent value="parties" className="space-y-8 mt-8">
+            <div className="grid grid-cols-2 gap-8">
               {/* From */}
-              <div>
-                <div className="mb-6 flex items-start justify-between">
+              <div className="rounded-2xl p-6" style={{ backgroundColor: 'rgba(20, 70, 42, 0.03)' }}>
+                <div className="mb-5 flex items-start justify-between">
                   <div>
-                    <h2 className="text-lg font-semibold text-[#2D2D2D] mb-1">From (Your Business)</h2>
-                    <p className="text-sm text-[#B0B3B8]">Your business details from account settings</p>
+                    <h2 className="text-base font-semibold text-[#2D2D2D] mb-1">From (Your Business)</h2>
+                    <p className="text-sm text-[#B0B3B8]">Your business details from settings</p>
                   </div>
                   <Button 
                     variant="ghost" 
                     asChild 
-                    className="rounded-full px-4 h-9 hover:bg-[rgba(24,119,242,0.08)]"
+                    size="sm"
+                    className="rounded-full px-4 h-8 hover:bg-[rgba(20,70,42,0.08)]"
                     style={{ color: '#14462a' }}
                   >
-                    <Link href="/workspace/settings">
-                      <Edit2 size={14} className="mr-1.5" />
+                    <Link href="/settings">
+                      <Edit2 size={14} color="currentColor" className="mr-1.5" />
                       Edit
                     </Link>
                   </Button>
                 </div>
                 
                 {/* Read-only business info display */}
-                <div className="space-y-4 p-6" style={{ backgroundColor: 'rgba(247, 249, 250, 0.3)', borderLeft: '3px solid #14462a' }}>
+                <div className="space-y-4 p-5 rounded-xl bg-white border border-[#E4E6EB]">
                   <div>
-                    <p className="text-xs text-[#B0B3B8] font-medium uppercase tracking-wide mb-1.5">Business Name</p>
+                    <p className="text-xs text-[#B0B3B8] font-medium uppercase tracking-wide mb-1">Business Name</p>
                     <p className="text-sm text-[#2D2D2D] font-medium">Your Business Name</p>
                   </div>
                   <div>
-                    <p className="text-xs text-[#B0B3B8] font-medium uppercase tracking-wide mb-1.5">Email</p>
+                    <p className="text-xs text-[#B0B3B8] font-medium uppercase tracking-wide mb-1">Email</p>
                     <p className="text-sm text-[#2D2D2D]">your@business.com</p>
                   </div>
                   <div>
-                    <p className="text-xs text-[#B0B3B8] font-medium uppercase tracking-wide mb-1.5">Phone</p>
+                    <p className="text-xs text-[#B0B3B8] font-medium uppercase tracking-wide mb-1">Phone</p>
                     <p className="text-sm text-[#2D2D2D]">+233 XX XXX XXXX</p>
                   </div>
                   <div>
-                    <p className="text-xs text-[#B0B3B8] font-medium uppercase tracking-wide mb-1.5">Address</p>
+                    <p className="text-xs text-[#B0B3B8] font-medium uppercase tracking-wide mb-1">Address</p>
                     <p className="text-sm text-[#2D2D2D] leading-relaxed">
                       123 Business Street<br />
                       Accra, Greater Accra<br />
@@ -585,39 +825,39 @@ export default function CreateInvoicePage() {
                   </div>
                   <div className="grid grid-cols-2 gap-4 pt-2">
                     <div>
-                      <p className="text-xs text-[#B0B3B8] font-medium uppercase tracking-wide mb-1.5">Tax/VAT Number</p>
+                      <p className="text-xs text-[#B0B3B8] font-medium uppercase tracking-wide mb-1">Tax/VAT Number</p>
                       <p className="text-sm text-[#2D2D2D]">GH123456789</p>
                     </div>
                     <div>
-                      <p className="text-xs text-[#B0B3B8] font-medium uppercase tracking-wide mb-1.5">Website</p>
+                      <p className="text-xs text-[#B0B3B8] font-medium uppercase tracking-wide mb-1">Website</p>
                       <p className="text-sm text-[#2D2D2D]">www.yourbusiness.com</p>
                     </div>
                   </div>
                 </div>
                 
                 <p className="text-xs text-[#B0B3B8] mt-3">
-                  This information will appear on all your invoices. Update it in Settings.
+                  Update your business details in Settings.
                 </p>
               </div>
 
               {/* Bill To */}
-              <div>
-                <div className="mb-6">
-                  <h2 className="text-lg font-semibold text-[#2D2D2D] mb-1">Bill To (Customer)</h2>
-                  <p className="text-sm text-[#B0B3B8]">Select from saved contacts or enter new customer details</p>
+              <div className="rounded-2xl p-6" style={{ backgroundColor: 'rgba(13, 148, 136, 0.03)' }}>
+                <div className="mb-5">
+                  <h2 className="text-base font-semibold text-[#2D2D2D] mb-1">Bill To (Customer)</h2>
+                  <p className="text-sm text-[#B0B3B8]">Select from contacts or enter new details</p>
                 </div>
-                <div className="space-y-4 p-6" style={{ backgroundColor: 'rgba(247, 249, 250, 0.3)', borderLeft: '3px solid #0D9488' }}>
+                <div className="space-y-4 p-5 rounded-xl bg-white border border-[#E4E6EB]">
                   {/* Contact Selector */}
                   <div>
                     <Label className="text-sm text-[#2D2D2D] font-medium mb-2 block">Select Contact</Label>
                     <Select value={selectedContact} onValueChange={handleContactSelect}>
-                      <SelectTrigger className="border-[#E4E6EB] h-11">
+                      <SelectTrigger className="border-[#E4E6EB] h-11 rounded-xl hover:border-[#0D9488] transition-colors">
                         <SelectValue placeholder="Choose from saved contacts or enter manually" />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="manual">
                           <div className="flex items-center gap-2">
-                            <Add size={16} />
+                            <Add size={16} color="currentColor" />
                             <span>Enter manually</span>
                           </div>
                         </SelectItem>
@@ -644,27 +884,66 @@ export default function CreateInvoicePage() {
                     <Label className="text-sm text-[#2D2D2D] font-medium mb-2 block">Customer Name*</Label>
                     <Input 
                       placeholder="Client Full Name or Contact Person"
-                      className="h-11"
+                      className={`h-11 rounded-xl transition-colors ${
+                        touched.customerName && errors.customerName 
+                          ? 'border-red-500 hover:border-red-500 focus:border-red-500 focus:ring-red-500/20' 
+                          : 'border-[#E4E6EB] hover:border-[#0D9488] focus:border-[#0D9488]'
+                      }`}
                       value={customerData.name}
-                      onChange={(e) => setCustomerData({...customerData, name: e.target.value})}
+                      onChange={(e) => {
+                        setCustomerData({...customerData, name: e.target.value});
+                        if (touched.customerName) {
+                          setErrors(prev => ({ ...prev, customerName: validateCustomerName(e.target.value) }));
+                        }
+                      }}
+                      onBlur={() => {
+                        markTouched('customerName');
+                        setErrors(prev => ({ ...prev, customerName: validateCustomerName(customerData.name) }));
+                      }}
                     />
+                    {touched.customerName && errors.customerName && (
+                      <p className="text-xs text-red-500 mt-1.5 flex items-center gap-1">
+                        <Warning2 size={12} />
+                        {errors.customerName}
+                      </p>
+                    )}
                   </div>
                   <div>
                     <Label className="text-sm text-[#2D2D2D] font-medium mb-2 block">Email Address*</Label>
                     <Input 
                       placeholder="client@company.com"
                       type="email"
-                      className="h-11"
+                      className={`h-11 rounded-xl transition-colors ${
+                        touched.customerEmail && errors.customerEmail 
+                          ? 'border-red-500 hover:border-red-500 focus:border-red-500 focus:ring-red-500/20' 
+                          : 'border-[#E4E6EB] hover:border-[#0D9488] focus:border-[#0D9488]'
+                      }`}
                       value={customerData.email}
-                      onChange={(e) => setCustomerData({...customerData, email: e.target.value})}
+                      onChange={(e) => {
+                        setCustomerData({...customerData, email: e.target.value});
+                        if (touched.customerEmail) {
+                          setErrors(prev => ({ ...prev, customerEmail: validateCustomerEmail(e.target.value) }));
+                        }
+                      }}
+                      onBlur={() => {
+                        markTouched('customerEmail');
+                        setErrors(prev => ({ ...prev, customerEmail: validateCustomerEmail(customerData.email) }));
+                      }}
                     />
-                    <p className="text-xs text-[#B0B3B8] mt-1.5">Invoice will be sent to this email</p>
+                    {touched.customerEmail && errors.customerEmail ? (
+                      <p className="text-xs text-red-500 mt-1.5 flex items-center gap-1">
+                        <Warning2 size={12} />
+                        {errors.customerEmail}
+                      </p>
+                    ) : (
+                      <p className="text-xs text-[#B0B3B8] mt-1.5">Invoice will be sent to this email</p>
+                    )}
                   </div>
                   <div>
                     <Label className="text-sm text-[#2D2D2D] font-medium mb-2 block">Company/Organization</Label>
                     <Input 
                       placeholder="Client Company Name"
-                      className="h-11"
+                      className="h-11 rounded-xl border-[#E4E6EB] hover:border-[#0D9488] focus:border-[#0D9488] transition-colors"
                       value={customerData.company}
                       onChange={(e) => setCustomerData({...customerData, company: e.target.value})}
                     />
@@ -673,16 +952,35 @@ export default function CreateInvoicePage() {
                     <Label className="text-sm text-[#2D2D2D] font-medium mb-2 block">Phone Number</Label>
                     <Input 
                       placeholder="+233 XX XXX XXXX"
-                      className="h-11"
+                      className={`h-11 rounded-xl transition-colors ${
+                        touched.customerPhone && errors.customerPhone 
+                          ? 'border-red-500 hover:border-red-500 focus:border-red-500 focus:ring-red-500/20' 
+                          : 'border-[#E4E6EB] hover:border-[#0D9488] focus:border-[#0D9488]'
+                      }`}
                       value={customerData.phone}
-                      onChange={(e) => setCustomerData({...customerData, phone: e.target.value})}
+                      onChange={(e) => {
+                        setCustomerData({...customerData, phone: e.target.value});
+                        if (touched.customerPhone) {
+                          setErrors(prev => ({ ...prev, customerPhone: validateCustomerPhone(e.target.value) }));
+                        }
+                      }}
+                      onBlur={() => {
+                        markTouched('customerPhone');
+                        setErrors(prev => ({ ...prev, customerPhone: validateCustomerPhone(customerData.phone) }));
+                      }}
                     />
+                    {touched.customerPhone && errors.customerPhone && (
+                      <p className="text-xs text-red-500 mt-1.5 flex items-center gap-1">
+                        <Warning2 size={12} />
+                        {errors.customerPhone}
+                      </p>
+                    )}
                   </div>
                   <div>
                     <Label className="text-sm text-[#2D2D2D] font-medium mb-2 block">Billing Address</Label>
                     <Textarea 
                       placeholder="Street Address&#10;City, Region&#10;Country"
-                      className="resize-none"
+                      className="resize-none rounded-xl border-[#E4E6EB] hover:border-[#0D9488] focus:border-[#0D9488] transition-colors"
                       rows={4}
                       value={customerData.address}
                       onChange={(e) => setCustomerData({...customerData, address: e.target.value})}
@@ -692,7 +990,7 @@ export default function CreateInvoicePage() {
                     <Label className="text-sm text-[#2D2D2D] font-medium mb-2 block">Customer Notes</Label>
                     <Input 
                       placeholder="e.g., Billing Department, Account #12345"
-                      className="h-11"
+                      className="h-11 rounded-xl border-[#E4E6EB] hover:border-[#0D9488] focus:border-[#0D9488] transition-colors"
                       value={customerData.notes}
                       onChange={(e) => setCustomerData({...customerData, notes: e.target.value})}
                     />
@@ -703,20 +1001,21 @@ export default function CreateInvoicePage() {
           </TabsContent>
 
           {/* Tab 3: Line Items - Enhanced */}
-          <TabsContent value="items" className="space-y-10 mt-8">
-            <div>
+          <TabsContent value="items" className="space-y-8 mt-8">
+            <div className="rounded-2xl p-6" style={{ backgroundColor: 'rgba(247, 249, 250, 0.5)' }}>
               <div className="flex items-center justify-between mb-6">
                 <div>
-                  <h2 className="text-lg font-semibold text-[#2D2D2D]">Line Items</h2>
+                  <h2 className="text-base font-semibold text-[#2D2D2D]">Line Items</h2>
                   <p className="text-sm text-[#B0B3B8] mt-1">Add products or services with detailed pricing</p>
                 </div>
                 <Button 
-                  className="rounded-full px-5 h-9"
+                  size="sm"
+                  className="rounded-full px-5 h-9 shadow-sm transition-all hover:shadow-md hover:scale-105"
                   style={{ backgroundColor: '#14462a', color: 'white', fontWeight: 500 }}
                   onClick={addLineItem}
                 >
-                  <Add size={16} className="mr-2" />
-                  Add Line Item
+                  <Add size={16} color="currentColor" className="mr-2" />
+                  Add Item
                 </Button>
               </div>
               
@@ -735,11 +1034,14 @@ export default function CreateInvoicePage() {
                   <div className="col-span-1">
                     <Label className="text-xs text-[#B0B3B8] font-semibold uppercase tracking-wide">Tax %</Label>
                   </div>
-                  <div className="col-span-2">
-                    <Label className="text-xs text-[#B0B3B8] font-semibold uppercase tracking-wide">Discount</Label>
+                  <div className="col-span-1">
+                    <Label className="text-xs text-[#B0B3B8] font-semibold uppercase tracking-wide">Disc %</Label>
                   </div>
                   <div className="col-span-1">
                     <Label className="text-xs text-[#B0B3B8] font-semibold uppercase tracking-wide text-right block">Amount</Label>
+                  </div>
+                  <div className="col-span-1">
+                    <Label className="text-xs text-[#B0B3B8] font-semibold uppercase tracking-wide text-center block"></Label>
                   </div>
                 </div>
 
@@ -748,13 +1050,13 @@ export default function CreateInvoicePage() {
                   <div key={item.id} className="grid grid-cols-12 gap-4 items-start py-4 border-b border-[#E4E6EB]">
                     <div className="col-span-4 space-y-2">
                       <Select onValueChange={(value) => handleProductServiceSelect(item.id, value)}>
-                        <SelectTrigger className="border-[#E4E6EB] h-11 w-full">
+                        <SelectTrigger className="border-[#E4E6EB] h-11 w-full rounded-xl hover:border-[#14462a] transition-colors">
                           <SelectValue placeholder="Select product/service or type manually" />
                         </SelectTrigger>
                         <SelectContent align="start" className="w-[400px]">
                           <SelectItem value="custom">
                             <div className="flex items-center gap-2">
-                              <Add size={14} />
+                              <Add size={14} color="currentColor" />
                               <span>Enter manually</span>
                             </div>
                           </SelectItem>
@@ -764,7 +1066,7 @@ export default function CreateInvoicePage() {
                               <div className="flex flex-col items-start w-full">
                                 <span className="font-medium text-[#2D2D2D]">{product.name}</span>
                                 <div className="flex items-center gap-2 text-xs text-[#B0B3B8] mt-0.5">
-                                  <span className="font-semibold">₵{product.unitPrice.toFixed(2)}</span>
+                                  <span className="font-semibold">{maskAmount(`₵${product.unitPrice.toFixed(2)}`)}</span>
                                   <span>•</span>
                                   <span className="capitalize">{product.type}</span>
                                 </div>
@@ -773,90 +1075,119 @@ export default function CreateInvoicePage() {
                           ))}
                         </SelectContent>
                       </Select>
-                      <Input 
-                        placeholder="Service or product description"
-                        className="border-[#E4E6EB] h-11"
-                        value={item.description}
-                        onChange={(e) => updateLineItem(item.id, "description", e.target.value)}
-                      />
+                      <div>
+                        <Input 
+                          placeholder="Service or product description *"
+                          className={`h-11 rounded-xl transition-colors ${
+                            errors.lineItems?.[item.id]?.description 
+                              ? 'border-red-500 hover:border-red-500 focus:border-red-500' 
+                              : 'border-[#E4E6EB] hover:border-[#14462a] focus:border-[#14462a]'
+                          }`}
+                          value={item.description}
+                          onChange={(e) => updateLineItem(item.id, "description", e.target.value)}
+                        />
+                        {errors.lineItems?.[item.id]?.description && (
+                          <p className="text-xs text-red-500 mt-1 flex items-center gap-1">
+                            <Warning2 size={10} />
+                            {errors.lineItems[item.id].description}
+                          </p>
+                        )}
+                      </div>
                       <Textarea 
                         placeholder="Additional details (optional)"
-                        className="border-[#E4E6EB] resize-none text-xs"
+                        className="border-[#E4E6EB] resize-none text-xs rounded-xl hover:border-[#14462a] focus:border-[#14462a] transition-colors"
                         rows={2}
                         value={item.details}
                         onChange={(e) => updateLineItem(item.id, "details", e.target.value)}
                       />
                     </div>
                     <div className="col-span-2">
-                      <Input 
-                        type="number"
-                        min="1"
-                        className="border-[#E4E6EB] h-11"
+                      <NumberInput 
+                        min={1}
+                        step={1}
+                        placeholder="1"
+                        className={`h-11 rounded-xl transition-colors ${
+                          errors.lineItems?.[item.id]?.quantity 
+                            ? 'border-red-500 hover:border-red-500 focus:border-red-500' 
+                            : 'border-[#E4E6EB] hover:border-[#14462a] focus:border-[#14462a]'
+                        }`}
                         value={item.quantity === 0 ? '' : item.quantity}
                         onChange={(e) => updateLineItem(item.id, "quantity", e.target.value === '' ? 0 : parseFloat(e.target.value))}
                       />
+                      {errors.lineItems?.[item.id]?.quantity && (
+                        <p className="text-xs text-red-500 mt-1 flex items-center gap-1">
+                          <Warning2 size={10} />
+                          Min: 1
+                        </p>
+                      )}
                     </div>
                     <div className="col-span-2">
                       <Input 
                         type="number"
-                        min="0"
-                        step="0.01"
+                        min={0}
+                        step={0.01}
                         placeholder="0.00"
-                        className="border-[#E4E6EB] h-11"
+                        className={`h-11 rounded-xl transition-colors ${
+                          errors.lineItems?.[item.id]?.unitPrice 
+                            ? 'border-red-500 hover:border-red-500 focus:border-red-500' 
+                            : 'border-[#E4E6EB] hover:border-[#14462a] focus:border-[#14462a]'
+                        }`}
                         value={item.unitPrice === 0 ? '' : item.unitPrice}
                         onChange={(e) => updateLineItem(item.id, "unitPrice", e.target.value === '' ? 0 : parseFloat(e.target.value))}
                       />
+                      {errors.lineItems?.[item.id]?.unitPrice && (
+                        <p className="text-xs text-red-500 mt-1 flex items-center gap-1">
+                          <Warning2 size={10} />
+                          Required
+                        </p>
+                      )}
                     </div>
                     <div className="col-span-1">
                       <Input 
                         type="number"
-                        min="0"
-                        max="100"
+                        min={0}
+                        max={100}
+                        step={1}
                         placeholder="%"
-                        className="border-[#E4E6EB] h-11"
+                        className="border-[#E4E6EB] h-11 rounded-xl hover:border-[#14462a] focus:border-[#14462a] transition-colors"
                         value={item.tax === 0 ? '' : item.tax}
                         onChange={(e) => updateLineItem(item.id, "tax", e.target.value === '' ? 0 : parseFloat(e.target.value))}
                       />
                     </div>
-                    <div className="col-span-2">
-                      <div className="flex gap-2">
+                    <div className="col-span-1">
+                      <div className="relative">
                         <Input 
                           type="number"
-                          min="0"
-                          step="0.01"
+                          min={0}
+                          max={100}
+                          step={0.01}
                           placeholder="0"
-                          className="border-[#E4E6EB] h-11 flex-1"
+                          className="border-[#E4E6EB] h-11 rounded-xl hover:border-[#14462a] focus:border-[#14462a] transition-colors pr-7"
                           value={item.discount === 0 ? '' : item.discount}
                           onChange={(e) => updateLineItem(item.id, "discount", e.target.value === '' ? 0 : parseFloat(e.target.value))}
                         />
-                        <Select 
-                          value={item.discountType} 
-                          onValueChange={(value) => updateLineItem(item.id, "discountType", value)}
-                        >
-                          <SelectTrigger className="border-[#E4E6EB] h-11 w-16">
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="percent">%</SelectItem>
-                            <SelectItem value="fixed">₵</SelectItem>
-                          </SelectContent>
-                        </Select>
+                        <span className="absolute right-2.5 top-1/2 -translate-y-1/2 text-sm text-[#B0B3B8]">%</span>
                       </div>
                     </div>
-                    <div className="col-span-1 flex items-center justify-between h-11">
-                      <div className="text-right w-full">
-                        <p className="text-sm font-semibold text-[#2D2D2D]">
-                          ₵{calculateLineTotal(item).toFixed(2)}
-                        </p>
-                      </div>
+                    <div className="col-span-1 flex items-center justify-end h-11">
+                      <p className="text-sm font-semibold text-[#2D2D2D]">
+                        {maskAmount(`₵${calculateLineTotal(item).toFixed(2)}`)}
+                      </p>
+                    </div>
+                    <div className="col-span-1 flex items-center justify-center h-11">
                       <Button 
                         variant="ghost" 
                         size="sm" 
-                        className="h-8 w-8 p-0 -mr-2"
+                        className={`h-9 w-9 p-0 rounded-lg transition-colors ${
+                          lineItems.length === 1 
+                            ? 'opacity-30 cursor-not-allowed' 
+                            : 'hover:bg-red-50'
+                        }`}
                         onClick={() => removeLineItem(item.id)}
                         disabled={lineItems.length === 1}
+                        title={lineItems.length === 1 ? "Cannot remove the only item" : "Remove item"}
                       >
-                        <Trash size={16} className={`${lineItems.length === 1 ? 'text-[#E4E6EB]' : 'text-[#B0B3B8] hover:text-red-600'}`} />
+                        <Trash2 className={`h-4 w-4 ${lineItems.length === 1 ? 'text-gray-300' : 'text-red-500'}`} />
                       </Button>
                     </div>
                   </div>
@@ -864,30 +1195,26 @@ export default function CreateInvoicePage() {
               </div>
             </div>
 
-            <div className="h-px bg-[#E4E6EB]" />
-
             {/* Totals Summary */}
-            <div>
+            <div className="rounded-2xl p-6" style={{ backgroundColor: 'rgba(20, 70, 42, 0.03)' }}>
               <div className="flex justify-end">
-                <div className="w-[450px] space-y-4">
-                  <div className="space-y-3">
-                    <div className="flex justify-between py-2">
-                      <span className="text-sm text-[#B0B3B8]">Subtotal</span>
-                      <span className="text-sm font-medium text-[#2D2D2D]">₵{totals.subtotal.toFixed(2)}</span>
-                    </div>
-                    <div className="flex justify-between py-2">
-                      <span className="text-sm text-[#B0B3B8]">Total Tax</span>
-                      <span className="text-sm font-medium text-[#2D2D2D]">₵{totals.totalTax.toFixed(2)}</span>
-                    </div>
-                    <div className="flex justify-between py-2">
-                      <span className="text-sm text-[#B0B3B8]">Total Discount</span>
-                      <span className="text-sm font-medium text-green-600">-₵{totals.totalDiscount.toFixed(2)}</span>
-                    </div>
+                <div className="w-[400px] space-y-3">
+                  <div className="flex justify-between py-2">
+                    <span className="text-sm text-[#65676B]">Subtotal</span>
+                    <span className="text-sm font-medium text-[#2D2D2D]">{maskAmount(`₵${totals.subtotal.toFixed(2)}`)}</span>
+                  </div>
+                  <div className="flex justify-between py-2">
+                    <span className="text-sm text-[#65676B]">Total Tax</span>
+                    <span className="text-sm font-medium text-[#2D2D2D]">{maskAmount(`₵${totals.totalTax.toFixed(2)}`)}</span>
+                  </div>
+                  <div className="flex justify-between py-2">
+                    <span className="text-sm text-[#65676B]">Total Discount</span>
+                    <span className="text-sm font-medium text-[#0D9488]">{maskAmount(`-₵${totals.totalDiscount.toFixed(2)}`)}</span>
                   </div>
                   <div className="h-px bg-[#E4E6EB]" />
-                  <div className="flex justify-between py-3 bg-[#FAFAFA] px-4 rounded-lg">
-                    <span className="text-lg font-semibold text-[#2D2D2D]">Total Amount</span>
-                    <span className="text-lg font-bold text-[#2D2D2D]">₵{totals.total.toFixed(2)}</span>
+                  <div className="flex justify-between py-3 bg-white px-4 rounded-xl border border-[#E4E6EB]">
+                    <span className="text-base font-semibold text-[#2D2D2D]">Total Amount</span>
+                    <span className="text-xl font-bold text-[#14462a]">{maskAmount(`₵${totals.total.toFixed(2)}`)}</span>
                   </div>
                   <p className="text-xs text-[#B0B3B8] text-right">Amount due by Dec 16, 2025</p>
                 </div>
@@ -896,13 +1223,23 @@ export default function CreateInvoicePage() {
           </TabsContent>
 
           {/* Tab 4: Payment - Enhanced */}
-          <TabsContent value="payment" className="space-y-10 mt-8">
-            <div>
-              <div className="mb-6">
-                <h2 className="text-lg font-semibold text-[#2D2D2D] mb-1">Accepted Payment Methods</h2>
-                <p className="text-sm text-[#B0B3B8]">Select all payment methods you accept for this invoice</p>
+          <TabsContent value="payment" className="space-y-8 mt-8">
+            <div className="rounded-2xl p-6" style={{ backgroundColor: 'rgba(247, 249, 250, 0.5)' }}>
+              <div className="mb-5">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h2 className="text-base font-semibold text-[#2D2D2D] mb-1">Accepted Payment Methods</h2>
+                    <p className="text-sm text-[#B0B3B8]">Select all payment methods you accept for this invoice</p>
+                  </div>
+                  {errors.paymentMethods && (
+                    <p className="text-sm text-red-500 flex items-center gap-1.5">
+                      <Warning2 size={14} />
+                      {errors.paymentMethods}
+                    </p>
+                  )}
+                </div>
               </div>
-              <div className="grid grid-cols-3 gap-4">
+              <div className="grid grid-cols-3 gap-3">
                 {[
                   { id: 'mtn', name: 'MTN Mobile Money', desc: 'Pay via MTN MoMo' },
                   { id: 'vodafone', name: 'Vodafone Cash', desc: 'Pay via Vodafone' },
@@ -916,10 +1253,10 @@ export default function CreateInvoicePage() {
                 ].map((method) => (
                   <div
                     key={method.id}
-                    className={`flex items-start gap-3 p-4 rounded-2xl border transition-all cursor-pointer ${
+                    className={`flex items-start gap-3 p-4 rounded-xl border-2 transition-all cursor-pointer hover:shadow-sm ${
                       paymentMethods.includes(method.id) 
-                        ? 'border-[#14462a] bg-[rgba(24,119,242,0.04)]' 
-                        : 'border-[#E4E6EB] hover:border-[#B0B3B8]'
+                        ? 'border-[#14462a] bg-[rgba(20,70,42,0.03)]' 
+                        : 'border-[#E4E6EB] hover:border-[#B0B3B8] bg-white'
                     }`}
                     onClick={() => togglePaymentMethod(method.id)}
                   >
@@ -943,18 +1280,16 @@ export default function CreateInvoicePage() {
               </div>
             </div>
 
-            <div className="h-px bg-[#E4E6EB]" />
-
-            <div>
-              <div className="mb-6">
-                <h2 className="text-lg font-semibold text-[#2D2D2D] mb-1">Currency Settings</h2>
+            <div className="rounded-2xl p-6" style={{ backgroundColor: 'rgba(13, 148, 136, 0.03)' }}>
+              <div className="mb-5">
+                <h2 className="text-base font-semibold text-[#2D2D2D] mb-1">Currency Settings</h2>
                 <p className="text-sm text-[#B0B3B8]">Configure primary and optional secondary currency</p>
               </div>
-              <div className="grid grid-cols-2 gap-6">
+              <div className="grid grid-cols-2 gap-5">
                 <div>
                   <Label className="text-sm text-[#2D2D2D] font-medium mb-2 block">Primary Currency*</Label>
                   <Select value={primaryCurrency} onValueChange={handlePrimaryCurrencyChange}>
-                    <SelectTrigger className="border-[#E4E6EB] h-11">
+                    <SelectTrigger className="border-[#E4E6EB] h-11 rounded-xl hover:border-[#0D9488] transition-colors">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -970,7 +1305,7 @@ export default function CreateInvoicePage() {
                 <div>
                   <Label className="text-sm text-[#2D2D2D] font-medium mb-2 block">Secondary Currency</Label>
                   <Select value={secondaryCurrency} onValueChange={handleSecondaryCurrencyChange}>
-                    <SelectTrigger className="border-[#E4E6EB] h-11">
+                    <SelectTrigger className="border-[#E4E6EB] h-11 rounded-xl hover:border-[#0D9488] transition-colors">
                       <SelectValue placeholder="None (optional)" />
                     </SelectTrigger>
                     <SelectContent>
@@ -991,7 +1326,7 @@ export default function CreateInvoicePage() {
                     <Input 
                       type="text"
                       placeholder="Select secondary currency"
-                      className="border-[#E4E6EB] h-11 bg-[#F9F9F9]"
+                      className="border-[#E4E6EB] h-11 bg-[#F9F9F9] rounded-xl"
                       value={exchangeRate}
                       readOnly
                       disabled={!secondaryCurrency || secondaryCurrency === "none"}
@@ -1011,25 +1346,36 @@ export default function CreateInvoicePage() {
                 </div>
                 <div>
                   <Label className="text-sm text-[#2D2D2D] font-medium mb-2 block">Exchange Rate Date</Label>
-                  <Button 
-                    variant="outline" 
-                    className="w-full h-11 justify-start text-left border-[#E4E6EB] font-normal rounded-full"
-                  >
-                    <Calendar size={16} className="mr-2 text-[#B0B3B8]" />
-                    Nov 16, 2025
-                  </Button>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button 
+                        variant="outline" 
+                        className="w-full h-11 justify-start text-left border-[#E4E6EB] font-normal rounded-xl hover:border-[#0D9488] transition-colors bg-white"
+                      >
+                        <Calendar size={16} color="#B0B3B8" className="mr-2" />
+                        {exchangeRateDate ? format(exchangeRateDate, "MMM d, yyyy") : "Select date"}
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <CalendarComponent
+                        mode="single"
+                        selected={exchangeRateDate}
+                        onSelect={(date) => date && setExchangeRateDate(date)}
+                        showOutsideDays={false}
+                        initialFocus
+                      />
+                    </PopoverContent>
+                  </Popover>
                 </div>
               </div>
             </div>
 
-            <div className="h-px bg-[#E4E6EB]" />
-
-            <div>
-              <div className="mb-6">
-                <h2 className="text-lg font-semibold text-[#2D2D2D] mb-1">Payment Reminders</h2>
+            <div className="rounded-2xl p-6" style={{ backgroundColor: 'rgba(245, 158, 11, 0.03)' }}>
+              <div className="mb-5">
+                <h2 className="text-base font-semibold text-[#2D2D2D] mb-1">Payment Reminders</h2>
                 <p className="text-sm text-[#B0B3B8]">Automatically send payment reminders to customer</p>
               </div>
-              <div className="space-y-4">
+              <div className="space-y-3">
                 {[
                   { id: 'before-7', label: 'Send reminder 7 days before due date', desc: 'Gentle reminder email' },
                   { id: 'due-date', label: 'Send reminder on due date', desc: 'Payment due notification' },
@@ -1037,10 +1383,10 @@ export default function CreateInvoicePage() {
                 ].map((reminder) => (
                   <div
                     key={reminder.id}
-                    className={`flex items-start gap-3 p-4 rounded-2xl border transition-all cursor-pointer ${
+                    className={`flex items-start gap-3 p-4 rounded-xl border-2 transition-all cursor-pointer hover:shadow-sm ${
                       paymentReminders.includes(reminder.id)
-                        ? 'border-[#14462a] bg-[rgba(24,119,242,0.04)]'
-                        : 'border-[#E4E6EB] hover:border-[#B0B3B8]'
+                        ? 'border-[#F59E0B] bg-[rgba(245,158,11,0.03)]'
+                        : 'border-[#E4E6EB] hover:border-[#B0B3B8] bg-white'
                     }`}
                     onClick={() => togglePaymentReminder(reminder.id)}
                   >
@@ -1066,18 +1412,18 @@ export default function CreateInvoicePage() {
           </TabsContent>
 
           {/* Tab 5: Additional - Enhanced */}
-          <TabsContent value="additional" className="space-y-10 mt-8">
-            <div>
-              <div className="mb-6">
-                <h2 className="text-lg font-semibold text-[#2D2D2D] mb-1">Notes & Instructions</h2>
+          <TabsContent value="additional" className="space-y-8 mt-8">
+            <div className="rounded-2xl p-6" style={{ backgroundColor: 'rgba(247, 249, 250, 0.5)' }}>
+              <div className="mb-5">
+                <h2 className="text-base font-semibold text-[#2D2D2D] mb-1">Notes & Instructions</h2>
                 <p className="text-sm text-[#B0B3B8]">Add custom notes or payment instructions for your client</p>
               </div>
-              <div className="space-y-6">
+              <div className="space-y-5">
                 <div>
                   <Label className="text-sm text-[#2D2D2D] font-medium mb-2 block">Invoice Notes</Label>
                   <Textarea 
                     placeholder="Add any additional notes, thank you message, or special instructions...&#10;&#10;Example: Thank you for your business! Please include invoice number in payment reference."
-                    className="border-[#E4E6EB] resize-none"
+                    className="border-[#E4E6EB] resize-none rounded-xl hover:border-[#14462a] focus:border-[#14462a] transition-colors"
                     rows={5}
                   />
                 </div>
@@ -1085,42 +1431,38 @@ export default function CreateInvoicePage() {
                   <Label className="text-sm text-[#2D2D2D] font-medium mb-2 block">Payment Instructions</Label>
                   <Textarea 
                     placeholder="Specific payment instructions for this invoice...&#10;&#10;Example: Bank Name: ABC Bank&#10;Account Number: 1234567890&#10;Account Name: Your Business Name"
-                    className="border-[#E4E6EB] resize-none"
+                    className="border-[#E4E6EB] resize-none rounded-xl hover:border-[#14462a] focus:border-[#14462a] transition-colors"
                     rows={5}
                   />
                 </div>
               </div>
             </div>
 
-            <div className="h-px bg-[#E4E6EB]" />
-
-            <div>
-              <div className="mb-6">
-                <h2 className="text-lg font-semibold text-[#2D2D2D] mb-1">Terms & Conditions</h2>
+            <div className="rounded-2xl p-6" style={{ backgroundColor: 'rgba(247, 249, 250, 0.5)' }}>
+              <div className="mb-5">
+                <h2 className="text-base font-semibold text-[#2D2D2D] mb-1">Terms & Conditions</h2>
                 <p className="text-sm text-[#B0B3B8]">Standard terms that will appear on the invoice</p>
               </div>
               <Textarea 
                 placeholder="Enter your standard terms and conditions...&#10;&#10;Example:&#10;1. Payment is due within 30 days of invoice date&#10;2. Late payments may incur additional fees&#10;3. All prices are in Ghana Cedis (GHS)&#10;4. Goods remain property of seller until full payment"
-                className="border-[#E4E6EB] resize-none"
+                className="border-[#E4E6EB] resize-none rounded-xl hover:border-[#14462a] focus:border-[#14462a] transition-colors"
                 rows={8}
               />
             </div>
 
-            <div className="h-px bg-[#E4E6EB]" />
-
-            <div>
-              <div className="mb-6">
-                <h2 className="text-lg font-semibold text-[#2D2D2D] mb-1">Payment Policies</h2>
+            <div className="rounded-2xl p-6" style={{ backgroundColor: 'rgba(13, 148, 136, 0.03)' }}>
+              <div className="mb-5">
+                <h2 className="text-base font-semibold text-[#2D2D2D] mb-1">Payment Policies</h2>
                 <p className="text-sm text-[#B0B3B8]">Configure early payment discounts and late payment fees</p>
               </div>
-              <div className="space-y-6">
+              <div className="space-y-5">
                 <div>
                   <Label className="text-sm text-[#2D2D2D] font-medium mb-3 block">Early Payment Discount</Label>
                   <div className="grid grid-cols-3 gap-4">
                     <div>
                       <Label className="text-xs text-[#B0B3B8] mb-2 block">Discount Type</Label>
                       <Select>
-                        <SelectTrigger className="border-[#E4E6EB] h-11">
+                        <SelectTrigger className="border-[#E4E6EB] h-11 rounded-xl hover:border-[#0D9488] transition-colors">
                           <SelectValue placeholder="None" />
                         </SelectTrigger>
                         <SelectContent>
@@ -1134,16 +1476,20 @@ export default function CreateInvoicePage() {
                       <Label className="text-xs text-[#B0B3B8] mb-2 block">Discount Amount</Label>
                       <Input 
                         type="number"
+                        min={0}
+                        step={1}
                         placeholder="e.g., 5 for 5%"
-                        className="border-[#E4E6EB] h-11"
+                        className="border-[#E4E6EB] h-11 rounded-xl hover:border-[#0D9488] focus:border-[#0D9488] transition-colors"
                       />
                     </div>
                     <div>
                       <Label className="text-xs text-[#B0B3B8] mb-2 block">Days Before Due</Label>
                       <Input 
                         type="number"
+                        min={0}
+                        step={1}
                         placeholder="e.g., 7 days"
-                        className="border-[#E4E6EB] h-11"
+                        className="border-[#E4E6EB] h-11 rounded-xl hover:border-[#0D9488] focus:border-[#0D9488] transition-colors"
                       />
                     </div>
                   </div>
@@ -1156,7 +1502,7 @@ export default function CreateInvoicePage() {
                     <div>
                       <Label className="text-xs text-[#B0B3B8] mb-2 block">Fee Type</Label>
                       <Select>
-                        <SelectTrigger className="border-[#E4E6EB] h-11">
+                        <SelectTrigger className="border-[#E4E6EB] h-11 rounded-xl hover:border-[#0D9488] transition-colors">
                           <SelectValue placeholder="None" />
                         </SelectTrigger>
                         <SelectContent>
@@ -1170,16 +1516,20 @@ export default function CreateInvoicePage() {
                       <Label className="text-xs text-[#B0B3B8] mb-2 block">Fee Amount</Label>
                       <Input 
                         type="number"
+                        min={0}
+                        step={1}
                         placeholder="e.g., 10 for 10%"
-                        className="border-[#E4E6EB] h-11"
+                        className="border-[#E4E6EB] h-11 rounded-xl hover:border-[#0D9488] focus:border-[#0D9488] transition-colors"
                       />
                     </div>
                     <div>
                       <Label className="text-xs text-[#B0B3B8] mb-2 block">Days After Due</Label>
                       <Input 
                         type="number"
+                        min={0}
+                        step={1}
                         placeholder="e.g., 7 days"
-                        className="border-[#E4E6EB] h-11"
+                        className="border-[#E4E6EB] h-11 rounded-xl hover:border-[#0D9488] focus:border-[#0D9488] transition-colors"
                       />
                     </div>
                   </div>
@@ -1188,15 +1538,13 @@ export default function CreateInvoicePage() {
               </div>
             </div>
 
-            <div className="h-px bg-[#E4E6EB]" />
-
-            <div>
-              <div className="mb-6">
-                <h2 className="text-lg font-semibold text-[#2D2D2D] mb-1">Attachments</h2>
+            <div className="rounded-2xl p-6" style={{ backgroundColor: 'rgba(247, 249, 250, 0.5)' }}>
+              <div className="mb-5">
+                <h2 className="text-base font-semibold text-[#2D2D2D] mb-1">Attachments</h2>
                 <p className="text-sm text-[#B0B3B8]">Attach supporting documents to this invoice</p>
               </div>
-              <div className="border-2 border-solid border-[#E4E6EB] rounded-lg p-8 text-center hover:border-[#14462a] transition-colors cursor-pointer">
-                <Add size={32} className="text-[#B0B3B8] mx-auto mb-3" />
+              <div className="border-2 border-dashed border-[#E4E6EB] rounded-xl p-8 text-center hover:border-[#14462a] hover:bg-[rgba(20,70,42,0.02)] transition-all cursor-pointer">
+                <Add size={32} color="#B0B3B8" className="mx-auto mb-3" />
                 <p className="text-sm font-medium text-[#2D2D2D] mb-1">Click to upload files</p>
                 <p className="text-xs text-[#B0B3B8]">PDF, PNG, JPG up to 10MB each</p>
               </div>

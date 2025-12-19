@@ -16,10 +16,9 @@ import {
   DocumentDownload, 
   Send2, 
   Edit2, 
-  DollarSquare, 
-  TickSquare, 
+  TickCircle, 
   Clock,
-  DocumentText,
+  Receipt21,
   Sms,
   Call,
   Building,
@@ -30,17 +29,22 @@ import {
   Message,
   Pause,
   Document,
-  CloseSquare,
+  CloseCircle,
   Printer
 } from "iconsax-react";
+import { CedisCircle } from "@/components/icons/cedis-icon";
 import Link from "next/link";
-import { use, useState } from "react";
+import { use, useState, useEffect } from "react";
+import { useBalanceVisibility } from "@/contexts/balance-visibility-context";
 
 export default function InvoiceDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
   const [copiedLink, setCopiedLink] = useState(false);
   const [copiedPaymentLink, setCopiedPaymentLink] = useState(false);
   const [activeAction, setActiveAction] = useState<string | null>(null);
+  const [daysOverdue, setDaysOverdue] = useState<number>(0);
+  const [isOverdue, setIsOverdue] = useState<boolean>(false);
+  const { maskAmount } = useBalanceVisibility();
 
   const copyPaymentLink = () => {
     const paymentUrl = `${window.location.origin}/pay/${id}`;
@@ -49,19 +53,15 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
     setTimeout(() => setCopiedPaymentLink(false), 2000);
   };
 
-  // Format invoice number (e.g., INV-2024-001 becomes #2024001)
+  // Format invoice number (displays the PL- format)
   const formatInvoiceNumber = (invoiceNumber: string) => {
-    const parts = invoiceNumber.split('-');
-    if (parts.length === 3) {
-      return `#${parts[1]}${parts[2]}`;
-    }
     return invoiceNumber;
   };
 
   // Mock data - will be replaced with API call
   const invoice = {
     id: id,
-    invoiceNumber: "INV-2024-001",
+    invoiceNumber: "PL-A7K9X2",
     issueDate: "Mar 21, 2023, 3:12 AM",
     dueDate: "June 24, 11:59 PM",
     paymentTerms: "Net 30",
@@ -162,20 +162,26 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
   const balanceDue = total - amountPaid;
   const paidPercentage = amountPaid > 0 ? Math.round((amountPaid / total) * 100) : 0;
   
-  // Check if overdue
+  // Check if overdue - using useEffect to avoid hydration mismatch
   const dueDate = new Date(invoice.dueDate);
-  const now = new Date();
-  const isOverdue = now > dueDate && balanceDue > 0;
-  const daysOverdue = isOverdue ? Math.floor((now.getTime() - dueDate.getTime()) / (1000 * 60 * 60 * 24)) : 0;
+  
+  useEffect(() => {
+    const now = new Date();
+    const overdue = now > dueDate && balanceDue > 0;
+    setIsOverdue(overdue);
+    if (overdue) {
+      setDaysOverdue(Math.floor((now.getTime() - dueDate.getTime()) / (1000 * 60 * 60 * 24)));
+    }
+  }, [dueDate, balanceDue]);
 
   const getActivityIcon = (type: string) => {
     switch (type) {
       case "sent":
         return <Send2 size={12} color="#14462a" />;
       case "finalized":
-        return <TickSquare size={12} color="#0D9488" />;
+        return <TickCircle size={12} color="#0D9488" />;
       case "created":
-        return <DocumentText size={12} color="#14462a" />;
+        return <Receipt21 size={12} color="#14462a" />;
       default:
         return <div className="h-2 w-2 rounded-full bg-white" />;
     }
@@ -212,13 +218,13 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
               </h1>
               <div className="flex items-center gap-2 mt-1.5">
                 <p className="text-base" style={{ color: '#2D2D2D', fontWeight: 500 }}>
-                  ₵{balanceDue.toFixed(2)} due
+                  {maskAmount(`₵${balanceDue.toFixed(2)}`)} due
                 </p>
                 {amountPaid > 0 && (
                   <>
                     <span style={{ color: '#B0B3B8' }}>•</span>
                     <p className="text-sm" style={{ color: '#B0B3B8' }}>
-                      ₵{amountPaid.toFixed(2)} paid
+                      {maskAmount(`₵${amountPaid.toFixed(2)}`)} paid
                     </p>
                   </>
                 )}
@@ -242,7 +248,7 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
                 className="rounded-full px-5 h-9" 
                 style={{ backgroundColor: '#14462a', color: 'white', fontWeight: 500 }}
               >
-                <DollarSquare size={14} className="mr-1.5" />
+                <CedisCircle size={14} color="currentColor" className="mr-1.5" />
                 Record Payment
               </Button>
             )}
@@ -253,7 +259,7 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
                 className="rounded-full px-5 h-9 hover:bg-[rgba(240,242,245,0.8)]" 
                 style={{ borderColor: '#DC2626', color: '#DC2626', fontWeight: 400 }}
               >
-                <Sms size={14} className="mr-1.5" />
+                <Sms size={14} color="currentColor" className="mr-1.5" />
                 Send Reminder
               </Button>
             )}
@@ -264,7 +270,7 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
               style={{ borderColor: '#E4E6EB', color: '#2D2D2D', fontWeight: 400 }}
               onClick={copyPaymentLink}
             >
-              <Copy size={14} className="mr-1.5" />
+              <Copy size={14} color="currentColor" className="mr-1.5" />
               {copiedPaymentLink ? 'Copied!' : 'Copy Payment Link'}
             </Button>
           </div>
@@ -297,7 +303,7 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
             asChild
           >
             <Link href={`/invoices/${id}/preview`}>
-              <Eye size={14} className="mr-1.5" />
+              <Eye size={14} color="currentColor" className="mr-1.5" />
               Preview
             </Link>
           </Button>
@@ -324,7 +330,7 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
             }}
             onClick={() => setActiveAction('edit')}
           >
-            <Edit2 size={14} className="mr-1.5" />
+            <Edit2 size={14} color="currentColor" className="mr-1.5" />
             Edit
           </Button>
           <Button 
@@ -350,7 +356,7 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
             }}
             onClick={() => setActiveAction('download')}
           >
-            <DocumentDownload size={14} className="mr-1.5" />
+            <DocumentDownload size={14} color="currentColor" className="mr-1.5" />
             Download PDF
           </Button>
           <Button 
@@ -376,7 +382,7 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
             }}
             onClick={() => setActiveAction('attachment')}
           >
-            <Document size={14} className="mr-1.5" />
+            <Document size={14} color="currentColor" className="mr-1.5" />
             Add attachment
           </Button>
           <Button 
@@ -402,7 +408,7 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
             }}
             onClick={() => setActiveAction('note')}
           >
-            <Message size={14} className="mr-1.5" />
+            <Message size={14} color="currentColor" className="mr-1.5" />
             Add note
           </Button>
           <DropdownMenu onOpenChange={(open) => setActiveAction(open ? 'more' : null)}>
@@ -429,12 +435,12 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
                   }
                 }}
               >
-                <More size={14} className="mr-1.5" />
+                <More size={14} color="currentColor" className="mr-1.5" />
                 More
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="rounded-2xl w-56 p-2" style={{ boxShadow: '0 4px 16px rgba(0, 0, 0, 0.1)' }}>
-              <DropdownMenuItem className="gap-3 rounded-xl p-3 cursor-pointer group transition-all hover:bg-[rgba(24,119,242,0.04)]">
+            <DropdownMenuContent align="end" className="rounded-2xl w-56 p-2" style={{ boxShadow: '0 4px 20px rgba(0, 0, 0, 0.12)', border: '1px solid rgba(0, 0, 0, 0.06)' }}>
+              <DropdownMenuItem className="gap-3 rounded-xl p-3 cursor-pointer group transition-all hover:bg-[rgba(20,70,42,0.06)]">
                 <div 
                   className="h-8 w-8 rounded-full flex items-center justify-center transition-all"
                   style={{ backgroundColor: 'rgba(20, 70, 42, 0.08)' }}
@@ -443,7 +449,7 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
                 </div>
                 <span className="text-sm font-medium group-hover:text-[#14462a] transition-all" style={{ color: '#2D2D2D' }}>Duplicate</span>
               </DropdownMenuItem>
-              <DropdownMenuItem className="gap-3 rounded-xl p-3 cursor-pointer group transition-all hover:bg-[rgba(24,119,242,0.04)]">
+              <DropdownMenuItem className="gap-3 rounded-xl p-3 cursor-pointer group transition-all hover:bg-[rgba(20,70,42,0.06)]">
                 <div 
                   className="h-8 w-8 rounded-full flex items-center justify-center transition-all"
                   style={{ backgroundColor: 'rgba(20, 70, 42, 0.08)' }}
@@ -452,7 +458,7 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
                 </div>
                 <span className="text-sm font-medium group-hover:text-[#14462a] transition-all" style={{ color: '#2D2D2D' }}>Print</span>
               </DropdownMenuItem>
-              <DropdownMenuItem className="gap-3 rounded-xl p-3 cursor-pointer group transition-all hover:bg-[rgba(24,119,242,0.04)]">
+              <DropdownMenuItem className="gap-3 rounded-xl p-3 cursor-pointer group transition-all hover:bg-[rgba(20,70,42,0.06)]">
                 <div 
                   className="h-8 w-8 rounded-full flex items-center justify-center transition-all"
                   style={{ backgroundColor: 'rgba(13, 148, 136, 0.08)' }}
@@ -467,7 +473,7 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
                   className="h-8 w-8 rounded-full flex items-center justify-center transition-all"
                   style={{ backgroundColor: 'rgba(220, 38, 38, 0.08)' }}
                 >
-                  <CloseSquare size={16} color="#DC2626" />
+                  <CloseCircle size={16} color="#DC2626" />
                 </div>
                 <span className="text-sm font-medium group-hover:text-red-600 transition-all" style={{ color: '#DC2626' }}>Cancel invoice</span>
               </DropdownMenuItem>
@@ -489,7 +495,7 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
               </p>
             </div>
             <Button size="sm" className="rounded-full px-5 py-2 h-auto" style={{ backgroundColor: '#14462a', color: 'white', fontWeight: 500 }}>
-              <DollarSquare size={14} className="mr-1.5" />
+              <CedisCircle size={14} color="currentColor" className="mr-1.5" />
               Record Payment
             </Button>
           </div>
@@ -578,10 +584,10 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
                   <p className="text-base" style={{ color: '#2D2D2D', fontWeight: 500 }}>{item.quantity}</p>
                 </div>
                 <div className="col-span-2 text-right">
-                  <p className="text-base" style={{ color: '#2D2D2D', fontWeight: 500 }}>₵{item.unitPrice.toFixed(2)}</p>
+                  <p className="text-base" style={{ color: '#2D2D2D', fontWeight: 500 }}>{maskAmount(`₵${item.unitPrice.toFixed(2)}`)}</p>
                 </div>
                 <div className="col-span-2 text-right">
-                  <p className="text-base" style={{ color: '#2D2D2D', fontWeight: 500 }}>₵{calculateItemTotal(item).toFixed(2)}</p>
+                  <p className="text-base" style={{ color: '#2D2D2D', fontWeight: 500 }}>{maskAmount(`₵${calculateItemTotal(item).toFixed(2)}`)}</p>
                 </div>
               </div>
             ))}
@@ -593,33 +599,33 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
           <div className="w-full max-w-sm space-y-3">
             <div className="grid grid-cols-2 gap-8 items-center py-2">
               <span className="text-base text-right" style={{ color: '#B0B3B8' }}>Subtotal</span>
-              <span className="text-base text-right" style={{ color: '#2D2D2D', fontWeight: 500 }}>₵{subtotal.toFixed(2)}</span>
+              <span className="text-base text-right" style={{ color: '#2D2D2D', fontWeight: 500 }}>{maskAmount(`₵${subtotal.toFixed(2)}`)}</span>
             </div>
             {totalTax > 0 && (
               <div className="grid grid-cols-2 gap-8 items-center py-2">
                 <span className="text-base text-right" style={{ color: '#B0B3B8' }}>Tax</span>
-                <span className="text-base text-right" style={{ color: '#2D2D2D', fontWeight: 500 }}>₵{totalTax.toFixed(2)}</span>
+                <span className="text-base text-right" style={{ color: '#2D2D2D', fontWeight: 500 }}>{maskAmount(`₵${totalTax.toFixed(2)}`)}</span>
               </div>
             )}
             {totalDiscount > 0 && (
               <div className="grid grid-cols-2 gap-8 items-center py-2">
                 <span className="text-base text-right" style={{ color: '#B0B3B8' }}>Discount</span>
-                <span className="text-base text-right" style={{ color: '#2D2D2D', fontWeight: 500 }}>-₵{totalDiscount.toFixed(2)}</span>
+                <span className="text-base text-right" style={{ color: '#2D2D2D', fontWeight: 500 }}>{maskAmount(`-₵${totalDiscount.toFixed(2)}`)}</span>
               </div>
             )}
             <div className="grid grid-cols-2 gap-8 items-center py-2">
               <span className="text-base text-right" style={{ color: '#2D2D2D', fontWeight: 500 }}>Total</span>
-              <span className="text-base text-right" style={{ color: '#2D2D2D', fontWeight: 500 }}>₵{total.toFixed(2)}</span>
+              <span className="text-base text-right" style={{ color: '#2D2D2D', fontWeight: 500 }}>{maskAmount(`₵${total.toFixed(2)}`)}</span>
             </div>
             {amountPaid > 0 && (
               <div className="grid grid-cols-2 gap-8 items-center py-2">
                 <span className="text-base text-right" style={{ color: '#B0B3B8' }}>Amount Paid</span>
-                <span className="text-base text-right" style={{ color: '#0D9488', fontWeight: 500 }}>-₵{amountPaid.toFixed(2)}</span>
+                <span className="text-base text-right" style={{ color: '#0D9488', fontWeight: 500 }}>{maskAmount(`-₵${amountPaid.toFixed(2)}`)}</span>
               </div>
             )}
             <div className="grid grid-cols-2 gap-8 items-center pt-4">
               <span className="text-base font-semibold text-right" style={{ color: '#2D2D2D' }}>Balance Due</span>
-              <span className="text-base font-bold text-right" style={{ color: balanceDue > 0 ? '#2D2D2D' : '#0D9488' }}>₵{balanceDue.toFixed(2)}</span>
+              <span className="text-base font-bold text-right" style={{ color: balanceDue > 0 ? '#2D2D2D' : '#0D9488' }}>{maskAmount(`₵${balanceDue.toFixed(2)}`)}</span>
             </div>
           </div>
         </div>
@@ -633,7 +639,7 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
                 <div key={payment.id} className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <div className="h-10 w-10 rounded-full flex items-center justify-center" style={{ backgroundColor: 'rgba(20, 70, 42, 0.08)' }}>
-                      <TickSquare size={18} color="#14462a" />
+                      <TickCircle size={18} color="#14462a" />
                     </div>
                     <div>
                       <p className="text-sm font-medium" style={{ color: '#2D2D2D' }}>
@@ -647,7 +653,7 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
                       </p>
                     </div>
                   </div>
-                  <p className="text-base font-medium" style={{ color: '#14462a' }}>₵{payment.amount.toFixed(2)}</p>
+                  <p className="text-base font-medium" style={{ color: '#14462a' }}>{maskAmount(`₵${payment.amount.toFixed(2)}`)}</p>
                 </div>
               ))}
             </div>
@@ -720,7 +726,7 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
                         e.currentTarget.style.color = '#2D2D2D';
                       }}
                     >
-                      <DocumentDownload size={14} className="mr-1.5" />
+                      <DocumentDownload size={14} color="currentColor" className="mr-1.5" />
                       Download
                     </Button>
                   </div>

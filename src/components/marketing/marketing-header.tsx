@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/ui/logo";
-import { HambergerMenu, CloseSquare, ArrowRight2 } from "iconsax-react";
+import { HambergerMenu, CloseCircle, ArrowRight2 } from "iconsax-react";
 import { marketingNavItems } from "@/lib/marketing-nav";
 
 export function MarketingHeader() {
@@ -100,7 +100,7 @@ export function MarketingHeader() {
             aria-label="Toggle navigation"
           >
             {mobileOpen ? (
-              <CloseSquare size={20} color="#14462a" variant="Bold" />
+              <CloseCircle size={20} color="#14462a" variant="Bold" />
             ) : (
               <HambergerMenu size={20} color="#374151" />
             )}

@@ -5,18 +5,41 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const badgeVariants = cva(
-  "inline-flex items-center justify-center rounded-full border px-2 py-0.5 text-xs font-medium w-fit whitespace-nowrap shrink-0 [&>svg]:size-3 gap-1 [&>svg]:pointer-events-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive transition-[color,box-shadow] overflow-hidden",
+  "inline-flex items-center justify-center rounded-full border px-2.5 py-1 text-xs font-medium w-fit whitespace-nowrap shrink-0 gap-1.5 [&>svg]:pointer-events-none transition-all duration-200 overflow-hidden",
   {
     variants: {
       variant: {
         default:
-          "border-transparent bg-primary text-primary-foreground [a&]:hover:bg-primary/90",
+          "border-transparent bg-[#14462a] text-white shadow-sm",
         secondary:
-          "border-transparent bg-secondary text-secondary-foreground [a&]:hover:bg-secondary/90",
+          "border-transparent bg-gray-100 text-gray-700 hover:bg-gray-200/80",
         destructive:
-          "border-transparent bg-destructive text-white [a&]:hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60",
+          "border-transparent bg-red-100 text-red-700 hover:bg-red-200/80",
         outline:
-          "text-foreground [a&]:hover:bg-accent [a&]:hover:text-accent-foreground",
+          "border-gray-200 text-gray-700 bg-white hover:bg-gray-50",
+        success:
+          "border-transparent bg-[#14462a]/10 text-[#14462a]",
+        warning:
+          "border-transparent bg-amber-100 text-amber-700",
+        info:
+          "border-transparent bg-blue-100 text-blue-700 hover:bg-blue-200/80",
+        // Status-specific variants
+        paid:
+          "border-transparent bg-[#14462a]/10 text-[#14462a]",
+        pending:
+          "border-transparent bg-amber-100 text-amber-700",
+        cancelled:
+          "border-transparent bg-gray-100 text-gray-600",
+        refunded:
+          "border-transparent bg-rose-100 text-rose-700",
+        failed:
+          "border-transparent bg-red-100 text-red-700",
+        partial:
+          "border-transparent bg-teal-100 text-teal-700",
+        verified:
+          "border-transparent bg-[#14462a]/10 text-[#14462a]",
+        flagged:
+          "border-transparent bg-red-100 text-red-700",
       },
     },
     defaultVariants: {
