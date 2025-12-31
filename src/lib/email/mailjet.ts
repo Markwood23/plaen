@@ -44,7 +44,8 @@ const MAILJET_SECRET_KEY = process.env.MAILJET_SECRET_KEY
 const SENDER_EMAIL = process.env.MAILJET_SENDER_EMAIL || 'noreply@plaen.app'
 const SENDER_NAME = process.env.MAILJET_SENDER_NAME || 'Plaen'
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://plaen.app'
-const EMAIL_LOGO_URL = process.env.MAILJET_LOGO_URL || 'https://plaen.co/logos/plaen-logo.svg'
+// Use hosted logo URL - email clients often block data URIs
+const EMAIL_LOGO_URL = process.env.MAILJET_LOGO_URL || `${APP_URL}/logos/plaen-logo.svg`
 
 // Brand colors
 const BRAND = {

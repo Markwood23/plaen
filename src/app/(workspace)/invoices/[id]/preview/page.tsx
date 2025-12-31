@@ -55,11 +55,12 @@ export default function InvoicePreviewPage({ params }: { params: Promise<{ id: s
     }
   };
 
-  // Format currency
+  // Format currency - amounts from DB are in minor units (cents/pesewas), divide by 100
   const formatCurrency = (amount: number, currency?: string) => {
     const curr = currency?.toUpperCase() || 'GHS';
     const symbol = curr === 'GHS' ? '₵' : curr === 'USD' ? '$' : curr;
-    return `${symbol}${amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    const majorUnits = (amount || 0) / 100;
+    return `${symbol}${majorUnits.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
   };
 
   const handlePrint = () => {
@@ -229,7 +230,7 @@ export default function InvoicePreviewPage({ params }: { params: Promise<{ id: s
         invoiceNumber={invoiceData.invoice_number}
         customerEmail={invoiceData.customer?.email || ''}
         customerName={invoiceData.customer?.name || ''}
-        total={total / 100}
+        total={(total || 0) / 100}
         currency={invoiceData.currency || 'GHS'}
       />
 

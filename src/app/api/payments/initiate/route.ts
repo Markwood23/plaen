@@ -158,7 +158,7 @@ export async function POST(request: NextRequest) {
         customizations: {
           title: businessName,
           description: `Payment for Invoice ${invoice.invoice_number}`,
-          logo: 'https://plaen.co/logos/plaen-logo.svg',
+          logo: process.env.NEXT_PUBLIC_APP_URL ? `${process.env.NEXT_PUBLIC_APP_URL}/icons/plaen-icon.png` : undefined,
         },
       });
 

@@ -93,11 +93,12 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
     }
   };
 
-  // Format currency based on invoice currency
+  // Format currency based on invoice currency - amounts from DB are in minor units (cents/pesewas)
   const formatCurrency = (amount: number, currency?: string) => {
     const curr = currency?.toUpperCase() || 'GHS';
     const symbol = curr === 'GHS' ? '₵' : curr === 'USD' ? '$' : curr;
-    return `${symbol}${amount.toFixed(2)}`;
+    const majorUnits = (amount || 0) / 100;
+    return `${symbol}${majorUnits.toFixed(2)}`;
   };
 
   // Calculate totals from line items
@@ -980,7 +981,7 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
         invoiceNumber={invoiceData.invoice_number}
         customerEmail={invoiceData.customer?.email || ''}
         customerName={invoiceData.customer?.name || ''}
-        total={total / 100}
+        total={(total || 0) / 100}
         currency={invoiceData.currency || 'GHS'}
       />
     </div>
