@@ -432,14 +432,14 @@ export default function NoteDetailPage({
             className="rounded-full h-9 px-4 border-[#E4E6EB]"
             onClick={handlePrint}
           >
-            <Printer size={16} className="mr-2" />
+            <Printer size={16} color="#2D2D2D" variant="Linear" className="mr-2" />
             Print
           </Button>
           <Button
             className="rounded-full h-9 px-4 bg-[#14462a] hover:bg-[#0d3520] text-white"
             onClick={() => setIsEditMode(true)}
           >
-            <Edit2 size={16} className="mr-2" />
+            <Edit2 size={16} color="white" variant="Linear" className="mr-2" />
             Edit
           </Button>
           <DropdownMenu>

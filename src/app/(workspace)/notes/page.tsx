@@ -40,6 +40,12 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { useStandaloneNotes, deleteStandaloneNote } from "@/hooks/useStandaloneNotes";
 import { EmptyState } from "@/components/ui/empty-state";
 
+// Helper to strip HTML tags from content
+function stripHtml(html: string): string {
+  if (!html) return '';
+  return html.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+}
+
 // Loading skeletons
 function TableSkeleton({ rows = 5 }: { rows?: number }) {
   return (
@@ -525,7 +531,7 @@ export default function FinanceNotesPage() {
                             {note.is_pinned && <Star size={14} color="#F59E0B" variant="Bold" />}
                           </div>
                           <div className="text-xs truncate max-w-[300px]" style={{ color: "#B0B3B8" }}>
-                            {note.preview || note.content?.substring(0, 60) || 'No content'}
+                            {stripHtml(note.preview || note.content || '') || 'No content'}
                           </div>
                         </div>
                       </div>

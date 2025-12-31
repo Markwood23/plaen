@@ -203,7 +203,7 @@ export function NoteEditor({
               onClick={() => editor.chain().focus().toggleBold().run()}
               title="Bold (Ctrl+B)"
             >
-              <TextBold size={16} variant={editor.isActive("bold") ? "Bold" : "Linear"} />
+              <TextBold size={16} color={editor.isActive("bold") ? "#14462a" : "#2D2D2D"} variant={editor.isActive("bold") ? "Bold" : "Linear"} />
             </Button>
             <Button
               variant="ghost"
@@ -214,7 +214,7 @@ export function NoteEditor({
               onClick={() => editor.chain().focus().toggleItalic().run()}
               title="Italic (Ctrl+I)"
             >
-              <TextItalic size={16} variant={editor.isActive("italic") ? "Bold" : "Linear"} />
+              <TextItalic size={16} color={editor.isActive("italic") ? "#14462a" : "#2D2D2D"} variant={editor.isActive("italic") ? "Bold" : "Linear"} />
             </Button>
             <Button
               variant="ghost"
@@ -225,7 +225,7 @@ export function NoteEditor({
               onClick={() => editor.chain().focus().toggleUnderline().run()}
               title="Underline (Ctrl+U)"
             >
-              <TextUnderline size={16} variant={editor.isActive("underline") ? "Bold" : "Linear"} />
+              <TextUnderline size={16} color={editor.isActive("underline") ? "#14462a" : "#2D2D2D"} variant={editor.isActive("underline") ? "Bold" : "Linear"} />
             </Button>
             <Button
               variant="ghost"
@@ -236,7 +236,7 @@ export function NoteEditor({
               onClick={() => editor.chain().focus().toggleStrike().run()}
               title="Strikethrough"
             >
-              <Minus size={16} />
+              <Minus size={16} color={editor.isActive("strike") ? "#14462a" : "#2D2D2D"} />
             </Button>
           </div>
 
@@ -250,7 +250,7 @@ export function NoteEditor({
                 size="sm"
                 className="h-8 px-3 rounded-full hover:bg-white text-xs font-medium gap-1"
               >
-                <Text size={14} />
+                <Text size={14} color="#2D2D2D" />
                 Text
               </Button>
             </DropdownMenuTrigger>
@@ -311,7 +311,7 @@ export function NoteEditor({
             onClick={() => editor.chain().focus().toggleBulletList().run()}
             title="Bullet List"
           >
-            <TextalignLeft size={16} />
+            <TextalignLeft size={16} color={editor.isActive("bulletList") ? "#14462a" : "#2D2D2D"} />
           </Button>
           <Button
             variant="ghost"
@@ -322,7 +322,7 @@ export function NoteEditor({
             onClick={() => editor.chain().focus().toggleOrderedList().run()}
             title="Numbered List"
           >
-            <TextalignCenter size={16} />
+            <TextalignCenter size={16} color={editor.isActive("orderedList") ? "#14462a" : "#2D2D2D"} />
           </Button>
           <Button
             variant="ghost"
@@ -333,7 +333,7 @@ export function NoteEditor({
             onClick={() => editor.chain().focus().toggleTaskList().run()}
             title="Todo List"
           >
-            <TickSquare size={16} />
+            <TickSquare size={16} color={editor.isActive("taskList") ? "#14462a" : "#2D2D2D"} />
           </Button>
 
           <div className="h-5 w-px bg-gray-200 mx-1" />
@@ -348,7 +348,7 @@ export function NoteEditor({
             onClick={() => editor.chain().focus().toggleBlockquote().run()}
             title="Quote"
           >
-            <QuoteUp size={16} />
+            <QuoteUp size={16} color={editor.isActive("blockquote") ? "#14462a" : "#2D2D2D"} />
           </Button>
           <Button
             variant="ghost"
@@ -359,7 +359,7 @@ export function NoteEditor({
             onClick={() => editor.chain().focus().toggleCodeBlock().run()}
             title="Code Block"
           >
-            <Code1 size={16} />
+            <Code1 size={16} color={editor.isActive("codeBlock") ? "#14462a" : "#2D2D2D"} />
           </Button>
           <Button
             variant="ghost"
@@ -370,7 +370,7 @@ export function NoteEditor({
             onClick={() => editor.chain().focus().toggleHighlight().run()}
             title="Highlight"
           >
-            <Hashtag size={16} />
+            <Hashtag size={16} color={editor.isActive("highlight") ? "#a16207" : "#2D2D2D"} />
           </Button>
 
           <div className="h-5 w-px bg-gray-200 mx-1" />
@@ -385,7 +385,7 @@ export function NoteEditor({
             onClick={() => setShowLinkInput(true)}
             title="Add Link"
           >
-            <Link2 size={16} />
+            <Link2 size={16} color={editor.isActive("link") ? "#14462a" : "#2D2D2D"} />
           </Button>
 
           {/* Horizontal rule */}
@@ -396,7 +396,7 @@ export function NoteEditor({
             onClick={() => editor.chain().focus().setHorizontalRule().run()}
             title="Horizontal Line"
           >
-            <Minus size={16} />
+            <Minus size={16} color="#2D2D2D" />
           </Button>
         </div>
       )}
