@@ -129,13 +129,28 @@ export async function POST(request: NextRequest) {
     
     const body = await request.json()
     
-    // Generate invoice number using the database function
-    const { data: invoiceNumber, error: numError } = await supabase
-      .rpc('generate_invoice_number', { p_user_id: user.id })
+    // Generate invoice number with retry logic for duplicates
+    let invoiceNumber: string | null = null
+    let retryCount = 0
+    const maxRetries = 3
     
-    if (numError) {
-      console.error('Error generating invoice number:', numError)
-      return NextResponse.json({ error: 'Failed to generate invoice number' }, { status: 500 })
+    while (retryCount < maxRetries) {
+      const { data: generatedNumber, error: numError } = await supabase
+        .rpc('generate_invoice_number', { p_user_id: user.id })
+      
+      if (numError) {
+        console.error('Error generating invoice number:', numError)
+        retryCount++
+        continue
+      }
+      
+      invoiceNumber = generatedNumber
+      break
+    }
+    
+    // Fallback to timestamp-based number if RPC fails
+    if (!invoiceNumber) {
+      invoiceNumber = `INV-${Date.now()}`
     }
     
     // Generate public ID if sending immediately
@@ -145,7 +160,7 @@ export async function POST(request: NextRequest) {
     const invoiceData: InvoiceInsert = {
       user_id: user.id,
       customer_id: body.customer_id || null,
-      invoice_number: invoiceNumber || `INV-${Date.now()}`,
+      invoice_number: invoiceNumber,
       issue_date: body.issue_date || new Date().toISOString().split('T')[0],
       due_date: body.due_date || null,
       currency: body.currency || 'GHS',
@@ -161,16 +176,40 @@ export async function POST(request: NextRequest) {
       sent_at: body.status === 'sent' ? new Date().toISOString() : null,
     }
     
-    // Insert invoice
-    const { data: invoice, error: invoiceError } = await supabase
-      .from('invoices')
-      .insert(invoiceData)
-      .select()
-      .single()
+    // Insert invoice with retry for duplicate key errors
+    let invoice = null
+    let invoiceError = null
+    retryCount = 0
     
-    if (invoiceError) {
+    while (retryCount < maxRetries) {
+      const { data, error } = await supabase
+        .from('invoices')
+        .insert(invoiceData)
+        .select()
+        .single()
+      
+      if (error) {
+        // Check if it's a duplicate key error (code 23505)
+        if (error.code === '23505' && error.message.includes('invoice_number')) {
+          console.warn(`Duplicate invoice number ${invoiceData.invoice_number}, retrying...`)
+          retryCount++
+          // Generate a new invoice number
+          const { data: newNumber } = await supabase
+            .rpc('generate_invoice_number', { p_user_id: user.id })
+          invoiceData.invoice_number = newNumber || `INV-${Date.now()}-${retryCount}`
+          continue
+        }
+        invoiceError = error
+        break
+      }
+      
+      invoice = data
+      break
+    }
+    
+    if (invoiceError || !invoice) {
       console.error('Error creating invoice:', invoiceError)
-      return NextResponse.json({ error: invoiceError.message }, { status: 500 })
+      return NextResponse.json({ error: invoiceError?.message || 'Failed to create invoice' }, { status: 500 })
     }
     
     // Insert line items if provided (use admin client to bypass RLS)
