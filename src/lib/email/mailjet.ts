@@ -41,11 +41,12 @@ interface SendEmailParams {
 // Environment variables
 const MAILJET_API_KEY = process.env.MAILJET_API_KEY
 const MAILJET_SECRET_KEY = process.env.MAILJET_SECRET_KEY
-const SENDER_EMAIL = process.env.MAILJET_SENDER_EMAIL || 'noreply@plaen.app'
+const SENDER_EMAIL = process.env.MAILJET_SENDER_EMAIL || 'noreply@plaen.tech'
 const SENDER_NAME = process.env.MAILJET_SENDER_NAME || 'Plaen'
-const APP_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://plaen.app'
-// Use hosted logo URL - email clients often block data URIs
-const EMAIL_LOGO_URL = process.env.MAILJET_LOGO_URL || `${APP_URL}/logos/plaen-logo.svg`
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://plaen.tech'
+// Inline SVG as base64 - most reliable for email clients
+const PLAEN_LOGO_BASE64 = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMyAzSDEyVjEySDNWM1oiIGZpbGw9IiMxNDQ2MmEiLz48cGF0aCBkPSJNMTQgM0gyMUwxNy41IDEySDE0VjNaIiBmaWxsPSIjMTQ0NjJhIi8+PHBhdGggZD0iTTEyIDE0SDIxVjIxSDEyVjE0WiIgZmlsbD0iIzE0NDYyYSIvPjwvc3ZnPg=='
+const EMAIL_LOGO_URL = process.env.MAILJET_LOGO_URL || PLAEN_LOGO_BASE64
 
 // Brand colors
 const BRAND = {

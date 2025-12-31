@@ -410,41 +410,47 @@ export default function PayPage({ params }: { params: Promise<{ id: string }> })
 
                     {/* Mobile: Simple List | Desktop: Table Rows */}
                     <div className="space-y-4">
-                      {invoice.items.map((item, index) => (
-                        <div key={index}>
-                          {/* Mobile View */}
-                          <div className="flex justify-between items-start gap-3 lg:hidden">
-                            <div className="flex-1 min-w-0">
-                              <p className="text-base mb-0.5" style={{ color: '#2D2D2D', fontWeight: 500 }}>{item.description}</p>
-                              <p className="text-sm" style={{ color: '#B0B3B8' }}>
-                                Qty: {item.quantity} × ₵{item.unit_price.toFixed(2)}
+                      {(invoice.items || []).length === 0 ? (
+                        <div className="text-center py-4">
+                          <p className="text-sm" style={{ color: '#B0B3B8' }}>No items to display</p>
+                        </div>
+                      ) : (
+                        invoice.items.map((item, index) => (
+                          <div key={index}>
+                            {/* Mobile View */}
+                            <div className="flex justify-between items-start gap-3 lg:hidden">
+                              <div className="flex-1 min-w-0">
+                                <p className="text-base mb-0.5" style={{ color: '#2D2D2D', fontWeight: 500 }}>{item.description || 'Item'}</p>
+                                <p className="text-sm" style={{ color: '#B0B3B8' }}>
+                                  Qty: {item.quantity || 1} × ₵{(item.unit_price || 0).toFixed(2)}
+                                </p>
+                              </div>
+                              <p className="text-base whitespace-nowrap" style={{ color: '#2D2D2D', fontWeight: 500 }}>
+                                ₵{((item.quantity || 1) * (item.unit_price || 0)).toFixed(2)}
                               </p>
                             </div>
-                            <p className="text-base whitespace-nowrap" style={{ color: '#2D2D2D', fontWeight: 500 }}>
-                              ₵{(item.quantity * item.unit_price).toFixed(2)}
-                            </p>
-                          </div>
-                          
-                          {/* Desktop Table View */}
-                          <div className="hidden lg:grid grid-cols-12 gap-4">
-                            <div className="col-span-6">
-                              <p className="text-base mb-1" style={{ color: '#2D2D2D', fontWeight: 500 }}>{item.description}</p>
-                              {item.details && (
-                                <p className="text-sm" style={{ color: '#B0B3B8' }}>{item.details}</p>
-                              )}
-                            </div>
-                            <div className="col-span-2 text-center">
-                              <p className="text-base" style={{ color: '#2D2D2D', fontWeight: 500 }}>{item.quantity}</p>
-                            </div>
-                            <div className="col-span-2 text-right">
-                              <p className="text-base" style={{ color: '#2D2D2D', fontWeight: 500 }}>₵{item.unit_price.toFixed(2)}</p>
-                            </div>
-                            <div className="col-span-2 text-right">
-                              <p className="text-base" style={{ color: '#2D2D2D', fontWeight: 500 }}>₵{(item.quantity * item.unit_price).toFixed(2)}</p>
+                            
+                            {/* Desktop Table View */}
+                            <div className="hidden lg:grid grid-cols-12 gap-4">
+                              <div className="col-span-6">
+                                <p className="text-base mb-1" style={{ color: '#2D2D2D', fontWeight: 500 }}>{item.description || 'Item'}</p>
+                                {item.details && (
+                                  <p className="text-sm" style={{ color: '#B0B3B8' }}>{item.details}</p>
+                                )}
+                              </div>
+                              <div className="col-span-2 text-center">
+                                <p className="text-base" style={{ color: '#2D2D2D', fontWeight: 500 }}>{item.quantity || 1}</p>
+                              </div>
+                              <div className="col-span-2 text-right">
+                                <p className="text-base" style={{ color: '#2D2D2D', fontWeight: 500 }}>₵{(item.unit_price || 0).toFixed(2)}</p>
+                              </div>
+                              <div className="col-span-2 text-right">
+                                <p className="text-base" style={{ color: '#2D2D2D', fontWeight: 500 }}>₵{((item.quantity || 1) * (item.unit_price || 0)).toFixed(2)}</p>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      ))}
+                        ))
+                      )}
                     </div>
                   </div>
 
@@ -682,7 +688,7 @@ export default function PayPage({ params }: { params: Promise<{ id: string }> })
                   Powered by <span className="font-medium" style={{ color: '#2D2D2D' }}>Plaen Pay</span>
                 </p>
                 <p className="text-body-sm text-[#B0B3B8]">
-                  Questions? Contact <a href={`mailto:${invoice.from.email}`} className="hover:underline" style={{ color: '#14462a' }}>{invoice.from.business_name}</a>
+                  Questions? Contact <a href="mailto:info@plaen.tech" className="hover:underline" style={{ color: '#14462a' }}>Plaen</a>
                 </p>
               </div>
             </div>
