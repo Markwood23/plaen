@@ -93,11 +93,15 @@ export async function POST(
     
     // Send email to customer if configured and customer has email
     let emailSent = false
-    let emailError = null
+    let emailError: string | null = null
 
     const recipientEmail = recipientEmailOverride || customer?.email || null
 
-    if (sendEmailFlag && isEmailConfigured() && recipientEmail) {
+    if (sendEmailFlag && !recipientEmail) {
+      emailError = 'No recipient email provided'
+    } else if (sendEmailFlag && !isEmailConfigured()) {
+      emailError = 'Mailjet is not configured'
+    } else if (sendEmailFlag && recipientEmail) {
       const emailResult = await sendInvoiceEmail({
         customerEmail: recipientEmail,
         customerName: customer?.name || 'Customer',
@@ -112,7 +116,7 @@ export async function POST(
       
       emailSent = emailResult.success
       if (!emailResult.success) {
-        emailError = emailResult.error
+        emailError = emailResult.error || 'Mailjet send failed'
         console.error('Failed to send invoice email:', emailError)
       }
     }

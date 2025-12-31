@@ -50,6 +50,8 @@ export function SendInvoiceModal({
   const [success, setSuccess] = useState(false);
   const [publicUrl, setPublicUrl] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
+  const [successTitle, setSuccessTitle] = useState<string>('Payment Link Ready');
+  const [successDescription, setSuccessDescription] = useState<string>('Your client can now view and pay this invoice');
 
   const currencySymbol = currency === 'GHS' ? '₵' : currency === 'USD' ? '$' : currency;
 
@@ -61,6 +63,8 @@ export function SendInvoiceModal({
       setSuccess(false);
       setPublicUrl(null);
       setCopied(false);
+      setSuccessTitle('Payment Link Ready');
+      setSuccessDescription('Your client can now view and pay this invoice');
     }
   }, [open, customerEmail]);
 
@@ -79,6 +83,7 @@ export function SendInvoiceModal({
 
     try {
       const trimmedEmail = email.trim();
+      const emailRequested = Boolean(trimmedEmail);
       const response = await fetch(`/api/invoices/${invoiceId}/send`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -95,6 +100,8 @@ export function SendInvoiceModal({
         if (data.public_url) {
           setPublicUrl(data.public_url);
           setSuccess(true);
+          setSuccessTitle('Payment Link Ready');
+          setSuccessDescription('This invoice already has a payment link');
         } else {
           throw new Error(data.error || 'Failed to send invoice');
         }
@@ -104,6 +111,21 @@ export function SendInvoiceModal({
 
       setPublicUrl(data.public_url);
       setSuccess(true);
+
+      if (emailRequested) {
+        if (data.email_sent) {
+          setSuccessTitle('Invoice Sent');
+          setSuccessDescription(customerName ? `Email sent to ${customerName}` : 'Email sent to your client');
+        } else {
+          setSuccessTitle('Payment Link Ready');
+          const detail = typeof data.email_error === 'string' && data.email_error ? ` (${data.email_error})` : '';
+          setSuccessDescription(`Email was not sent${detail}. Share the payment link below.`);
+        }
+      } else {
+        setSuccessTitle('Payment Link Ready');
+        setSuccessDescription('No email sent. Share the payment link below.');
+      }
+
       onSuccess?.();
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to send invoice');
@@ -157,10 +179,8 @@ export function SendInvoiceModal({
                 <TickCircle size={32} color="#14462a" variant="Bold" />
               </div>
               <div>
-                <h3 className="text-lg font-semibold text-gray-900">Invoice Sent!</h3>
-                <p className="text-sm text-gray-500 mt-1">
-                  {customerName ? `${customerName} can now view and pay this invoice` : 'Your client can now view and pay this invoice'}
-                </p>
+                <h3 className="text-lg font-semibold text-gray-900">{successTitle}</h3>
+                <p className="text-sm text-gray-500 mt-1">{successDescription}</p>
               </div>
             </div>
 

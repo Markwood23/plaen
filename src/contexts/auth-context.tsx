@@ -41,17 +41,47 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
   
   useEffect(() => {
+    let cancelled = false
+
     // Get initial session
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session)
-      setUser(session?.user ?? null)
-      
-      if (session?.user) {
-        fetchProfile(session.user.id)
+    const loadInitialSession = async () => {
+      try {
+        const { data, error } = await supabase.auth.getSession()
+
+        if (cancelled) return
+
+        if (error) {
+          const maybeCode = (error as unknown as { code?: string }).code
+          if (maybeCode === 'refresh_token_not_found') {
+            await supabase.auth.signOut({ scope: 'local' })
+          }
+
+          setSession(null)
+          setUser(null)
+          setProfile(null)
+          setLoading(false)
+          return
+        }
+
+        const initialSession = data.session
+        setSession(initialSession)
+        setUser(initialSession?.user ?? null)
+
+        if (initialSession?.user) {
+          fetchProfile(initialSession.user.id)
+        }
+
+        setLoading(false)
+      } catch {
+        if (cancelled) return
+        setSession(null)
+        setUser(null)
+        setProfile(null)
+        setLoading(false)
       }
-      
-      setLoading(false)
-    })
+    }
+
+    loadInitialSession()
     
     // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
@@ -70,9 +100,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     )
     
     return () => {
+      cancelled = true
       subscription.unsubscribe()
     }
-  }, [])
+  }, [supabase])
   
   const signOut = async () => {
     await supabase.auth.signOut()
