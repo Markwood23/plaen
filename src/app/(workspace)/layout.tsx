@@ -366,7 +366,7 @@ function UserMenu() {
         </DropdownMenuLabel>
         <DropdownMenuSeparator className="my-1" />
         <DropdownMenuItem asChild className="gap-3 rounded-xl p-3 cursor-pointer group transition-all hover:bg-[rgba(20,70,42,0.06)]">
-          <Link href="/workspace/profile" className="flex items-center">
+          <Link href="/profile" className="flex items-center">
             <div 
               className="h-8 w-8 rounded-full flex items-center justify-center transition-all"
               style={{ backgroundColor: 'rgba(20, 70, 42, 0.08)' }}
@@ -377,7 +377,7 @@ function UserMenu() {
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild className="gap-3 rounded-xl p-3 cursor-pointer group transition-all hover:bg-[rgba(20,70,42,0.06)]">
-          <Link href="/workspace/billing" className="flex items-center">
+          <Link href="/billing" className="flex items-center">
             <div 
               className="h-8 w-8 rounded-full flex items-center justify-center transition-all"
               style={{ backgroundColor: 'rgba(13, 148, 136, 0.08)' }}
@@ -388,7 +388,7 @@ function UserMenu() {
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild className="gap-3 rounded-xl p-3 cursor-pointer group transition-all hover:bg-[rgba(20,70,42,0.06)]">
-          <Link href="/workspace/settings" className="flex items-center">
+          <Link href="/settings" className="flex items-center">
             <div 
               className="h-8 w-8 rounded-full flex items-center justify-center transition-all"
               style={{ backgroundColor: 'rgba(20, 70, 42, 0.08)' }}
