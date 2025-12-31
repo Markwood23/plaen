@@ -4,6 +4,7 @@ import { LineChart, Line, Area, XAxis, YAxis, CartesianGrid, Tooltip, Responsive
 
 interface ChartDataPoint {
   month: string
+  year: number
   revenue: number
   invoiced: number
 }
@@ -17,12 +18,12 @@ export default function ProfitRevenueChart({ data, currency = 'GHS' }: ProfitRev
   // Format currency for display
   const currencySymbol = currency === 'GHS' ? '₵' : currency === 'USD' ? '$' : currency
 
-  // Add unique index to data for proper rendering
+  // Add unique key using month and year
   const chartData = useMemo(() => {
     if (!data || data.length === 0) return []
-    return data.map((d, index) => ({
+    return data.map((d) => ({
       ...d,
-      uniqueKey: `${d.month}-${index}`,
+      uniqueKey: `${d.month} ${d.year}`,
     }))
   }, [data])
 
@@ -118,7 +119,7 @@ export default function ProfitRevenueChart({ data, currency = 'GHS' }: ProfitRev
                 tick={{ fill: '#9ca3af', fontSize: 14, fontWeight: 500 }}
                 dy={12}
                 padding={{ left: 20, right: 20 }}
-                tickFormatter={(value) => value.split('-')[0]}
+                tickFormatter={(value) => value.split(' ')[0]}
                 label={{ 
                   value: 'Months', 
                   position: 'insideBottom', 

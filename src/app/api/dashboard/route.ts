@@ -8,14 +8,27 @@ function getDateMonthsAgo(months: number): Date {
   return date
 }
 
-// Helper to get start of month
+// Helper to get start of month as ISO string for timestamps
 function getStartOfMonth(date: Date): string {
-  return new Date(date.getFullYear(), date.getMonth(), 1).toISOString().split('T')[0]
+  return new Date(date.getFullYear(), date.getMonth(), 1).toISOString()
 }
 
-// Helper to get end of month
+// Helper to get end of month as ISO string for timestamps
 function getEndOfMonth(date: Date): string {
-  return new Date(date.getFullYear(), date.getMonth() + 1, 0).toISOString().split('T')[0]
+  // Last day of month at 23:59:59.999
+  return new Date(date.getFullYear(), date.getMonth() + 1, 0, 23, 59, 59, 999).toISOString()
+}
+
+// Helper to get just the date string (YYYY-MM-DD) for date fields
+function getDateString(date: Date): string {
+  return date.toISOString().split('T')[0]
+}
+
+// Helper to extract date portion from timestamp for comparison
+function getPaymentDateString(paymentDate: string | null): string | null {
+  if (!paymentDate) return null
+  // Handle both date strings and timestamps
+  return paymentDate.split(' ')[0].split('T')[0]
 }
 
 // GET /api/dashboard - Get dashboard metrics
@@ -61,20 +74,23 @@ export async function GET() {
       .reduce((sum, i) => sum + (Number(i.total) || 0), 0) || 0
     
     // Calculate month-over-month percentage changes
-    const currentMonthStart = getStartOfMonth(now)
-    const currentMonthEnd = getEndOfMonth(now)
-    const lastMonthStart = getStartOfMonth(getDateMonthsAgo(1))
-    const lastMonthEnd = getEndOfMonth(getDateMonthsAgo(1))
+    const currentMonthStart = getDateString(new Date(now.getFullYear(), now.getMonth(), 1))
+    const currentMonthEnd = getDateString(new Date(now.getFullYear(), now.getMonth() + 1, 0))
+    const lastMonthDate = getDateMonthsAgo(1)
+    const lastMonthStart = getDateString(new Date(lastMonthDate.getFullYear(), lastMonthDate.getMonth(), 1))
+    const lastMonthEnd = getDateString(new Date(lastMonthDate.getFullYear(), lastMonthDate.getMonth() + 1, 0))
     
-    // Current month revenue (from payments)
-    const currentMonthRevenue = allPayments?.filter(p => 
-      p.payment_date && p.payment_date >= currentMonthStart && p.payment_date <= currentMonthEnd
-    ).reduce((sum, p) => sum + (Number(p.amount) || 0), 0) || 0
+    // Current month revenue (from payments) - extract date portion for comparison
+    const currentMonthRevenue = allPayments?.filter(p => {
+      const payDate = getPaymentDateString(p.payment_date)
+      return payDate && payDate >= currentMonthStart && payDate <= currentMonthEnd
+    }).reduce((sum, p) => sum + (Number(p.amount) || 0), 0) || 0
     
     // Last month revenue (from payments)
-    const lastMonthRevenue = allPayments?.filter(p => 
-      p.payment_date && p.payment_date >= lastMonthStart && p.payment_date <= lastMonthEnd
-    ).reduce((sum, p) => sum + (Number(p.amount) || 0), 0) || 0
+    const lastMonthRevenue = allPayments?.filter(p => {
+      const payDate = getPaymentDateString(p.payment_date)
+      return payDate && payDate >= lastMonthStart && payDate <= lastMonthEnd
+    }).reduce((sum, p) => sum + (Number(p.amount) || 0), 0) || 0
     
     // Calculate percentage change
     let revenueChangePercent = 0
@@ -109,24 +125,25 @@ export async function GET() {
     
     for (let i = 6; i >= 0; i--) {
       const monthDate = getDateMonthsAgo(i)
-      const monthStart = getStartOfMonth(monthDate)
-      const monthEnd = getEndOfMonth(monthDate)
+      const monthStart = getDateString(new Date(monthDate.getFullYear(), monthDate.getMonth(), 1))
+      const monthEnd = getDateString(new Date(monthDate.getFullYear(), monthDate.getMonth() + 1, 0))
       const monthName = monthNames[monthDate.getMonth()]
+      const year = monthDate.getFullYear()
       
-      // Revenue for this month (total payments received)
-      const monthRevenue = allPayments?.filter(p => 
-        p.payment_date && p.payment_date >= monthStart && p.payment_date <= monthEnd
-      ).reduce((sum, p) => sum + (Number(p.amount) || 0), 0) || 0
+      // Revenue for this month (total payments received) - extract date portion for comparison
+      const monthRevenue = allPayments?.filter(p => {
+        const payDate = getPaymentDateString(p.payment_date)
+        return payDate && payDate >= monthStart && payDate <= monthEnd
+      }).reduce((sum, p) => sum + (Number(p.amount) || 0), 0) || 0
       
-      // Profit estimation: revenue minus estimated costs (we'll use 70% of revenue as profit margin)
-      // In a real app, you'd track actual expenses. For now, use invoiced amount - payments as a proxy
-      // Or simply show revenue vs invoiced amounts
+      // Invoiced amount for this month
       const monthInvoiced = invoices?.filter(i => 
         i.issue_date && i.issue_date >= monthStart && i.issue_date <= monthEnd
       ).reduce((sum, i) => sum + (Number(i.total) || 0), 0) || 0
       
       chartData.push({
         month: monthName,
+        year: year,
         revenue: monthRevenue,
         invoiced: monthInvoiced,
       })

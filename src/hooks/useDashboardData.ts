@@ -22,6 +22,7 @@ interface ARAging {
 
 interface ChartDataPoint {
   month: string
+  year: number
   revenue: number
   invoiced: number
 }
