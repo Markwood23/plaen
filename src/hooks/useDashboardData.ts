@@ -105,7 +105,7 @@ export function useDashboardData(): UseDashboardDataResult {
       const result = await response.json()
       
       setData({
-        metrics: result.metrics || defaultMetrics,
+        metrics: { ...defaultMetrics, ...(result.metrics ?? {}) },
         arAging: result.arAging || defaultARAging,
         recentInvoices: result.recentInvoices || [],
         recentPayments: result.recentPayments || [],

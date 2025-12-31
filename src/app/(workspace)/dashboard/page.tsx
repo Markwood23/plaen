@@ -96,11 +96,11 @@ export default function DashboardPage() {
     {
       label: "Incoming",
       value: formatCurrency(data.metrics.total_revenue),
-      delta: data.metrics.revenue_change_percent > 0 
-        ? `+${data.metrics.revenue_change_percent.toFixed(0)}%` 
-        : `${data.metrics.revenue_change_percent.toFixed(0)}%`,
+      delta: (data.metrics.revenue_change_percent ?? 0) > 0 
+        ? `+${(data.metrics.revenue_change_percent ?? 0).toFixed(0)}%` 
+        : `${(data.metrics.revenue_change_percent ?? 0).toFixed(0)}%`,
       icon: Card,
-      up: data.metrics.revenue_change_percent >= 0,
+      up: (data.metrics.revenue_change_percent ?? 0) >= 0,
       sparkline: "M2 20 Q10 8, 18 12 T34 8 Q42 14, 50 10 T62 6",
       iconColor: "#0D9488",
       iconBg: "rgba(13, 148, 136, 0.08)",
@@ -108,11 +108,11 @@ export default function DashboardPage() {
     {
       label: "Outstanding",
       value: formatCurrency(data.metrics.total_outstanding),
-      delta: data.metrics.outstanding_change_percent > 0 
-        ? `+${data.metrics.outstanding_change_percent.toFixed(0)}%` 
-        : `${data.metrics.outstanding_change_percent.toFixed(0)}%`,
+      delta: (data.metrics.outstanding_change_percent ?? 0) > 0 
+        ? `+${(data.metrics.outstanding_change_percent ?? 0).toFixed(0)}%` 
+        : `${(data.metrics.outstanding_change_percent ?? 0).toFixed(0)}%`,
       icon: Send2,
-      up: data.metrics.outstanding_change_percent <= 0,
+      up: (data.metrics.outstanding_change_percent ?? 0) <= 0,
       sparkline: "M2 12 Q10 18, 18 14 T34 20 Q42 16, 50 22 T62 26",
       iconColor: "#14462a",
       iconBg: "rgba(20, 70, 42, 0.08)",

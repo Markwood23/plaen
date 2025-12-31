@@ -338,7 +338,6 @@ function UserMenu() {
       <DropdownMenuTrigger asChild>
         <button className="inline-flex items-center gap-2 rounded-full focus-visible:ring-ring/50 focus-visible:ring-[3px]">
           <Avatar>
-            <AvatarImage alt="User" src="/avatar.png" />
             <AvatarFallback>PL</AvatarFallback>
           </Avatar>
         </button>
