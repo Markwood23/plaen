@@ -1,27 +1,31 @@
 import { createClient } from '@/lib/supabase/server'
 import { NextResponse } from 'next/server'
 
-// Helper to get date N months ago
-function getDateMonthsAgo(months: number): Date {
-  const date = new Date()
-  date.setMonth(date.getMonth() - months)
-  return date
+// Helper to get date N months ago (using first day of month to avoid rollover issues)
+function getMonthsAgo(months: number): { year: number; month: number } {
+  const now = new Date()
+  let year = now.getFullYear()
+  let month = now.getMonth() - months
+  
+  // Handle negative months (previous year)
+  while (month < 0) {
+    month += 12
+    year -= 1
+  }
+  
+  return { year, month }
 }
 
-// Helper to get start of month as ISO string for timestamps
-function getStartOfMonth(date: Date): string {
-  return new Date(date.getFullYear(), date.getMonth(), 1).toISOString()
+// Helper to get date string for start of a specific month
+function getMonthStartDate(year: number, month: number): string {
+  return `${year}-${String(month + 1).padStart(2, '0')}-01`
 }
 
-// Helper to get end of month as ISO string for timestamps
-function getEndOfMonth(date: Date): string {
-  // Last day of month at 23:59:59.999
-  return new Date(date.getFullYear(), date.getMonth() + 1, 0, 23, 59, 59, 999).toISOString()
-}
-
-// Helper to get just the date string (YYYY-MM-DD) for date fields
-function getDateString(date: Date): string {
-  return date.toISOString().split('T')[0]
+// Helper to get date string for end of a specific month
+function getMonthEndDate(year: number, month: number): string {
+  // Get last day of month
+  const lastDay = new Date(year, month + 1, 0).getDate()
+  return `${year}-${String(month + 1).padStart(2, '0')}-${String(lastDay).padStart(2, '0')}`
 }
 
 // Helper to extract date portion from timestamp for comparison
@@ -74,11 +78,13 @@ export async function GET() {
       .reduce((sum, i) => sum + (Number(i.total) || 0), 0) || 0
     
     // Calculate month-over-month percentage changes
-    const currentMonthStart = getDateString(new Date(now.getFullYear(), now.getMonth(), 1))
-    const currentMonthEnd = getDateString(new Date(now.getFullYear(), now.getMonth() + 1, 0))
-    const lastMonthDate = getDateMonthsAgo(1)
-    const lastMonthStart = getDateString(new Date(lastMonthDate.getFullYear(), lastMonthDate.getMonth(), 1))
-    const lastMonthEnd = getDateString(new Date(lastMonthDate.getFullYear(), lastMonthDate.getMonth() + 1, 0))
+    const currentMonth = getMonthsAgo(0)
+    const lastMonth = getMonthsAgo(1)
+    
+    const currentMonthStart = getMonthStartDate(currentMonth.year, currentMonth.month)
+    const currentMonthEnd = getMonthEndDate(currentMonth.year, currentMonth.month)
+    const lastMonthStart = getMonthStartDate(lastMonth.year, lastMonth.month)
+    const lastMonthEnd = getMonthEndDate(lastMonth.year, lastMonth.month)
     
     // Current month revenue (from payments) - extract date portion for comparison
     const currentMonthRevenue = allPayments?.filter(p => {
@@ -124,11 +130,10 @@ export async function GET() {
     const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
     
     for (let i = 6; i >= 0; i--) {
-      const monthDate = getDateMonthsAgo(i)
-      const monthStart = getDateString(new Date(monthDate.getFullYear(), monthDate.getMonth(), 1))
-      const monthEnd = getDateString(new Date(monthDate.getFullYear(), monthDate.getMonth() + 1, 0))
-      const monthName = monthNames[monthDate.getMonth()]
-      const year = monthDate.getFullYear()
+      const { year, month } = getMonthsAgo(i)
+      const monthStart = getMonthStartDate(year, month)
+      const monthEnd = getMonthEndDate(year, month)
+      const monthName = monthNames[month]
       
       // Revenue for this month (total payments received) - extract date portion for comparison
       const monthRevenue = allPayments?.filter(p => {
