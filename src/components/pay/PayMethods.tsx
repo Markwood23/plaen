@@ -398,13 +398,9 @@ function BankTransferInfo({ amount, onSubmit, isProcessing, invoiceNumber }: { a
   const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [copiedField, setCopiedField] = useState<string | null>(null);
 
-  // Format invoice number (e.g., INV-2024-001 becomes #2024001)
+  // Format invoice number for display (keeps the original format like GH-0001)
   const formatInvoiceNumber = (invoiceNum: string) => {
-    const parts = invoiceNum.split('-');
-    if (parts.length === 3) {
-      return `#${parts[1]}${parts[2]}`;
-    }
-    // If already in new format or custom format, return as-is
+    // Return as-is since it's already in a clean format
     return invoiceNum;
   };
 

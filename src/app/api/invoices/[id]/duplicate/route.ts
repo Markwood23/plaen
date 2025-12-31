@@ -64,11 +64,12 @@ export async function POST(
     }
     
     // Create the new invoice (as draft)
+    const fallbackNum = Date.now().toString().slice(-4)
     const { data: newInvoice, error: createError } = await supabase
       .from('invoices')
       .insert({
         user_id: user.id,
-        invoice_number: invoiceNumber || `INV-${Date.now()}`,
+        invoice_number: invoiceNumber || `GH-${fallbackNum}`,
         customer_id: originalInvoice.customer_id,
         issue_date: today,
         due_date: newDueDate,

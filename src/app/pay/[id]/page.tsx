@@ -51,14 +51,9 @@ export default function PayPage({ params }: { params: Promise<{ id: string }> })
     });
   };
 
-  // Format invoice number (e.g., INV-2024-001 becomes #2024001)
+  // Format invoice number for display (keeps the original format like GH-0001)
   const formatInvoiceNumber = (invoiceNumber: string) => {
-    // Extract year and number parts
-    const parts = invoiceNumber.split('-');
-    if (parts.length === 3) {
-      return `#${parts[1]}${parts[2]}`;
-    }
-    // Fallback to original if format doesn't match
+    // Just return the invoice number as-is since it's already in a clean format
     return invoiceNumber;
   };
 

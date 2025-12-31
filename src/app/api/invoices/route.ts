@@ -148,9 +148,10 @@ export async function POST(request: NextRequest) {
       break
     }
     
-    // Fallback to timestamp-based number if RPC fails
+    // Fallback to timestamp-based number if RPC fails (last 4 digits of timestamp)
     if (!invoiceNumber) {
-      invoiceNumber = `INV-${Date.now()}`
+      const timestamp = Date.now().toString().slice(-4)
+      invoiceNumber = `GH-${timestamp}`
     }
     
     // Generate public ID if sending immediately
@@ -196,7 +197,8 @@ export async function POST(request: NextRequest) {
           // Generate a new invoice number
           const { data: newNumber } = await supabase
             .rpc('generate_invoice_number', { p_user_id: user.id })
-          invoiceData.invoice_number = newNumber || `INV-${Date.now()}-${retryCount}`
+          const fallbackNum = Date.now().toString().slice(-4)
+          invoiceData.invoice_number = newNumber || `GH-${fallbackNum}${retryCount}`
           continue
         }
         invoiceError = error
