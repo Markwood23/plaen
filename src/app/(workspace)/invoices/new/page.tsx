@@ -163,15 +163,11 @@ export default function CreateInvoicePage() {
   const [exchangeRate, setExchangeRate] = useState("");
   const [loadingRate, setLoadingRate] = useState(false);
 
-  // Invoice Number State - Auto-generated with brand prefix
-  const [invoiceNumber] = useState<string>(() => {
-    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    let code = 'PL-';
-    for (let i = 0; i < 6; i++) {
-      code += chars.charAt(Math.floor(Math.random() * chars.length));
-    }
-    return code;
-  });
+  // Invoice Number is generated server-side when invoice is created
+  // Show a preview placeholder based on user's prefix
+  const invoiceNumberPreview = userSettings?.invoice_prefix 
+    ? `${userSettings.invoice_prefix}-XXXX` 
+    : "GH-XXXX";
 
   // Date State
   const [issueDate, setIssueDate] = useState<Date>(new Date());
@@ -839,11 +835,11 @@ export default function CreateInvoicePage() {
                 <div>
                   <Label className="text-sm text-[#2D2D2D] font-medium mb-2 block">Invoice Number</Label>
                   <Input 
-                    value={invoiceNumber}
+                    value={invoiceNumberPreview}
                     readOnly
                     className="h-11 font-mono rounded-xl border-[#E4E6EB] bg-gray-50 text-[#65676B] cursor-not-allowed"
                   />
-                  <p className="text-xs text-[#B0B3B8] mt-1.5">Auto-generated • Cannot be changed</p>
+                  <p className="text-xs text-[#B0B3B8] mt-1.5">Auto-generated when saved</p>
                 </div>
                 <div>
                   <Label className="text-sm text-[#2D2D2D] font-medium mb-2 block">Payment Terms*</Label>

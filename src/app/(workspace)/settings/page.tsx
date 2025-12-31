@@ -957,8 +957,8 @@ export default function SettingsPage() {
                   <Label htmlFor="invoicePrefix">Invoice Number Prefix</Label>
                   <Lock size={12} color="#EF4444" />
                 </div>
-                <Input id="invoicePrefix" value="PL-X4R8" readOnly className="bg-gray-50" />
-                <p className="text-xs text-gray-500">Next invoice: PL-X4R8K2</p>
+                <Input id="invoicePrefix" value={apiSettings.invoice_prefix || 'GH'} readOnly className="bg-gray-50" />
+                <p className="text-xs text-gray-500">Format: {apiSettings.invoice_prefix || 'GH'}-0001, {apiSettings.invoice_prefix || 'GH'}-0002, etc.</p>
                 <p className="text-xs text-amber-600">
                   Prefix is locked after first invoice. <a href="/support" className="underline hover:text-amber-700">Contact support</a> to request a change.
                 </p>
