@@ -70,17 +70,22 @@ export function SendInvoiceModal({
     setLoading(true);
 
     // Basic email validation if provided
-    if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    const trimmedEmailForValidation = email.trim();
+    if (trimmedEmailForValidation && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmailForValidation)) {
       setError("Please enter a valid email address");
       setLoading(false);
       return;
     }
 
     try {
+      const trimmedEmail = email.trim();
       const response = await fetch(`/api/invoices/${invoiceId}/send`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({
+          email: trimmedEmail || null,
+          sendEmail: Boolean(trimmedEmail),
+        }),
       });
 
       const data = await response.json();

@@ -584,13 +584,13 @@ export default function InvoicesPage() {
                   <TableRow
                     key={invoice.id}
                     className="cursor-pointer hover:bg-gray-50"
-                    onClick={() => window.location.href = `/invoices/\${invoice.id}`}
+                    onClick={() => window.location.href = `/invoices/${invoice.id}`}
                   >
                     <TableCell onClick={(e) => e.stopPropagation()}>
                       <Checkbox
                         checked={selectedRows.includes(invoice.id)}
                         onCheckedChange={() => toggleSelectRow(invoice.id)}
-                        aria-label={`Select \${invoice.invoice_number}`}
+                        aria-label={`Select ${invoice.invoice_number}`}
                         className="rounded"
                       />
                     </TableCell>
@@ -609,7 +609,7 @@ export default function InvoicesPage() {
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end" className="rounded-2xl w-48 p-2">
                           <DropdownMenuItem asChild className="rounded-xl p-3 cursor-pointer">
-                            <Link href={`/invoices/\${invoice.id}`} className="flex items-center gap-2">
+                            <Link href={`/invoices/${invoice.id}`} className="flex items-center gap-2">
                               <Eye size={16} color="#14462a" />
                               <span>View</span>
                             </Link>

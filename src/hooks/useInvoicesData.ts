@@ -5,6 +5,7 @@ import type { InvoiceStatus } from '@/types/database'
 
 export interface InvoiceWithCustomer {
   id: string
+  public_id?: string | null
   invoice_number: string
   customer_id: string | null
   customer: {

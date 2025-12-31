@@ -344,8 +344,8 @@ export default function CreateInvoicePage() {
           });
         }
 
-        // Redirect to the new invoice
-        router.push(`/invoices/${invoiceId}`);
+        // Redirect to preview and open send modal
+        router.push(`/invoices/${invoiceId}/preview?send=1`);
       } else {
         setSubmitError(result.error || 'Failed to create invoice');
       }

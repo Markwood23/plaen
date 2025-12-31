@@ -14,16 +14,31 @@ import {
   Card
 } from "iconsax-react";
 import Link from "next/link";
-import { use } from "react";
+import { use, useEffect, useMemo, useState } from "react";
 import { useBalanceVisibility } from "@/contexts/balance-visibility-context";
 import { useInvoiceDetail } from "@/hooks/useInvoicesData";
+import { SendInvoiceModal } from "@/components/invoices/send-invoice-modal";
+import { useSearchParams } from "next/navigation";
 
 export default function InvoicePreviewPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
   const { maskAmount } = useBalanceVisibility();
+  const searchParams = useSearchParams();
+  const [sendOpen, setSendOpen] = useState(false);
   
   // Fetch real invoice data
-  const { invoice: invoiceData, loading, error } = useInvoiceDetail(id);
+  const { invoice: invoiceData, loading, error, refetch } = useInvoiceDetail(id);
+
+  useEffect(() => {
+    if (searchParams.get('send') === '1') {
+      setSendOpen(true);
+    }
+  }, [searchParams]);
+
+  const origin = useMemo(() => {
+    if (typeof window === 'undefined') return '';
+    return window.location.origin;
+  }, []);
 
   // Format date for display
   const formatDate = (dateString: string | null) => {
@@ -107,6 +122,8 @@ export default function InvoicePreviewPage({ params }: { params: Promise<{ id: s
   const total = invoiceData.total || subtotal;
   const balanceDue = invoiceData.balance_due || 0;
 
+  const paymentUrl = invoiceData.public_id ? `${origin}/pay/${invoiceData.public_id}` : null;
+
   // Get customer info
   const customer = invoiceData.customer;
 
@@ -188,18 +205,30 @@ export default function InvoicePreviewPage({ params }: { params: Promise<{ id: s
                   size="sm" 
                   className="rounded-full px-5 h-9" 
                   style={{ backgroundColor: '#14462a', color: 'white', fontWeight: 500 }}
-                  asChild
+                  onClick={() => setSendOpen(true)}
                 >
-                  <Link href={`/invoices/${id}`}>
-                    <Send2 size={14} color="currentColor" className="mr-1.5" />
-                    Send to Customer
-                  </Link>
+                  <Send2 size={14} color="currentColor" className="mr-1.5" />
+                  Send to Customer
                 </Button>
               )}
             </div>
           </div>
         </div>
       </div>
+
+      <SendInvoiceModal
+        open={sendOpen}
+        onOpenChange={setSendOpen}
+        invoiceId={id}
+        invoiceNumber={invoiceData.invoice_number}
+        customerEmail={invoiceData.customer?.email || ''}
+        customerName={invoiceData.customer?.name || ''}
+        total={total}
+        currency={invoiceData.currency || 'GHS'}
+        onSuccess={async () => {
+          await refetch();
+        }}
+      />
 
       {/* Invoice Document */}
       <div className="max-w-5xl mx-auto px-6 py-12 print:py-0 print:px-0">
@@ -337,10 +366,10 @@ export default function InvoicePreviewPage({ params }: { params: Promise<{ id: s
             </div>
 
             {/* Pay Invoice Button - Part of PDF */}
-            {invoiceData.status !== 'paid' && invoiceData.status !== 'cancelled' && balanceDue > 0 && (
+            {invoiceData.status !== 'paid' && invoiceData.status !== 'cancelled' && balanceDue > 0 && paymentUrl && (
               <div className="mt-8 pt-8" style={{ borderTop: '1px solid #E4E6EB' }}>
                 <a
-                  href={`${typeof window !== 'undefined' ? window.location.origin : ''}/pay/${id}`}
+                  href={paymentUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full text-white font-medium hover:opacity-90 transition-opacity print:hidden"
@@ -350,7 +379,7 @@ export default function InvoicePreviewPage({ params }: { params: Promise<{ id: s
                   Pay Invoice Now
                 </a>
                 <p className="text-sm mt-3" style={{ color: '#B0B3B8' }}>
-                  Payment link: {typeof window !== 'undefined' ? window.location.origin : ''}/pay/{id}
+                  Payment link: {paymentUrl}
                 </p>
               </div>
             )}

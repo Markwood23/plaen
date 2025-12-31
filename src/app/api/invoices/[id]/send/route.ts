@@ -10,6 +10,7 @@ export async function POST(
 ) {
   try {
     const { id } = await params
+    const appUrl = process.env.NEXT_PUBLIC_APP_URL || new URL(request.url).origin
     const supabase = await createClient()
     
     const { data: { user }, error: authError } = await supabase.auth.getUser()
@@ -17,11 +18,16 @@ export async function POST(
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
     
-    // Parse request body for optional email flag
+    // Parse request body for optional email flag and recipient override
     let sendEmailFlag = true
+    let recipientEmailOverride: string | null = null
     try {
       const body = await request.json()
       sendEmailFlag = body.sendEmail !== false
+      if (typeof body.email === 'string') {
+        const trimmed = body.email.trim()
+        recipientEmailOverride = trimmed.length > 0 ? trimmed : null
+      }
     } catch {
       // No body or invalid JSON - default to sending email
     }
@@ -61,13 +67,13 @@ export async function POST(
       return NextResponse.json({ 
         error: 'Invoice has already been sent',
         public_id: invoice.public_id,
-        public_url: `${process.env.NEXT_PUBLIC_APP_URL}/pay/${invoice.public_id}`
+        public_url: invoice.public_id ? `${appUrl}/pay/${invoice.public_id}` : null
       }, { status: 400 })
     }
     
     // Generate public ID
     const publicId = generatePublicId()
-    const publicUrl = `${process.env.NEXT_PUBLIC_APP_URL}/pay/${publicId}`
+    const publicUrl = `${appUrl}/pay/${publicId}`
     
     // Update invoice
     const { data: updatedInvoice, error: updateError } = await supabase
@@ -88,11 +94,13 @@ export async function POST(
     // Send email to customer if configured and customer has email
     let emailSent = false
     let emailError = null
-    
-    if (sendEmailFlag && isEmailConfigured() && customer?.email) {
+
+    const recipientEmail = recipientEmailOverride || customer?.email || null
+
+    if (sendEmailFlag && isEmailConfigured() && recipientEmail) {
       const emailResult = await sendInvoiceEmail({
-        customerEmail: customer.email,
-        customerName: customer.name || 'Customer',
+        customerEmail: recipientEmail,
+        customerName: customer?.name || 'Customer',
         invoiceNumber: invoice.invoice_number,
         amount: formatAmount(invoice.total || invoice.balance_due || 0),
         currency: invoice.currency || 'GHS',

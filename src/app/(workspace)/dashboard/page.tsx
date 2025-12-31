@@ -491,7 +491,7 @@ export default function DashboardPage() {
                   <TableRow 
                     key={invoice.id}
                     className="cursor-pointer"
-                    onClick={() => window.location.href = `/invoices/\${invoice.id}`}
+                    onClick={() => window.location.href = `/invoices/${invoice.id}`}
                   >
                     <TableCell className="font-medium">{invoice.invoice_number}</TableCell>
                     <TableCell>{new Date(invoice.issue_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</TableCell>
@@ -507,7 +507,7 @@ export default function DashboardPage() {
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end" className="rounded-2xl w-48 p-2">
                           <DropdownMenuItem asChild className="gap-3 rounded-xl p-3 cursor-pointer">
-                            <Link href={`/invoices/\${invoice.id}`} className="flex items-center gap-2">
+                            <Link href={`/invoices/${invoice.id}`} className="flex items-center gap-2">
                               <Eye size={16} color="#14462a" />
                               <span>View</span>
                             </Link>
