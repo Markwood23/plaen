@@ -9,8 +9,8 @@ interface DashboardMetrics {
   paid_invoices: number
   pending_invoices: number
   overdue_invoices: number
-  revenue_change_percent: number
-  outstanding_change_percent: number
+  revenue_change_percent: number | null
+  outstanding_change_percent: number | null
 }
 
 interface ARAging {

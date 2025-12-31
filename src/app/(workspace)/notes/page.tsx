@@ -37,7 +37,7 @@ import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Checkbox } from "@/components/ui/checkbox";
-import { useNotesData, deleteNote } from "@/hooks/useNotesData";
+import { useStandaloneNotes, deleteStandaloneNote } from "@/hooks/useStandaloneNotes";
 import { EmptyState } from "@/components/ui/empty-state";
 
 // Loading skeletons
@@ -100,7 +100,7 @@ export default function FinanceNotesPage() {
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [selectedRows, setSelectedRows] = useState<string[]>([]);
 
-  const { notes, loading, error, pagination, refetch, setFilters, filters } = useNotesData({
+  const { notes, loading, error, pagination, refetch, setFilters, filters } = useStandaloneNotes({
     page: 1,
     limit: 12,
   });
@@ -166,7 +166,7 @@ export default function FinanceNotesPage() {
     const confirmed = window.confirm('Are you sure you want to delete this note?');
     if (!confirmed) return;
     
-    const result = await deleteNote(noteId);
+    const result = await deleteStandaloneNote(noteId);
     if (result.success) {
       refetch();
     } else {

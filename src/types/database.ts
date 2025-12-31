@@ -354,6 +354,51 @@ export type Database = {
         }
         Relationships: []
       }
+      standalone_notes: {
+        Row: {
+          blocks: Json | null
+          category: string | null
+          content: string | null
+          created_at: string | null
+          id: string
+          is_archived: boolean | null
+          is_pinned: boolean | null
+          tags: string[] | null
+          title: string
+          updated_at: string | null
+          user_id: string
+          word_count: number | null
+        }
+        Insert: {
+          blocks?: Json | null
+          category?: string | null
+          content?: string | null
+          created_at?: string | null
+          id?: string
+          is_archived?: boolean | null
+          is_pinned?: boolean | null
+          tags?: string[] | null
+          title?: string
+          updated_at?: string | null
+          user_id: string
+          word_count?: number | null
+        }
+        Update: {
+          blocks?: Json | null
+          category?: string | null
+          content?: string | null
+          created_at?: string | null
+          id?: string
+          is_archived?: boolean | null
+          is_pinned?: boolean | null
+          tags?: string[] | null
+          title?: string
+          updated_at?: string | null
+          user_id?: string
+          word_count?: number | null
+        }
+        Relationships: []
+      }
       users: {
         Row: {
           account_type: string | null

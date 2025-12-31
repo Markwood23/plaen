@@ -98,12 +98,12 @@ export async function GET() {
       return payDate && payDate >= lastMonthStart && payDate <= lastMonthEnd
     }).reduce((sum, p) => sum + (Number(p.amount) || 0), 0) || 0
     
-    // Calculate percentage change
-    let revenueChangePercent = 0
+    // Calculate percentage change (null if no previous data to compare)
+    let revenueChangePercent: number | null = null
     if (lastMonthRevenue > 0) {
       revenueChangePercent = ((currentMonthRevenue - lastMonthRevenue) / lastMonthRevenue) * 100
     } else if (currentMonthRevenue > 0) {
-      revenueChangePercent = 100 // New revenue this month when there was none last month
+      revenueChangePercent = null // No previous data to compare
     }
     
     // Current month outstanding (invoices issued this month that are unpaid)
@@ -118,11 +118,11 @@ export async function GET() {
       ['sent', 'viewed', 'partially_paid'].includes(i.status || '')
     ).reduce((sum, i) => sum + (Number(i.balance_due) || 0), 0) || 0
     
-    let outstandingChangePercent = 0
+    let outstandingChangePercent: number | null = null
     if (lastMonthOutstanding > 0) {
       outstandingChangePercent = ((currentMonthOutstanding - lastMonthOutstanding) / lastMonthOutstanding) * 100
     } else if (currentMonthOutstanding > 0) {
-      outstandingChangePercent = 100
+      outstandingChangePercent = null // No previous data to compare
     }
     
     // Generate chart data for last 7 months
@@ -239,8 +239,8 @@ export async function GET() {
         total_outstanding: totalOutstanding,
         paid_amount: paidAmount,
         customer_count: customerCount || 0,
-        revenue_change_percent: Math.round(revenueChangePercent * 10) / 10,
-        outstanding_change_percent: Math.round(outstandingChangePercent * 10) / 10,
+        revenue_change_percent: revenueChangePercent !== null ? Math.round(revenueChangePercent * 10) / 10 : null,
+        outstanding_change_percent: outstandingChangePercent !== null ? Math.round(outstandingChangePercent * 10) / 10 : null,
       },
       ar_aging: arAging,
       chart_data: chartData,

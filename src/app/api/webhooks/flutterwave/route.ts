@@ -191,14 +191,19 @@ export async function POST(request: NextRequest) {
           amountPaid: amountMajor,
           currency: verifiedData.currency || invoice.currency || 'GHS',
           paymentMethod: String(verifiedData.payment_type || 'Flutterwave'),
-          paymentDate: new Date(verifiedData.created_at).toLocaleDateString('en-US', {
+          paymentDate: new Date(verifiedData.created_at).toLocaleString('en-US', {
             year: 'numeric',
-            month: 'long',
+            month: 'short',
             day: 'numeric',
+            hour: 'numeric',
+            minute: '2-digit',
           }),
           remainingBalance: remainingMinor > 0 ? remainingMajor : undefined,
           receiptLink: `${process.env.NEXT_PUBLIC_APP_URL}/receipts`,
           businessName,
+          businessEmail: userProfile?.email || undefined,
+          reference: flwRef || txRef || undefined,
+          payerName: verifiedData.customer?.name || customer?.name || undefined,
         });
       } catch (emailError) {
         console.error('Failed to send payment confirmation email:', emailError);

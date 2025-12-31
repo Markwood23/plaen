@@ -32,8 +32,9 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Calendar } from "@/components/ui/calendar";
 import Image from "next/image";
 import { useBalanceVisibility } from "@/contexts/balance-visibility-context";
-import { usePaymentsData } from "@/hooks/usePaymentsData";
+import { usePaymentsData, Payment } from "@/hooks/usePaymentsData";
 import { EmptyState } from "@/components/ui/empty-state";
+import { PaymentDetailModal } from "@/components/payments/payment-detail-modal";
 
 // Loading skeletons
 function TableSkeleton({ rows = 5 }: { rows?: number }) {
@@ -72,6 +73,8 @@ export default function PaymentsPage() {
   const [selectedRows, setSelectedRows] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [methodFilter, setMethodFilter] = useState("all");
+  const [selectedPayment, setSelectedPayment] = useState<Payment | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const { maskAmount } = useBalanceVisibility();
 
   const { payments, loading, error, pagination, refetch, setFilters, filters } = usePaymentsData({
@@ -467,6 +470,10 @@ export default function PaymentsPage() {
                     data-state={selectedRows.includes(payment.id) ? "selected" : undefined}
                     className="cursor-pointer hover:bg-gray-50" 
                     style={{ borderColor: '#E4E6EB' }}
+                    onClick={() => {
+                      setSelectedPayment(payment);
+                      setIsModalOpen(true);
+                    }}
                   >
                     <TableCell onClick={(e) => e.stopPropagation()}>
                       <Checkbox 
@@ -576,6 +583,13 @@ export default function PaymentsPage() {
           </>
         )}
       </div>
+
+      {/* Payment Detail Modal */}
+      <PaymentDetailModal 
+        payment={selectedPayment}
+        open={isModalOpen}
+        onOpenChange={setIsModalOpen}
+      />
     </div>
   );
 }

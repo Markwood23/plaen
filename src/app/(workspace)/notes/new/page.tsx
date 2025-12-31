@@ -1,34 +1,22 @@
 "use client";
 
-import { useState, useEffect, useMemo, useCallback } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
-import NextLink from "next/link";
+import Link from "next/link";
 import {
   ArrowLeft2,
   More,
-  DocumentDownload,
-  Share,
   Paperclip,
   Archive,
   Trash,
   Add,
-  Text,
-  TextBlock,
-  Element3,
-  Hashtag,
-  Link2,
-  Image,
-  Code,
-  Grid1,
-  Chart,
-  Note,
-  Sms,
   TickCircle,
   CloseCircle,
+  Cloud,
+  CloudCross,
+  Refresh,
 } from "iconsax-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import {
   DropdownMenu,
@@ -37,63 +25,102 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { createNote, updateNote } from "@/hooks/useNotesData";
-import { useAutoSave, AutoSaveIndicator } from "@/hooks/useAutoSave";
+import { NoteEditor } from "@/components/notes/note-editor";
+import {
+  createStandaloneNote,
+  updateStandaloneNote,
+} from "@/hooks/useStandaloneNotes";
+
+type SaveStatus = "idle" | "saving" | "saved" | "error";
 
 export default function NewNotePage() {
   const router = useRouter();
   const [noteId, setNoteId] = useState<string | null>(null);
   const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
+  const [htmlContent, setHtmlContent] = useState("");
+  const [textContent, setTextContent] = useState("");
   const [tags, setTags] = useState<string[]>([]);
   const [newTag, setNewTag] = useState("");
   const [isAddingTag, setIsAddingTag] = useState(false);
-  const [isSaving, setIsSaving] = useState(false);
-  const [isCreated, setIsCreated] = useState(false);
+  const [saveStatus, setSaveStatus] = useState<SaveStatus>("idle");
+  const [lastSaved, setLastSaved] = useState<Date | null>(null);
+  
+  const saveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const isDirtyRef = useRef(false);
 
-  // Memoize the note data object for auto-save
-  const noteData = useMemo(() => ({
-    title,
-    content,
-    tags,
-  }), [title, content, tags]);
-
-  // Auto-save handler - creates note first time, then updates
-  const handleAutoSave = useCallback(async (data: typeof noteData) => {
-    if (!data.title.trim()) {
-      return { success: true }; // Don't save if no title
-    }
-
-    if (!noteId) {
-      // First save - create the note
-      const result = await createNote({
-        title: data.title,
-        content: data.content,
-        tags: data.tags,
-      });
-      if (result.success && result.note) {
-        setNoteId(result.note.id);
-        setIsCreated(true);
+  // Auto-save logic
+  const performSave = useCallback(async () => {
+    if (!title.trim()) return;
+    
+    setSaveStatus("saving");
+    
+    try {
+      if (!noteId) {
+        // First save - create the note
+        const result = await createStandaloneNote({
+          title,
+          content: htmlContent,
+          tags,
+        });
+        
+        if (result.success && result.note) {
+          setNoteId(result.note.id);
+          setSaveStatus("saved");
+          setLastSaved(new Date());
+          isDirtyRef.current = false;
+        } else {
+          setSaveStatus("error");
+        }
+      } else {
+        // Update existing note
+        const result = await updateStandaloneNote(noteId, {
+          title,
+          content: htmlContent,
+          tags,
+        });
+        
+        if (result.success) {
+          setSaveStatus("saved");
+          setLastSaved(new Date());
+          isDirtyRef.current = false;
+        } else {
+          setSaveStatus("error");
+        }
       }
-      return result;
-    } else {
-      // Subsequent saves - update the note
-      return await updateNote(noteId, {
-        title: data.title,
-        content: data.content,
-        tags: data.tags,
-      });
+    } catch {
+      setSaveStatus("error");
     }
-  }, [noteId]);
+  }, [title, htmlContent, tags, noteId]);
 
-  // Auto-save hook - only enabled after title is entered
-  const { status, lastSavedAt, error, forceSave } = useAutoSave({
-    data: noteData,
-    onSave: handleAutoSave,
-    debounceMs: 2000,
-    enabled: title.trim().length > 0,
-  });
+  // Debounced auto-save
+  useEffect(() => {
+    if (!title.trim()) return;
+    
+    isDirtyRef.current = true;
+    setSaveStatus("idle");
+    
+    if (saveTimeoutRef.current) {
+      clearTimeout(saveTimeoutRef.current);
+    }
+    
+    saveTimeoutRef.current = setTimeout(() => {
+      performSave();
+    }, 2000);
+    
+    return () => {
+      if (saveTimeoutRef.current) {
+        clearTimeout(saveTimeoutRef.current);
+      }
+    };
+  }, [title, htmlContent, tags, performSave]);
 
+  // Handle editor content change
+  const handleContentChange = useCallback((html: string, text: string) => {
+    setHtmlContent(html);
+    setTextContent(text);
+  }, []);
+
+  // Tags management
   const handleAddTag = () => {
     if (newTag.trim() && !tags.includes(newTag.trim())) {
       setTags([...tags, newTag.trim()]);
@@ -106,21 +133,30 @@ export default function NewNotePage() {
     setTags(tags.filter((tag) => tag !== tagToRemove));
   };
 
+  // Manual save
   const handleSave = async () => {
     if (!title.trim()) return;
-    
-    setIsSaving(true);
-    await forceSave();
-    setIsSaving(false);
+    await performSave();
     router.push("/notes");
   };
 
+  // Format last saved time
+  const formatLastSaved = () => {
+    if (!lastSaved) return "";
+    const now = new Date();
+    const diff = Math.floor((now.getTime() - lastSaved.getTime()) / 1000);
+    if (diff < 5) return "Just now";
+    if (diff < 60) return `${diff}s ago`;
+    if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
+    return lastSaved.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+  };
+
   return (
-    <div className="max-w-5xl mx-auto">
+    <div className="max-w-4xl mx-auto pb-12">
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
-          <NextLink href="/notes">
+          <Link href="/notes">
             <Button
               variant="ghost"
               size="sm"
@@ -128,31 +164,54 @@ export default function NewNotePage() {
             >
               <ArrowLeft2 size={16} color="#2D2D2D" variant="Linear" />
             </Button>
-          </NextLink>
+          </Link>
           <div>
-            <h1 className="text-lg font-semibold" style={{ color: "#2D2D2D" }}>
-              {isCreated ? "Editing Note" : "New Note"}
+            <h1 className="text-lg font-semibold text-[#2D2D2D]">
+              {noteId ? "Editing Note" : "New Note"}
             </h1>
-            <AutoSaveIndicator status={status} lastSavedAt={lastSavedAt} error={error} />
+            {/* Save Status Indicator */}
+            <div className="flex items-center gap-2 text-sm text-[#B0B3B8]">
+              {saveStatus === "saving" && (
+                <>
+                  <Refresh size={14} className="animate-spin" />
+                  <span>Saving...</span>
+                </>
+              )}
+              {saveStatus === "saved" && (
+                <>
+                  <Cloud size={14} color="#14462a" />
+                  <span className="text-[#14462a]">Saved {formatLastSaved()}</span>
+                </>
+              )}
+              {saveStatus === "error" && (
+                <>
+                  <CloudCross size={14} color="#EF4444" />
+                  <span className="text-red-500">Failed to save</span>
+                </>
+              )}
+              {saveStatus === "idle" && title.trim() && isDirtyRef.current && (
+                <>
+                  <span>Unsaved changes</span>
+                </>
+              )}
+            </div>
           </div>
         </div>
 
         <div className="flex items-center gap-2">
           <Button
             variant="outline"
-            className="rounded-full h-9 px-4"
-            style={{ borderColor: "#E4E6EB" }}
+            className="rounded-full h-9 px-4 border-[#E4E6EB]"
             onClick={() => router.push("/notes")}
           >
             Cancel
           </Button>
           <Button
-            className="rounded-full h-9 px-4"
-            style={{ backgroundColor: "#14462a", color: "white" }}
+            className="rounded-full h-9 px-4 bg-[#14462a] hover:bg-[#0d3520] text-white"
             onClick={handleSave}
-            disabled={isSaving || !title.trim()}
+            disabled={!title.trim() || saveStatus === "saving"}
           >
-            {isSaving ? "Saving..." : "Save Note"}
+            {saveStatus === "saving" ? "Saving..." : "Save Note"}
           </Button>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -164,22 +223,31 @@ export default function NewNotePage() {
                 <More size={16} color="#B0B3B8" variant="Linear" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="rounded-2xl p-2" style={{ boxShadow: '0 4px 20px rgba(0, 0, 0, 0.12)', border: '1px solid rgba(0, 0, 0, 0.06)' }}>
+            <DropdownMenuContent
+              align="end"
+              className="rounded-2xl p-2"
+              style={{
+                boxShadow: "0 4px 20px rgba(0, 0, 0, 0.12)",
+                border: "1px solid rgba(0, 0, 0, 0.06)",
+              }}
+            >
               <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer hover:bg-[rgba(20,70,42,0.06)] group transition-all">
-                <Paperclip size={16} color="#2D2D2D" variant="Linear" className="mr-2 group-hover:text-[#14462a]" />
+                <Paperclip
+                  size={16}
+                  color="#2D2D2D"
+                  variant="Linear"
+                  className="mr-2 group-hover:text-[#14462a]"
+                />
                 <span className="group-hover:text-[#14462a]">Pin Note</span>
-              </DropdownMenuItem>
-              <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer hover:bg-[rgba(20,70,42,0.06)] group transition-all">
-                <Share size={16} color="#2D2D2D" variant="Linear" className="mr-2 group-hover:text-[#14462a]" />
-                <span className="group-hover:text-[#14462a]">Share</span>
-              </DropdownMenuItem>
-              <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer hover:bg-[rgba(20,70,42,0.06)] group transition-all">
-                <DocumentDownload size={16} color="#2D2D2D" variant="Linear" className="mr-2 group-hover:text-[#14462a]" />
-                <span className="group-hover:text-[#14462a]">Export PDF</span>
               </DropdownMenuItem>
               <DropdownMenuSeparator className="my-1" />
               <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer hover:bg-[rgba(20,70,42,0.06)] group transition-all">
-                <Archive size={16} color="#2D2D2D" variant="Linear" className="mr-2 group-hover:text-[#14462a]" />
+                <Archive
+                  size={16}
+                  color="#2D2D2D"
+                  variant="Linear"
+                  className="mr-2 group-hover:text-[#14462a]"
+                />
                 <span className="group-hover:text-[#14462a]">Archive</span>
               </DropdownMenuItem>
               <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer hover:bg-red-50 group transition-all">
@@ -193,13 +261,12 @@ export default function NewNotePage() {
 
       {/* Title Input */}
       <div className="mb-6">
-        <Input
+        <input
           type="text"
           placeholder="Note Title..."
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          className="text-3xl font-bold border-0 px-0 focus-visible:ring-0 focus-visible:ring-offset-0"
-          style={{ color: "#2D2D2D" }}
+          className="w-full text-3xl font-bold border-0 px-0 focus:outline-none focus:ring-0 placeholder:text-gray-300 text-[#2D2D2D]"
         />
       </div>
 
@@ -209,35 +276,31 @@ export default function NewNotePage() {
           <Badge
             key={tag}
             variant="secondary"
-            className="rounded-full px-3 py-1 text-xs flex items-center gap-1.5"
-            style={{
-              backgroundColor: "rgba(20, 70, 42, 0.08)",
-              color: "#14462a",
-            }}
+            className="rounded-full px-3 py-1 text-xs flex items-center gap-1.5 bg-[rgba(20,70,42,0.08)] text-[#14462a] border-0"
           >
             {tag}
-            <button
-              onClick={() => handleRemoveTag(tag)}
-              className="hover:opacity-70"
-            >
+            <button onClick={() => handleRemoveTag(tag)} className="hover:opacity-70">
               <CloseCircle size={12} color="#14462a" variant="Linear" />
             </button>
           </Badge>
         ))}
         {isAddingTag ? (
           <div className="flex items-center gap-2">
-            <Input
+            <input
               type="text"
               placeholder="Tag name..."
               value={newTag}
               onChange={(e) => setNewTag(e.target.value)}
-              onKeyPress={(e) => {
+              onKeyDown={(e) => {
                 if (e.key === "Enter") {
                   handleAddTag();
                 }
+                if (e.key === "Escape") {
+                  setIsAddingTag(false);
+                  setNewTag("");
+                }
               }}
-              className="h-7 w-32 text-xs rounded-full px-3"
-              style={{ borderColor: "#E4E6EB" }}
+              className="h-7 w-32 text-xs rounded-full px-3 border border-[#E4E6EB] focus:outline-none focus:ring-2 focus:ring-[#14462a]/20 focus:border-[#14462a]"
               autoFocus
             />
             <Button
@@ -263,17 +326,7 @@ export default function NewNotePage() {
         ) : (
           <button
             onClick={() => setIsAddingTag(true)}
-            className="px-3 py-1 rounded-full text-xs flex items-center gap-1 transition-colors"
-            style={{
-              backgroundColor: "rgba(176, 179, 184, 0.08)",
-              color: "#B0B3B8",
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = "rgba(176, 179, 184, 0.12)";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = "rgba(176, 179, 184, 0.08)";
-            }}
+            className="px-3 py-1 rounded-full text-xs flex items-center gap-1 transition-colors bg-[rgba(176,179,184,0.08)] text-[#B0B3B8] hover:bg-[rgba(176,179,184,0.12)]"
           >
             <Add size={12} color="#B0B3B8" variant="Linear" />
             Add Tag
@@ -281,164 +334,16 @@ export default function NewNotePage() {
         )}
       </div>
 
-      {/* Toolbar */}
-      <div
-        className="flex items-center gap-1 p-2 mb-4 rounded-full"
-        style={{ backgroundColor: "#F7F9FA" }}
-      >
-        <div className="flex items-center gap-0.5">
-          <Button
-            variant="ghost"
-            size="sm"
-            className="h-8 w-8 p-0 rounded-full hover:bg-white"
-          >
-            <Text size={16} color="#2D2D2D" variant="Linear" />
-          </Button>
-          <Button
-            variant="ghost"
-            size="sm"
-            className="h-8 w-8 p-0 rounded-full hover:bg-white"
-          >
-            <TextBlock size={16} color="#2D2D2D" variant="Linear" />
-          </Button>
-        </div>
-        <div
-          className="h-6 w-px mx-1"
-          style={{ backgroundColor: "#E4E6EB" }}
-        />
-        <div className="flex items-center gap-0.5">
-          <Button
-            variant="ghost"
-            size="sm"
-            className="h-8 w-8 p-0 rounded-full hover:bg-white"
-          >
-            <Element3 size={16} color="#2D2D2D" variant="Linear" />
-          </Button>
-          <Button
-            variant="ghost"
-            size="sm"
-            className="h-8 w-8 p-0 rounded-full hover:bg-white"
-          >
-            <Hashtag size={16} color="#2D2D2D" variant="Linear" />
-          </Button>
-        </div>
-        <div
-          className="h-6 w-px mx-1"
-          style={{ backgroundColor: "#E4E6EB" }}
-        />
-        <div className="flex items-center gap-0.5">
-          <Button
-            variant="ghost"
-            size="sm"
-            className="h-8 w-8 p-0 rounded-full hover:bg-white"
-          >
-            <Link2 size={16} color="#2D2D2D" variant="Linear" />
-          </Button>
-          <Button
-            variant="ghost"
-            size="sm"
-            className="h-8 w-8 p-0 rounded-full hover:bg-white"
-          >
-            <Image size={16} color="#2D2D2D" variant="Linear" />
-          </Button>
-          <Button
-            variant="ghost"
-            size="sm"
-            className="h-8 w-8 p-0 rounded-full hover:bg-white"
-          >
-            <Code size={16} color="#2D2D2D" variant="Linear" />
-          </Button>
-          <Button
-            variant="ghost"
-            size="sm"
-            className="h-8 w-8 p-0 rounded-full hover:bg-white"
-          >
-            <Grid1 size={16} color="#2D2D2D" variant="Linear" />
-          </Button>
-        </div>
-        <div
-          className="h-6 w-px mx-1"
-          style={{ backgroundColor: "#E4E6EB" }}
-        />
-        <div className="flex items-center gap-0.5">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="h-8 px-3 rounded-full hover:bg-[rgba(20,70,42,0.06)] text-xs font-medium"
-                style={{ color: "#14462a" }}
-              >
-                <Add size={16} color="#14462a" variant="Linear" className="mr-1.5" />
-                Insert Block
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="start" className="rounded-2xl p-2 w-64" style={{ boxShadow: '0 4px 20px rgba(0, 0, 0, 0.12)', border: '1px solid rgba(0, 0, 0, 0.06)' }}>
-              <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer hover:bg-[rgba(20,70,42,0.06)] group transition-all">
-                <Chart size={16} color="#14462a" variant="Linear" className="mr-2" />
-                <div>
-                  <div className="font-medium text-sm group-hover:text-[#14462a]">AR Metrics</div>
-                  <div className="text-xs" style={{ color: "#B0B3B8" }}>
-                    Live accounts receivable data
-                  </div>
-                </div>
-              </DropdownMenuItem>
-              <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer hover:bg-[rgba(20,70,42,0.06)] group transition-all">
-                <Note size={16} color="#14462a" variant="Linear" className="mr-2" />
-                <div>
-                  <div className="font-medium text-sm group-hover:text-[#14462a]">Invoice Table</div>
-                  <div className="text-xs" style={{ color: "#B0B3B8" }}>
-                    Recent invoices with filters
-                  </div>
-                </div>
-              </DropdownMenuItem>
-              <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer hover:bg-[rgba(20,70,42,0.06)] group transition-all">
-                <Sms size={16} color="#F59E0B" variant="Linear" className="mr-2" />
-                <div>
-                  <div className="font-medium text-sm group-hover:text-[#14462a]">Payment Summary</div>
-                  <div className="text-xs" style={{ color: "#B0B3B8" }}>
-                    Payment method breakdown
-                  </div>
-                </div>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-        <div className="ml-auto flex items-center gap-2">
-          <Button
-            variant="ghost"
-            size="sm"
-            className="h-8 w-8 p-0 rounded-full hover:bg-white"
-          >
-            <Paperclip size={16} color="#2D2D2D" variant="Linear" />
-          </Button>
-          <Button
-            variant="ghost"
-            size="sm"
-            className="h-8 w-8 p-0 rounded-full hover:bg-white"
-          >
-            <Sms size={16} color="#2D2D2D" variant="Linear" />
-          </Button>
-        </div>
-      </div>
-
-      {/* Content Editor */}
-      <div className="mb-6">
-        <Textarea
-          placeholder="Start writing your note... You can add rich text formatting, tables, and live data blocks from the toolbar above."
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-          className="min-h-[500px] border-0 px-0 resize-none text-base focus-visible:ring-0 focus-visible:ring-offset-0"
-          style={{ color: "#2D2D2D" }}
-        />
-      </div>
+      {/* Rich Text Editor */}
+      <NoteEditor
+        content={htmlContent}
+        onChange={handleContentChange}
+        placeholder="Start writing your note... Use the toolbar above for formatting, or select text to see more options."
+      />
 
       {/* Helper Text */}
-      <div
-        className="text-sm text-center py-8"
-        style={{ color: "#B0B3B8" }}
-      >
-        💡 Tip: Use the "Insert Block" button to add live financial data to your note
+      <div className="text-sm text-center py-8 text-[#B0B3B8]">
+        💡 Tip: Select text to reveal formatting options, or use keyboard shortcuts (Ctrl+B for bold, Ctrl+I for italic)
       </div>
     </div>
   );

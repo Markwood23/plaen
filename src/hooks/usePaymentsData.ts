@@ -25,10 +25,14 @@ export interface PaymentWithAllocations {
       customer: {
         id: string
         name: string
+        email?: string
       } | null
     } | null
   }[]
 }
+
+// Alias for convenience
+export type Payment = PaymentWithAllocations
 
 export interface PaymentsFilters {
   method?: PaymentMethod

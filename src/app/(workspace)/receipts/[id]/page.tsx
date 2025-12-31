@@ -13,14 +13,9 @@ import {
   Printer,
   TickCircle,
   Receipt21,
-  Calendar,
-  Money,
-  User,
-  Building,
-  Sms,
-  Call,
-  DocumentText,
   Copy,
+  ExportSquare,
+  ShieldTick,
 } from "iconsax-react";
 
 interface ReceiptDetail {
@@ -36,6 +31,7 @@ interface ReceiptDetail {
     date: string;
     payer_name: string | null;
     payer_email: string | null;
+    reference?: string | null;
   };
   invoice: {
     id: string;
@@ -50,6 +46,13 @@ interface ReceiptDetail {
     currency: string;
     status: string;
     notes: string | null;
+    line_items?: {
+      id: string;
+      description: string;
+      quantity: number;
+      unit_price: number;
+      total: number;
+    }[];
   } | null;
   customer: {
     id: string;
@@ -57,6 +60,13 @@ interface ReceiptDetail {
     email: string | null;
     phone: string | null;
     company: string | null;
+  } | null;
+  business?: {
+    name: string | null;
+    address: string | null;
+    email: string | null;
+    phone: string | null;
+    logo_url: string | null;
   } | null;
   created_at: string;
 }
@@ -101,22 +111,13 @@ export default function ReceiptDetailPage({ params }: { params: Promise<{ id: st
 
   const formatCurrency = (amount: number, currency: string = "GHS") => {
     const symbol = currency === "GHS" ? "₵" : currency === "USD" ? "$" : currency + " ";
-    return `${symbol}${amount.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-  };
-
-  const formatDate = (dateString: string | null) => {
-    if (!dateString) return "N/A";
-    try {
-      return format(new Date(dateString), "MMM d, yyyy");
-    } catch {
-      return dateString;
-    }
+    return `${symbol}${(amount / 100).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
   };
 
   const formatDateTime = (dateString: string | null) => {
     if (!dateString) return "N/A";
     try {
-      return format(new Date(dateString), "MMM d, yyyy 'at' h:mm a");
+      return format(new Date(dateString), "dd.MM.yyyy HH:mm");
     } catch {
       return dateString;
     }
@@ -125,12 +126,16 @@ export default function ReceiptDetailPage({ params }: { params: Promise<{ id: st
   const formatPaymentMethod = (method: string) => {
     const methods: Record<string, string> = {
       momo: "Mobile Money",
+      mtn_momo: "MTN Mobile Money",
+      vodafone_cash: "Vodafone Cash",
+      airteltigo_money: "AirtelTigo Money",
       bank: "Bank Transfer",
+      bank_transfer: "Bank Transfer",
       card: "Card Payment",
       cash: "Cash",
       external: "External Payment",
     };
-    return methods[method] || method;
+    return methods[method] || method.replace(/_/g, ' ');
   };
 
   const handlePrint = () => {
@@ -167,28 +172,9 @@ export default function ReceiptDetailPage({ params }: { params: Promise<{ id: st
   // Loading state
   if (loading) {
     return (
-      <div className="min-h-screen bg-white">
-        <div className="print:hidden" style={{ borderBottom: "1px solid #E4E6EB" }}>
-          <div className="max-w-4xl mx-auto px-6 py-4">
-            <div className="flex items-center justify-between">
-              <Skeleton className="h-8 w-24" />
-              <div className="flex items-center gap-2">
-                <Skeleton className="h-9 w-24" />
-                <Skeleton className="h-9 w-32" />
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="max-w-4xl mx-auto px-6 py-12">
-          <div className="space-y-6">
-            <Skeleton className="h-10 w-64" />
-            <Skeleton className="h-6 w-48" />
-            <div className="grid grid-cols-2 gap-8">
-              <Skeleton className="h-32 w-full" />
-              <Skeleton className="h-32 w-full" />
-            </div>
-            <Skeleton className="h-48 w-full" />
-          </div>
+      <div className="min-h-screen bg-[#0f0f0f]">
+        <div className="max-w-md mx-auto pt-8 px-4">
+          <Skeleton className="h-[600px] w-full rounded-3xl bg-[#1a1a1a]" />
         </div>
       </div>
     );
@@ -197,12 +183,12 @@ export default function ReceiptDetailPage({ params }: { params: Promise<{ id: st
   // Error state
   if (error || !receipt) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
+      <div className="min-h-screen bg-[#0f0f0f] flex items-center justify-center">
         <div className="text-center">
-          <Receipt21 size={48} color="#B0B3B8" className="mx-auto mb-4" />
-          <h1 className="text-xl font-semibold text-gray-900 mb-2">Receipt Not Found</h1>
-          <p className="text-gray-500 mb-6">{error || "This receipt could not be found."}</p>
-          <Button variant="outline" asChild>
+          <Receipt21 size={48} color="#6B7280" className="mx-auto mb-4" />
+          <h1 className="text-xl font-semibold text-white mb-2">Receipt Not Found</h1>
+          <p className="text-gray-400 mb-6">{error || "This receipt could not be found."}</p>
+          <Button variant="outline" asChild className="border-gray-700 text-white hover:bg-gray-800">
             <Link href="/receipts">Back to Receipts</Link>
           </Button>
         </div>
@@ -210,29 +196,40 @@ export default function ReceiptDetailPage({ params }: { params: Promise<{ id: st
     );
   }
 
+  const businessName = receipt.business?.name || "Your Business";
+  const customerName = receipt.customer?.name || receipt.payment.payer_name || "Customer";
+
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-[#0f0f0f] pb-12">
       {/* Print Styles */}
       <style jsx global>{`
         @media print {
           @page {
-            size: A4;
-            margin: 1cm;
+            size: 80mm auto;
+            margin: 0;
           }
           body {
             print-color-adjust: exact;
             -webkit-print-color-adjust: exact;
+            background: white !important;
+          }
+          .print\\:hidden {
+            display: none !important;
+          }
+          .receipt-paper {
+            box-shadow: none !important;
+            margin: 0 !important;
           }
         }
       `}</style>
 
       {/* Action Bar */}
-      <div className="print:hidden" style={{ borderBottom: "1px solid #E4E6EB" }}>
-        <div className="max-w-4xl mx-auto px-6 py-4">
+      <div className="print:hidden bg-[#0f0f0f] border-b border-gray-800 sticky top-0 z-10">
+        <div className="max-w-2xl mx-auto px-4 py-3">
           <div className="flex items-center justify-between">
-            <Button variant="ghost" size="sm" asChild className="gap-2 -ml-2 rounded-full hover:bg-[rgba(240,242,245,0.5)]">
+            <Button variant="ghost" size="sm" asChild className="gap-2 -ml-2 rounded-xl text-gray-300 hover:text-white hover:bg-gray-800">
               <Link href="/receipts">
-                <ArrowLeft2 size={16} color="currentColor" />
+                <ArrowLeft2 size={16} />
                 Back
               </Link>
             </Button>
@@ -240,182 +237,228 @@ export default function ReceiptDetailPage({ params }: { params: Promise<{ id: st
               <Button
                 variant="outline"
                 size="sm"
-                className="rounded-full px-5 h-9 hover:bg-[rgba(240,242,245,0.8)]"
-                style={{ borderColor: "#E4E6EB", color: "#2D2D2D", fontWeight: 400 }}
+                className="rounded-xl border-gray-700 text-gray-300 hover:text-white hover:bg-gray-800"
                 onClick={handlePrint}
               >
-                <Printer size={14} color="currentColor" className="mr-1.5" />
+                <Printer size={14} className="mr-1.5" />
                 Print
               </Button>
               <Button
-                variant="outline"
                 size="sm"
-                className="rounded-full px-5 h-9 hover:bg-[rgba(240,242,245,0.8)]"
-                style={{ borderColor: "#E4E6EB", color: "#2D2D2D", fontWeight: 400 }}
+                className="rounded-xl bg-[#14462a] hover:bg-[#1a5a38]"
                 onClick={handleDownloadPDF}
               >
-                <DocumentDownload size={14} color="currentColor" className="mr-1.5" />
-                Download PDF
+                <DocumentDownload size={14} className="mr-1.5" />
+                Download
               </Button>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Receipt Content */}
-      <div className="max-w-4xl mx-auto px-6 py-12 print:py-0 print:px-0">
-        <div className="bg-white">
-          {/* Header */}
-          <div className="flex items-start justify-between mb-8">
-            <div>
-              <div className="flex items-center gap-3 mb-2">
-                <div className="h-12 w-12 rounded-full flex items-center justify-center" style={{ backgroundColor: "rgba(20, 70, 42, 0.08)" }}>
-                  <TickCircle size={24} color="#14462a" variant="Bold" />
+      {/* Receipt */}
+      <div className="max-w-md mx-auto pt-8 px-4">
+        <div className="receipt-paper bg-white rounded-t-3xl overflow-hidden shadow-2xl">
+          
+          {/* Header - Clean White with Logo */}
+          <div className="px-8 pt-8 pb-6">
+            <div className="flex justify-between items-start">
+              {/* Business Logo/Name */}
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-[#14462a] flex items-center justify-center">
+                  <span className="text-white text-lg font-bold">
+                    {businessName.charAt(0)}
+                  </span>
                 </div>
-                <div>
-                  <h1 className="text-2xl font-bold" style={{ color: "#2D2D2D" }}>Payment Receipt</h1>
-                  <p className="text-sm" style={{ color: "#B0B3B8" }}>Payment confirmed</p>
-                </div>
+                <span className="font-semibold text-gray-900 text-lg">{businessName}</span>
               </div>
-            </div>
-            <div className="text-right">
-              <p className="text-sm mb-1" style={{ color: "#B0B3B8" }}>Receipt Number</p>
-              <div className="flex items-center gap-2">
-                <p className="text-lg font-semibold" style={{ color: "#2D2D2D" }}>{receipt.receipt_number}</p>
-                <button
-                  onClick={copyReceiptNumber}
-                  className="p-1 rounded hover:bg-gray-100 transition-colors"
-                  title="Copy receipt number"
-                >
-                  <Copy size={14} color={copied ? "#14462a" : "#B0B3B8"} />
-                </button>
+              {/* Receipt Info */}
+              <div className="text-right">
+                <p className="text-xs text-gray-400">Receipt № {receipt.receipt_number}</p>
+                <p className="text-xs text-gray-400">{formatDateTime(receipt.payment.date)}</p>
               </div>
-              {copied && <p className="text-xs mt-1" style={{ color: "#14462a" }}>Copied!</p>}
             </div>
           </div>
 
-          {/* Amount Paid */}
-          <div className="rounded-2xl p-6 mb-8" style={{ backgroundColor: "rgba(20, 70, 42, 0.04)", border: "1px solid rgba(20, 70, 42, 0.1)" }}>
-            <p className="text-sm mb-2" style={{ color: "#B0B3B8" }}>Amount Paid</p>
-            <p className="text-4xl font-bold" style={{ color: "#14462a" }}>
-              {maskAmount(formatCurrency(receipt.payment.amount, receipt.payment.currency))}
-            </p>
-            <p className="text-sm mt-2" style={{ color: "#65676B" }}>
-              Paid on {formatDateTime(receipt.payment.date)} via {formatPaymentMethod(receipt.payment.method)}
+          {/* Success Message */}
+          <div className="px-8 pb-6">
+            <h1 className="text-2xl font-bold text-gray-900 mb-1">Payment Successful!</h1>
+            <p className="text-sm text-gray-500">
+              Your payment <span className="font-medium text-[#14462a]">№ {receipt.receipt_number}</span> has been processed
             </p>
           </div>
 
-          {/* Details Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-            {/* Payment Details */}
-            <div className="rounded-xl p-5" style={{ backgroundColor: "#F9F9F9" }}>
-              <h3 className="text-sm font-semibold mb-4 flex items-center gap-2" style={{ color: "#2D2D2D" }}>
-                <Money size={16} color="#14462a" />
-                Payment Details
-              </h3>
-              <div className="space-y-3">
-                <div className="flex justify-between">
-                  <span className="text-sm" style={{ color: "#B0B3B8" }}>Method</span>
-                  <span className="text-sm font-medium" style={{ color: "#2D2D2D" }}>{formatPaymentMethod(receipt.payment.method)}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-sm" style={{ color: "#B0B3B8" }}>Date</span>
-                  <span className="text-sm font-medium" style={{ color: "#2D2D2D" }}>{formatDate(receipt.payment.date)}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-sm" style={{ color: "#B0B3B8" }}>Currency</span>
-                  <span className="text-sm font-medium" style={{ color: "#2D2D2D" }}>{receipt.payment.currency}</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Customer/Payer Details */}
-            <div className="rounded-xl p-5" style={{ backgroundColor: "#F9F9F9" }}>
-              <h3 className="text-sm font-semibold mb-4 flex items-center gap-2" style={{ color: "#2D2D2D" }}>
-                <User size={16} color="#14462a" />
-                Payer Details
-              </h3>
-              <div className="space-y-3">
-                {(receipt.customer?.name || receipt.payment.payer_name) && (
-                  <div className="flex justify-between">
-                    <span className="text-sm" style={{ color: "#B0B3B8" }}>Name</span>
-                    <span className="text-sm font-medium" style={{ color: "#2D2D2D" }}>
-                      {receipt.customer?.name || receipt.payment.payer_name}
-                    </span>
-                  </div>
-                )}
-                {receipt.customer?.company && (
-                  <div className="flex justify-between">
-                    <span className="text-sm" style={{ color: "#B0B3B8" }}>Company</span>
-                    <span className="text-sm font-medium" style={{ color: "#2D2D2D" }}>{receipt.customer.company}</span>
-                  </div>
-                )}
-                {(receipt.customer?.email || receipt.payment.payer_email) && (
-                  <div className="flex justify-between">
-                    <span className="text-sm" style={{ color: "#B0B3B8" }}>Email</span>
-                    <span className="text-sm font-medium" style={{ color: "#2D2D2D" }}>
-                      {receipt.customer?.email || receipt.payment.payer_email}
-                    </span>
-                  </div>
-                )}
-                {receipt.customer?.phone && (
-                  <div className="flex justify-between">
-                    <span className="text-sm" style={{ color: "#B0B3B8" }}>Phone</span>
-                    <span className="text-sm font-medium" style={{ color: "#2D2D2D" }}>{receipt.customer.phone}</span>
-                  </div>
-                )}
-              </div>
+          {/* Dashed Separator */}
+          <div className="px-8">
+            <div className="border-t-2 border-dashed border-gray-200 relative">
+              <div className="absolute -left-4 -top-3 w-6 h-6 bg-[#0f0f0f] rounded-full" />
+              <div className="absolute -right-4 -top-3 w-6 h-6 bg-[#0f0f0f] rounded-full" />
             </div>
           </div>
 
-          {/* Invoice Reference */}
-          {receipt.invoice && (
-            <div className="rounded-xl p-5 mb-8" style={{ border: "1px solid #E4E6EB" }}>
-              <h3 className="text-sm font-semibold mb-4 flex items-center gap-2" style={{ color: "#2D2D2D" }}>
-                <DocumentText size={16} color="#14462a" />
-                Invoice Reference
-              </h3>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div>
-                  <p className="text-sm mb-1" style={{ color: "#B0B3B8" }}>Invoice Number</p>
-                  <Link href={`/invoices/${receipt.invoice.id}`} className="text-sm font-medium hover:underline" style={{ color: "#14462a" }}>
-                    {receipt.invoice.invoice_number}
-                  </Link>
+          {/* Line Items */}
+          {receipt.invoice?.line_items && receipt.invoice.line_items.length > 0 ? (
+            <div className="px-8 py-6">
+              <div className="space-y-4">
+                {receipt.invoice.line_items.map((item, index) => (
+                  <div key={item.id || index} className="flex justify-between items-start">
+                    <div className="flex gap-4">
+                      <span className="text-gray-400 text-sm w-4">{index + 1}</span>
+                      <div>
+                        <p className="text-gray-900 font-medium text-sm">{item.description}</p>
+                        <p className="text-xs text-gray-400 mt-0.5">
+                          {item.quantity} × {maskAmount(formatCurrency(item.unit_price, receipt.invoice?.currency || receipt.payment.currency))}
+                        </p>
+                      </div>
+                    </div>
+                    <span className="text-gray-900 font-medium text-sm">
+                      {maskAmount(formatCurrency(item.total, receipt.invoice?.currency || receipt.payment.currency))}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ) : (
+            <div className="px-8 py-6">
+              <div className="flex justify-between items-center">
+                <div className="flex gap-4">
+                  <span className="text-gray-400 text-sm w-4">1</span>
+                  <div>
+                    <p className="text-gray-900 font-medium text-sm">
+                      Payment for Invoice {receipt.invoice?.invoice_number || 'N/A'}
+                    </p>
+                    <p className="text-xs text-gray-400 mt-0.5">
+                      {formatPaymentMethod(receipt.payment.method)}
+                    </p>
+                  </div>
                 </div>
-                <div>
-                  <p className="text-sm mb-1" style={{ color: "#B0B3B8" }}>Invoice Total</p>
-                  <p className="text-sm font-medium" style={{ color: "#2D2D2D" }}>
-                    {maskAmount(formatCurrency(receipt.invoice.total, receipt.invoice.currency))}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-sm mb-1" style={{ color: "#B0B3B8" }}>Balance Due</p>
-                  <p className="text-sm font-medium" style={{ color: receipt.invoice.balance > 0 ? "#F59E0B" : "#14462a" }}>
-                    {maskAmount(formatCurrency(receipt.invoice.balance, receipt.invoice.currency))}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-sm mb-1" style={{ color: "#B0B3B8" }}>Status</p>
-                  <Badge
-                    variant={receipt.invoice.status === "paid" ? "default" : "secondary"}
-                    className="capitalize"
-                  >
-                    {receipt.invoice.status}
-                  </Badge>
-                </div>
+                <span className="text-gray-900 font-medium text-sm">
+                  {maskAmount(formatCurrency(receipt.payment.amount, receipt.payment.currency))}
+                </span>
               </div>
             </div>
           )}
 
+          {/* Dashed Separator */}
+          <div className="px-8">
+            <div className="border-t-2 border-dashed border-gray-200" />
+          </div>
+
+          {/* Totals Section */}
+          <div className="px-8 py-6 bg-gray-50">
+            <div className="flex justify-between items-center mb-4">
+              <span className="text-xl font-bold text-gray-900">Total</span>
+              <span className="text-2xl font-bold text-gray-900">
+                {maskAmount(formatCurrency(receipt.payment.amount, receipt.payment.currency))}
+              </span>
+            </div>
+            
+            <div className="space-y-2 text-sm">
+              <div className="flex justify-between">
+                <span className="text-gray-500">Payment Method</span>
+                <span className="text-gray-700">{formatPaymentMethod(receipt.payment.method)}</span>
+              </div>
+              {receipt.payment.reference && (
+                <div className="flex justify-between">
+                  <span className="text-gray-500">Reference</span>
+                  <span className="text-gray-700 font-mono text-xs">{receipt.payment.reference}</span>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Customer/Payer Info */}
+          <div className="px-8 py-6 border-t border-gray-100">
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <p className="text-xs text-gray-400 uppercase tracking-wider mb-1">Paid By</p>
+                <p className="text-sm font-medium text-gray-900">{customerName}</p>
+                {receipt.customer?.email && (
+                  <p className="text-xs text-gray-500 mt-0.5">{receipt.customer.email}</p>
+                )}
+              </div>
+              <div className="text-right">
+                <p className="text-xs text-gray-400 uppercase tracking-wider mb-1">Received By</p>
+                <p className="text-sm font-medium text-gray-900">{businessName}</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Invoice Link */}
+          {receipt.invoice && (
+            <div className="px-8 pb-6">
+              <Link 
+                href={`/invoices/${receipt.invoice.id}`}
+                className="flex items-center justify-between p-4 rounded-2xl bg-gray-50 hover:bg-gray-100 transition-colors group"
+              >
+                <div>
+                  <p className="text-xs text-gray-400 uppercase tracking-wider mb-1">Related Invoice</p>
+                  <p className="font-semibold text-gray-900">{receipt.invoice.invoice_number}</p>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Badge 
+                    variant={receipt.invoice.status === "paid" ? "paid" : "secondary"}
+                    className="capitalize"
+                  >
+                    {receipt.invoice.status}
+                  </Badge>
+                  <ExportSquare size={16} className="text-gray-400 group-hover:text-gray-600 transition-colors" />
+                </div>
+              </Link>
+              
+              {receipt.invoice.balance > 0 && (
+                <div className="mt-3 p-3 rounded-xl bg-amber-50 border border-amber-100">
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm text-amber-700">Remaining Balance</span>
+                    <span className="font-semibold text-amber-700">
+                      {maskAmount(formatCurrency(receipt.invoice.balance, receipt.invoice.currency))}
+                    </span>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Verification Badge */}
+          <div className="px-8 pb-6">
+            <div className="flex items-center justify-center gap-2 py-4 rounded-2xl bg-[#14462a]/5 border border-[#14462a]/10">
+              <ShieldTick size={18} color="#14462a" variant="Bold" />
+              <span className="text-sm font-medium text-[#14462a]">Payment Verified</span>
+            </div>
+          </div>
+
           {/* Footer */}
-          <div className="pt-8 text-center" style={{ borderTop: "1px solid #E4E6EB" }}>
-            <p className="text-sm" style={{ color: "#B0B3B8" }}>
-              This receipt was generated on {formatDateTime(receipt.created_at)}
-            </p>
-            <p className="text-sm mt-2" style={{ color: "#B0B3B8" }}>
-              Powered by <span className="font-medium">Plaen</span>
+          <div className="px-8 pb-8 text-center">
+            <button 
+              onClick={copyReceiptNumber}
+              className="text-xs text-gray-400 hover:text-gray-600 transition-colors inline-flex items-center gap-1"
+            >
+              {copied ? (
+                <>
+                  <TickCircle size={12} color="#14462a" />
+                  <span className="text-[#14462a]">Copied!</span>
+                </>
+              ) : (
+                <>
+                  <Copy size={12} />
+                  <span>Copy receipt number</span>
+                </>
+              )}
+            </button>
+            <p className="text-xs text-gray-300 mt-4">
+              Powered by <span className="font-semibold text-gray-400">Plaen</span>
             </p>
           </div>
+        </div>
+
+        {/* Tear-off effect at bottom */}
+        <div className="relative">
+          <div className="h-6 bg-white" style={{
+            maskImage: 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 100 10\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath d=\'M0 10 Q 5 0, 10 10 Q 15 20, 20 10 Q 25 0, 30 10 Q 35 20, 40 10 Q 45 0, 50 10 Q 55 20, 60 10 Q 65 0, 70 10 Q 75 20, 80 10 Q 85 0, 90 10 Q 95 20, 100 10 L 100 0 L 0 0 Z\' fill=\'white\'/%3E%3C/svg%3E")',
+            WebkitMaskImage: 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 100 10\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath d=\'M0 10 Q 5 0, 10 10 Q 15 20, 20 10 Q 25 0, 30 10 Q 35 20, 40 10 Q 45 0, 50 10 Q 55 20, 60 10 Q 65 0, 70 10 Q 75 20, 80 10 Q 85 0, 90 10 Q 95 20, 100 10 L 100 0 L 0 0 Z\' fill=\'white\'/%3E%3C/svg%3E")',
+            maskSize: '100% 100%',
+            WebkitMaskSize: '100% 100%',
+          }} />
         </div>
       </div>
     </div>

@@ -174,9 +174,12 @@ export async function POST(
           amountPaid: formatAmount(amount),
           currency: invoice.currency || 'GHS',
           paymentMethod: paymentMethodDisplay,
-          paymentDate: format(new Date(payment_date || new Date()), 'MMM d, yyyy'),
+          paymentDate: format(new Date(payment_date || new Date()), 'MMM d, yyyy \u2022 h:mm a'),
           remainingBalance: newBalance > 0 ? formatAmount(newBalance) : undefined,
           businessName,
+          businessEmail: userProfile?.email || user.email,
+          reference: reference || payment.reference || undefined,
+          payerName: payer_name || customer?.name || undefined,
         }).catch(err => console.error('Failed to send owner confirmation:', err))
       }
       
@@ -189,9 +192,12 @@ export async function POST(
           amountPaid: formatAmount(amount),
           currency: invoice.currency || 'GHS',
           paymentMethod: paymentMethodDisplay,
-          paymentDate: format(new Date(payment_date || new Date()), 'MMM d, yyyy'),
+          paymentDate: format(new Date(payment_date || new Date()), 'MMM d, yyyy \u2022 h:mm a'),
           remainingBalance: newBalance > 0 ? formatAmount(newBalance) : undefined,
           businessName,
+          businessEmail: userProfile?.email || user.email,
+          reference: reference || payment.reference || undefined,
+          payerName: payer_name || customer?.name || undefined,
         }).catch(err => console.error('Failed to send customer confirmation:', err))
       }
     }

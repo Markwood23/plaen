@@ -1,46 +1,29 @@
 "use client";
 
-import { useState, useRef } from "react";
-import NextLink from "next/link";
+import { use, useState, useCallback, useEffect, useRef } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 import {
   ArrowLeft2,
   More,
-  DocumentDownload,
-  Share,
   Paperclip,
   Archive,
   Trash,
   Add,
-  Text,
-  TextBlock,
-  Element3,
-  Hashtag,
-  Link2,
-  Image,
-  Code,
-  Grid1,
-  Chart,
-  Note,
-  Sms,
   TickCircle,
   CloseCircle,
-  Calendar,
+  Cloud,
+  CloudCross,
+  Refresh,
   Edit2,
+  Star,
+  Share,
+  DocumentDownload,
   Printer,
-  Clock,
-  Card,
-  People,
-  Danger,
-  Diagram,
-  Wallet,
-  Brush2,
-  TextalignJustifycenter,
 } from "iconsax-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
-import { CedisCircle } from "@/components/icons/cedis-icon";
+import { Skeleton } from "@/components/ui/skeleton";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -48,112 +31,99 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { NoteEditor } from "@/components/notes/note-editor";
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+  useStandaloneNote,
+  updateStandaloneNote,
+  deleteStandaloneNote,
+  togglePinNote,
+} from "@/hooks/useStandaloneNotes";
 
-// Mock data
-const mockInvoiceData = [
-  { id: "PL-T5X2M8", client: "TechCorp Ghana", amount: "₵12,500.00", status: "Paid", dueDate: "2024-11-15" },
-  { id: "PL-W3Y9N4", client: "StartupXYZ", amount: "₵8,200.00", status: "Overdue", dueDate: "2024-10-30" },
-  { id: "PL-Z1A6P7", client: "ConsultCo", amount: "₵15,000.00", status: "Pending", dueDate: "2024-11-25" },
-];
+type SaveStatus = "idle" | "saving" | "saved" | "error";
 
-const mockARMetrics = {
-  totalOutstanding: "₵45,200.00",
-  overdue: "₵18,700.00",
-  dso: 42,
-  onTimeRate: "76%",
-};
+export default function NoteDetailPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = use(params);
+  const router = useRouter();
+  const { note, loading, error, refetch } = useStandaloneNote(id);
 
-const mockPaymentMethods = [
-  { method: "MTN MoMo", count: 42, amount: "₵28,450.00", percentage: 62 },
-  { method: "Bank Transfer", count: 18, amount: "₵15,230.00", percentage: 26 },
-  { method: "Cash", count: 8, amount: "₵5,420.00", percentage: 12 },
-];
-
-const mockClientList = [
-  { name: "TechCorp Ghana", outstanding: "₵12,500.00", invoices: 3, status: "Good" },
-  { name: "StartupXYZ", outstanding: "₵8,200.00", invoices: 2, status: "Attention" },
-  { name: "ConsultCo", outstanding: "₵15,000.00", invoices: 4, status: "Good" },
-  { name: "AgencyPlus", outstanding: "₵9,500.00", invoices: 2, status: "Overdue" },
-];
-
-const mockExpenses = [
-  { category: "Software & Tools", amount: "₵2,450.00", percentage: 35 },
-  { category: "Equipment", amount: "₵1,800.00", percentage: 26 },
-  { category: "Marketing", amount: "₵1,200.00", percentage: 17 },
-  { category: "Other", amount: "₵1,550.00", percentage: 22 },
-];
-
-export default function NoteDetailPage({ params }: { params: { id: string } }) {
   const [isEditMode, setIsEditMode] = useState(false);
-  const [title, setTitle] = useState("Q4 2024 AR Review");
-  const [tags, setTags] = useState(["monthly-review", "ar", "q4-2024"]);
+  const [title, setTitle] = useState("");
+  const [htmlContent, setHtmlContent] = useState("");
+  const [tags, setTags] = useState<string[]>([]);
   const [newTag, setNewTag] = useState("");
   const [isAddingTag, setIsAddingTag] = useState(false);
-  
-  // Context menu state
-  const [contextMenu, setContextMenu] = useState<{
-    visible: boolean;
-    x: number;
-    y: number;
-    blockId: string;
-  } | null>(null);
-  
-  const [styleMenu, setStyleMenu] = useState<{
-    visible: boolean;
-    x: number;
-    y: number;
-    blockId: string;
-  } | null>(null);
-  
-  const textareaRefs = useRef<{ [key: string]: HTMLTextAreaElement | null }>({});
-  const [activeBlockId, setActiveBlockId] = useState<string | null>(null);
-  const blurTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  
-  // Content blocks instead of single content string
-  const [blocks, setBlocks] = useState<Array<{
-    id: string;
-    type: 'text' | 'invoice-table' | 'ar-metrics' | 'payment-methods' | 'client-list' | 'expenses';
-    content?: string;
-    style?: {
-      backgroundColor?: string;
-      borderLeft?: string;
-      borderColor?: string;
+  const [saveStatus, setSaveStatus] = useState<SaveStatus>("idle");
+  const [lastSaved, setLastSaved] = useState<Date | null>(null);
+
+  const saveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const isDirtyRef = useRef(false);
+
+  // Initialize state from note data
+  useEffect(() => {
+    if (note) {
+      setTitle(note.title || "");
+      setHtmlContent(note.content || "");
+      setTags(note.tags || []);
+    }
+  }, [note]);
+
+  // Auto-save logic
+  const performSave = useCallback(async () => {
+    if (!title.trim() || !note) return;
+
+    setSaveStatus("saving");
+
+    try {
+      const result = await updateStandaloneNote(note.id, {
+        title,
+        content: htmlContent,
+        tags,
+      });
+
+      if (result.success) {
+        setSaveStatus("saved");
+        setLastSaved(new Date());
+        isDirtyRef.current = false;
+      } else {
+        setSaveStatus("error");
+      }
+    } catch {
+      setSaveStatus("error");
+    }
+  }, [title, htmlContent, tags, note]);
+
+  // Debounced auto-save in edit mode
+  useEffect(() => {
+    if (!isEditMode || !title.trim()) return;
+
+    isDirtyRef.current = true;
+    setSaveStatus("idle");
+
+    if (saveTimeoutRef.current) {
+      clearTimeout(saveTimeoutRef.current);
+    }
+
+    saveTimeoutRef.current = setTimeout(() => {
+      performSave();
+    }, 2000);
+
+    return () => {
+      if (saveTimeoutRef.current) {
+        clearTimeout(saveTimeoutRef.current);
+      }
     };
-  }>>([
-    { id: '1', type: 'text', content: 'This quarter has shown significant improvements in our accounts receivable management. We\'ve implemented several new strategies that have positively impacted our collection efficiency.\n\n## Key Highlights\n\n- Reduced DSO (Days Sales Outstanding) from 52 to 42 days\n- Improved on-time payment rate to 76%\n- Successfully collected ₵28,500 in overdue invoices\n\n## Analysis\n\nThe implementation of automated payment reminders has been particularly effective. We\'re seeing a 23% increase in on-time payments compared to Q3 2024.\n\n### Outstanding Invoices\n\nBelow is a summary of our current outstanding invoices:' },
-    { id: '2', type: 'invoice-table' },
-    { id: '3', type: 'ar-metrics' },
-  ]);
+  }, [title, htmlContent, tags, isEditMode, performSave]);
 
-  const [showInvoiceTable, setShowInvoiceTable] = useState(true);
-  const [showARMetrics, setShowARMetrics] = useState(true);
-  const [showPaymentMethods, setShowPaymentMethods] = useState(false);
-  const [showClientList, setShowClientList] = useState(false);
-  const [showExpenses, setShowExpenses] = useState(false);
-  const [content, setContent] = useState(`This quarter has shown significant improvements in our accounts receivable management. We've implemented several new strategies that have positively impacted our collection efficiency.
+  // Handle editor content change
+  const handleContentChange = useCallback((html: string) => {
+    setHtmlContent(html);
+  }, []);
 
-## Key Highlights
-
-- Reduced DSO (Days Sales Outstanding) from 52 to 42 days
-- Improved on-time payment rate to 76%
-- Successfully collected ₵28,500 in overdue invoices
-
-## Analysis
-
-The implementation of automated payment reminders has been particularly effective. We're seeing a 23% increase in on-time payments compared to Q3 2024.
-
-### Outstanding Invoices
-
-Below is a summary of our current outstanding invoices:`);
-
+  // Tags management
   const handleAddTag = () => {
     if (newTag.trim() && !tags.includes(newTag.trim())) {
       setTags([...tags, newTag.trim()]);
@@ -166,1142 +136,424 @@ Below is a summary of our current outstanding invoices:`);
     setTags(tags.filter((tag) => tag !== tagToRemove));
   };
 
-  const handleSave = () => {
-    setIsEditMode(false);
+  // Handle delete
+  const handleDelete = async () => {
+    if (!note) return;
+
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this note?"
+    );
+    if (!confirmed) return;
+
+    const result = await deleteStandaloneNote(note.id);
+    if (result.success) {
+      router.push("/notes");
+    } else {
+      alert(result.error || "Failed to delete note");
+    }
   };
 
+  // Handle pin
+  const handleTogglePin = async () => {
+    if (!note) return;
+
+    const result = await togglePinNote(note.id, note.is_pinned);
+    if (result.success) {
+      refetch();
+    }
+  };
+
+  // Handle print
   const handlePrint = () => {
     window.print();
   };
 
-  // Close context menu when clicking outside
-  const handleClickOutside = () => {
-    setContextMenu(null);
-    setStyleMenu(null);
+  // Format last saved time
+  const formatLastSaved = () => {
+    if (!lastSaved) return "";
+    const now = new Date();
+    const diff = Math.floor((now.getTime() - lastSaved.getTime()) / 1000);
+    if (diff < 5) return "Just now";
+    if (diff < 60) return `${diff}s ago`;
+    if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
+    return lastSaved.toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
   };
 
-  // Add widget at cursor position in text block
-  const addWidgetAtCursor = (blockId: string, widgetType: 'invoice-table' | 'ar-metrics' | 'payment-methods' | 'client-list' | 'expenses') => {
-    const textarea = textareaRefs.current[blockId];
-    if (!textarea) return;
-
-    const cursorPosition = textarea.selectionStart;
-    const block = blocks.find(b => b.id === blockId);
-    if (!block || block.type !== 'text') return;
-
-    const content = block.content || '';
-    const beforeCursor = content.substring(0, cursorPosition);
-    const afterCursor = content.substring(cursorPosition);
-
-    // Create new blocks: text before cursor, widget, text after cursor
-    const newBlocks = [...blocks];
-    const blockIndex = blocks.findIndex(b => b.id === blockId);
-    
-    const updatedBlocks = [
-      { ...block, content: beforeCursor },
-      { id: Date.now().toString(), type: widgetType as any },
-      { id: (Date.now() + 1).toString(), type: 'text' as const, content: afterCursor },
-    ];
-
-    newBlocks.splice(blockIndex, 1, ...updatedBlocks);
-    setBlocks(newBlocks);
-    setContextMenu(null);
+  // Format date
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString("en-US", {
+      month: "long",
+      day: "numeric",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
   };
 
-  const addBlock = (afterBlockId: string, type: 'text' | 'invoice-table' | 'ar-metrics' | 'payment-methods' | 'client-list' | 'expenses') => {
-    const newBlock = {
-      id: Date.now().toString(),
-      type,
-      content: type === 'text' ? '' : undefined,
-    };
-    
-    const index = blocks.findIndex(b => b.id === afterBlockId);
-    const newBlocks = [...blocks];
-    newBlocks.splice(index + 1, 0, newBlock);
-    setBlocks(newBlocks);
-  };
+  // Loading state
+  if (loading) {
+    return (
+      <div className="max-w-4xl mx-auto pb-12">
+        <div className="flex items-center gap-3 mb-6">
+          <Skeleton className="h-9 w-9 rounded-full" />
+          <Skeleton className="h-6 w-32" />
+        </div>
+        <Skeleton className="h-12 w-3/4 mb-6" />
+        <div className="flex gap-2 mb-6">
+          <Skeleton className="h-6 w-16 rounded-full" />
+          <Skeleton className="h-6 w-20 rounded-full" />
+        </div>
+        <Skeleton className="h-96 w-full rounded-xl" />
+      </div>
+    );
+  }
 
-  const removeBlock = (blockId: string) => {
-    setBlocks(blocks.filter(b => b.id !== blockId));
-  };
-
-  const updateBlockContent = (blockId: string, content: string) => {
-    setBlocks(blocks.map(b => b.id === blockId ? { ...b, content } : b));
-  };
-
-  const updateBlockStyle = (blockId: string, style: { backgroundColor?: string; borderLeft?: string; borderColor?: string }) => {
-    setBlocks(blocks.map(b => b.id === blockId ? { ...b, style: { ...b.style, ...style } } : b));
-    setStyleMenu(null);
-  };
-
-  const applyStylePreset = (blockId: string, preset: 'default' | 'info' | 'success' | 'warning' | 'error') => {
-    const presets = {
-      default: {},
-      info: { backgroundColor: 'rgba(247, 249, 250, 0.3)', borderLeft: '3px solid #14462a' },
-      success: { backgroundColor: 'rgba(247, 249, 250, 0.3)', borderLeft: '3px solid #14462a' },
-      warning: { backgroundColor: 'rgba(247, 249, 250, 0.3)', borderLeft: '3px solid #F59E0B' },
-      error: { backgroundColor: 'rgba(247, 249, 250, 0.3)', borderLeft: '3px solid #EF4444' },
-    };
-    updateBlockStyle(blockId, presets[preset]);
-  };
-
-  // Parse markdown inline formatting
-  const parseMarkdown = (text: string) => {
-    const parts: React.ReactNode[] = [];
-    let lastIndex = 0;
-    
-    // Pattern for bold (**text**), italic (*text*), code (`text`), underline (<u>text</u>), and links ([text](url))
-    const regex = /(\*\*(.+?)\*\*)|(\*(.+?)\*)|(`(.+?)`)|(<u>(.+?)<\/u>)|(\[(.+?)\]\((.+?)\))/g;
-    let match;
-
-    while ((match = regex.exec(text)) !== null) {
-      // Add text before the match
-      if (match.index > lastIndex) {
-        parts.push(text.substring(lastIndex, match.index));
-      }
-
-      if (match[1]) {
-        // Bold
-        parts.push(<strong key={match.index}>{match[2]}</strong>);
-      } else if (match[3]) {
-        // Italic
-        parts.push(<em key={match.index}>{match[4]}</em>);
-      } else if (match[5]) {
-        // Code
-        parts.push(<code key={match.index} className="px-1.5 py-0.5 rounded text-sm" style={{ backgroundColor: "rgba(0,0,0,0.05)" }}>{match[6]}</code>);
-      } else if (match[7]) {
-        // TextalignJustifycenter
-        parts.push(<u key={match.index}>{match[8]}</u>);
-      } else if (match[9]) {
-        // Link
-        parts.push(<a key={match.index} href={match[11]} className="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">{match[10]}</a>);
-      }
-
-      lastIndex = regex.lastIndex;
-    }
-
-    // Add remaining text
-    if (lastIndex < text.length) {
-      parts.push(text.substring(lastIndex));
-    }
-
-    return parts.length > 0 ? parts : text;
-  };
-
-  // Text formatting functions
-  const applyTextFormat = (blockId: string, format: 'bold' | 'italic' | 'underline' | 'code' | 'h1' | 'h2' | 'h3' | 'ul' | 'ol') => {
-    const textarea = textareaRefs.current[blockId];
-    if (!textarea) return;
-
-    const start = textarea.selectionStart;
-    const end = textarea.selectionEnd;
-    const block = blocks.find(b => b.id === blockId);
-    if (!block || block.type !== 'text') return;
-
-    const content = block.content || '';
-    const selectedText = content.substring(start, end);
-    
-    if (!selectedText) return; // No text selected
-
-    let formattedText = '';
-    
-    switch (format) {
-      case 'bold':
-        formattedText = `**${selectedText}**`;
-        break;
-      case 'italic':
-        formattedText = `*${selectedText}*`;
-        break;
-      case 'underline':
-        formattedText = `<u>${selectedText}</u>`;
-        break;
-      case 'code':
-        formattedText = `\`${selectedText}\``;
-        break;
-      case 'h1':
-        formattedText = `# ${selectedText}`;
-        break;
-      case 'h2':
-        formattedText = `## ${selectedText}`;
-        break;
-      case 'h3':
-        formattedText = `### ${selectedText}`;
-        break;
-      case 'ul':
-        const ulLines = selectedText.split('\n').map(line => `- ${line}`).join('\n');
-        formattedText = ulLines;
-        break;
-      case 'ol':
-        const olLines = selectedText.split('\n').map((line, i) => `${i + 1}. ${line}`).join('\n');
-        formattedText = olLines;
-        break;
-    }
-
-    const newContent = content.substring(0, start) + formattedText + content.substring(end);
-    updateBlockContent(blockId, newContent);
-
-    // Restore focus and adjust selection
-    setTimeout(() => {
-      textarea.focus();
-      const newCursorPos = start + formattedText.length;
-      textarea.setSelectionRange(newCursorPos, newCursorPos);
-    }, 0);
-  };
-
-  const insertLink = (blockId: string) => {
-    const textarea = textareaRefs.current[blockId];
-    if (!textarea) return;
-
-    const start = textarea.selectionStart;
-    const end = textarea.selectionEnd;
-    const block = blocks.find(b => b.id === blockId);
-    if (!block || block.type !== 'text') return;
-
-    const content = block.content || '';
-    const selectedText = content.substring(start, end);
-    
-    const url = prompt('Enter URL:');
-    if (!url) return;
-
-    const linkText = selectedText || 'link text';
-    const formattedText = `[${linkText}](${url})`;
-
-    const newContent = content.substring(0, start) + formattedText + content.substring(end);
-    updateBlockContent(blockId, newContent);
-
-    setTimeout(() => {
-      textarea.focus();
-      const newCursorPos = start + formattedText.length;
-      textarea.setSelectionRange(newCursorPos, newCursorPos);
-    }, 0);
-  };
-
-  const renderWidget = (blockType: string, showRemoveButton = false, onRemove?: () => void) => {
-    const widgetWrapper = (title: string, icon: React.ReactNode, color: string, content: React.ReactNode) => (
-      <div className="relative group">
-        {showRemoveButton && (
-          <div className="flex items-center justify-between mb-3">
-            <div className="flex items-center gap-2">
-              {icon}
-              <h3 className="text-sm font-semibold" style={{ color: "#2D2D2D" }}>{title}</h3>
-            </div>
+  // Error state
+  if (error || !note) {
+    return (
+      <div className="max-w-4xl mx-auto pb-12">
+        <div className="flex items-center gap-3 mb-6">
+          <Link href="/notes">
             <Button
               variant="ghost"
               size="sm"
-              className="h-7 w-7 p-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
-              onClick={onRemove}
+              className="h-9 w-9 p-0 rounded-full"
             >
-              <CloseCircle size={16} style={{ color: "#B0B3B8" }} />
+              <ArrowLeft2 size={16} color="#2D2D2D" variant="Linear" />
             </Button>
-          </div>
-        )}
-        {content}
-      </div>
-    );
-
-    switch (blockType) {
-      case 'invoice-table':
-        return widgetWrapper(
-          "Invoice Table Widget",
-          <Note size={16} color="#14462a" variant="Linear" />,
-          "#14462a",
-          <div className="rounded-2xl overflow-hidden" style={{ backgroundColor: "white", boxShadow: "0 1px 3px 0 rgba(0, 0, 0, 0.05)" }}>
-            <Table>
-              <TableHeader>
-                <TableRow style={{ borderColor: "#E4E6EB" }}>
-                  <TableHead className="font-semibold" style={{ color: "#2D2D2D" }}>Invoice ID</TableHead>
-                  <TableHead className="font-semibold" style={{ color: "#2D2D2D" }}>Client</TableHead>
-                  <TableHead className="font-semibold" style={{ color: "#2D2D2D" }}>Amount</TableHead>
-                  <TableHead className="font-semibold" style={{ color: "#2D2D2D" }}>Due Date</TableHead>
-                  <TableHead className="font-semibold" style={{ color: "#2D2D2D" }}>Status</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {mockInvoiceData.map((invoice) => (
-                  <TableRow key={invoice.id} style={{ borderColor: "#E4E6EB" }}>
-                    <TableCell className="font-medium" style={{ color: "#2D2D2D" }}>{invoice.id}</TableCell>
-                    <TableCell style={{ color: "#2D2D2D" }}>{invoice.client}</TableCell>
-                    <TableCell className="font-medium" style={{ color: "#2D2D2D" }}>{invoice.amount}</TableCell>
-                    <TableCell className="text-[#65676B]">{invoice.dueDate}</TableCell>
-                    <TableCell>
-                      <Badge 
-                        variant="secondary" 
-                        className="rounded-full gap-1" 
-                        style={{ 
-                          backgroundColor: invoice.status === "Paid" ? "#14462a" : invoice.status === "Overdue" ? "rgba(239, 68, 68, 0.08)" : "rgba(245, 158, 11, 0.08)", 
-                          color: invoice.status === "Paid" ? "white" : invoice.status === "Overdue" ? "#EF4444" : "#F59E0B",
-                          borderColor: invoice.status === "Paid" ? "#14462a" : "transparent"
-                        }}
-                      >
-                        {invoice.status === "Paid" && <TickCircle size={14} />}
-                        {invoice.status}
-                      </Badge>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </div>
-        );
-
-      case 'ar-metrics':
-        return widgetWrapper(
-          "AR Metrics Widget",
-          <Chart size={16} color="#14462a" variant="Linear" />,
-          "#14462a",
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {[
-              { label: "Total Outstanding", value: mockARMetrics.totalOutstanding, icon: CedisCircle, color: "#14462a", bg: "rgba(20, 70, 42, 0.04)" },
-              { label: "Overdue Amount", value: mockARMetrics.overdue, icon: Chart, color: "#EF4444", bg: "rgba(239, 68, 68, 0.04)" },
-              { label: "DSO", value: `${mockARMetrics.dso} days`, icon: Calendar, color: "#F59E0B", bg: "rgba(245, 158, 11, 0.04)" },
-              { label: "On-Time Rate", value: mockARMetrics.onTimeRate, icon: TickCircle, color: "#14462a", bg: "rgba(13, 148, 136, 0.04)" },
-            ].map((metric) => {
-              const Icon = metric.icon;
-              return (
-                <div 
-                  key={metric.label} 
-                  className="rounded-2xl p-5 transition-all hover:shadow-sm" 
-                  style={{ 
-                    backgroundColor: metric.bg,
-                    boxShadow: "0 1px 3px 0 rgba(0, 0, 0, 0.05)"
-                  }}
-                >
-                  <div className="flex items-start justify-between mb-3">
-                    <div 
-                      className="h-10 w-10 rounded-full flex items-center justify-center"
-                      style={{ backgroundColor: `${metric.color}20` }}
-                    >
-                      <Icon size={20} style={{ color: metric.color }} />
-                    </div>
-                  </div>
-                  <div className="text-2xl font-bold mb-1" style={{ color: metric.color }}>{metric.value}</div>
-                  <div className="text-sm font-medium" style={{ color: "#B0B3B8" }}>{metric.label}</div>
-                </div>
-              );
-            })}
-          </div>
-        );
-
-      case 'payment-methods':
-        return widgetWrapper(
-          "Payment Methods Widget",
-          <Card size={16} color="#14462a" variant="Linear" />,
-          "#14462a",
-          <div className="rounded-2xl overflow-hidden" style={{ backgroundColor: "white", boxShadow: "0 1px 3px 0 rgba(0, 0, 0, 0.05)" }}>
-            <Table>
-              <TableHeader>
-                <TableRow style={{ borderColor: "#E4E6EB" }}>
-                  <TableHead className="font-semibold" style={{ color: "#2D2D2D" }}>Payment Method</TableHead>
-                  <TableHead className="font-semibold" style={{ color: "#2D2D2D" }}>Transactions</TableHead>
-                  <TableHead className="font-semibold" style={{ color: "#2D2D2D" }}>Total Amount</TableHead>
-                  <TableHead className="font-semibold" style={{ color: "#2D2D2D" }}>Share</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {mockPaymentMethods.map((payment) => (
-                  <TableRow key={payment.method} style={{ borderColor: "#E4E6EB" }}>
-                    <TableCell className="font-medium" style={{ color: "#2D2D2D" }}>{payment.method}</TableCell>
-                    <TableCell className="text-[#65676B]">{payment.count}</TableCell>
-                    <TableCell className="font-medium" style={{ color: "#2D2D2D" }}>{payment.amount}</TableCell>
-                    <TableCell>
-                      <div className="flex items-center gap-2">
-                        <div className="flex-1 h-2 rounded-full" style={{ backgroundColor: "#F0F2F5" }}>
-                          <div className="h-2 rounded-full" style={{ width: `${payment.percentage}%`, backgroundColor: "#14462a" }} />
-                        </div>
-                        <span className="text-sm font-medium" style={{ color: "#2D2D2D" }}>{payment.percentage}%</span>
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </div>
-        );
-
-      case 'client-list':
-        return widgetWrapper(
-          "Client Overview Widget",
-          <People size={16} color="#F59E0B" variant="Linear" />,
-          "#F59E0B",
-          <div className="rounded-2xl overflow-hidden" style={{ backgroundColor: "white", boxShadow: "0 1px 3px 0 rgba(0, 0, 0, 0.05)" }}>
-            <Table>
-              <TableHeader>
-                <TableRow style={{ borderColor: "#E4E6EB" }}>
-                  <TableHead className="font-semibold" style={{ color: "#2D2D2D" }}>Client Name</TableHead>
-                  <TableHead className="font-semibold" style={{ color: "#2D2D2D" }}>Outstanding</TableHead>
-                  <TableHead className="font-semibold" style={{ color: "#2D2D2D" }}>Invoices</TableHead>
-                  <TableHead className="font-semibold" style={{ color: "#2D2D2D" }}>Status</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {mockClientList.map((client) => (
-                  <TableRow key={client.name} style={{ borderColor: "#E4E6EB" }}>
-                    <TableCell className="font-medium" style={{ color: "#2D2D2D" }}>{client.name}</TableCell>
-                    <TableCell className="font-medium" style={{ color: "#2D2D2D" }}>{client.outstanding}</TableCell>
-                    <TableCell className="text-[#65676B]">{client.invoices}</TableCell>
-                    <TableCell>
-                      <Badge 
-                        variant="secondary" 
-                        className="rounded-full" 
-                        style={{ 
-                          backgroundColor: client.status === "Good" ? "rgba(13, 148, 136, 0.08)" : client.status === "Attention" ? "rgba(245, 158, 11, 0.08)" : "rgba(239, 68, 68, 0.08)", 
-                          color: client.status === "Good" ? "#14462a" : client.status === "Attention" ? "#F59E0B" : "#EF4444"
-                        }}
-                      >
-                        {client.status}
-                      </Badge>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </div>
-        );
-
-      case 'expenses':
-        return widgetWrapper(
-          "Expense Breakdown Widget",
-          <Wallet size={16} color="#EF4444" variant="Linear" />,
-          "#EF4444",
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {mockExpenses.map((expense) => (
-              <div 
-                key={expense.category}
-                className="rounded-2xl p-5" 
-                style={{ 
-                  backgroundColor: "white",
-                  boxShadow: "0 1px 3px 0 rgba(0, 0, 0, 0.05)",
-                  border: "1px solid #E4E6EB"
-                }}
-              >
-                <div className="flex items-center justify-between mb-3">
-                  <div className="text-sm font-semibold" style={{ color: "#2D2D2D" }}>{expense.category}</div>
-                  <div className="text-xs font-medium px-2 py-1 rounded-full" style={{ backgroundColor: "rgba(239, 68, 68, 0.08)", color: "#EF4444" }}>
-                    {expense.percentage}%
-                  </div>
-                </div>
-                <div className="text-2xl font-bold mb-2" style={{ color: "#2D2D2D" }}>{expense.amount}</div>
-                <div className="h-2 rounded-full" style={{ backgroundColor: "#F0F2F5" }}>
-                  <div className="h-2 rounded-full" style={{ width: `${expense.percentage}%`, backgroundColor: "#EF4444" }} />
-                </div>
-              </div>
-            ))}
-          </div>
-        );
-
-      default:
-        return null;
-    }
-  };
-
-  // Preview Mode
-  if (!isEditMode) {
-    return (
-      <div className="min-h-screen bg-white">
-        {/* Action Bar */}
-        <div className="print:hidden" style={{ borderBottom: "1px solid #E4E6EB" }}>
-          <div className="max-w-5xl mx-auto px-6 py-4">
-            <div className="flex items-center justify-between">
-              <NextLink href="/notes">
-                <Button variant="ghost" size="sm" className="gap-2 -ml-2 rounded-full hover:bg-[rgba(240,242,245,0.5)]">
-                  <ArrowLeft2 size={16} color="#2D2D2D" variant="Linear" />
-                  Back
-                </Button>
-              </NextLink>
-
-              <div className="flex items-center gap-2">
-                <Button variant="outline" size="sm" className="rounded-full gap-2" onClick={() => setIsEditMode(true)}>
-                  <Edit2 size={16} color="#2D2D2D" variant="Linear" />
-                  Edit
-                </Button>
-                <Button variant="outline" size="sm" className="rounded-full gap-2" onClick={handlePrint}>
-                  <Printer size={16} color="#2D2D2D" variant="Linear" />
-                  Print
-                </Button>
-                <Button variant="outline" size="sm" className="rounded-full gap-2">
-                  <DocumentDownload size={16} color="#2D2D2D" variant="Linear" />
-                  Export PDF
-                </Button>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="sm" className="h-9 w-9 p-0 rounded-full hover:bg-[rgba(20,70,42,0.06)]">
-                      <More size={16} color="#B0B3B8" variant="Linear" />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end" className="rounded-2xl p-2" style={{ boxShadow: '0 4px 20px rgba(0, 0, 0, 0.12)', border: '1px solid rgba(0, 0, 0, 0.06)' }}>
-                    <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer hover:bg-[rgba(20,70,42,0.06)] group transition-all">
-                      <Paperclip size={16} color="#2D2D2D" variant="Linear" className="mr-2 group-hover:text-[#14462a]" />
-                      <span className="group-hover:text-[#14462a]">Pin Note</span>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer hover:bg-[rgba(20,70,42,0.06)] group transition-all">
-                      <Share size={16} color="#2D2D2D" variant="Linear" className="mr-2 group-hover:text-[#14462a]" />
-                      <span className="group-hover:text-[#14462a]">Share</span>
-                    </DropdownMenuItem>
-                    <DropdownMenuSeparator className="my-1" />
-                    <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer hover:bg-[rgba(20,70,42,0.06)] group transition-all">
-                      <Archive size={16} color="#2D2D2D" variant="Linear" className="mr-2 group-hover:text-[#14462a]" />
-                      <span className="group-hover:text-[#14462a]">Archive</span>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer hover:bg-red-50 group transition-all">
-                      <Trash size={16} color="#DC2626" variant="Linear" className="mr-2" />
-                      <span className="text-red-600">Delete</span>
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </div>
-            </div>
-          </div>
+          </Link>
         </div>
-
-        {/* PDF Content */}
-        <div className="max-w-4xl mx-auto px-6 py-12 print:py-0">
-          <div className="mb-8">
-            <h1 className="text-4xl font-bold mb-4 print:text-5xl" style={{ color: "#2D2D2D" }}>
-              {title}
-            </h1>
-            
-            <div className="flex flex-wrap gap-2 mb-4 print:hidden">
-              {tags.map((tag) => (
-                <Badge key={tag} variant="success">
-                  {tag}
-                </Badge>
-              ))}
-            </div>
-
-            <div className="flex items-center gap-4 text-sm" style={{ color: "#B0B3B8" }}>
-              <div className="flex items-center gap-1.5">
-                <Clock size={16} color="#B0B3B8" variant="Linear" />
-                <span>Updated 2 hours ago</span>
-              </div>
-              <span>•</span>
-              <span>1,247 words</span>
-            </div>
-          </div>
-
-          <div className="h-px mb-8" style={{ backgroundColor: "#E4E6EB" }} />
-
-          <div className="prose prose-lg max-w-none">
-            {/* Render Blocks */}
-            {blocks.map((block) => {
-              if (block.type === 'text') {
-                return (
-                  <div 
-                    key={block.id} 
-                    className="p-6 rounded-lg mb-4"
-                    style={{ 
-                      color: "#2D2D2D", 
-                      lineHeight: "1.8",
-                      ...block.style
-                    }}
-                  >
-                    {block.content?.split("\n\n").map((paragraph, index) => {
-                      if (paragraph.startsWith("# ")) {
-                        return <h1 key={index} className="text-3xl font-bold mt-8 mb-4" style={{ color: "#2D2D2D" }}>{parseMarkdown(paragraph.replace("# ", ""))}</h1>;
-                      } else if (paragraph.startsWith("## ")) {
-                        return <h2 key={index} className="text-2xl font-bold mt-8 mb-4" style={{ color: "#2D2D2D" }}>{parseMarkdown(paragraph.replace("## ", ""))}</h2>;
-                      } else if (paragraph.startsWith("### ")) {
-                        return <h3 key={index} className="text-xl font-semibold mt-6 mb-3" style={{ color: "#2D2D2D" }}>{parseMarkdown(paragraph.replace("### ", ""))}</h3>;
-                      } else if (paragraph.startsWith("- ")) {
-                        const items = paragraph.split("\n");
-                        return (
-                          <ul key={index} className="list-disc pl-6 mb-4 space-y-2">
-                            {items.map((item, i) => (<li key={i} style={{ color: "#2D2D2D" }}>{parseMarkdown(item.replace("- ", ""))}</li>))}
-                          </ul>
-                        );
-                      } else if (/^\d+\.\s/.test(paragraph)) {
-                        const items = paragraph.split("\n");
-                        return (
-                          <ol key={index} className="list-decimal pl-6 mb-4 space-y-2">
-                            {items.map((item, i) => (<li key={i} style={{ color: "#2D2D2D" }}>{parseMarkdown(item.replace(/^\d+\.\s/, ""))}</li>))}
-                          </ol>
-                        );
-                      } else {
-                        return <p key={index} className="mb-4 text-base" style={{ color: "#2D2D2D" }}>{parseMarkdown(paragraph)}</p>;
-                      }
-                    })}
-                  </div>
-                );
-              } else {
-                return <div key={block.id} className="my-8">{renderWidget(block.type)}</div>;
-              }
-            })}
-          </div>
-
-          {/* Old rendering - Remove these */}
-          {/* Invoice Table */}
-          {false && showInvoiceTable && (
-              <div className="my-8 rounded-2xl overflow-hidden" style={{ backgroundColor: "white", boxShadow: "0 1px 3px 0 rgba(0, 0, 0, 0.05)" }}>
-                <Table>
-                  <TableHeader>
-                    <TableRow style={{ borderColor: "#E4E6EB" }}>
-                      <TableHead className="font-semibold" style={{ color: "#2D2D2D" }}>Invoice ID</TableHead>
-                      <TableHead className="font-semibold" style={{ color: "#2D2D2D" }}>Client</TableHead>
-                      <TableHead className="font-semibold" style={{ color: "#2D2D2D" }}>Amount</TableHead>
-                      <TableHead className="font-semibold" style={{ color: "#2D2D2D" }}>Due Date</TableHead>
-                      <TableHead className="font-semibold" style={{ color: "#2D2D2D" }}>Status</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {mockInvoiceData.map((invoice) => (
-                      <TableRow key={invoice.id} style={{ borderColor: "#E4E6EB" }}>
-                        <TableCell className="font-medium" style={{ color: "#2D2D2D" }}>{invoice.id}</TableCell>
-                        <TableCell style={{ color: "#2D2D2D" }}>{invoice.client}</TableCell>
-                        <TableCell className="font-medium" style={{ color: "#2D2D2D" }}>{invoice.amount}</TableCell>
-                        <TableCell className="text-[#65676B]">{invoice.dueDate}</TableCell>
-                        <TableCell>
-                          <Badge 
-                            variant="secondary" 
-                            className="rounded-full gap-1" 
-                            style={{ 
-                              backgroundColor: invoice.status === "Paid" ? "#14462a" : invoice.status === "Overdue" ? "rgba(239, 68, 68, 0.08)" : "rgba(245, 158, 11, 0.08)", 
-                              color: invoice.status === "Paid" ? "white" : invoice.status === "Overdue" ? "#EF4444" : "#F59E0B",
-                              borderColor: invoice.status === "Paid" ? "#14462a" : "transparent"
-                            }}
-                          >
-                            {invoice.status === "Paid" && <TickCircle size={14} />}
-                            {invoice.status}
-                          </Badge>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </div>
-            )}
-
-          <div className="mt-12 pt-8" style={{ borderTop: "1px solid #E4E6EB" }}>
-            <div className="text-sm" style={{ color: "#B0B3B8" }}>
-              <div className="mb-2">Created on Nov 18, 2025</div>
-              <div>Last edited 2 hours ago</div>
-            </div>
-          </div>
+        <div className="text-center py-16">
+          <h2 className="text-xl font-semibold text-gray-900 mb-2">
+            Note Not Found
+          </h2>
+          <p className="text-gray-500 mb-6">
+            {error || "This note could not be found."}
+          </p>
+          <Button asChild className="bg-[#14462a] hover:bg-[#0d3520] rounded-xl">
+            <Link href="/notes">Back to Notes</Link>
+          </Button>
         </div>
       </div>
     );
   }
 
   // Edit Mode
+  if (isEditMode) {
+    return (
+      <div className="max-w-4xl mx-auto pb-12">
+        {/* Header */}
+        <div className="flex items-center justify-between mb-6 print:hidden">
+          <div className="flex items-center gap-3">
+            <Button
+              variant="ghost"
+              size="sm"
+              className="h-9 w-9 p-0 rounded-full"
+              onClick={() => setIsEditMode(false)}
+            >
+              <ArrowLeft2 size={16} color="#2D2D2D" variant="Linear" />
+            </Button>
+            <div>
+              <h1 className="text-lg font-semibold text-[#2D2D2D]">
+                Editing Note
+              </h1>
+              {/* Save Status Indicator */}
+              <div className="flex items-center gap-2 text-sm text-[#B0B3B8]">
+                {saveStatus === "saving" && (
+                  <>
+                    <Refresh size={14} className="animate-spin" />
+                    <span>Saving...</span>
+                  </>
+                )}
+                {saveStatus === "saved" && (
+                  <>
+                    <Cloud size={14} color="#14462a" />
+                    <span className="text-[#14462a]">
+                      Saved {formatLastSaved()}
+                    </span>
+                  </>
+                )}
+                {saveStatus === "error" && (
+                  <>
+                    <CloudCross size={14} color="#EF4444" />
+                    <span className="text-red-500">Failed to save</span>
+                  </>
+                )}
+              </div>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              className="rounded-full h-9 px-4 border-[#E4E6EB]"
+              onClick={() => {
+                setIsEditMode(false);
+                // Reset to original values
+                setTitle(note.title || "");
+                setHtmlContent(note.content || "");
+                setTags(note.tags || []);
+              }}
+            >
+              Cancel
+            </Button>
+            <Button
+              className="rounded-full h-9 px-4 bg-[#14462a] hover:bg-[#0d3520] text-white"
+              onClick={async () => {
+                await performSave();
+                setIsEditMode(false);
+                refetch();
+              }}
+              disabled={!title.trim() || saveStatus === "saving"}
+            >
+              {saveStatus === "saving" ? "Saving..." : "Done"}
+            </Button>
+          </div>
+        </div>
+
+        {/* Title Input */}
+        <div className="mb-6">
+          <input
+            type="text"
+            placeholder="Note Title..."
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            className="w-full text-3xl font-bold border-0 px-0 focus:outline-none focus:ring-0 placeholder:text-gray-300 text-[#2D2D2D]"
+          />
+        </div>
+
+        {/* Tags */}
+        <div className="flex flex-wrap gap-2 mb-6">
+          {tags.map((tag) => (
+            <Badge
+              key={tag}
+              variant="secondary"
+              className="rounded-full px-3 py-1 text-xs flex items-center gap-1.5 bg-[rgba(20,70,42,0.08)] text-[#14462a] border-0"
+            >
+              {tag}
+              <button
+                onClick={() => handleRemoveTag(tag)}
+                className="hover:opacity-70"
+              >
+                <CloseCircle size={12} color="#14462a" variant="Linear" />
+              </button>
+            </Badge>
+          ))}
+          {isAddingTag ? (
+            <div className="flex items-center gap-2">
+              <input
+                type="text"
+                placeholder="Tag name..."
+                value={newTag}
+                onChange={(e) => setNewTag(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    handleAddTag();
+                  }
+                  if (e.key === "Escape") {
+                    setIsAddingTag(false);
+                    setNewTag("");
+                  }
+                }}
+                className="h-7 w-32 text-xs rounded-full px-3 border border-[#E4E6EB] focus:outline-none focus:ring-2 focus:ring-[#14462a]/20 focus:border-[#14462a]"
+                autoFocus
+              />
+              <Button
+                size="sm"
+                variant="ghost"
+                className="h-7 w-7 p-0 rounded-full"
+                onClick={handleAddTag}
+              >
+                <TickCircle size={14} color="#14462a" variant="Linear" />
+              </Button>
+              <Button
+                size="sm"
+                variant="ghost"
+                className="h-7 w-7 p-0 rounded-full"
+                onClick={() => {
+                  setIsAddingTag(false);
+                  setNewTag("");
+                }}
+              >
+                <CloseCircle size={14} color="#B0B3B8" variant="Linear" />
+              </Button>
+            </div>
+          ) : (
+            <button
+              onClick={() => setIsAddingTag(true)}
+              className="px-3 py-1 rounded-full text-xs flex items-center gap-1 transition-colors bg-[rgba(176,179,184,0.08)] text-[#B0B3B8] hover:bg-[rgba(176,179,184,0.12)]"
+            >
+              <Add size={12} color="#B0B3B8" variant="Linear" />
+              Add Tag
+            </button>
+          )}
+        </div>
+
+        {/* Rich Text Editor */}
+        <NoteEditor
+          content={htmlContent}
+          onChange={(html) => handleContentChange(html)}
+          placeholder="Start writing your note..."
+          editable={true}
+        />
+      </div>
+    );
+  }
+
+  // View Mode
   return (
-    <div className="max-w-5xl mx-auto">
-      <div className="flex items-center justify-between mb-6">
+    <div className="max-w-4xl mx-auto pb-12">
+      {/* Header */}
+      <div className="flex items-center justify-between mb-6 print:hidden">
         <div className="flex items-center gap-3">
-          <Button variant="ghost" size="sm" className="h-9 w-9 p-0 rounded-full" onClick={() => setIsEditMode(false)}>
-            <CloseCircle size={16} color="#B0B3B8" variant="Linear" />
-          </Button>
+          <Link href="/notes">
+            <Button
+              variant="ghost"
+              size="sm"
+              className="h-9 w-9 p-0 rounded-full"
+            >
+              <ArrowLeft2 size={16} color="#2D2D2D" variant="Linear" />
+            </Button>
+          </Link>
           <div>
-            <h1 className="text-lg font-semibold" style={{ color: "#2D2D2D" }}>Edit Note</h1>
-            <p className="text-xs" style={{ color: "#B0B3B8" }}>Auto-saving changes</p>
+            <h1 className="text-lg font-semibold text-[#2D2D2D]">View Note</h1>
+            <p className="text-sm text-[#B0B3B8]">
+              Last updated {formatDate(note.updated_at)}
+            </p>
           </div>
         </div>
 
         <div className="flex items-center gap-2">
-          <Button variant="outline" className="rounded-full h-9 px-4" style={{ borderColor: "#E4E6EB" }} onClick={() => setIsEditMode(false)}>
-            Cancel
+          <Button
+            variant="outline"
+            className="rounded-full h-9 px-4 border-[#E4E6EB]"
+            onClick={handlePrint}
+          >
+            <Printer size={16} className="mr-2" />
+            Print
           </Button>
-          <Button className="rounded-full h-9 px-4" style={{ backgroundColor: "#14462a", color: "white" }} onClick={handleSave}>
-            Save Changes
+          <Button
+            className="rounded-full h-9 px-4 bg-[#14462a] hover:bg-[#0d3520] text-white"
+            onClick={() => setIsEditMode(true)}
+          >
+            <Edit2 size={16} className="mr-2" />
+            Edit
           </Button>
-        </div>
-      </div>
-
-      <div className="mb-6">
-        <Input
-          type="text"
-          placeholder="Note Title..."
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          className="text-3xl font-bold border-0 px-0 focus-visible:ring-0 focus-visible:ring-offset-0"
-          style={{ color: "#2D2D2D" }}
-        />
-      </div>
-
-      <div className="flex flex-wrap gap-2 mb-6">
-        {tags.map((tag) => (
-          <Badge key={tag} variant="success" className="flex items-center gap-1.5">
-            {tag}
-            <button onClick={() => handleRemoveTag(tag)} className="hover:opacity-70">
-              <CloseCircle size={12} color="#14462a" variant="Linear" />
-            </button>
-          </Badge>
-        ))}
-        {isAddingTag ? (
-          <div className="flex items-center gap-2">
-            <Input
-              type="text"
-              placeholder="Tag name..."
-              value={newTag}
-              onChange={(e) => setNewTag(e.target.value)}
-              onKeyPress={(e) => { if (e.key === "Enter") handleAddTag(); }}
-              className="h-7 w-32 text-xs rounded-full px-3"
-              style={{ borderColor: "#E4E6EB" }}
-              autoFocus
-            />
-            <Button size="sm" variant="ghost" className="h-7 w-7 p-0 rounded-full" onClick={handleAddTag}>
-              <TickCircle size={14} color="#14462a" variant="Linear" />
-            </Button>
-            <Button size="sm" variant="ghost" className="h-7 w-7 p-0 rounded-full" onClick={() => { setIsAddingTag(false); setNewTag(""); }}>
-              <CloseCircle size={14} color="#B0B3B8" variant="Linear" />
-            </Button>
-          </div>
-        ) : (
-          <button onClick={() => setIsAddingTag(true)} className="px-3 py-1 rounded-full text-xs flex items-center gap-1 transition-colors" style={{ backgroundColor: "rgba(176, 179, 184, 0.08)", color: "#B0B3B8" }}>
-            <Add size={12} color="#B0B3B8" variant="Linear" />
-            Add Tag
-          </button>
-        )}
-      </div>
-
-      {/* Toolbar */}
-      <div className="px-6 py-3 mb-4" style={{ backgroundColor: "white" }}>
-        <div className="flex items-center gap-1 p-2 rounded-full" style={{ backgroundColor: "#F7F9FA" }}>
-          <div className="flex items-center gap-0.5">
-            <Button 
-              variant="ghost" 
-              size="sm" 
-              className="h-8 w-8 p-0 rounded-full hover:bg-white"
-              onMouseDown={(e) => {
-                e.preventDefault();
-                if (activeBlockId) applyTextFormat(activeBlockId, 'bold');
-              }}
-              disabled={!activeBlockId}
-              title="Bold (Ctrl+B)"
-            >
-              <Text size={16} color="#2D2D2D" variant="Linear" />
-            </Button>
-            <Button 
-              variant="ghost" 
-              size="sm" 
-              className="h-8 w-8 p-0 rounded-full hover:bg-white"
-              onMouseDown={(e) => {
-                e.preventDefault();
-                if (activeBlockId) applyTextFormat(activeBlockId, 'italic');
-              }}
-              disabled={!activeBlockId}
-              title="Italic (Ctrl+I)"
-            >
-              <TextBlock size={16} color="#2D2D2D" variant="Linear" />
-            </Button>
-            <Button 
-              variant="ghost" 
-              size="sm" 
-              className="h-8 w-8 p-0 rounded-full hover:bg-white"
-              onMouseDown={(e) => {
-                e.preventDefault();
-                if (activeBlockId) applyTextFormat(activeBlockId, 'underline');
-              }}
-              disabled={!activeBlockId}
-              title="TextalignJustifycenter (Ctrl+U)"
-            >
-              <TextalignJustifycenter size={16} color="#2D2D2D" variant="Linear" />
-            </Button>
-            <Button 
-              variant="ghost" 
-              size="sm" 
-              className="h-8 w-8 p-0 rounded-full hover:bg-white"
-              onMouseDown={(e) => {
-                e.preventDefault();
-                if (activeBlockId) applyTextFormat(activeBlockId, 'code');
-              }}
-              disabled={!activeBlockId}
-              title="Code"
-            >
-              <Code size={16} color="#2D2D2D" variant="Linear" />
-            </Button>
-          </div>
-          <div className="h-6 w-px mx-1" style={{ backgroundColor: "#E4E6EB" }} />
-          <div className="flex items-center gap-0.5">
-            <Button 
-              variant="ghost" 
-              size="sm" 
-              className="h-8 w-8 p-0 rounded-full hover:bg-white"
-              onMouseDown={(e) => {
-                e.preventDefault();
-                if (activeBlockId) applyTextFormat(activeBlockId, 'ul');
-              }}
-              disabled={!activeBlockId}
-              title="Bullet List"
-            >
-              <Element3 size={16} color="#2D2D2D" variant="Linear" />
-            </Button>
-            <Button 
-              variant="ghost" 
-              size="sm" 
-              className="h-8 w-8 p-0 rounded-full hover:bg-white"
-              onMouseDown={(e) => {
-                e.preventDefault();
-                if (activeBlockId) applyTextFormat(activeBlockId, 'ol');
-              }}
-              disabled={!activeBlockId}
-              title="Numbered List"
-            >
-              <Hashtag size={16} color="#2D2D2D" variant="Linear" />
-            </Button>
-          </div>
-          <div className="h-6 w-px mx-1" style={{ backgroundColor: "#E4E6EB" }} />
-          <div className="flex items-center gap-0.5">
-            <Button 
-              variant="ghost" 
-              size="sm" 
-              className="h-8 w-8 p-0 rounded-full hover:bg-white"
-              onMouseDown={(e) => {
-                e.preventDefault();
-                if (activeBlockId) insertLink(activeBlockId);
-              }}
-              disabled={!activeBlockId}
-              title="Insert Link"
-            >
-              <Link2 size={16} color="#2D2D2D" variant="Linear" />
-            </Button>
-            <Button 
-              variant="ghost" 
-              size="sm" 
-              className="h-8 w-8 p-0 rounded-full hover:bg-white"
-              disabled={true}
-              title="Insert Image (Coming soon)"
-            >
-              <Image size={16} color="#B0B3B8" variant="Linear" />
-            </Button>
-            <Button 
-              variant="ghost" 
-              size="sm" 
-              className="h-8 w-8 p-0 rounded-full hover:bg-white"
-              disabled={true}
-              title="Paperclip File (Coming soon)"
-            >
-              <Paperclip size={16} color="#B0B3B8" variant="Linear" />
-            </Button>
-          </div>
-          <div className="h-6 w-px mx-1" style={{ backgroundColor: "#E4E6EB" }} />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="sm" className="rounded-full h-8 px-3 hover:bg-[rgba(20,70,42,0.06)] text-xs font-medium" style={{ color: "#14462a" }}>
-                <Add size={16} color="#14462a" variant="Linear" className="mr-1.5" />
-                Insert Widget
+              <Button
+                variant="ghost"
+                size="sm"
+                className="h-9 w-9 p-0 rounded-full hover:bg-[rgba(20,70,42,0.06)]"
+              >
+                <More size={16} color="#B0B3B8" variant="Linear" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="start" className="rounded-2xl p-2 w-64" style={{ boxShadow: '0 4px 20px rgba(0, 0, 0, 0.12)', border: '1px solid rgba(0, 0, 0, 0.06)' }}>
-              <DropdownMenuItem 
+            <DropdownMenuContent
+              align="end"
+              className="rounded-2xl p-2"
+              style={{
+                boxShadow: "0 4px 20px rgba(0, 0, 0, 0.12)",
+                border: "1px solid rgba(0, 0, 0, 0.06)",
+              }}
+            >
+              <DropdownMenuItem
                 className="rounded-xl px-3 py-2.5 cursor-pointer hover:bg-[rgba(20,70,42,0.06)] group transition-all"
-                onClick={() => setShowARMetrics(true)}
-                disabled={showARMetrics}
+                onClick={handleTogglePin}
               >
-                <Chart size={16} className="mr-2" style={{ color: "#14462a" }} />
-                <div>
-                  <div className="font-medium text-sm group-hover:text-[#14462a]">AR Metrics</div>
-                  <div className="text-xs" style={{ color: "#B0B3B8" }}>Live accounts receivable data</div>
-                </div>
+                <Star
+                  size={16}
+                  color={note.is_pinned ? "#F59E0B" : "#2D2D2D"}
+                  variant={note.is_pinned ? "Bold" : "Linear"}
+                  className="mr-2"
+                />
+                <span>{note.is_pinned ? "Unpin Note" : "Pin Note"}</span>
               </DropdownMenuItem>
-              <DropdownMenuItem 
-                className="rounded-xl px-3 py-2.5 cursor-pointer hover:bg-[rgba(20,70,42,0.06)] group transition-all"
-                onClick={() => setShowInvoiceTable(true)}
-                disabled={showInvoiceTable}
-              >
-                <Note size={16} color="#14462a" variant="Linear" className="mr-2" />
-                <div>
-                  <div className="font-medium text-sm group-hover:text-[#14462a]">Invoice Table</div>
-                  <div className="text-xs" style={{ color: "#B0B3B8" }}>Recent invoices overview</div>
-                </div>
+              <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer hover:bg-[rgba(20,70,42,0.06)] group transition-all">
+                <Share
+                  size={16}
+                  color="#2D2D2D"
+                  variant="Linear"
+                  className="mr-2"
+                />
+                <span>Share</span>
               </DropdownMenuItem>
-              <DropdownMenuItem 
-                className="rounded-xl px-3 py-2.5 cursor-pointer hover:bg-[rgba(20,70,42,0.06)] group transition-all"
-                onClick={() => setShowPaymentMethods(true)}
-                disabled={showPaymentMethods}
-              >
-                <Card size={16} color="#14462a" variant="Linear" className="mr-2" />
-                <div>
-                  <div className="font-medium text-sm group-hover:text-[#14462a]">Payment Methods</div>
-                  <div className="text-xs" style={{ color: "#B0B3B8" }}>Payment method breakdown</div>
-                </div>
+              <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer hover:bg-[rgba(20,70,42,0.06)] group transition-all">
+                <DocumentDownload
+                  size={16}
+                  color="#2D2D2D"
+                  variant="Linear"
+                  className="mr-2"
+                />
+                <span>Export PDF</span>
               </DropdownMenuItem>
-              <DropdownMenuItem 
-                className="rounded-xl px-3 py-2.5 cursor-pointer hover:bg-[rgba(20,70,42,0.06)] group transition-all"
-                onClick={() => setShowClientList(true)}
-                disabled={showClientList}
-              >
-                <People size={16} color="#F59E0B" variant="Linear" className="mr-2" />
-                <div>
-                  <div className="font-medium text-sm group-hover:text-[#14462a]">Client Overview</div>
-                  <div className="text-xs" style={{ color: "#B0B3B8" }}>Top clients and status</div>
-                </div>
+              <DropdownMenuSeparator className="my-1" />
+              <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer hover:bg-[rgba(20,70,42,0.06)] group transition-all">
+                <Archive
+                  size={16}
+                  color="#2D2D2D"
+                  variant="Linear"
+                  className="mr-2"
+                />
+                <span>Archive</span>
               </DropdownMenuItem>
-              <DropdownMenuItem 
-                className="rounded-xl px-3 py-2.5 cursor-pointer hover:bg-[rgba(20,70,42,0.06)] group transition-all"
-                onClick={() => setShowExpenses(true)}
-                disabled={showExpenses}
+              <DropdownMenuItem
+                className="rounded-xl px-3 py-2.5 cursor-pointer hover:bg-red-50 group transition-all"
+                onClick={handleDelete}
               >
-                <Wallet size={16} color="#EF4444" variant="Linear" className="mr-2" />
-                <div>
-                  <div className="font-medium text-sm group-hover:text-[#14462a]">Expense Breakdown</div>
-                  <div className="text-xs" style={{ color: "#B0B3B8" }}>Expense categories summary</div>
-                </div>
+                <Trash
+                  size={16}
+                  color="#DC2626"
+                  variant="Linear"
+                  className="mr-2"
+                />
+                <span className="text-red-600">Delete</span>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
       </div>
 
-      {/* Render Blocks in Edit Mode */}
-      <div className="space-y-4" onClick={handleClickOutside}>
-        {blocks.map((block, blockIndex) => (
-          <div key={block.id}>
-            {block.type === 'text' ? (
-              <div 
-                className="relative group p-6 rounded-lg"
-                style={block.style}
-                onContextMenu={(e) => {
-                  e.preventDefault();
-                  setContextMenu({
-                    visible: true,
-                    x: e.clientX,
-                    y: e.clientY,
-                    blockId: block.id
-                  });
-                }}
-              >
-                <Textarea
-                  ref={(el) => { textareaRefs.current[block.id] = el; }}
-                  placeholder="Start writing your note... (Right-click to add widget or style block)"
-                  value={block.content || ''}
-                  onChange={(e) => updateBlockContent(block.id, e.target.value)}
-                  onFocus={() => {
-                    if (blurTimeoutRef.current) {
-                      clearTimeout(blurTimeoutRef.current);
-                    }
-                    setActiveBlockId(block.id);
-                  }}
-                  onBlur={() => {
-                    // Delay clearing activeBlockId to allow toolbar buttons to work
-                    blurTimeoutRef.current = setTimeout(() => {
-                      setActiveBlockId(null);
-                    }, 200);
-                  }}
-                  onKeyDown={(e) => {
-                    // Keyboard shortcuts
-                    if (e.ctrlKey || e.metaKey) {
-                      if (e.key === 'b') {
-                        e.preventDefault();
-                        applyTextFormat(block.id, 'bold');
-                      } else if (e.key === 'i') {
-                        e.preventDefault();
-                        applyTextFormat(block.id, 'italic');
-                      } else if (e.key === 'u') {
-                        e.preventDefault();
-                        applyTextFormat(block.id, 'underline');
-                      } else if (e.key === 'k') {
-                        e.preventDefault();
-                        insertLink(block.id);
-                      }
-                    }
-                  }}
-                  className="min-h-[200px] border-0 px-0 resize-none text-base focus-visible:ring-0 focus-visible:ring-offset-0 bg-transparent"
-                  style={{ color: "#2D2D2D" }}
-                />
-                <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="h-7 w-7 p-0 rounded-full"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setStyleMenu({
-                        visible: true,
-                        x: e.clientX,
-                        y: e.clientY,
-                        blockId: block.id
-                      });
-                    }}
-                  >
-                    <Brush2 size={16} color="#B0B3B8" variant="Linear" />
-                  </Button>
-                  {blocks.length > 1 && (
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="h-7 w-7 p-0 rounded-full"
-                      onClick={() => removeBlock(block.id)}
-                    >
-                      <CloseCircle size={16} color="#B0B3B8" variant="Linear" />
-                    </Button>
-                  )}
-                </div>
-              </div>
-            ) : (
-              <div className="mb-6">
-                {renderWidget(block.type, true, () => removeBlock(block.id))}
-              </div>
-            )}
-
-            {/* Insert Widget Button */}
-            <div className="flex items-center gap-2 py-2 group">
-              <div className="flex-1 h-px" style={{ backgroundColor: "#E4E6EB" }} />
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="h-7 px-3 rounded-full opacity-0 group-hover:opacity-100 transition-opacity text-xs hover:bg-[rgba(20,70,42,0.06)]"
-                    style={{ color: "#B0B3B8" }}
-                  >
-                    <Add size={14} color="#B0B3B8" variant="Linear" className="mr-1" />
-                    Insert Widget
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="center" className="rounded-2xl p-2 w-56" style={{ boxShadow: '0 4px 20px rgba(0, 0, 0, 0.12)', border: '1px solid rgba(0, 0, 0, 0.06)' }}>
-                  <DropdownMenuItem 
-                    className="rounded-xl px-3 py-2 cursor-pointer text-sm hover:bg-[rgba(20,70,42,0.06)] group transition-all"
-                    onClick={() => addBlock(block.id, 'text')}
-                  >
-                    <Note size={16} color="#2D2D2D" variant="Linear" className="mr-2" />
-                    <span className="group-hover:text-[#14462a]">Text Block</span>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem 
-                    className="rounded-xl px-3 py-2 cursor-pointer text-sm hover:bg-[rgba(20,70,42,0.06)] group transition-all"
-                    onClick={() => addBlock(block.id, 'ar-metrics')}
-                  >
-                    <Chart size={16} color="#14462a" variant="Linear" className="mr-2" />
-                    <span className="group-hover:text-[#14462a]">AR Metrics</span>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem 
-                    className="rounded-xl px-3 py-2 cursor-pointer text-sm hover:bg-[rgba(20,70,42,0.06)] group transition-all"
-                    onClick={() => addBlock(block.id, 'invoice-table')}
-                  >
-                    <Note size={16} color="#14462a" variant="Linear" className="mr-2" />
-                    <span className="group-hover:text-[#14462a]">Invoice Table</span>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem 
-                    className="rounded-xl px-3 py-2 cursor-pointer text-sm hover:bg-[rgba(20,70,42,0.06)] group transition-all"
-                    onClick={() => addBlock(block.id, 'payment-methods')}
-                  >
-                    <Card size={16} color="#14462a" variant="Linear" className="mr-2" />
-                    <span className="group-hover:text-[#14462a]">Payment Methods</span>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem 
-                    className="rounded-xl px-3 py-2 cursor-pointer text-sm hover:bg-[rgba(20,70,42,0.06)] group transition-all"
-                    onClick={() => addBlock(block.id, 'client-list')}
-                  >
-                    <People size={16} color="#F59E0B" variant="Linear" className="mr-2" />
-                    <span className="group-hover:text-[#14462a]">Client Overview</span>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem 
-                    className="rounded-xl px-3 py-2 cursor-pointer text-sm hover:bg-[rgba(20,70,42,0.06)] group transition-all"
-                    onClick={() => addBlock(block.id, 'expenses')}
-                  >
-                    <Wallet size={16} color="#EF4444" variant="Linear" className="mr-2" />
-                    <span className="group-hover:text-[#14462a]">Expense Breakdown</span>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-              <div className="flex-1 h-px" style={{ backgroundColor: "#E4E6EB" }} />
-            </div>
-          </div>
-        ))}
+      {/* Note Title */}
+      <div className="mb-6">
+        <div className="flex items-center gap-3">
+          <h1 className="text-3xl font-bold text-[#2D2D2D]">{note.title}</h1>
+          {note.is_pinned && <Star size={24} color="#F59E0B" variant="Bold" />}
+        </div>
       </div>
 
-      {/* Context Menu for Adding Widgets */}
-      {contextMenu && (
-        <div
-          className="fixed z-50 bg-white rounded-2xl shadow-lg border p-2"
-          style={{
-            left: contextMenu.x,
-            top: contextMenu.y,
-            borderColor: "#E4E6EB",
-            boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)"
-          }}
-          onClick={(e) => e.stopPropagation()}
-        >
-          <div className="text-xs font-semibold px-3 py-2" style={{ color: "#B0B3B8" }}>
-            INSERT WIDGET AT CURSOR
-          </div>
-          <button
-            className="w-full text-left px-3 py-2 rounded-xl hover:bg-gray-50 flex items-center gap-2 text-sm"
-            onClick={() => addWidgetAtCursor(contextMenu.blockId, 'ar-metrics')}
-          >
-            <Chart size={16} color="#14462a" variant="Linear" />
-            AR Metrics
-          </button>
-          <button
-            className="w-full text-left px-3 py-2 rounded-xl hover:bg-gray-50 flex items-center gap-2 text-sm"
-            onClick={() => addWidgetAtCursor(contextMenu.blockId, 'invoice-table')}
-          >
-            <Note size={16} color="#14462a" variant="Linear" />
-            Invoice Table
-          </button>
-          <button
-            className="w-full text-left px-3 py-2 rounded-xl hover:bg-gray-50 flex items-center gap-2 text-sm"
-            onClick={() => addWidgetAtCursor(contextMenu.blockId, 'payment-methods')}
-          >
-            <Card size={16} color="#14462a" variant="Linear" />
-            Payment Methods
-          </button>
-          <button
-            className="w-full text-left px-3 py-2 rounded-xl hover:bg-gray-50 flex items-center gap-2 text-sm"
-            onClick={() => addWidgetAtCursor(contextMenu.blockId, 'client-list')}
-          >
-            <People size={16} color="#F59E0B" variant="Linear" />
-            Client Overview
-          </button>
-          <button
-            className="w-full text-left px-3 py-2 rounded-xl hover:bg-gray-50 flex items-center gap-2 text-sm"
-            onClick={() => addWidgetAtCursor(contextMenu.blockId, 'expenses')}
-          >
-            <Wallet size={16} color="#EF4444" variant="Linear" />
-            Expense Breakdown
-          </button>
+      {/* Tags */}
+      {note.tags && note.tags.length > 0 && (
+        <div className="flex flex-wrap gap-2 mb-6">
+          {note.tags.map((tag) => (
+            <Badge
+              key={tag}
+              variant="secondary"
+              className="rounded-full px-3 py-1 text-xs bg-[rgba(20,70,42,0.08)] text-[#14462a] border-0"
+            >
+              {tag}
+            </Badge>
+          ))}
         </div>
       )}
 
-      {/* Style Menu for Block Styling */}
-      {styleMenu && (
-        <div
-          className="fixed z-50 bg-white rounded-2xl shadow-lg border p-2"
-          style={{
-            left: styleMenu.x,
-            top: styleMenu.y,
-            borderColor: "#E4E6EB",
-            boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)"
-          }}
-          onClick={(e) => e.stopPropagation()}
-        >
-          <div className="text-xs font-semibold px-3 py-2" style={{ color: "#B0B3B8" }}>
-            BLOCK STYLE
-          </div>
-          <button
-            className="w-full text-left px-3 py-2 rounded-xl hover:bg-gray-50 flex items-center gap-2 text-sm"
-            onClick={() => applyStylePreset(styleMenu.blockId, 'default')}
-          >
-            <div className="h-4 w-4 rounded border" style={{ borderColor: "#E4E6EB" }} />
-            Default
-          </button>
-          <button
-            className="w-full text-left px-3 py-2 rounded-xl hover:bg-gray-50 flex items-center gap-2 text-sm"
-            onClick={() => applyStylePreset(styleMenu.blockId, 'info')}
-          >
-            <div className="h-4 w-4 rounded" style={{ backgroundColor: 'rgba(247, 249, 250, 0.3)', borderLeft: '3px solid #14462a' }} />
-            Info (Blue)
-          </button>
-          <button
-            className="w-full text-left px-3 py-2 rounded-xl hover:bg-gray-50 flex items-center gap-2 text-sm"
-            onClick={() => applyStylePreset(styleMenu.blockId, 'success')}
-          >
-            <div className="h-4 w-4 rounded" style={{ backgroundColor: 'rgba(247, 249, 250, 0.3)', borderLeft: '3px solid #14462a' }} />
-            Success (Green)
-          </button>
-          <button
-            className="w-full text-left px-3 py-2 rounded-xl hover:bg-gray-50 flex items-center gap-2 text-sm"
-            onClick={() => applyStylePreset(styleMenu.blockId, 'warning')}
-          >
-            <div className="h-4 w-4 rounded" style={{ backgroundColor: 'rgba(247, 249, 250, 0.3)', borderLeft: '3px solid #F59E0B' }} />
-            Warning (Orange)
-          </button>
-          <button
-            className="w-full text-left px-3 py-2 rounded-xl hover:bg-gray-50 flex items-center gap-2 text-sm"
-            onClick={() => applyStylePreset(styleMenu.blockId, 'error')}
-          >
-            <div className="h-4 w-4 rounded" style={{ backgroundColor: 'rgba(247, 249, 250, 0.3)', borderLeft: '3px solid #EF4444' }} />
-            Error (Red)
-          </button>
-        </div>
-      )}
+      {/* Note Content */}
+      <div className="prose prose-sm max-w-none">
+        <NoteEditor
+          content={note.content || ""}
+          onChange={() => {}}
+          editable={false}
+        />
+      </div>
+
+      {/* Metadata */}
+      <div className="mt-12 pt-6 border-t border-gray-100 text-sm text-[#B0B3B8]">
+        <p>Created {formatDate(note.created_at)}</p>
+        <p>{note.word_count || 0} words</p>
+      </div>
     </div>
   );
 }

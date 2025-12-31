@@ -130,16 +130,21 @@ export default function DashboardPage() {
     data.recentInvoices.length === 0 && 
     data.recentPayments.length === 0;
 
+  // Helper to format percentage or show "New"
+  const formatPercentage = (percent: number | null | undefined): string => {
+    if (percent === null || percent === undefined) return "New";
+    return percent > 0 ? `+${percent.toFixed(0)}%` : `${percent.toFixed(0)}%`;
+  };
+
   // KPIs with real data
   const kpis = data ? [
     {
       label: "Incoming",
       value: formatCurrency(data.metrics.total_revenue),
-      delta: (data.metrics.revenue_change_percent ?? 0) > 0 
-        ? `+${(data.metrics.revenue_change_percent ?? 0).toFixed(0)}%` 
-        : `${(data.metrics.revenue_change_percent ?? 0).toFixed(0)}%`,
+      delta: formatPercentage(data.metrics.revenue_change_percent),
       icon: Card,
-      up: (data.metrics.revenue_change_percent ?? 0) >= 0,
+      up: data.metrics.revenue_change_percent === null || (data.metrics.revenue_change_percent ?? 0) >= 0,
+      isNew: data.metrics.revenue_change_percent === null,
       sparkline: generateSparkline('revenue', (data.metrics.revenue_change_percent ?? 0) >= 0),
       iconColor: "#14462a",
       iconBg: "rgba(13, 148, 136, 0.08)",
@@ -147,11 +152,10 @@ export default function DashboardPage() {
     {
       label: "Outstanding",
       value: formatCurrency(data.metrics.total_outstanding),
-      delta: (data.metrics.outstanding_change_percent ?? 0) > 0 
-        ? `+${(data.metrics.outstanding_change_percent ?? 0).toFixed(0)}%` 
-        : `${(data.metrics.outstanding_change_percent ?? 0).toFixed(0)}%`,
+      delta: formatPercentage(data.metrics.outstanding_change_percent),
       icon: Send2,
-      up: (data.metrics.outstanding_change_percent ?? 0) <= 0,
+      up: data.metrics.outstanding_change_percent === null || (data.metrics.outstanding_change_percent ?? 0) <= 0,
+      isNew: data.metrics.outstanding_change_percent === null,
       sparkline: generateSparkline('invoiced', (data.metrics.outstanding_change_percent ?? 0) <= 0),
       iconColor: "#14462a",
       iconBg: "rgba(20, 70, 42, 0.08)",
@@ -276,7 +280,12 @@ export default function DashboardPage() {
                   {data && data.metrics.total_invoices > 0 && (
                     <div
                       className="inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-semibold"
-                      style={kpi.up ? { backgroundColor: 'rgba(13, 148, 136, 0.12)', color: '#14462a' } : { backgroundColor: 'rgba(220, 38, 38, 0.12)', color: '#DC2626' }}
+                      style={kpi.isNew 
+                        ? { backgroundColor: 'rgba(20, 70, 42, 0.12)', color: '#14462a' }
+                        : kpi.up 
+                          ? { backgroundColor: 'rgba(13, 148, 136, 0.12)', color: '#14462a' } 
+                          : { backgroundColor: 'rgba(220, 38, 38, 0.12)', color: '#DC2626' }
+                      }
                     >
                       {kpi.delta}
                     </div>
@@ -301,7 +310,7 @@ export default function DashboardPage() {
                   )}
                 </div>
                 {data && data.metrics.total_invoices > 0 && (
-                  <p className="text-xs mt-3" style={{ color: '#B0B3B8' }}>vs last month</p>
+                  <p className="text-xs mt-3" style={{ color: '#B0B3B8' }}>{kpi.isNew ? 'First month' : 'vs last month'}</p>
                 )}
               </div>
             ))
