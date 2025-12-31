@@ -320,7 +320,7 @@ export async function sendEmail(params: SendEmailParams): Promise<{ success: boo
 // ============================================
 
 /**
- * Send invoice to customer
+ * Send invoice to customer - Beautiful invoice-style email
  */
 export async function sendInvoiceEmail(params: {
   customerEmail: string
@@ -333,32 +333,120 @@ export async function sendInvoiceEmail(params: {
   businessName: string
   senderName?: string
   businessEmail?: string
+  issueDate?: string
+  items?: Array<{ description: string; quantity: number; unit_price: number }>
 }): Promise<{ success: boolean; error?: string }> {
   const paymentLink = ensureAbsoluteUrl(params.paymentLink)
+  const currencySymbol = params.currency === 'GHS' ? '₵' : params.currency === 'USD' ? '$' : params.currency + ' '
+  
+  // Build line items HTML if provided
+  const itemsHtml = params.items && params.items.length > 0 ? `
+    <table role="presentation" width="100%" style="margin: 24px 0; border-collapse: collapse;">
+      <tr style="background-color: #f8fafc;">
+        <td style="padding: 12px 16px; font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid #e5e7eb;">Description</td>
+        <td style="padding: 12px 16px; font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px; text-align: center; border-bottom: 1px solid #e5e7eb;">Qty</td>
+        <td style="padding: 12px 16px; font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px; text-align: right; border-bottom: 1px solid #e5e7eb;">Amount</td>
+      </tr>
+      ${params.items.map(item => `
+      <tr>
+        <td style="padding: 14px 16px; font-size: 14px; color: #1f2937; border-bottom: 1px solid #f3f4f6;">${item.description}</td>
+        <td style="padding: 14px 16px; font-size: 14px; color: #1f2937; text-align: center; border-bottom: 1px solid #f3f4f6;">${item.quantity}</td>
+        <td style="padding: 14px 16px; font-size: 14px; color: #1f2937; text-align: right; border-bottom: 1px solid #f3f4f6;">${currencySymbol}${(item.quantity * item.unit_price).toFixed(2)}</td>
+      </tr>
+      `).join('')}
+    </table>
+  ` : ''
+  
   const content = `
-    ${emailHeader('New Invoice')}
+    <!-- Header with Logo -->
     <tr>
-      <td class="content" style="padding: 40px;">
-        <p style="margin: 0 0 20px; color: ${BRAND.text}; font-size: 16px; line-height: 1.6;">
-          Hi <strong>${params.customerName}</strong>,
-        </p>
-        <p style="margin: 0 0 28px; color: ${BRAND.text}; font-size: 16px; line-height: 1.6;">
-          You've received a new invoice from <strong>${params.businessName}</strong>. Please review and complete the payment by the due date.
+      <td style="padding: 32px 40px 24px; border-bottom: 1px solid #e5e7eb;">
+        <table role="presentation" width="100%">
+          <tr>
+            <td>
+              <table role="presentation">
+                <tr>
+                  <td style="padding-right: 12px; vertical-align: middle;">
+                    <!-- Plaen Logo as colored blocks -->
+                    <table role="presentation" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
+                      <tr>
+                        <td style="width: 12px; height: 12px; background-color: #14462a;"></td>
+                        <td style="width: 2px;"></td>
+                        <td style="width: 8px; height: 12px; background-color: #14462a; border-radius: 0 2px 0 0;"></td>
+                      </tr>
+                      <tr><td colspan="3" style="height: 2px;"></td></tr>
+                      <tr>
+                        <td style="width: 12px; height: 8px;"></td>
+                        <td style="width: 2px;"></td>
+                        <td style="width: 8px; height: 8px; background-color: #14462a;"></td>
+                      </tr>
+                    </table>
+                  </td>
+                  <td style="vertical-align: middle;">
+                    <span style="color: #1f2937; font-size: 20px; font-weight: 700; letter-spacing: -0.5px;">Plaen</span>
+                  </td>
+                </tr>
+              </table>
+            </td>
+            <td style="text-align: right; vertical-align: top;">
+              <span style="display: inline-block; padding: 6px 14px; background-color: rgba(20, 70, 42, 0.1); color: #14462a; font-size: 13px; font-weight: 600; border-radius: 20px;">Invoice</span>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    
+    <!-- Invoice Details -->
+    <tr>
+      <td style="padding: 32px 40px;">
+        <p style="margin: 0 0 8px; color: #6b7280; font-size: 14px;">Hi ${params.customerName},</p>
+        <p style="margin: 0 0 28px; color: #1f2937; font-size: 16px; line-height: 1.6;">
+          You've received an invoice from <strong>${params.businessName}</strong>.
         </p>
         
-        ${infoBox([
-          { label: 'Invoice Number', value: params.invoiceNumber },
-          { label: 'Amount Due', value: `${params.currency} ${params.amount}`, valueColor: BRAND.primary },
-          { label: 'Due Date', value: params.dueDate },
-        ])}
+        <!-- Invoice Summary Card -->
+        <table role="presentation" width="100%" style="background-color: #f8fafc; border-radius: 12px; border: 1px solid #e5e7eb;">
+          <tr>
+            <td style="padding: 24px;">
+              <table role="presentation" width="100%">
+                <tr>
+                  <td style="width: 50%; vertical-align: top;">
+                    <p style="margin: 0 0 4px; color: #6b7280; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Invoice Number</p>
+                    <p style="margin: 0 0 20px; color: #1f2937; font-size: 16px; font-weight: 600;">${params.invoiceNumber}</p>
+                    
+                    <p style="margin: 0 0 4px; color: #6b7280; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Due Date</p>
+                    <p style="margin: 0; color: #1f2937; font-size: 16px; font-weight: 600;">${params.dueDate}</p>
+                  </td>
+                  <td style="width: 50%; text-align: right; vertical-align: top;">
+                    <p style="margin: 0 0 4px; color: #6b7280; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Amount Due</p>
+                    <p style="margin: 0; color: #14462a; font-size: 32px; font-weight: 700;">${currencySymbol}${params.amount}</p>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
         
-        <div style="margin-top: 32px;">
-          ${ctaButton('View Invoice & Pay', paymentLink)}
-        </div>
+        ${itemsHtml}
+        
+        <!-- CTA Button -->
+        <table role="presentation" width="100%" style="margin-top: 32px;">
+          <tr>
+            <td align="center">
+              <a href="${escapeHtmlAttr(paymentLink)}" target="_blank" rel="noopener noreferrer" style="display: inline-block; padding: 16px 40px; background-color: #14462a; color: #ffffff; text-decoration: none; border-radius: 10px; font-size: 16px; font-weight: 600;">
+                View Invoice & Pay
+              </a>
+            </td>
+          </tr>
+        </table>
+        
+        <p style="margin: 28px 0 0; color: #9ca3af; font-size: 13px; text-align: center;">
+          Or copy this link: <a href="${escapeHtmlAttr(paymentLink)}" style="color: #14462a; text-decoration: none;">${paymentLink}</a>
+        </p>
+        
         ${params.businessEmail ? `
-        <p style="margin: 28px 0 0; color: ${BRAND.textLight}; font-size: 14px; line-height: 1.6; text-align: center;">
-          Questions about this invoice? Contact<br>
-          <a href="mailto:${escapeHtmlAttr(params.businessEmail)}" style="color: ${BRAND.primary}; text-decoration: none; font-weight: 500;">${params.businessEmail}</a>
+        <p style="margin: 24px 0 0; color: #6b7280; font-size: 14px; text-align: center; padding-top: 24px; border-top: 1px solid #e5e7eb;">
+          Questions? Contact <a href="mailto:${escapeHtmlAttr(params.businessEmail)}" style="color: #14462a; text-decoration: none; font-weight: 500;">${params.businessName}</a>
         </p>
         ` : ''}
       </td>
@@ -366,29 +454,34 @@ export async function sendInvoiceEmail(params: {
   `
 
   const text = `
-New Invoice from ${params.businessName}
+INVOICE FROM ${params.businessName.toUpperCase()}
 
 Hi ${params.customerName},
 
-You've received a new invoice from ${params.businessName}.
+You've received an invoice from ${params.businessName}.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 Invoice Number: ${params.invoiceNumber}
-Amount Due: ${params.currency} ${params.amount}
+Amount Due: ${currencySymbol}${params.amount}
 Due Date: ${params.dueDate}
 
-View and pay your invoice: ${params.paymentLink}
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-Questions? Contact ${params.businessEmail || params.businessName}
+View and pay your invoice:
+${params.paymentLink}
+
+${params.businessEmail ? `Questions? Contact ${params.businessEmail}` : ''}
 
 —
-Sent via Plaen
+Powered by Plaen
 `
 
   return sendEmail({
     to: params.customerEmail,
     toName: params.customerName,
-    subject: `Invoice ${params.invoiceNumber} from ${params.businessName}`,
-    html: emailLayout(content, `You have a new invoice for ${params.currency} ${params.amount} from ${params.businessName}`),
+    subject: `Invoice ${params.invoiceNumber} from ${params.businessName} - ${currencySymbol}${params.amount} due ${params.dueDate}`,
+    html: emailLayout(content, `Invoice for ${currencySymbol}${params.amount} from ${params.businessName}`),
     text,
     customId: `invoice-${params.invoiceNumber}`,
     fromName: params.senderName || params.businessName,

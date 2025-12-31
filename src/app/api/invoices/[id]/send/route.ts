@@ -55,6 +55,13 @@ export async function POST(
       customer = customerData
     }
     
+    // Get line items for the email
+    const { data: lineItems } = await supabase
+      .from('invoice_line_items')
+      .select('description, quantity, unit_price')
+      .eq('invoice_id', id)
+      .order('sort_order', { ascending: true })
+    
     // Get user profile for business details
     const { data: userProfile } = await supabase
       .from('users')
@@ -113,6 +120,13 @@ export async function POST(
     } else if (sendEmailFlag && !isEmailConfigured()) {
       emailError = 'Mailjet is not configured'
     } else if (sendEmailFlag && recipientEmail) {
+      // Format line items for email (convert from minor to major units)
+      const emailItems = lineItems?.map(item => ({
+        description: item.description,
+        quantity: item.quantity || 1,
+        unit_price: (item.unit_price || 0) / 100,
+      })) || []
+      
       const emailResult = await sendInvoiceEmail({
         customerEmail: recipientEmail,
         customerName: customer?.name || 'Customer',
@@ -124,6 +138,8 @@ export async function POST(
         businessName: userProfile?.business_name || userProfile?.full_name || 'Your Business',
         senderName: userProfile?.full_name || undefined,
         businessEmail: user.email || undefined,
+        issueDate: invoice.issue_date ? format(new Date(invoice.issue_date), 'MMM d, yyyy') : undefined,
+        items: emailItems.length > 0 ? emailItems : undefined,
       })
       
       emailSent = emailResult.success
