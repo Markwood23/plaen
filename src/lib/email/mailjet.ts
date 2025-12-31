@@ -320,7 +320,7 @@ export async function sendEmail(params: SendEmailParams): Promise<{ success: boo
 // ============================================
 
 /**
- * Send invoice to customer - Beautiful invoice-style email
+ * Send invoice to customer - Clean, minimal invoice email matching preview UI
  */
 export async function sendInvoiceEmail(params: {
   customerEmail: string
@@ -339,140 +339,228 @@ export async function sendInvoiceEmail(params: {
   const paymentLink = ensureAbsoluteUrl(params.paymentLink)
   const currencySymbol = params.currency === 'GHS' ? '₵' : params.currency === 'USD' ? '$' : params.currency + ' '
   
-  // Build line items HTML if provided
+  // Calculate subtotal from items
+  const subtotal = params.items?.reduce((sum, item) => sum + (item.quantity * item.unit_price), 0) || parseFloat(params.amount.replace(/,/g, ''))
+  
+  // Build line items HTML - matching preview UI style
   const itemsHtml = params.items && params.items.length > 0 ? `
-    <table role="presentation" width="100%" style="margin: 24px 0; border-collapse: collapse;">
-      <tr style="background-color: #f8fafc;">
-        <td style="padding: 12px 16px; font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid #e5e7eb;">Description</td>
-        <td style="padding: 12px 16px; font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px; text-align: center; border-bottom: 1px solid #e5e7eb;">Qty</td>
-        <td style="padding: 12px 16px; font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px; text-align: right; border-bottom: 1px solid #e5e7eb;">Amount</td>
-      </tr>
-      ${params.items.map(item => `
-      <tr>
-        <td style="padding: 14px 16px; font-size: 14px; color: #1f2937; border-bottom: 1px solid #f3f4f6;">${item.description}</td>
-        <td style="padding: 14px 16px; font-size: 14px; color: #1f2937; text-align: center; border-bottom: 1px solid #f3f4f6;">${item.quantity}</td>
-        <td style="padding: 14px 16px; font-size: 14px; color: #1f2937; text-align: right; border-bottom: 1px solid #f3f4f6;">${currencySymbol}${(item.quantity * item.unit_price).toFixed(2)}</td>
-      </tr>
-      `).join('')}
-    </table>
+        <!-- Line Items Header -->
+        <table role="presentation" width="100%" style="margin-top: 32px; border-bottom: 1px solid #E4E6EB;">
+          <tr>
+            <td style="width: 50%; padding: 12px 0;">
+              <p style="margin: 0; color: #B0B3B8; font-size: 13px; font-weight: 500;">Description</p>
+            </td>
+            <td style="width: 15%; text-align: center; padding: 12px 0;">
+              <p style="margin: 0; color: #B0B3B8; font-size: 13px; font-weight: 500;">Qty</p>
+            </td>
+            <td style="width: 17%; text-align: right; padding: 12px 0;">
+              <p style="margin: 0; color: #B0B3B8; font-size: 13px; font-weight: 500;">Rate</p>
+            </td>
+            <td style="width: 18%; text-align: right; padding: 12px 0;">
+              <p style="margin: 0; color: #B0B3B8; font-size: 13px; font-weight: 500;">Amount</p>
+            </td>
+          </tr>
+        </table>
+        
+        <!-- Line Items Rows -->
+        ${params.items.map(item => `
+        <table role="presentation" width="100%" style="border-bottom: 1px solid #F3F4F6;">
+          <tr>
+            <td style="width: 50%; padding: 16px 0;">
+              <p style="margin: 0; color: #2D2D2D; font-size: 14px; font-weight: 500;">${item.description}</p>
+            </td>
+            <td style="width: 15%; text-align: center; padding: 16px 0;">
+              <p style="margin: 0; color: #2D2D2D; font-size: 14px; font-weight: 500;">${item.quantity}</p>
+            </td>
+            <td style="width: 17%; text-align: right; padding: 16px 0;">
+              <p style="margin: 0; color: #2D2D2D; font-size: 14px; font-weight: 500;">${currencySymbol}${item.unit_price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
+            </td>
+            <td style="width: 18%; text-align: right; padding: 16px 0;">
+              <p style="margin: 0; color: #2D2D2D; font-size: 14px; font-weight: 500;">${currencySymbol}${(item.quantity * item.unit_price).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
+            </td>
+          </tr>
+        </table>
+        `).join('')}
   ` : ''
   
-  const content = `
-    <!-- Header with Logo -->
+  // Invoice email content - clean, minimal, matching preview UI
+  const invoiceContent = `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Invoice ${params.invoiceNumber}</title>
+  <span style="display: none; max-height: 0; overflow: hidden;">Invoice ${params.invoiceNumber} for ${currencySymbol}${params.amount} from ${params.businessName}</span>
+</head>
+<body style="margin: 0; padding: 0; background-color: #F8F9FA; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;">
+  <table role="presentation" width="100%" style="background-color: #F8F9FA;">
     <tr>
-      <td style="padding: 32px 40px 24px; border-bottom: 1px solid #e5e7eb;">
-        <table role="presentation" width="100%">
+      <td align="center" style="padding: 40px 20px;">
+        <!-- Main Invoice Container -->
+        <table role="presentation" width="600" style="max-width: 600px; background-color: #FFFFFF; border-radius: 8px; overflow: hidden;">
+          
+          <!-- Header -->
           <tr>
-            <td>
-              <table role="presentation">
+            <td style="padding: 40px 48px 32px;">
+              <table role="presentation" width="100%">
                 <tr>
-                  <td style="padding-right: 12px; vertical-align: middle;">
-                    <!-- Plaen Logo as colored blocks -->
-                    <table role="presentation" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
+                  <td style="vertical-align: top;">
+                    <!-- Logo Blocks -->
+                    <table role="presentation" cellpadding="0" cellspacing="0" style="border-collapse: collapse; margin-bottom: 16px;">
                       <tr>
-                        <td style="width: 12px; height: 12px; background-color: #14462a;"></td>
-                        <td style="width: 2px;"></td>
-                        <td style="width: 8px; height: 12px; background-color: #14462a; border-radius: 0 2px 0 0;"></td>
+                        <td style="width: 16px; height: 16px; background-color: #14462a;"></td>
+                        <td style="width: 3px;"></td>
+                        <td style="width: 10px; height: 16px; background-color: #14462a; border-radius: 0 3px 0 0;"></td>
                       </tr>
-                      <tr><td colspan="3" style="height: 2px;"></td></tr>
+                      <tr><td colspan="3" style="height: 3px;"></td></tr>
                       <tr>
-                        <td style="width: 12px; height: 8px;"></td>
-                        <td style="width: 2px;"></td>
-                        <td style="width: 8px; height: 8px; background-color: #14462a;"></td>
+                        <td style="width: 16px; height: 10px;"></td>
+                        <td style="width: 3px;"></td>
+                        <td style="width: 10px; height: 10px; background-color: #14462a;"></td>
+                      </tr>
+                    </table>
+                    <p style="margin: 0 0 4px; color: #2D2D2D; font-size: 24px; font-weight: 700;">${params.businessName}</p>
+                    ${params.businessEmail ? `<p style="margin: 0; color: #B0B3B8; font-size: 13px;">${params.businessEmail}</p>` : ''}
+                  </td>
+                  <td style="text-align: right; vertical-align: top;">
+                    <p style="margin: 0 0 4px; color: #B0B3B8; font-size: 13px;">Invoice</p>
+                    <p style="margin: 0; color: #2D2D2D; font-size: 20px; font-weight: 700;">${params.invoiceNumber}</p>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          
+          <!-- Dates Row -->
+          <tr>
+            <td style="padding: 0 48px 24px;">
+              <table role="presentation" width="100%">
+                <tr>
+                  <td style="width: 50%;">
+                    <p style="margin: 0 0 4px; color: #B0B3B8; font-size: 13px;">Issue Date</p>
+                    <p style="margin: 0; color: #2D2D2D; font-size: 15px; font-weight: 500;">${params.issueDate || 'Today'}</p>
+                  </td>
+                  <td style="width: 50%;">
+                    <p style="margin: 0 0 4px; color: #B0B3B8; font-size: 13px;">Due Date</p>
+                    <p style="margin: 0; color: #2D2D2D; font-size: 15px; font-weight: 500;">${params.dueDate}</p>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          
+          <!-- Bill To -->
+          <tr>
+            <td style="padding: 0 48px 32px;">
+              <p style="margin: 0 0 8px; color: #B0B3B8; font-size: 13px;">Bill To</p>
+              <p style="margin: 0; color: #2D2D2D; font-size: 15px; font-weight: 500;">${params.customerName}</p>
+            </td>
+          </tr>
+          
+          <!-- Line Items Section -->
+          <tr>
+            <td style="padding: 0 48px;">
+              ${itemsHtml}
+            </td>
+          </tr>
+          
+          <!-- Totals -->
+          <tr>
+            <td style="padding: 24px 48px 32px;">
+              <table role="presentation" width="100%">
+                <tr>
+                  <td style="width: 60%;"></td>
+                  <td style="width: 40%;">
+                    <!-- Subtotal -->
+                    <table role="presentation" width="100%" style="margin-bottom: 8px;">
+                      <tr>
+                        <td style="text-align: right; padding: 8px 0;">
+                          <span style="color: #B0B3B8; font-size: 14px;">Subtotal</span>
+                        </td>
+                        <td style="text-align: right; padding: 8px 0; width: 120px;">
+                          <span style="color: #2D2D2D; font-size: 14px; font-weight: 500;">${currencySymbol}${params.amount}</span>
+                        </td>
+                      </tr>
+                    </table>
+                    <!-- Total -->
+                    <table role="presentation" width="100%" style="border-top: 1px solid #E4E6EB; padding-top: 12px;">
+                      <tr>
+                        <td style="text-align: right; padding: 12px 0 0;">
+                          <span style="color: #2D2D2D; font-size: 16px; font-weight: 600;">Total</span>
+                        </td>
+                        <td style="text-align: right; padding: 12px 0 0; width: 120px;">
+                          <span style="color: #2D2D2D; font-size: 22px; font-weight: 700;">${currencySymbol}${params.amount}</span>
+                        </td>
                       </tr>
                     </table>
                   </td>
-                  <td style="vertical-align: middle;">
-                    <span style="color: #1f2937; font-size: 20px; font-weight: 700; letter-spacing: -0.5px;">Plaen</span>
-                  </td>
                 </tr>
               </table>
             </td>
-            <td style="text-align: right; vertical-align: top;">
-              <span style="display: inline-block; padding: 6px 14px; background-color: rgba(20, 70, 42, 0.1); color: #14462a; font-size: 13px; font-weight: 600; border-radius: 20px;">Invoice</span>
-            </td>
           </tr>
-        </table>
-      </td>
-    </tr>
-    
-    <!-- Invoice Details -->
-    <tr>
-      <td style="padding: 32px 40px;">
-        <p style="margin: 0 0 8px; color: #6b7280; font-size: 14px;">Hi ${params.customerName},</p>
-        <p style="margin: 0 0 28px; color: #1f2937; font-size: 16px; line-height: 1.6;">
-          You've received an invoice from <strong>${params.businessName}</strong>.
-        </p>
-        
-        <!-- Invoice Summary Card -->
-        <table role="presentation" width="100%" style="background-color: #f8fafc; border-radius: 12px; border: 1px solid #e5e7eb;">
+          
+          <!-- Pay Button -->
           <tr>
-            <td style="padding: 24px;">
-              <table role="presentation" width="100%">
+            <td style="padding: 0 48px 40px;">
+              <table role="presentation" width="100%" style="border-top: 1px solid #E4E6EB; padding-top: 32px;">
                 <tr>
-                  <td style="width: 50%; vertical-align: top;">
-                    <p style="margin: 0 0 4px; color: #6b7280; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Invoice Number</p>
-                    <p style="margin: 0 0 20px; color: #1f2937; font-size: 16px; font-weight: 600;">${params.invoiceNumber}</p>
-                    
-                    <p style="margin: 0 0 4px; color: #6b7280; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Due Date</p>
-                    <p style="margin: 0; color: #1f2937; font-size: 16px; font-weight: 600;">${params.dueDate}</p>
+                  <td align="center">
+                    <a href="${escapeHtmlAttr(paymentLink)}" target="_blank" rel="noopener noreferrer" style="display: inline-block; padding: 14px 32px; background-color: #14462a; color: #ffffff; text-decoration: none; border-radius: 999px; font-size: 15px; font-weight: 600;">
+                      Pay Invoice Now
+                    </a>
                   </td>
-                  <td style="width: 50%; text-align: right; vertical-align: top;">
-                    <p style="margin: 0 0 4px; color: #6b7280; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Amount Due</p>
-                    <p style="margin: 0; color: #14462a; font-size: 32px; font-weight: 700;">${currencySymbol}${params.amount}</p>
+                </tr>
+                <tr>
+                  <td align="center" style="padding-top: 16px;">
+                    <p style="margin: 0; color: #B0B3B8; font-size: 13px;">
+                      Payment link: <a href="${escapeHtmlAttr(paymentLink)}" style="color: #14462a; text-decoration: none;">${paymentLink}</a>
+                    </p>
                   </td>
                 </tr>
               </table>
             </td>
           </tr>
-        </table>
-        
-        ${itemsHtml}
-        
-        <!-- CTA Button -->
-        <table role="presentation" width="100%" style="margin-top: 32px;">
+          
+          <!-- Footer -->
           <tr>
-            <td align="center">
-              <a href="${escapeHtmlAttr(paymentLink)}" target="_blank" rel="noopener noreferrer" style="display: inline-block; padding: 16px 40px; background-color: #14462a; color: #ffffff; text-decoration: none; border-radius: 10px; font-size: 16px; font-weight: 600;">
-                View Invoice & Pay
-              </a>
+            <td style="padding: 24px 48px; border-top: 1px solid #E4E6EB; text-align: center;">
+              <p style="margin: 0 0 4px; color: #B0B3B8; font-size: 13px;">Thank you for your business!</p>
+              <p style="margin: 0; color: #B0B3B8; font-size: 12px;">Powered by <a href="https://plaen.tech" style="color: #14462a; text-decoration: none; font-weight: 500;">Plaen</a></p>
             </td>
           </tr>
+          
         </table>
-        
-        <p style="margin: 28px 0 0; color: #9ca3af; font-size: 13px; text-align: center;">
-          Or copy this link: <a href="${escapeHtmlAttr(paymentLink)}" style="color: #14462a; text-decoration: none;">${paymentLink}</a>
-        </p>
-        
-        ${params.businessEmail ? `
-        <p style="margin: 24px 0 0; color: #6b7280; font-size: 14px; text-align: center; padding-top: 24px; border-top: 1px solid #e5e7eb;">
-          Questions? Contact <a href="mailto:${escapeHtmlAttr(params.businessEmail)}" style="color: #14462a; text-decoration: none; font-weight: 500;">${params.businessName}</a>
-        </p>
-        ` : ''}
       </td>
     </tr>
-  `
+  </table>
+</body>
+</html>
+`
 
   const text = `
 INVOICE FROM ${params.businessName.toUpperCase()}
 
-Hi ${params.customerName},
-
-You've received an invoice from ${params.businessName}.
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-Invoice Number: ${params.invoiceNumber}
-Amount Due: ${currencySymbol}${params.amount}
+Invoice: ${params.invoiceNumber}
+Issue Date: ${params.issueDate || 'Today'}
 Due Date: ${params.dueDate}
 
+Bill To: ${params.customerName}
+
+${params.items && params.items.length > 0 ? params.items.map(item => `• ${item.description} (${item.quantity}x) - ${currencySymbol}${(item.quantity * item.unit_price).toFixed(2)}`).join('\n') : ''}
+
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-View and pay your invoice:
-${params.paymentLink}
+Total: ${currencySymbol}${params.amount}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Pay your invoice: ${params.paymentLink}
 
 ${params.businessEmail ? `Questions? Contact ${params.businessEmail}` : ''}
 
+Thank you for your business!
 —
 Powered by Plaen
 `
@@ -480,8 +568,8 @@ Powered by Plaen
   return sendEmail({
     to: params.customerEmail,
     toName: params.customerName,
-    subject: `Invoice ${params.invoiceNumber} from ${params.businessName} - ${currencySymbol}${params.amount} due ${params.dueDate}`,
-    html: emailLayout(content, `Invoice for ${currencySymbol}${params.amount} from ${params.businessName}`),
+    subject: `Invoice ${params.invoiceNumber} from ${params.businessName} • ${currencySymbol}${params.amount}`,
+    html: invoiceContent,
     text,
     customId: `invoice-${params.invoiceNumber}`,
     fromName: params.senderName || params.businessName,
@@ -489,7 +577,7 @@ Powered by Plaen
 }
 
 /**
- * Send payment confirmation
+ * Send payment confirmation - Clean receipt-style email
  */
 export async function sendPaymentConfirmationEmail(params: {
   recipientEmail: string
@@ -504,56 +592,122 @@ export async function sendPaymentConfirmationEmail(params: {
   businessName: string
 }): Promise<{ success: boolean; error?: string }> {
   const isPaidInFull = !params.remainingBalance || params.remainingBalance === '0' || params.remainingBalance === '0.00'
+  const currencySymbol = params.currency === 'GHS' ? '₵' : params.currency === 'USD' ? '$' : params.currency + ' '
   
-  const content = `
-    ${emailHeader(isPaidInFull ? '✓ Payment Complete' : 'Payment Received', BRAND.success)}
+  const receiptContent = `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Payment Confirmation</title>
+  <span style="display: none; max-height: 0; overflow: hidden;">Payment of ${currencySymbol}${params.amountPaid} received for invoice ${params.invoiceNumber}</span>
+</head>
+<body style="margin: 0; padding: 0; background-color: #F8F9FA; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;">
+  <table role="presentation" width="100%" style="background-color: #F8F9FA;">
     <tr>
-      <td class="content" style="padding: 40px;">
-        <p style="margin: 0 0 20px; color: ${BRAND.text}; font-size: 16px; line-height: 1.6;">
-          Hi <strong>${params.recipientName}</strong>,
-        </p>
-        <p style="margin: 0 0 28px; color: ${BRAND.text}; font-size: 16px; line-height: 1.6;">
-          ${isPaidInFull 
-            ? `Great news! Invoice <strong>${params.invoiceNumber}</strong> has been paid in full. Thank you for your payment!`
-            : `We've received a partial payment for invoice <strong>${params.invoiceNumber}</strong>. Thank you!`
-          }
-        </p>
-        
-        ${infoBox([
-          { label: 'Amount Paid', value: `${params.currency} ${params.amountPaid}`, valueColor: BRAND.success },
-          { label: 'Payment Method', value: params.paymentMethod },
-          { label: 'Payment Date', value: params.paymentDate },
-          ...(!isPaidInFull ? [{ label: 'Remaining Balance', value: `${params.currency} ${params.remainingBalance}`, valueColor: BRAND.warning }] : []),
-        ])}
-        
-        ${params.receiptLink ? `
-        <div style="margin-top: 32px;">
-          ${ctaButton('View Receipt', params.receiptLink)}
-        </div>
-        ` : ''}
-        
-        <p style="margin: 28px 0 0; color: ${BRAND.textLight}; font-size: 14px; line-height: 1.6; text-align: center;">
-          Thank you for your business!<br>
-          <strong>${params.businessName}</strong>
-        </p>
+      <td align="center" style="padding: 40px 20px;">
+        <!-- Main Container -->
+        <table role="presentation" width="600" style="max-width: 600px; background-color: #FFFFFF; border-radius: 8px; overflow: hidden;">
+          
+          <!-- Success Header -->
+          <tr>
+            <td style="padding: 40px 48px 24px; text-align: center;">
+              <!-- Success Checkmark -->
+              <div style="width: 64px; height: 64px; background-color: rgba(20, 70, 42, 0.1); border-radius: 50%; margin: 0 auto 20px; line-height: 64px;">
+                <span style="font-size: 32px; color: #14462a;">✓</span>
+              </div>
+              <h1 style="margin: 0 0 8px; color: #2D2D2D; font-size: 24px; font-weight: 700;">${isPaidInFull ? 'Payment Complete' : 'Payment Received'}</h1>
+              <p style="margin: 0; color: #B0B3B8; font-size: 14px;">Invoice ${params.invoiceNumber}</p>
+            </td>
+          </tr>
+          
+          <!-- Amount -->
+          <tr>
+            <td style="padding: 0 48px 32px; text-align: center;">
+              <p style="margin: 0 0 4px; color: #B0B3B8; font-size: 13px;">Amount Paid</p>
+              <p style="margin: 0; color: #14462a; font-size: 36px; font-weight: 700;">${currencySymbol}${params.amountPaid}</p>
+            </td>
+          </tr>
+          
+          <!-- Details Card -->
+          <tr>
+            <td style="padding: 0 48px 32px;">
+              <table role="presentation" width="100%" style="background-color: #F8F9FA; border-radius: 8px;">
+                <tr>
+                  <td style="padding: 20px 24px;">
+                    <table role="presentation" width="100%">
+                      <tr>
+                        <td style="padding: 8px 0; border-bottom: 1px solid #E4E6EB;">
+                          <p style="margin: 0; color: #B0B3B8; font-size: 13px;">Payment Method</p>
+                          <p style="margin: 4px 0 0; color: #2D2D2D; font-size: 15px; font-weight: 500;">${params.paymentMethod}</p>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style="padding: 12px 0 8px;">
+                          <p style="margin: 0; color: #B0B3B8; font-size: 13px;">Payment Date</p>
+                          <p style="margin: 4px 0 0; color: #2D2D2D; font-size: 15px; font-weight: 500;">${params.paymentDate}</p>
+                        </td>
+                      </tr>
+                      ${!isPaidInFull ? `
+                      <tr>
+                        <td style="padding: 12px 0 0; border-top: 1px solid #E4E6EB;">
+                          <p style="margin: 0; color: #B0B3B8; font-size: 13px;">Remaining Balance</p>
+                          <p style="margin: 4px 0 0; color: #D97706; font-size: 15px; font-weight: 600;">${currencySymbol}${params.remainingBalance}</p>
+                        </td>
+                      </tr>
+                      ` : ''}
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          
+          <!-- View Receipt Button -->
+          ${params.receiptLink ? `
+          <tr>
+            <td style="padding: 0 48px 40px;">
+              <table role="presentation" width="100%">
+                <tr>
+                  <td align="center">
+                    <a href="${escapeHtmlAttr(params.receiptLink)}" target="_blank" rel="noopener noreferrer" style="display: inline-block; padding: 14px 32px; background-color: #14462a; color: #ffffff; text-decoration: none; border-radius: 999px; font-size: 15px; font-weight: 600;">
+                      View Receipt
+                    </a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          ` : ''}
+          
+          <!-- Footer -->
+          <tr>
+            <td style="padding: 24px 48px; border-top: 1px solid #E4E6EB; text-align: center;">
+              <p style="margin: 0 0 4px; color: #B0B3B8; font-size: 13px;">Thank you for your payment!</p>
+              <p style="margin: 0 0 8px; color: #2D2D2D; font-size: 14px; font-weight: 500;">${params.businessName}</p>
+              <p style="margin: 0; color: #B0B3B8; font-size: 12px;">Powered by <a href="https://plaen.tech" style="color: #14462a; text-decoration: none; font-weight: 500;">Plaen</a></p>
+            </td>
+          </tr>
+          
+        </table>
       </td>
     </tr>
-  `
+  </table>
+</body>
+</html>
+`
 
   const text = `
-${isPaidInFull ? 'Payment Complete' : 'Payment Received'}
+${isPaidInFull ? 'PAYMENT COMPLETE' : 'PAYMENT RECEIVED'}
 
-Hi ${params.recipientName},
+Invoice ${params.invoiceNumber}
 
-${isPaidInFull 
-  ? `Great news! Invoice ${params.invoiceNumber} has been paid in full.`
-  : `We've received a partial payment for invoice ${params.invoiceNumber}.`
-}
-
-Amount Paid: ${params.currency} ${params.amountPaid}
+Amount Paid: ${currencySymbol}${params.amountPaid}
 Payment Method: ${params.paymentMethod}
 Payment Date: ${params.paymentDate}
-${!isPaidInFull ? `Remaining Balance: ${params.currency} ${params.remainingBalance}` : ''}
+${!isPaidInFull ? `Remaining Balance: ${currencySymbol}${params.remainingBalance}` : ''}
 
 ${params.receiptLink ? `View your receipt: ${params.receiptLink}` : ''}
 
@@ -568,16 +722,16 @@ Powered by Plaen
     to: params.recipientEmail,
     toName: params.recipientName,
     subject: isPaidInFull 
-      ? `✓ Payment Complete - Invoice ${params.invoiceNumber}` 
-      : `Payment Received - Invoice ${params.invoiceNumber}`,
-    html: emailLayout(content, `Payment of ${params.currency} ${params.amountPaid} received for invoice ${params.invoiceNumber}`),
+      ? `✓ Payment Complete • Invoice ${params.invoiceNumber}` 
+      : `Payment Received • Invoice ${params.invoiceNumber}`,
+    html: receiptContent,
     text,
     customId: `payment-${params.invoiceNumber}-${Date.now()}`,
   })
 }
 
 /**
- * Send payment reminder for overdue invoice
+ * Send payment reminder for overdue invoice - Clean style
  */
 export async function sendPaymentReminderEmail(params: {
   customerEmail: string
@@ -591,86 +745,141 @@ export async function sendPaymentReminderEmail(params: {
   businessName: string
   businessEmail?: string
 }): Promise<{ success: boolean; error?: string }> {
-  const urgencyColor = params.daysOverdue > 30 ? BRAND.danger : BRAND.warning
-  const urgencyText = params.daysOverdue > 30 ? 'Overdue' : 'Reminder'
-  const bgColor = params.daysOverdue > 30 ? '#fef2f2' : '#fffbeb'
-  const borderColor = params.daysOverdue > 30 ? '#fecaca' : '#fde68a'
+  const paymentLink = ensureAbsoluteUrl(params.paymentLink)
+  const currencySymbol = params.currency === 'GHS' ? '₵' : params.currency === 'USD' ? '$' : params.currency + ' '
+  const isUrgent = params.daysOverdue > 30
+  const statusColor = isUrgent ? '#DC2626' : '#D97706'
+  const statusBg = isUrgent ? 'rgba(220, 38, 38, 0.1)' : 'rgba(217, 119, 6, 0.1)'
   
-  const content = `
-    ${emailHeader(`Payment ${urgencyText}`, urgencyColor)}
+  const reminderContent = `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Payment Reminder</title>
+  <span style="display: none; max-height: 0; overflow: hidden;">Invoice ${params.invoiceNumber} is ${params.daysOverdue} days overdue - ${currencySymbol}${params.amount}</span>
+</head>
+<body style="margin: 0; padding: 0; background-color: #F8F9FA; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;">
+  <table role="presentation" width="100%" style="background-color: #F8F9FA;">
     <tr>
-      <td class="content" style="padding: 40px;">
-        <p style="margin: 0 0 20px; color: ${BRAND.text}; font-size: 16px; line-height: 1.6;">
-          Hi <strong>${params.customerName}</strong>,
-        </p>
-        <p style="margin: 0 0 28px; color: ${BRAND.text}; font-size: 16px; line-height: 1.6;">
-          This is a friendly reminder that invoice <strong>${params.invoiceNumber}</strong> from <strong>${params.businessName}</strong> is now <span style="color: ${urgencyColor}; font-weight: 600;">${params.daysOverdue} days past due</span>.
-        </p>
-        
-        <table role="presentation" width="100%" style="background-color: ${bgColor}; border-radius: 12px; border: 1px solid ${borderColor};">
+      <td align="center" style="padding: 40px 20px;">
+        <!-- Main Container -->
+        <table role="presentation" width="600" style="max-width: 600px; background-color: #FFFFFF; border-radius: 8px; overflow: hidden;">
+          
+          <!-- Header -->
           <tr>
-            <td style="padding: 20px 24px;">
+            <td style="padding: 40px 48px 24px;">
               <table role="presentation" width="100%">
                 <tr>
-                  <td style="padding: 0 0 0;">
-                    <p style="margin: 0 0 4px; color: ${BRAND.textLight}; font-size: 13px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px;">Invoice Number</p>
-                    <p style="margin: 0; color: ${BRAND.text}; font-size: 16px; font-weight: 600;">${params.invoiceNumber}</p>
+                  <td style="vertical-align: top;">
+                    <!-- Logo Blocks -->
+                    <table role="presentation" cellpadding="0" cellspacing="0" style="border-collapse: collapse; margin-bottom: 16px;">
+                      <tr>
+                        <td style="width: 16px; height: 16px; background-color: #14462a;"></td>
+                        <td style="width: 3px;"></td>
+                        <td style="width: 10px; height: 16px; background-color: #14462a; border-radius: 0 3px 0 0;"></td>
+                      </tr>
+                      <tr><td colspan="3" style="height: 3px;"></td></tr>
+                      <tr>
+                        <td style="width: 16px; height: 10px;"></td>
+                        <td style="width: 3px;"></td>
+                        <td style="width: 10px; height: 10px; background-color: #14462a;"></td>
+                      </tr>
+                    </table>
+                    <p style="margin: 0; color: #2D2D2D; font-size: 24px; font-weight: 700;">${params.businessName}</p>
                   </td>
-                </tr>
-                <tr>
-                  <td style="padding: 12px 0 0;">
-                    <p style="margin: 0 0 4px; color: ${BRAND.textLight}; font-size: 13px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px;">Amount Due</p>
-                    <p style="margin: 0; color: ${urgencyColor}; font-size: 28px; font-weight: 700;">${params.currency} ${params.amount}</p>
-                  </td>
-                </tr>
-                <tr>
-                  <td style="padding: 12px 0 0;">
-                    <p style="margin: 0 0 4px; color: ${BRAND.textLight}; font-size: 13px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px;">Original Due Date</p>
-                    <p style="margin: 0; color: ${BRAND.text}; font-size: 16px; font-weight: 600;">${params.dueDate}</p>
+                  <td style="text-align: right; vertical-align: top;">
+                    <span style="display: inline-block; padding: 6px 12px; background-color: ${statusBg}; color: ${statusColor}; font-size: 13px; font-weight: 600; border-radius: 20px;">
+                      ${params.daysOverdue} days overdue
+                    </span>
                   </td>
                 </tr>
               </table>
             </td>
           </tr>
+          
+          <!-- Message -->
+          <tr>
+            <td style="padding: 0 48px 24px;">
+              <p style="margin: 0 0 8px; color: #B0B3B8; font-size: 14px;">Hi ${params.customerName},</p>
+              <p style="margin: 0; color: #2D2D2D; font-size: 15px; line-height: 1.6;">
+                This is a friendly reminder that invoice <strong>${params.invoiceNumber}</strong> was due on <strong>${params.dueDate}</strong>.
+              </p>
+            </td>
+          </tr>
+          
+          <!-- Amount Due -->
+          <tr>
+            <td style="padding: 0 48px 32px;">
+              <table role="presentation" width="100%" style="background-color: ${statusBg}; border-radius: 8px;">
+                <tr>
+                  <td style="padding: 24px; text-align: center;">
+                    <p style="margin: 0 0 4px; color: #B0B3B8; font-size: 13px;">Amount Due</p>
+                    <p style="margin: 0; color: ${statusColor}; font-size: 32px; font-weight: 700;">${currencySymbol}${params.amount}</p>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          
+          <!-- Pay Button -->
+          <tr>
+            <td style="padding: 0 48px 40px;">
+              <table role="presentation" width="100%">
+                <tr>
+                  <td align="center">
+                    <a href="${escapeHtmlAttr(paymentLink)}" target="_blank" rel="noopener noreferrer" style="display: inline-block; padding: 14px 32px; background-color: #14462a; color: #ffffff; text-decoration: none; border-radius: 999px; font-size: 15px; font-weight: 600;">
+                      Pay Now
+                    </a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          
+          <!-- Footer -->
+          <tr>
+            <td style="padding: 24px 48px; border-top: 1px solid #E4E6EB; text-align: center;">
+              <p style="margin: 0 0 8px; color: #B0B3B8; font-size: 13px;">If you've already made this payment, please disregard this reminder.</p>
+              ${params.businessEmail ? `<p style="margin: 0 0 8px; color: #B0B3B8; font-size: 13px;">Questions? <a href="mailto:${params.businessEmail}" style="color: #14462a; text-decoration: none; font-weight: 500;">${params.businessEmail}</a></p>` : ''}
+              <p style="margin: 0; color: #B0B3B8; font-size: 12px;">Powered by <a href="https://plaen.tech" style="color: #14462a; text-decoration: none; font-weight: 500;">Plaen</a></p>
+            </td>
+          </tr>
+          
         </table>
-        
-        <div style="margin-top: 32px;">
-          ${ctaButton('Pay Now', params.paymentLink)}
-        </div>
-        
-        <p style="margin: 28px 0 0; color: ${BRAND.textLight}; font-size: 14px; line-height: 1.6; text-align: center;">
-          If you've already made this payment, please disregard this reminder.<br>
-          Questions? Contact <a href="mailto:${params.businessEmail || ''}" style="color: ${BRAND.primary}; text-decoration: none; font-weight: 500;">${params.businessEmail || params.businessName}</a>
-        </p>
       </td>
     </tr>
-  `
+  </table>
+</body>
+</html>
+`
 
   const text = `
-Payment ${urgencyText} - ${params.daysOverdue} Days Overdue
+PAYMENT REMINDER - ${params.daysOverdue} DAYS OVERDUE
 
 Hi ${params.customerName},
 
-This is a friendly reminder that invoice ${params.invoiceNumber} from ${params.businessName} is now ${params.daysOverdue} days past due.
+This is a friendly reminder that invoice ${params.invoiceNumber} was due on ${params.dueDate}.
 
-Invoice Number: ${params.invoiceNumber}
-Amount Due: ${params.currency} ${params.amount}
-Original Due Date: ${params.dueDate}
+Amount Due: ${currencySymbol}${params.amount}
 
 Pay now: ${params.paymentLink}
 
 If you've already made this payment, please disregard this reminder.
-Questions? Contact ${params.businessEmail || params.businessName}
+${params.businessEmail ? `Questions? Contact ${params.businessEmail}` : ''}
 
 —
+${params.businessName}
 Sent via Plaen
 `
 
   return sendEmail({
     to: params.customerEmail,
     toName: params.customerName,
-    subject: `${urgencyText}: Invoice ${params.invoiceNumber} is ${params.daysOverdue} days overdue`,
-    html: emailLayout(content, `Invoice ${params.invoiceNumber} is ${params.daysOverdue} days overdue - ${params.currency} ${params.amount}`),
+    subject: `Reminder: Invoice ${params.invoiceNumber} • ${currencySymbol}${params.amount} overdue`,
+    html: reminderContent,
     text,
     customId: `reminder-${params.invoiceNumber}-${Date.now()}`,
   })
