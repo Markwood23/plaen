@@ -198,14 +198,14 @@ export default function DashboardPage() {
               </p>
               <div className="flex items-center gap-3">
                 <Button asChild>
-                  <Link href="/invoices/new">
-                    <Add size={18} className="mr-2" />
+                  <Link href="/invoices/new" className="flex items-center">
+                    <Add size={18} color="currentColor" variant="Bold" className="mr-2" />
                     Create Invoice
                   </Link>
                 </Button>
                 <Button variant="outline" asChild>
-                  <Link href="/contacts/new">
-                    <People size={18} className="mr-2" />
+                  <Link href="/contacts/new" className="flex items-center">
+                    <People size={18} color="currentColor" variant="Bold" className="mr-2" />
                     Add Contact
                   </Link>
                 </Button>
@@ -226,7 +226,7 @@ export default function DashboardPage() {
             </>
           ) : (
             kpis.map((kpi) => (
-              <div key={kpi.label} className="group relative rounded-2xl p-6 transition-all duration-300 hover:scale-[1.02]" style={{ backgroundColor: `\${kpi.iconColor}0A` }}>
+              <div key={kpi.label} className="group relative rounded-2xl p-6 transition-all duration-300 hover:scale-[1.02]" style={{ backgroundColor: `${kpi.iconColor}0A` }}>
                 <div className="flex items-center justify-between mb-4">
                   <div 
                     className="h-12 w-12 rounded-full flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110"
@@ -251,13 +251,13 @@ export default function DashboardPage() {
                   {data && data.metrics.total_invoices > 0 && (
                     <svg className="h-10 w-24 opacity-40" viewBox="0 0 64 32" fill="none">
                       <defs>
-                        <linearGradient id={`gradient-\${kpi.label}`} x1="0%" y1="0%" x2="100%" y2="0%">
+                        <linearGradient id={`gradient-${kpi.label}`} x1="0%" y1="0%" x2="100%" y2="0%">
                           <stop offset="0%" stopColor={kpi.iconColor} stopOpacity={0.3} />
                           <stop offset="50%" stopColor={kpi.iconColor} stopOpacity={0.7} />
                           <stop offset="100%" stopColor={kpi.iconColor} stopOpacity={1} />
                         </linearGradient>
                       </defs>
-                      <path d={kpi.sparkline} stroke={`url(#gradient-\${kpi.label})`} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+                      <path d={kpi.sparkline} stroke={`url(#gradient-${kpi.label})`} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
                     </svg>
                   )}
                 </div>

@@ -36,6 +36,7 @@ import {
 } from "iconsax-react";
 import { BalanceVisibilityProvider, useBalanceVisibility } from "@/contexts/balance-visibility-context";
 import { signOut } from "@/lib/auth/actions";
+import { AuthProvider, useAuth } from "@/contexts/auth-context";
 
 // Balance toggle button component (must be inside the provider)
 function BalanceToggleButton() {
@@ -82,7 +83,8 @@ export default function WorkspaceLayout({
   } as const;
 
   return (
-    <BalanceVisibilityProvider>
+    <AuthProvider>
+      <BalanceVisibilityProvider>
     <div className="min-h-screen bg-white flex overflow-hidden" style={{ color: '#2D2D2D' }}>
       {/* Desktop sidebar */}
       <aside className="hidden md:flex w-64 shrink-0 flex-col bg-white h-screen" style={{ borderRight: '1px solid #E4E6EB' }}>
@@ -259,7 +261,8 @@ export default function WorkspaceLayout({
         </main>
       </div>
     </div>
-    </BalanceVisibilityProvider>
+      </BalanceVisibilityProvider>
+    </AuthProvider>
   );
 }
 
@@ -333,18 +336,33 @@ function MobileNav({
 }
 
 function UserMenu() {
+  const { user, profile } = useAuth();
+  const email = profile?.email || user?.email || '';
+  const displayName = profile?.full_name || profile?.business_name || user?.user_metadata?.full_name || email || 'Account';
+  const initials = (displayName || email || 'PL')
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part: string) => part[0]?.toUpperCase())
+    .join('')
+    .slice(0, 2);
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <button className="inline-flex items-center gap-2 rounded-full focus-visible:ring-ring/50 focus-visible:ring-[3px]">
           <Avatar>
-            <AvatarFallback>PL</AvatarFallback>
+            <AvatarFallback>{initials || 'PL'}</AvatarFallback>
           </Avatar>
         </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="rounded-2xl w-56 p-2" style={{ boxShadow: '0 4px 20px rgba(0, 0, 0, 0.12)', border: '1px solid rgba(0, 0, 0, 0.06)' }}>
-        <DropdownMenuLabel className="px-3 py-2">Signed in as
-          <div className="font-medium">you@plaen.tech</div>
+        <DropdownMenuLabel className="px-3 py-2">
+          <div className="text-xs" style={{ color: '#65676B' }}>Signed in as</div>
+          <div className="font-medium" style={{ color: '#2D2D2D' }}>{displayName}</div>
+          {email && (
+            <div className="text-xs" style={{ color: '#B0B3B8' }}>{email}</div>
+          )}
         </DropdownMenuLabel>
         <DropdownMenuSeparator className="my-1" />
         <DropdownMenuItem asChild className="gap-3 rounded-xl p-3 cursor-pointer group transition-all hover:bg-[rgba(20,70,42,0.06)]">
