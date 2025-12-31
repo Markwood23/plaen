@@ -924,7 +924,7 @@ Sent via Plaen
 // ============================================
 
 /**
- * Send OTP verification code
+ * Send OTP verification code - Clean minimal style matching invoice UI
  */
 export async function sendOTPEmail(params: {
   email: string
@@ -934,45 +934,102 @@ export async function sendOTPEmail(params: {
 }): Promise<{ success: boolean; error?: string }> {
   const expiry = params.expiryMinutes || 10
   
-  const content = `
-    ${emailHeader('Verify Your Email')}
+  const otpContent = `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Verification Code</title>
+  <span style="display: none; max-height: 0; overflow: hidden;">Your Plaen verification code is ${params.code}</span>
+</head>
+<body style="margin: 0; padding: 0; background-color: #F8F9FA; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;">
+  <table role="presentation" width="100%" style="background-color: #F8F9FA;">
     <tr>
-      <td class="content" style="padding: 40px;">
-        <p style="margin: 0 0 20px; color: ${BRAND.text}; font-size: 16px; line-height: 1.6;">
-          Hi${params.name ? ` <strong>${params.name}</strong>` : ''},
-        </p>
-        <p style="margin: 0 0 28px; color: ${BRAND.text}; font-size: 16px; line-height: 1.6;">
-          Use the verification code below to complete your sign-in. This code will expire in ${expiry} minutes.
-        </p>
-        
-        <!-- OTP Code Box -->
-        <table role="presentation" width="100%" style="margin-bottom: 28px;">
+      <td align="center" style="padding: 40px 20px;">
+        <!-- Main Container -->
+        <table role="presentation" width="600" style="max-width: 600px; background-color: #FFFFFF; border-radius: 12px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.08);">
+          
+          <!-- Header with Logo -->
           <tr>
-            <td align="center">
-              <div style="display: inline-block; padding: 20px 40px; background: linear-gradient(135deg, ${BRAND.primary}08 0%, ${BRAND.primary}15 100%); border: 2px dashed ${BRAND.primary}40; border-radius: 12px;">
-                <p style="margin: 0; font-size: 36px; font-weight: 700; letter-spacing: 8px; color: ${BRAND.primary}; font-family: 'SF Mono', 'Consolas', monospace;">${params.code}</p>
-              </div>
+            <td style="padding: 48px 48px 36px;">
+              <table role="presentation" width="100%">
+                <tr>
+                  <td>
+                    <!-- Plaen Logo -->
+                    <table role="presentation" cellpadding="0" cellspacing="0" style="border-collapse: collapse; margin-bottom: 24px;">
+                      <tr>
+                        <td style="width: 14px; height: 14px; background-color: #14462a;"></td>
+                        <td style="width: 2px;"></td>
+                        <td style="width: 10px; height: 14px; background-color: #14462a;"></td>
+                      </tr>
+                      <tr><td colspan="3" style="height: 2px;"></td></tr>
+                      <tr>
+                        <td style="width: 14px; height: 10px;"></td>
+                        <td style="width: 2px;"></td>
+                        <td style="width: 10px; height: 10px; background-color: #14462a;"></td>
+                      </tr>
+                    </table>
+                    <h1 style="margin: 0 0 8px; color: #2D2D2D; font-size: 22px; font-weight: 700; letter-spacing: -0.3px;">Verify your email</h1>
+                    <p style="margin: 0; color: #B0B3B8; font-size: 14px;">Enter this code to complete your sign-in</p>
+                  </td>
+                </tr>
+              </table>
             </td>
           </tr>
+          
+          <!-- OTP Code -->
+          <tr>
+            <td style="padding: 0 48px 40px;">
+              <table role="presentation" width="100%" style="background-color: #F8F9FA; border-radius: 12px; border: 1px solid #E4E6EB;">
+                <tr>
+                  <td align="center" style="padding: 32px 24px;">
+                    <p style="margin: 0 0 12px; color: #B0B3B8; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Your verification code</p>
+                    <p style="margin: 0; font-size: 40px; font-weight: 700; letter-spacing: 8px; color: #14462a; font-family: 'SF Mono', 'Monaco', 'Consolas', monospace;">${params.code}</p>
+                    <p style="margin: 16px 0 0; color: #B0B3B8; font-size: 13px;">Expires in ${expiry} minutes</p>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          
+          <!-- Message -->
+          <tr>
+            <td style="padding: 0 48px 40px;">
+              <p style="margin: 0 0 8px; color: #2D2D2D; font-size: 14px; line-height: 1.6;">
+                Hi${params.name ? ` <strong>${params.name}</strong>` : ''},
+              </p>
+              <p style="margin: 0; color: #6B7280; font-size: 14px; line-height: 1.6;">
+                Enter the code above to verify your email address. If you didn't request this code, you can safely ignore this email.
+              </p>
+            </td>
+          </tr>
+          
+          <!-- Footer -->
+          <tr>
+            <td style="padding: 28px 48px; border-top: 1px solid #E4E6EB; text-align: center;">
+              <p style="margin: 0 0 6px; color: #B0B3B8; font-size: 13px;">This code was requested for your Plaen account</p>
+              <p style="margin: 0; color: #B0B3B8; font-size: 12px;">Powered by <a href="https://plaen.tech" style="color: #14462a; text-decoration: none; font-weight: 500;">Plaen</a></p>
+            </td>
+          </tr>
+          
         </table>
-        
-        <p style="margin: 0; color: ${BRAND.textLight}; font-size: 14px; line-height: 1.6; text-align: center;">
-          If you didn't request this code, you can safely ignore this email.<br>
-          Someone may have entered your email by mistake.
-        </p>
       </td>
     </tr>
-  `
+  </table>
+</body>
+</html>
+`
 
   const text = `
-Verify Your Email
+VERIFICATION CODE
+
+Your code: ${params.code}
 
 Hi${params.name ? ` ${params.name}` : ''},
 
-Use the verification code below to complete your sign-in:
-
-${params.code}
-
+Enter this code to verify your email address.
 This code will expire in ${expiry} minutes.
 
 If you didn't request this code, you can safely ignore this email.
@@ -985,91 +1042,164 @@ Plaen
     to: params.email,
     toName: params.name,
     subject: `${params.code} is your Plaen verification code`,
-    html: emailLayout(content, `Your Plaen verification code is ${params.code}`),
+    html: otpContent,
     text,
     customId: `otp-${Date.now()}`,
   })
 }
 
 /**
- * Send welcome email to new users
+ * Send welcome email to new users - Clean minimal style
  */
 export async function sendWelcomeEmail(params: {
   email: string
   name: string
 }): Promise<{ success: boolean; error?: string }> {
-  const content = `
-    ${emailHeader('Welcome to Plaen! 🎉')}
+  const welcomeContent = `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Welcome to Plaen</title>
+  <span style="display: none; max-height: 0; overflow: hidden;">Welcome to Plaen! Start creating professional invoices today.</span>
+</head>
+<body style="margin: 0; padding: 0; background-color: #F8F9FA; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;">
+  <table role="presentation" width="100%" style="background-color: #F8F9FA;">
     <tr>
-      <td class="content" style="padding: 40px;">
-        <p style="margin: 0 0 20px; color: ${BRAND.text}; font-size: 16px; line-height: 1.6;">
-          Hi <strong>${params.name}</strong>,
-        </p>
-        <p style="margin: 0 0 24px; color: ${BRAND.text}; font-size: 16px; line-height: 1.6;">
-          Welcome to Plaen! You've just unlocked the simplest way to create professional invoices and get paid faster.
-        </p>
-        
-        <!-- Features Grid -->
-        <table role="presentation" width="100%" style="margin-bottom: 28px;">
+      <td align="center" style="padding: 40px 20px;">
+        <!-- Main Container -->
+        <table role="presentation" width="600" style="max-width: 600px; background-color: #FFFFFF; border-radius: 12px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.08);">
+          
+          <!-- Header with Logo -->
           <tr>
-            <td style="padding: 16px; background-color: ${BRAND.background}; border-radius: 12px;">
+            <td style="padding: 48px 48px 36px;">
               <table role="presentation" width="100%">
                 <tr>
-                  <td width="40" valign="top" style="padding-right: 12px;">
-                    <div style="width: 32px; height: 32px; background-color: ${BRAND.primary}15; border-radius: 8px; text-align: center; line-height: 32px; font-size: 16px;">📄</div>
-                  </td>
                   <td>
-                    <p style="margin: 0 0 4px; color: ${BRAND.text}; font-size: 14px; font-weight: 600;">Create Your First Invoice</p>
-                    <p style="margin: 0; color: ${BRAND.textLight}; font-size: 13px;">Beautiful invoices in under 2 minutes</p>
+                    <!-- Plaen Logo -->
+                    <table role="presentation" cellpadding="0" cellspacing="0" style="border-collapse: collapse; margin-bottom: 24px;">
+                      <tr>
+                        <td style="width: 14px; height: 14px; background-color: #14462a;"></td>
+                        <td style="width: 2px;"></td>
+                        <td style="width: 10px; height: 14px; background-color: #14462a;"></td>
+                      </tr>
+                      <tr><td colspan="3" style="height: 2px;"></td></tr>
+                      <tr>
+                        <td style="width: 14px; height: 10px;"></td>
+                        <td style="width: 2px;"></td>
+                        <td style="width: 10px; height: 10px; background-color: #14462a;"></td>
+                      </tr>
+                    </table>
+                    <h1 style="margin: 0 0 8px; color: #2D2D2D; font-size: 24px; font-weight: 700; letter-spacing: -0.3px;">Welcome to Plaen! 🎉</h1>
+                    <p style="margin: 0; color: #B0B3B8; font-size: 14px;">Your account is ready</p>
                   </td>
                 </tr>
               </table>
             </td>
           </tr>
+          
+          <!-- Greeting -->
           <tr>
-            <td style="padding: 16px; background-color: ${BRAND.background}; border-radius: 12px; padding-top: 8px;">
-              <table role="presentation" width="100%">
+            <td style="padding: 0 48px 24px;">
+              <p style="margin: 0 0 16px; color: #2D2D2D; font-size: 15px; line-height: 1.6;">
+                Hi <strong>${params.name}</strong>,
+              </p>
+              <p style="margin: 0; color: #6B7280; font-size: 15px; line-height: 1.6;">
+                Welcome to Plaen! You've just unlocked the simplest way to create professional invoices and get paid faster.
+              </p>
+            </td>
+          </tr>
+          
+          <!-- Features -->
+          <tr>
+            <td style="padding: 0 48px 32px;">
+              <table role="presentation" width="100%" style="background-color: #F8F9FA; border-radius: 12px;">
                 <tr>
-                  <td width="40" valign="top" style="padding-right: 12px;">
-                    <div style="width: 32px; height: 32px; background-color: ${BRAND.primary}15; border-radius: 8px; text-align: center; line-height: 32px; font-size: 16px;">💸</div>
-                  </td>
-                  <td>
-                    <p style="margin: 0 0 4px; color: ${BRAND.text}; font-size: 14px; font-weight: 600;">Accept Multiple Payment Methods</p>
-                    <p style="margin: 0; color: ${BRAND.textLight}; font-size: 13px;">Mobile Money, Bank Transfer, Card & Crypto</p>
+                  <td style="padding: 24px;">
+                    <!-- Feature 1 -->
+                    <table role="presentation" width="100%" style="margin-bottom: 16px;">
+                      <tr>
+                        <td style="width: 40px; vertical-align: top;">
+                          <div style="width: 32px; height: 32px; background-color: rgba(20, 70, 42, 0.1); border-radius: 8px; text-align: center; line-height: 32px; font-size: 16px;">📄</div>
+                        </td>
+                        <td style="padding-left: 12px; vertical-align: top;">
+                          <p style="margin: 0 0 4px; color: #2D2D2D; font-size: 14px; font-weight: 600;">Create Your First Invoice</p>
+                          <p style="margin: 0; color: #B0B3B8; font-size: 13px;">Beautiful invoices in under 2 minutes</p>
+                        </td>
+                      </tr>
+                    </table>
+                    <!-- Feature 2 -->
+                    <table role="presentation" width="100%" style="margin-bottom: 16px;">
+                      <tr>
+                        <td style="width: 40px; vertical-align: top;">
+                          <div style="width: 32px; height: 32px; background-color: rgba(20, 70, 42, 0.1); border-radius: 8px; text-align: center; line-height: 32px; font-size: 16px;">💸</div>
+                        </td>
+                        <td style="padding-left: 12px; vertical-align: top;">
+                          <p style="margin: 0 0 4px; color: #2D2D2D; font-size: 14px; font-weight: 600;">Accept Multiple Payments</p>
+                          <p style="margin: 0; color: #B0B3B8; font-size: 13px;">Mobile Money, Bank, Card & Crypto</p>
+                        </td>
+                      </tr>
+                    </table>
+                    <!-- Feature 3 -->
+                    <table role="presentation" width="100%">
+                      <tr>
+                        <td style="width: 40px; vertical-align: top;">
+                          <div style="width: 32px; height: 32px; background-color: rgba(20, 70, 42, 0.1); border-radius: 8px; text-align: center; line-height: 32px; font-size: 16px;">📊</div>
+                        </td>
+                        <td style="padding-left: 12px; vertical-align: top;">
+                          <p style="margin: 0 0 4px; color: #2D2D2D; font-size: 14px; font-weight: 600;">Track Everything</p>
+                          <p style="margin: 0; color: #B0B3B8; font-size: 13px;">Dashboard with real-time insights</p>
+                        </td>
+                      </tr>
+                    </table>
                   </td>
                 </tr>
               </table>
             </td>
           </tr>
+          
+          <!-- CTA Button -->
           <tr>
-            <td style="padding: 16px; background-color: ${BRAND.background}; border-radius: 12px; padding-top: 8px;">
+            <td style="padding: 0 48px 40px;">
               <table role="presentation" width="100%">
                 <tr>
-                  <td width="40" valign="top" style="padding-right: 12px;">
-                    <div style="width: 32px; height: 32px; background-color: ${BRAND.primary}15; border-radius: 8px; text-align: center; line-height: 32px; font-size: 16px;">📊</div>
+                  <td align="center">
+                    <a href="${APP_URL}/dashboard" target="_blank" rel="noopener noreferrer" style="display: inline-block; padding: 16px 40px; background-color: #14462a; color: #ffffff; text-decoration: none; border-radius: 999px; font-size: 15px; font-weight: 600; letter-spacing: -0.2px;">
+                      Go to Dashboard
+                    </a>
                   </td>
-                  <td>
-                    <p style="margin: 0 0 4px; color: ${BRAND.text}; font-size: 14px; font-weight: 600;">Track Everything</p>
-                    <p style="margin: 0; color: ${BRAND.textLight}; font-size: 13px;">Dashboard with real-time insights</p>
+                </tr>
+                <tr>
+                  <td align="center" style="padding-top: 16px;">
+                    <p style="margin: 0; color: #B0B3B8; font-size: 13px;">
+                      Need help? <a href="${APP_URL}/help/getting-started" style="color: #14462a; text-decoration: none; font-weight: 500;">Getting Started Guide</a>
+                    </p>
                   </td>
                 </tr>
               </table>
             </td>
           </tr>
+          
+          <!-- Footer -->
+          <tr>
+            <td style="padding: 28px 48px; border-top: 1px solid #E4E6EB; text-align: center;">
+              <p style="margin: 0 0 6px; color: #B0B3B8; font-size: 13px;">We're excited to have you on board!</p>
+              <p style="margin: 0; color: #B0B3B8; font-size: 12px;">Powered by <a href="https://plaen.tech" style="color: #14462a; text-decoration: none; font-weight: 500;">Plaen</a></p>
+            </td>
+          </tr>
+          
         </table>
-        
-        ${ctaButton('Go to Dashboard', `${APP_URL}/dashboard`)}
-        
-        <p style="margin: 28px 0 0; color: ${BRAND.textLight}; font-size: 14px; line-height: 1.6; text-align: center;">
-          Need help getting started?<br>
-          Check out our <a href="${APP_URL}/help/getting-started" style="color: ${BRAND.primary}; text-decoration: none; font-weight: 500;">Getting Started Guide</a>
-        </p>
       </td>
     </tr>
-  `
+  </table>
+</body>
+</html>
+`
 
   const text = `
-Welcome to Plaen! 🎉
+WELCOME TO PLAEN! 🎉
 
 Hi ${params.name},
 
@@ -1077,12 +1207,12 @@ Welcome to Plaen! You've just unlocked the simplest way to create professional i
 
 Here's what you can do:
 • Create Your First Invoice - Beautiful invoices in under 2 minutes
-• Accept Multiple Payment Methods - Mobile Money, Bank Transfer, Card & Crypto
+• Accept Multiple Payments - Mobile Money, Bank, Card & Crypto
 • Track Everything - Dashboard with real-time insights
 
 Get started: ${APP_URL}/dashboard
 
-Need help? Check out our Getting Started Guide: ${APP_URL}/help/getting-started
+Need help? ${APP_URL}/help/getting-started
 
 —
 The Plaen Team
@@ -1092,14 +1222,14 @@ The Plaen Team
     to: params.email,
     toName: params.name,
     subject: `Welcome to Plaen, ${params.name}! 🎉`,
-    html: emailLayout(content, 'Welcome to Plaen! Start creating professional invoices today.'),
+    html: welcomeContent,
     text,
     customId: `welcome-${Date.now()}`,
   })
 }
 
 /**
- * Send password reset email
+ * Send password reset email - Clean minimal style
  */
 export async function sendPasswordResetEmail(params: {
   email: string
@@ -1108,39 +1238,117 @@ export async function sendPasswordResetEmail(params: {
   expiryHours?: number
 }): Promise<{ success: boolean; error?: string }> {
   const expiry = params.expiryHours || 24
+  const safeResetLink = ensureAbsoluteUrl(params.resetLink)
   
-  const content = `
-    ${emailHeader('Reset Your Password')}
+  const resetContent = `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Reset Password</title>
+  <span style="display: none; max-height: 0; overflow: hidden;">Reset your Plaen password</span>
+</head>
+<body style="margin: 0; padding: 0; background-color: #F8F9FA; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;">
+  <table role="presentation" width="100%" style="background-color: #F8F9FA;">
     <tr>
-      <td class="content" style="padding: 40px;">
-        <p style="margin: 0 0 20px; color: ${BRAND.text}; font-size: 16px; line-height: 1.6;">
-          Hi${params.name ? ` <strong>${params.name}</strong>` : ''},
-        </p>
-        <p style="margin: 0 0 24px; color: ${BRAND.text}; font-size: 16px; line-height: 1.6;">
-          We received a request to reset your password. Click the button below to create a new password. This link will expire in ${expiry} hours.
-        </p>
-        
-        ${ctaButton('Reset Password', params.resetLink)}
-        
-        <p style="margin: 28px 0 16px; color: ${BRAND.textLight}; font-size: 14px; line-height: 1.6; text-align: center;">
-          If you didn't request a password reset, you can safely ignore this email. Your password will remain unchanged.
-        </p>
-        
-        <table role="presentation" width="100%" style="background-color: ${BRAND.background}; border-radius: 8px; margin-top: 24px;">
+      <td align="center" style="padding: 40px 20px;">
+        <!-- Main Container -->
+        <table role="presentation" width="600" style="max-width: 600px; background-color: #FFFFFF; border-radius: 12px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.08);">
+          
+          <!-- Header with Logo -->
           <tr>
-            <td style="padding: 16px;">
-              <p style="margin: 0; color: ${BRAND.textLight}; font-size: 12px; line-height: 1.5;">
-                <strong>Security tip:</strong> Never share your password or this link with anyone. Plaen will never ask for your password via email.
+            <td style="padding: 48px 48px 36px;">
+              <table role="presentation" width="100%">
+                <tr>
+                  <td>
+                    <!-- Plaen Logo -->
+                    <table role="presentation" cellpadding="0" cellspacing="0" style="border-collapse: collapse; margin-bottom: 24px;">
+                      <tr>
+                        <td style="width: 14px; height: 14px; background-color: #14462a;"></td>
+                        <td style="width: 2px;"></td>
+                        <td style="width: 10px; height: 14px; background-color: #14462a;"></td>
+                      </tr>
+                      <tr><td colspan="3" style="height: 2px;"></td></tr>
+                      <tr>
+                        <td style="width: 14px; height: 10px;"></td>
+                        <td style="width: 2px;"></td>
+                        <td style="width: 10px; height: 10px; background-color: #14462a;"></td>
+                      </tr>
+                    </table>
+                    <h1 style="margin: 0 0 8px; color: #2D2D2D; font-size: 22px; font-weight: 700; letter-spacing: -0.3px;">Reset your password</h1>
+                    <p style="margin: 0; color: #B0B3B8; font-size: 14px;">Create a new password for your account</p>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          
+          <!-- Message -->
+          <tr>
+            <td style="padding: 0 48px 32px;">
+              <p style="margin: 0 0 16px; color: #2D2D2D; font-size: 15px; line-height: 1.6;">
+                Hi${params.name ? ` <strong>${params.name}</strong>` : ''},
+              </p>
+              <p style="margin: 0; color: #6B7280; font-size: 15px; line-height: 1.6;">
+                We received a request to reset your password. Click the button below to create a new password. This link will expire in ${expiry} hours.
               </p>
             </td>
           </tr>
+          
+          <!-- CTA Button -->
+          <tr>
+            <td style="padding: 0 48px 32px;">
+              <table role="presentation" width="100%">
+                <tr>
+                  <td align="center">
+                    <a href="${escapeHtmlAttr(safeResetLink)}" target="_blank" rel="noopener noreferrer" style="display: inline-block; padding: 16px 40px; background-color: #14462a; color: #ffffff; text-decoration: none; border-radius: 999px; font-size: 15px; font-weight: 600; letter-spacing: -0.2px;">
+                      Reset Password
+                    </a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          
+          <!-- Security Notice -->
+          <tr>
+            <td style="padding: 0 48px 40px;">
+              <table role="presentation" width="100%" style="background-color: #FEF3C7; border-radius: 8px; border: 1px solid #FDE68A;">
+                <tr>
+                  <td style="padding: 16px;">
+                    <p style="margin: 0 0 4px; color: #92400E; font-size: 13px; font-weight: 600;">⚠️ Security tip</p>
+                    <p style="margin: 0; color: #92400E; font-size: 13px; line-height: 1.5;">
+                      Never share this link with anyone. Plaen will never ask for your password via email.
+                    </p>
+                  </td>
+                </tr>
+              </table>
+              <p style="margin: 16px 0 0; color: #B0B3B8; font-size: 13px; text-align: center;">
+                If you didn't request this, you can safely ignore this email.
+              </p>
+            </td>
+          </tr>
+          
+          <!-- Footer -->
+          <tr>
+            <td style="padding: 28px 48px; border-top: 1px solid #E4E6EB; text-align: center;">
+              <p style="margin: 0 0 6px; color: #B0B3B8; font-size: 13px;">Your password will remain unchanged until you reset it.</p>
+              <p style="margin: 0; color: #B0B3B8; font-size: 12px;">Powered by <a href="https://plaen.tech" style="color: #14462a; text-decoration: none; font-weight: 500;">Plaen</a></p>
+            </td>
+          </tr>
+          
         </table>
       </td>
     </tr>
-  `
+  </table>
+</body>
+</html>
+`
 
   const text = `
-Reset Your Password
+RESET YOUR PASSWORD
 
 Hi${params.name ? ` ${params.name}` : ''},
 
@@ -1152,7 +1360,7 @@ This link will expire in ${expiry} hours.
 
 If you didn't request a password reset, you can safely ignore this email.
 
-Security tip: Never share your password or this link with anyone.
+Security tip: Never share this link with anyone.
 
 —
 Plaen
@@ -1162,42 +1370,119 @@ Plaen
     to: params.email,
     toName: params.name,
     subject: 'Reset your Plaen password',
-    html: emailLayout(content, 'Reset your Plaen password'),
+    html: resetContent,
     text,
     customId: `password-reset-${Date.now()}`,
   })
 }
 
 /**
- * Send email verification (different from OTP - uses a link)
+ * Send email verification (link-based) - Clean minimal style
  */
 export async function sendEmailVerificationEmail(params: {
   email: string
   name?: string
   verificationLink: string
 }): Promise<{ success: boolean; error?: string }> {
-  const content = `
-    ${emailHeader('Verify Your Email')}
+  const safeLink = ensureAbsoluteUrl(params.verificationLink)
+  
+  const verifyContent = `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Verify Email</title>
+  <span style="display: none; max-height: 0; overflow: hidden;">Verify your email to get started with Plaen</span>
+</head>
+<body style="margin: 0; padding: 0; background-color: #F8F9FA; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;">
+  <table role="presentation" width="100%" style="background-color: #F8F9FA;">
     <tr>
-      <td class="content" style="padding: 40px;">
-        <p style="margin: 0 0 20px; color: ${BRAND.text}; font-size: 16px; line-height: 1.6;">
-          Hi${params.name ? ` <strong>${params.name}</strong>` : ''},
-        </p>
-        <p style="margin: 0 0 24px; color: ${BRAND.text}; font-size: 16px; line-height: 1.6;">
-          Thanks for signing up for Plaen! Please verify your email address by clicking the button below.
-        </p>
-        
-        ${ctaButton('Verify Email', params.verificationLink)}
-        
-        <p style="margin: 28px 0 0; color: ${BRAND.textLight}; font-size: 14px; line-height: 1.6; text-align: center;">
-          If you didn't create a Plaen account, you can safely ignore this email.
-        </p>
+      <td align="center" style="padding: 40px 20px;">
+        <!-- Main Container -->
+        <table role="presentation" width="600" style="max-width: 600px; background-color: #FFFFFF; border-radius: 12px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.08);">
+          
+          <!-- Header with Logo -->
+          <tr>
+            <td style="padding: 48px 48px 36px;">
+              <table role="presentation" width="100%">
+                <tr>
+                  <td>
+                    <!-- Plaen Logo -->
+                    <table role="presentation" cellpadding="0" cellspacing="0" style="border-collapse: collapse; margin-bottom: 24px;">
+                      <tr>
+                        <td style="width: 14px; height: 14px; background-color: #14462a;"></td>
+                        <td style="width: 2px;"></td>
+                        <td style="width: 10px; height: 14px; background-color: #14462a;"></td>
+                      </tr>
+                      <tr><td colspan="3" style="height: 2px;"></td></tr>
+                      <tr>
+                        <td style="width: 14px; height: 10px;"></td>
+                        <td style="width: 2px;"></td>
+                        <td style="width: 10px; height: 10px; background-color: #14462a;"></td>
+                      </tr>
+                    </table>
+                    <h1 style="margin: 0 0 8px; color: #2D2D2D; font-size: 22px; font-weight: 700; letter-spacing: -0.3px;">Verify your email</h1>
+                    <p style="margin: 0; color: #B0B3B8; font-size: 14px;">One more step to get started</p>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          
+          <!-- Message -->
+          <tr>
+            <td style="padding: 0 48px 32px;">
+              <p style="margin: 0 0 16px; color: #2D2D2D; font-size: 15px; line-height: 1.6;">
+                Hi${params.name ? ` <strong>${params.name}</strong>` : ''},
+              </p>
+              <p style="margin: 0; color: #6B7280; font-size: 15px; line-height: 1.6;">
+                Thanks for signing up for Plaen! Please verify your email address by clicking the button below.
+              </p>
+            </td>
+          </tr>
+          
+          <!-- CTA Button -->
+          <tr>
+            <td style="padding: 0 48px 40px;">
+              <table role="presentation" width="100%">
+                <tr>
+                  <td align="center">
+                    <a href="${escapeHtmlAttr(safeLink)}" target="_blank" rel="noopener noreferrer" style="display: inline-block; padding: 16px 40px; background-color: #14462a; color: #ffffff; text-decoration: none; border-radius: 999px; font-size: 15px; font-weight: 600; letter-spacing: -0.2px;">
+                      Verify Email
+                    </a>
+                  </td>
+                </tr>
+                <tr>
+                  <td align="center" style="padding-top: 16px;">
+                    <p style="margin: 0; color: #B0B3B8; font-size: 13px;">
+                      If you didn't create a Plaen account, you can safely ignore this email.
+                    </p>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          
+          <!-- Footer -->
+          <tr>
+            <td style="padding: 28px 48px; border-top: 1px solid #E4E6EB; text-align: center;">
+              <p style="margin: 0 0 6px; color: #B0B3B8; font-size: 13px;">Almost there! Just click the button above.</p>
+              <p style="margin: 0; color: #B0B3B8; font-size: 12px;">Powered by <a href="https://plaen.tech" style="color: #14462a; text-decoration: none; font-weight: 500;">Plaen</a></p>
+            </td>
+          </tr>
+          
+        </table>
       </td>
     </tr>
-  `
+  </table>
+</body>
+</html>
+`
 
   const text = `
-Verify Your Email
+VERIFY YOUR EMAIL
 
 Hi${params.name ? ` ${params.name}` : ''},
 
@@ -1215,7 +1500,7 @@ Plaen
     to: params.email,
     toName: params.name,
     subject: 'Verify your Plaen email address',
-    html: emailLayout(content, 'Verify your email to get started with Plaen'),
+    html: verifyContent,
     text,
     customId: `verify-${Date.now()}`,
   })
