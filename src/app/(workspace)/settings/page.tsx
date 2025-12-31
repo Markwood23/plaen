@@ -338,8 +338,8 @@ export default function SettingsPage() {
       </div>
 
       <Tabs defaultValue="profile" className="w-full">
-        {/* Tab Navigation */}
-        <TabsList className="mb-8 w-fit">
+        {/* Tab Navigation - Scrollable */}
+        <TabsList className="mb-8 w-full max-w-full overflow-x-auto flex-nowrap justify-start">
           <TabsTrigger value="profile">
             <User size={16} color="currentColor" />
             Profile
@@ -598,7 +598,7 @@ export default function SettingsPage() {
                   <Lock size={12} color="#EF4444" />
                   <span className="text-xs text-gray-400">(90-day cooldown)</span>
                 </div>
-                <Input id="businessName" placeholder="Your company name" defaultValue="Plaen Technologies" />
+                <Input id="businessName" placeholder="Your company name" defaultValue={apiSettings.business_name || ''} />
                 <CooldownIndicator lastChanged={changeCooldowns.businessName} cooldownDays={90} />
               </div>
               <div className="space-y-2">
@@ -626,7 +626,7 @@ export default function SettingsPage() {
                   <Lock size={12} color="#EF4444" />
                 </div>
                 <div className="flex gap-2">
-                  <Input id="taxId" placeholder="Tax identification number" className="flex-1" />
+                  <Input id="taxId" placeholder="Tax identification number" className="flex-1" defaultValue={apiSettings.tax_id || ''} />
                   <Button 
                     variant="outline" 
                     className="rounded-xl whitespace-nowrap"
@@ -648,19 +648,19 @@ export default function SettingsPage() {
             <div className="grid grid-cols-2 gap-6">
               <div className="col-span-2 space-y-2">
                 <Label htmlFor="street">Street Address</Label>
-                <Input id="street" placeholder="123 Main Street" />
+                <Input id="street" placeholder="123 Main Street" defaultValue={apiSettings.address?.line1 || ''} />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="city">City</Label>
-                <Input id="city" placeholder="Accra" />
+                <Input id="city" placeholder="Accra" defaultValue={apiSettings.address?.city || ''} />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="region">State/Region</Label>
-                <Input id="region" placeholder="Greater Accra" />
+                <Input id="region" placeholder="Greater Accra" defaultValue={apiSettings.address?.state || ''} />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="postal">Postal Code</Label>
-                <Input id="postal" placeholder="00233" />
+                <Input id="postal" placeholder="00233" defaultValue={apiSettings.address?.postal_code || ''} />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="country">Country</Label>
