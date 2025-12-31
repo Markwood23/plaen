@@ -74,6 +74,14 @@ export interface Settings {
   email: string
   full_name: string
   phone: string
+  avatar_url: string
+  
+  // Account info
+  account_type: string
+  invoice_prefix: string
+  email_verified: boolean
+  setup_completed: boolean
+  tax_id: string
   
   // Business info
   business_name: string
@@ -100,6 +108,12 @@ const defaultSettings: Settings = {
   email: '',
   full_name: '',
   phone: '',
+  avatar_url: '',
+  account_type: 'personal',
+  invoice_prefix: 'GH',
+  email_verified: false,
+  setup_completed: false,
+  tax_id: '',
   business_name: '',
   address: {},
   logo_url: '',

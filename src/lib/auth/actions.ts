@@ -20,6 +20,10 @@ export async function signUp(formData: FormData) {
   const password = formData.get('password') as string
   const fullName = formData.get('full_name') as string
   const businessName = formData.get('business_name') as string
+  const accountType = formData.get('account_type') as string || 'personal'
+  const phone = formData.get('phone') as string || null
+  const country = formData.get('country') as string || null
+  const invoicePrefix = formData.get('invoice_prefix') as string || 'GH'
 
   const { data, error } = await supabase.auth.signUp({
     email,
@@ -51,9 +55,22 @@ export async function signUp(formData: FormData) {
               email: data.user.email!,
               full_name: fullName || null,
               business_name: businessName || null,
+              account_type: accountType,
+              phone: phone,
+              invoice_prefix: invoicePrefix.toUpperCase().slice(0, 2), // Ensure 2 char prefix
+              setup_completed: false,
+              email_verified: false,
             },
             { onConflict: 'id' }
           )
+        
+        // Set address if country is provided
+        if (country) {
+          await service
+            .from('users')
+            .update({ address: { country } })
+            .eq('id', data.user.id)
+        }
       }
     } catch (e) {
       console.error('Error ensuring user profile (service role):', e)
@@ -64,20 +81,25 @@ export async function signUp(formData: FormData) {
   if (data?.user && !data.session) {
     return { 
       success: true, 
-      message: 'Please check your email to confirm your account.' 
+      message: 'Please check your email to confirm your account.',
+      userId: data.user.id
     }
   }
 
-  // Create user profile
+  // Create user profile (if not already done via service client)
   if (data?.user) {
     const { error: profileError } = await supabase
       .from('users')
-      .insert({
+      .upsert({
         id: data.user.id,
         email: data.user.email!,
         full_name: fullName,
         business_name: businessName,
-      })
+        account_type: accountType,
+        phone: phone,
+        invoice_prefix: invoicePrefix.toUpperCase().slice(0, 2),
+        setup_completed: false,
+      }, { onConflict: 'id' })
 
     if (profileError) {
       console.error('Error creating user profile:', profileError)

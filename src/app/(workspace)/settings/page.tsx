@@ -503,6 +503,72 @@ export default function SettingsPage() {
               </Button>
             </div>
           </div>
+
+          {/* Account Information Section */}
+          <div className="border-t border-gray-100 pt-8">
+            <div className="flex items-center justify-between mb-1">
+              <h2 className="text-lg font-semibold text-gray-900">Account Information</h2>
+              <SecurityBadge level="low" />
+            </div>
+            <p className="text-sm text-gray-500 mb-6">Your Plaen account details and invoice settings</p>
+
+            <div className="grid grid-cols-2 gap-6">
+              {/* Account Type */}
+              <div className="space-y-2">
+                <Label>Account Type</Label>
+                <div className="flex items-center gap-3 h-10 px-3 rounded-lg border border-gray-200 bg-gray-50">
+                  <Building size={16} className="text-gray-400" />
+                  <span className="text-gray-700 capitalize">{apiSettings?.account_type || 'Personal'}</span>
+                </div>
+                <p className="text-xs text-gray-500">Set during signup. Contact support to change.</p>
+              </div>
+
+              {/* Invoice Prefix */}
+              <div className="space-y-2">
+                <Label>Invoice Prefix</Label>
+                <div className="flex items-center gap-3 h-10 px-3 rounded-lg border border-gray-200 bg-gray-50">
+                  <Paperclip size={16} className="text-gray-400" />
+                  <span className="text-gray-900 font-mono font-semibold">{apiSettings?.invoice_prefix || 'GH'}</span>
+                  <span className="text-gray-400 font-mono">-0001</span>
+                </div>
+                <p className="text-xs text-gray-500">Your invoice numbers will be formatted as {apiSettings?.invoice_prefix || 'GH'}-XXXX</p>
+              </div>
+
+              {/* Email Verification Status */}
+              <div className="space-y-2">
+                <Label>Email Verification</Label>
+                <div className="flex items-center gap-3 h-10 px-3 rounded-lg border border-gray-200 bg-gray-50">
+                  {apiSettings?.email_verified ? (
+                    <>
+                      <TickCircle size={16} className="text-green-500" variant="Bold" />
+                      <span className="text-green-700 font-medium">Verified</span>
+                    </>
+                  ) : (
+                    <>
+                      <CloseCircle size={16} className="text-amber-500" />
+                      <span className="text-amber-700 font-medium">Not verified</span>
+                      <Button 
+                        variant="ghost" 
+                        size="sm" 
+                        className="ml-auto h-7 text-xs text-[#14462a] hover:text-[#14462a]/80"
+                      >
+                        Verify now
+                      </Button>
+                    </>
+                  )}
+                </div>
+              </div>
+
+              {/* Tax ID */}
+              <div className="space-y-2">
+                <Label>Tax ID</Label>
+                <div className="flex items-center gap-3 h-10 px-3 rounded-lg border border-gray-200 bg-gray-50">
+                  <Verify size={16} className="text-gray-400" />
+                  <span className="text-gray-700">{apiSettings?.tax_id || 'Not provided'}</span>
+                </div>
+              </div>
+            </div>
+          </div>
         </TabsContent>
 
         {/* Business Tab */}

@@ -356,7 +356,9 @@ export type Database = {
       }
       users: {
         Row: {
+          account_type: string | null
           address: Json | null
+          avatar_url: string | null
           bank_details: Json | null
           business_name: string | null
           created_at: string | null
@@ -364,16 +366,25 @@ export type Database = {
           default_currency: Database["public"]["Enums"]["currency_code"] | null
           default_payment_terms: number | null
           email: string
+          email_verified: boolean | null
           full_name: string | null
           id: string
+          invoice_counter: number | null
+          invoice_prefix: string | null
           logo_url: string | null
           mobile_money_details: Json | null
+          otp_code: string | null
+          otp_expires_at: string | null
           phone: string | null
           settings: Json | null
+          setup_completed: boolean | null
+          tax_id: string | null
           updated_at: string | null
         }
         Insert: {
+          account_type?: string | null
           address?: Json | null
+          avatar_url?: string | null
           bank_details?: Json | null
           business_name?: string | null
           created_at?: string | null
@@ -381,16 +392,25 @@ export type Database = {
           default_currency?: Database["public"]["Enums"]["currency_code"] | null
           default_payment_terms?: number | null
           email: string
+          email_verified?: boolean | null
           full_name?: string | null
           id: string
+          invoice_counter?: number | null
+          invoice_prefix?: string | null
           logo_url?: string | null
           mobile_money_details?: Json | null
+          otp_code?: string | null
+          otp_expires_at?: string | null
           phone?: string | null
           settings?: Json | null
+          setup_completed?: boolean | null
+          tax_id?: string | null
           updated_at?: string | null
         }
         Update: {
+          account_type?: string | null
           address?: Json | null
+          avatar_url?: string | null
           bank_details?: Json | null
           business_name?: string | null
           created_at?: string | null
@@ -398,12 +418,19 @@ export type Database = {
           default_currency?: Database["public"]["Enums"]["currency_code"] | null
           default_payment_terms?: number | null
           email?: string
+          email_verified?: boolean | null
           full_name?: string | null
           id?: string
+          invoice_counter?: number | null
+          invoice_prefix?: string | null
           logo_url?: string | null
           mobile_money_details?: Json | null
+          otp_code?: string | null
+          otp_expires_at?: string | null
           phone?: string | null
           settings?: Json | null
+          setup_completed?: boolean | null
+          tax_id?: string | null
           updated_at?: string | null
         }
         Relationships: []

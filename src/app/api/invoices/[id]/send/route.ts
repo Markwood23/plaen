@@ -127,11 +127,18 @@ export async function POST(
         unit_price: (item.unit_price || 0) / 100,
       })) || []
       
+      // Check if this is a partial payment (some amount already paid)
+      const amountPaid = invoice.amount_paid ?? 0
+      const balanceDue = invoice.balance_due ?? invoice.total ?? 0
+      const totalAmount = invoice.total ?? 0
+      const isPartialPayment = amountPaid > 0 && balanceDue < totalAmount
+      
       const emailResult = await sendInvoiceEmail({
         customerEmail: recipientEmail,
         customerName: customer?.name || 'Customer',
         invoiceNumber: invoice.invoice_number,
-        amount: formatAmount(invoice.total || invoice.balance_due || 0),
+        amount: formatAmount(balanceDue), // Show balance due, not total
+        total: isPartialPayment ? formatAmount(totalAmount) : undefined, // Original total for reference
         currency: invoice.currency || 'GHS',
         dueDate: invoice.due_date ? format(new Date(invoice.due_date), 'MMM d, yyyy') : 'On Receipt',
         paymentLink: publicUrl,
@@ -140,6 +147,7 @@ export async function POST(
         businessEmail: user.email || undefined,
         issueDate: invoice.issue_date ? format(new Date(invoice.issue_date), 'MMM d, yyyy') : undefined,
         items: emailItems.length > 0 ? emailItems : undefined,
+        isPartialPayment,
       })
       
       emailSent = emailResult.success

@@ -27,12 +27,13 @@ import {
   CloseCircle,
   ArrowDown2,
   Global,
-  Briefcase
+  Briefcase,
+  Warning2
 } from "iconsax-react";
 
 // Types
 type AccountType = "personal" | "business" | null;
-type Step = 1 | 2 | 3 | 4;
+type Step = 1 | 2 | 3 | 4 | 5;
 
 interface FormData {
   accountType: AccountType;
@@ -44,6 +45,7 @@ interface FormData {
   businessName: string;
   businessType: string;
   country: string;
+  invoicePrefix: string;
   password: string;
   confirmPassword: string;
   acceptTerms: boolean;
@@ -249,7 +251,8 @@ function StepIndicator({ currentStep, totalSteps }: { currentStep: number; total
     { num: 1, label: "Account", icon: User },
     { num: 2, label: "Profile", icon: User },
     { num: 3, label: "Workspace", icon: Building },
-    { num: 4, label: "Security", icon: Lock1 },
+    { num: 4, label: "Invoice", icon: Briefcase },
+    { num: 5, label: "Security", icon: Lock1 },
   ];
 
   return (
@@ -830,6 +833,121 @@ function SecurityStep({
   );
 }
 
+// Invoice prefix step component
+function InvoicePrefixStep({ 
+  formData, 
+  onChange,
+  errors 
+}: { 
+  formData: FormData; 
+  onChange: (field: keyof FormData, value: string) => void;
+  errors: Record<string, string>;
+}) {
+  const [previewNumber, setPreviewNumber] = useState("0001");
+  
+  // Generate preview number effect
+  useEffect(() => {
+    const num = Math.floor(Math.random() * 9000) + 1000;
+    setPreviewNumber(num.toString().padStart(4, '0'));
+  }, []);
+
+  const handlePrefixChange = (value: string) => {
+    // Only allow letters, max 2 characters
+    const cleaned = value.toUpperCase().replace(/[^A-Z]/g, '').slice(0, 2);
+    onChange("invoicePrefix", cleaned);
+  };
+
+  const suggestedPrefixes = [
+    { code: "GH", label: "Ghana" },
+    { code: "NG", label: "Nigeria" },
+    { code: "KE", label: "Kenya" },
+    { code: "ZA", label: "South Africa" },
+    { code: "US", label: "United States" },
+    { code: "UK", label: "United Kingdom" },
+    { code: formData.firstName?.slice(0, 2).toUpperCase() || "ME", label: "Your Initials" },
+  ];
+
+  return (
+    <div className="space-y-6">
+      <div className="text-center space-y-2">
+        <h2 className="text-2xl font-semibold text-gray-900">Customize your invoice numbers</h2>
+        <p className="text-gray-600">Choose a 2-letter prefix for your invoice IDs. This cannot be changed later.</p>
+      </div>
+
+      <div className="space-y-6 mt-8">
+        {/* Preview Card */}
+        <div className="rounded-2xl border-2 border-[#14462a]/20 bg-[#14462a]/5 p-6">
+          <p className="text-xs uppercase tracking-[0.3em] text-gray-500 mb-3">Your invoice numbers will look like:</p>
+          <div className="flex items-center justify-center">
+            <div className="bg-white rounded-xl px-8 py-4 shadow-sm border border-gray-100">
+              <span className="text-3xl font-bold text-[#14462a] tracking-wide">
+                {formData.invoicePrefix || "GH"}-{previewNumber}
+              </span>
+            </div>
+          </div>
+          <p className="text-center text-xs text-gray-500 mt-3">
+            Format: PREFIX-XXXX (e.g., {formData.invoicePrefix || "GH"}-0001, {formData.invoicePrefix || "GH"}-0002)
+          </p>
+        </div>
+
+        {/* Prefix Input */}
+        <div className="space-y-2">
+          <Label htmlFor="invoicePrefix" className="text-sm font-medium text-gray-700">Invoice Prefix</Label>
+          <div className="relative">
+            <Input 
+              id="invoicePrefix" 
+              value={formData.invoicePrefix}
+              onChange={(e) => handlePrefixChange(e.target.value)}
+              placeholder="GH"
+              maxLength={2}
+              className={`text-center text-xl font-bold tracking-wider uppercase ${errors.invoicePrefix ? "!border-red-400 !bg-red-50/50" : ""}`}
+            />
+          </div>
+          {errors.invoicePrefix && (
+            <p className="text-xs text-red-500 flex items-center gap-1 mt-1">
+              <CloseCircle size={12} /> {errors.invoicePrefix}
+            </p>
+          )}
+        </div>
+
+        {/* Suggested Prefixes */}
+        <div className="space-y-3">
+          <p className="text-sm font-medium text-gray-700">Quick suggestions:</p>
+          <div className="flex flex-wrap gap-2">
+            {suggestedPrefixes.map(({ code, label }) => (
+              <button
+                key={code}
+                type="button"
+                onClick={() => onChange("invoicePrefix", code)}
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                  formData.invoicePrefix === code
+                    ? "bg-[#14462a] text-white"
+                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                }`}
+              >
+                {code} <span className="text-xs opacity-70">({label})</span>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Warning */}
+        <div className="rounded-xl border border-amber-200 bg-amber-50 p-4">
+          <div className="flex gap-3">
+            <Warning2 size={20} color="#B45309" className="flex-shrink-0 mt-0.5" />
+            <div>
+              <p className="text-sm font-medium text-amber-800">This choice is permanent</p>
+              <p className="text-xs text-amber-700 mt-1">
+                Your invoice prefix cannot be changed after account creation. This ensures your invoice numbers remain consistent for record-keeping.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // Success component
 function SuccessStep({ email }: { email: string }) {
   return (
@@ -889,6 +1007,7 @@ export default function SignupPage() {
     businessName: "",
     businessType: "",
     country: "",
+    invoicePrefix: "GH",
     password: "",
     confirmPassword: "",
     acceptTerms: false,
@@ -926,6 +1045,12 @@ export default function SignupPage() {
     }
 
     if (currentStep === 4) {
+      if (!formData.invoicePrefix || formData.invoicePrefix.length !== 2) {
+        newErrors.invoicePrefix = "Invoice prefix must be exactly 2 letters";
+      }
+    }
+
+    if (currentStep === 5) {
       if (!formData.password) newErrors.password = "Password is required";
       else if (formData.password.length < 8) newErrors.password = "Password must be at least 8 characters";
       if (formData.password !== formData.confirmPassword) newErrors.confirmPassword = "Passwords do not match";
@@ -938,7 +1063,7 @@ export default function SignupPage() {
 
   const handleNext = () => {
     if (validateStep(step)) {
-      if (step < 4) {
+      if (step < 5) {
         setStep((step + 1) as Step);
       } else {
         handleSubmit();
@@ -963,6 +1088,10 @@ export default function SignupPage() {
       authFormData.append('password', formData.password);
       authFormData.append('full_name', `${formData.firstName} ${formData.lastName}`);
       authFormData.append('business_name', formData.businessName || formData.workspaceName);
+      authFormData.append('account_type', formData.accountType || 'personal');
+      authFormData.append('phone', formData.phone);
+      authFormData.append('country', formData.country);
+      authFormData.append('invoice_prefix', formData.invoicePrefix);
       
       const result = await signUp(authFormData);
       
@@ -972,9 +1101,15 @@ export default function SignupPage() {
         return;
       }
       
-      // If email confirmation required
-      if (result?.success && result?.message) {
-        setIsComplete(true);
+      // If email confirmation required, redirect to verify-email page
+      if (result?.success && result?.userId) {
+        const params = new URLSearchParams({
+          email: formData.email,
+          userId: result.userId,
+          name: formData.firstName,
+        });
+        router.push(`/verify-email?${params.toString()}`);
+        return;
       }
       // Otherwise redirect happens in server action
     } catch (err) {
@@ -1034,7 +1169,7 @@ export default function SignupPage() {
 
           {/* Progress indicator */}
           <div className="mb-10">
-            <StepIndicator currentStep={step} totalSteps={4} />
+            <StepIndicator currentStep={step} totalSteps={5} />
           </div>
 
           {/* Form container */}
@@ -1061,6 +1196,13 @@ export default function SignupPage() {
               />
             )}
             {step === 4 && (
+              <InvoicePrefixStep 
+                formData={formData} 
+                onChange={updateField}
+                errors={errors}
+              />
+            )}
+            {step === 5 && (
               <SecurityStep 
                 formData={formData} 
                 onChange={updateField}
@@ -1098,7 +1240,7 @@ export default function SignupPage() {
                     </svg>
                     Creating...
                   </span>
-                ) : step === 4 ? (
+                ) : step === 5 ? (
                   <span className="flex items-center gap-2">
                     Create account
                     <SecuritySafe size={18} variant="Bold" />

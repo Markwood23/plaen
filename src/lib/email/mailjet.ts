@@ -326,7 +326,8 @@ export async function sendInvoiceEmail(params: {
   customerEmail: string
   customerName: string
   invoiceNumber: string
-  amount: string
+  amount: string // This should be the balance due, not total
+  total?: string // Original total amount
   currency: string
   dueDate: string
   paymentLink: string
@@ -335,6 +336,7 @@ export async function sendInvoiceEmail(params: {
   businessEmail?: string
   issueDate?: string
   items?: Array<{ description: string; quantity: number; unit_price: number }>
+  isPartialPayment?: boolean // If true, show balance due instead of total
 }): Promise<{ success: boolean; error?: string }> {
   const paymentLink = ensureAbsoluteUrl(params.paymentLink)
   const currencySymbol = params.currency === 'GHS' ? '₵' : params.currency === 'USD' ? '$' : params.currency + ' '
@@ -342,22 +344,22 @@ export async function sendInvoiceEmail(params: {
   // Calculate subtotal from items
   const subtotal = params.items?.reduce((sum, item) => sum + (item.quantity * item.unit_price), 0) || parseFloat(params.amount.replace(/,/g, ''))
   
-  // Build line items HTML - matching preview UI style
+  // Build line items HTML - matching preview UI style with better spacing
   const itemsHtml = params.items && params.items.length > 0 ? `
         <!-- Line Items Header -->
-        <table role="presentation" width="100%" style="margin-top: 32px; border-bottom: 1px solid #E4E6EB;">
+        <table role="presentation" width="100%" style="margin-top: 40px; border-bottom: 1px solid #E4E6EB;">
           <tr>
-            <td style="width: 50%; padding: 12px 0;">
-              <p style="margin: 0; color: #B0B3B8; font-size: 13px; font-weight: 500;">Description</p>
+            <td style="width: 46%; padding: 14px 0;">
+              <p style="margin: 0; color: #B0B3B8; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Description</p>
             </td>
-            <td style="width: 15%; text-align: center; padding: 12px 0;">
-              <p style="margin: 0; color: #B0B3B8; font-size: 13px; font-weight: 500;">Qty</p>
+            <td style="width: 14%; text-align: center; padding: 14px 8px;">
+              <p style="margin: 0; color: #B0B3B8; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Qty</p>
             </td>
-            <td style="width: 17%; text-align: right; padding: 12px 0;">
-              <p style="margin: 0; color: #B0B3B8; font-size: 13px; font-weight: 500;">Rate</p>
+            <td style="width: 20%; text-align: right; padding: 14px 8px;">
+              <p style="margin: 0; color: #B0B3B8; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Rate</p>
             </td>
-            <td style="width: 18%; text-align: right; padding: 12px 0;">
-              <p style="margin: 0; color: #B0B3B8; font-size: 13px; font-weight: 500;">Amount</p>
+            <td style="width: 20%; text-align: right; padding: 14px 0;">
+              <p style="margin: 0; color: #B0B3B8; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Amount</p>
             </td>
           </tr>
         </table>
@@ -366,22 +368,71 @@ export async function sendInvoiceEmail(params: {
         ${params.items.map(item => `
         <table role="presentation" width="100%" style="border-bottom: 1px solid #F3F4F6;">
           <tr>
-            <td style="width: 50%; padding: 16px 0;">
+            <td style="width: 46%; padding: 18px 0;">
               <p style="margin: 0; color: #2D2D2D; font-size: 14px; font-weight: 500;">${item.description}</p>
             </td>
-            <td style="width: 15%; text-align: center; padding: 16px 0;">
+            <td style="width: 14%; text-align: center; padding: 18px 8px;">
               <p style="margin: 0; color: #2D2D2D; font-size: 14px; font-weight: 500;">${item.quantity}</p>
             </td>
-            <td style="width: 17%; text-align: right; padding: 16px 0;">
+            <td style="width: 20%; text-align: right; padding: 18px 8px;">
               <p style="margin: 0; color: #2D2D2D; font-size: 14px; font-weight: 500;">${currencySymbol}${item.unit_price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
             </td>
-            <td style="width: 18%; text-align: right; padding: 16px 0;">
+            <td style="width: 20%; text-align: right; padding: 18px 0;">
               <p style="margin: 0; color: #2D2D2D; font-size: 14px; font-weight: 500;">${currencySymbol}${(item.quantity * item.unit_price).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
             </td>
           </tr>
         </table>
         `).join('')}
   ` : ''
+  
+  // Show balance due section if partial payment
+  const balanceDueHtml = params.isPartialPayment && params.total ? `
+                    <!-- Original Total -->
+                    <table role="presentation" width="100%" style="margin-bottom: 8px;">
+                      <tr>
+                        <td style="text-align: right; padding: 8px 0;">
+                          <span style="color: #B0B3B8; font-size: 14px;">Original Total</span>
+                        </td>
+                        <td style="text-align: right; padding: 8px 0; width: 130px;">
+                          <span style="color: #B0B3B8; font-size: 14px; font-weight: 500;">${currencySymbol}${params.total}</span>
+                        </td>
+                      </tr>
+                    </table>
+                    <!-- Balance Due -->
+                    <table role="presentation" width="100%" style="border-top: 1px solid #E4E6EB; padding-top: 12px;">
+                      <tr>
+                        <td style="text-align: right; padding: 12px 0 0;">
+                          <span style="color: #14462a; font-size: 16px; font-weight: 600;">Balance Due</span>
+                        </td>
+                        <td style="text-align: right; padding: 12px 0 0; width: 130px;">
+                          <span style="color: #14462a; font-size: 24px; font-weight: 700;">${currencySymbol}${params.amount}</span>
+                        </td>
+                      </tr>
+                    </table>
+  ` : `
+                    <!-- Subtotal -->
+                    <table role="presentation" width="100%" style="margin-bottom: 8px;">
+                      <tr>
+                        <td style="text-align: right; padding: 8px 0;">
+                          <span style="color: #B0B3B8; font-size: 14px;">Subtotal</span>
+                        </td>
+                        <td style="text-align: right; padding: 8px 0; width: 130px;">
+                          <span style="color: #2D2D2D; font-size: 14px; font-weight: 500;">${currencySymbol}${params.amount}</span>
+                        </td>
+                      </tr>
+                    </table>
+                    <!-- Total -->
+                    <table role="presentation" width="100%" style="border-top: 1px solid #E4E6EB; padding-top: 12px;">
+                      <tr>
+                        <td style="text-align: right; padding: 12px 0 0;">
+                          <span style="color: #2D2D2D; font-size: 16px; font-weight: 600;">Total</span>
+                        </td>
+                        <td style="text-align: right; padding: 12px 0 0; width: 130px;">
+                          <span style="color: #2D2D2D; font-size: 24px; font-weight: 700;">${currencySymbol}${params.amount}</span>
+                        </td>
+                      </tr>
+                    </table>
+  `
   
   // Invoice email content - clean, minimal, matching preview UI
   const invoiceContent = `
@@ -399,51 +450,55 @@ export async function sendInvoiceEmail(params: {
     <tr>
       <td align="center" style="padding: 40px 20px;">
         <!-- Main Invoice Container -->
-        <table role="presentation" width="600" style="max-width: 600px; background-color: #FFFFFF; border-radius: 8px; overflow: hidden;">
+        <table role="presentation" width="600" style="max-width: 600px; background-color: #FFFFFF; border-radius: 12px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.08);">
           
           <!-- Header -->
           <tr>
-            <td style="padding: 40px 48px 32px;">
+            <td style="padding: 48px 48px 36px;">
               <table role="presentation" width="100%">
                 <tr>
                   <td style="vertical-align: top;">
-                    <!-- Logo Blocks -->
-                    <table role="presentation" cellpadding="0" cellspacing="0" style="border-collapse: collapse; margin-bottom: 16px;">
+                    <!-- Plaen Logo - 3 shapes matching the SVG -->
+                    <table role="presentation" cellpadding="0" cellspacing="0" style="border-collapse: collapse; margin-bottom: 20px;">
                       <tr>
-                        <td style="width: 16px; height: 16px; background-color: #14462a;"></td>
-                        <td style="width: 3px;"></td>
-                        <td style="width: 10px; height: 16px; background-color: #14462a; border-radius: 0 3px 0 0;"></td>
+                        <!-- Top-left square -->
+                        <td style="width: 14px; height: 14px; background-color: #14462a;"></td>
+                        <td style="width: 2px;"></td>
+                        <!-- Top-right trapezoid (approximated) -->
+                        <td style="width: 10px; height: 14px; background-color: #14462a;"></td>
                       </tr>
-                      <tr><td colspan="3" style="height: 3px;"></td></tr>
+                      <tr><td colspan="3" style="height: 2px;"></td></tr>
                       <tr>
-                        <td style="width: 16px; height: 10px;"></td>
-                        <td style="width: 3px;"></td>
+                        <!-- Bottom empty -->
+                        <td style="width: 14px; height: 10px;"></td>
+                        <td style="width: 2px;"></td>
+                        <!-- Bottom-right square -->
                         <td style="width: 10px; height: 10px; background-color: #14462a;"></td>
                       </tr>
                     </table>
-                    <p style="margin: 0 0 4px; color: #2D2D2D; font-size: 24px; font-weight: 700;">${params.businessName}</p>
+                    <p style="margin: 0 0 6px; color: #2D2D2D; font-size: 22px; font-weight: 700; letter-spacing: -0.3px;">${params.businessName}</p>
                     ${params.businessEmail ? `<p style="margin: 0; color: #B0B3B8; font-size: 13px;">${params.businessEmail}</p>` : ''}
                   </td>
                   <td style="text-align: right; vertical-align: top;">
-                    <p style="margin: 0 0 4px; color: #B0B3B8; font-size: 13px;">Invoice</p>
-                    <p style="margin: 0; color: #2D2D2D; font-size: 20px; font-weight: 700;">${params.invoiceNumber}</p>
+                    <p style="margin: 0 0 6px; color: #B0B3B8; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Invoice</p>
+                    <p style="margin: 0; color: #2D2D2D; font-size: 18px; font-weight: 700;">${params.invoiceNumber}</p>
                   </td>
                 </tr>
               </table>
             </td>
           </tr>
           
-          <!-- Dates Row -->
+          <!-- Dates Row - Better spacing -->
           <tr>
-            <td style="padding: 0 48px 24px;">
+            <td style="padding: 0 48px 28px;">
               <table role="presentation" width="100%">
                 <tr>
-                  <td style="width: 50%;">
-                    <p style="margin: 0 0 4px; color: #B0B3B8; font-size: 13px;">Issue Date</p>
+                  <td style="width: 50%; padding-right: 16px;">
+                    <p style="margin: 0 0 6px; color: #B0B3B8; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Issue Date</p>
                     <p style="margin: 0; color: #2D2D2D; font-size: 15px; font-weight: 500;">${params.issueDate || 'Today'}</p>
                   </td>
-                  <td style="width: 50%;">
-                    <p style="margin: 0 0 4px; color: #B0B3B8; font-size: 13px;">Due Date</p>
+                  <td style="width: 50%; padding-left: 16px;">
+                    <p style="margin: 0 0 6px; color: #B0B3B8; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Due Date</p>
                     <p style="margin: 0; color: #2D2D2D; font-size: 15px; font-weight: 500;">${params.dueDate}</p>
                   </td>
                 </tr>
@@ -453,8 +508,8 @@ export async function sendInvoiceEmail(params: {
           
           <!-- Bill To -->
           <tr>
-            <td style="padding: 0 48px 32px;">
-              <p style="margin: 0 0 8px; color: #B0B3B8; font-size: 13px;">Bill To</p>
+            <td style="padding: 0 48px 36px;">
+              <p style="margin: 0 0 8px; color: #B0B3B8; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Bill To</p>
               <p style="margin: 0; color: #2D2D2D; font-size: 15px; font-weight: 500;">${params.customerName}</p>
             </td>
           </tr>
@@ -468,33 +523,12 @@ export async function sendInvoiceEmail(params: {
           
           <!-- Totals -->
           <tr>
-            <td style="padding: 24px 48px 32px;">
+            <td style="padding: 28px 48px 36px;">
               <table role="presentation" width="100%">
                 <tr>
-                  <td style="width: 60%;"></td>
-                  <td style="width: 40%;">
-                    <!-- Subtotal -->
-                    <table role="presentation" width="100%" style="margin-bottom: 8px;">
-                      <tr>
-                        <td style="text-align: right; padding: 8px 0;">
-                          <span style="color: #B0B3B8; font-size: 14px;">Subtotal</span>
-                        </td>
-                        <td style="text-align: right; padding: 8px 0; width: 120px;">
-                          <span style="color: #2D2D2D; font-size: 14px; font-weight: 500;">${currencySymbol}${params.amount}</span>
-                        </td>
-                      </tr>
-                    </table>
-                    <!-- Total -->
-                    <table role="presentation" width="100%" style="border-top: 1px solid #E4E6EB; padding-top: 12px;">
-                      <tr>
-                        <td style="text-align: right; padding: 12px 0 0;">
-                          <span style="color: #2D2D2D; font-size: 16px; font-weight: 600;">Total</span>
-                        </td>
-                        <td style="text-align: right; padding: 12px 0 0; width: 120px;">
-                          <span style="color: #2D2D2D; font-size: 22px; font-weight: 700;">${currencySymbol}${params.amount}</span>
-                        </td>
-                      </tr>
-                    </table>
+                  <td style="width: 55%;"></td>
+                  <td style="width: 45%;">
+                    ${balanceDueHtml}
                   </td>
                 </tr>
               </table>
@@ -503,18 +537,18 @@ export async function sendInvoiceEmail(params: {
           
           <!-- Pay Button -->
           <tr>
-            <td style="padding: 0 48px 40px;">
-              <table role="presentation" width="100%" style="border-top: 1px solid #E4E6EB; padding-top: 32px;">
+            <td style="padding: 0 48px 48px;">
+              <table role="presentation" width="100%" style="border-top: 1px solid #E4E6EB; padding-top: 36px;">
                 <tr>
                   <td align="center">
-                    <a href="${escapeHtmlAttr(paymentLink)}" target="_blank" rel="noopener noreferrer" style="display: inline-block; padding: 14px 32px; background-color: #14462a; color: #ffffff; text-decoration: none; border-radius: 999px; font-size: 15px; font-weight: 600;">
-                      Pay Invoice Now
+                    <a href="${escapeHtmlAttr(paymentLink)}" target="_blank" rel="noopener noreferrer" style="display: inline-block; padding: 16px 40px; background-color: #14462a; color: #ffffff; text-decoration: none; border-radius: 999px; font-size: 15px; font-weight: 600; letter-spacing: -0.2px;">
+                      ${params.isPartialPayment ? 'Pay Remaining Balance' : 'Pay Invoice Now'}
                     </a>
                   </td>
                 </tr>
                 <tr>
-                  <td align="center" style="padding-top: 16px;">
-                    <p style="margin: 0; color: #B0B3B8; font-size: 13px;">
+                  <td align="center" style="padding-top: 20px;">
+                    <p style="margin: 0; color: #B0B3B8; font-size: 12px;">
                       Payment link: <a href="${escapeHtmlAttr(paymentLink)}" style="color: #14462a; text-decoration: none;">${paymentLink}</a>
                     </p>
                   </td>
@@ -525,8 +559,8 @@ export async function sendInvoiceEmail(params: {
           
           <!-- Footer -->
           <tr>
-            <td style="padding: 24px 48px; border-top: 1px solid #E4E6EB; text-align: center;">
-              <p style="margin: 0 0 4px; color: #B0B3B8; font-size: 13px;">Thank you for your business!</p>
+            <td style="padding: 28px 48px; border-top: 1px solid #E4E6EB; text-align: center;">
+              <p style="margin: 0 0 6px; color: #B0B3B8; font-size: 13px;">Thank you for your business!</p>
               <p style="margin: 0; color: #B0B3B8; font-size: 12px;">Powered by <a href="https://plaen.tech" style="color: #14462a; text-decoration: none; font-weight: 500;">Plaen</a></p>
             </td>
           </tr>

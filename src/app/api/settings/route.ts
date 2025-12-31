@@ -29,6 +29,14 @@ export async function GET() {
       email: user.email,
       full_name: profile?.full_name || '',
       phone: profile?.phone || '',
+      avatar_url: profile?.avatar_url || '',
+      
+      // Account info
+      account_type: profile?.account_type || 'personal',
+      invoice_prefix: profile?.invoice_prefix || 'GH',
+      email_verified: profile?.email_verified || false,
+      setup_completed: profile?.setup_completed || false,
+      tax_id: profile?.tax_id || '',
       
       // Business info
       business_name: profile?.business_name || '',
@@ -167,6 +175,12 @@ export async function PATCH(request: NextRequest) {
       email: user.email,
       full_name: updatedProfile?.full_name || '',
       phone: updatedProfile?.phone || '',
+      avatar_url: updatedProfile?.avatar_url || '',
+      account_type: updatedProfile?.account_type || 'personal',
+      invoice_prefix: updatedProfile?.invoice_prefix || 'GH',
+      email_verified: updatedProfile?.email_verified || false,
+      setup_completed: updatedProfile?.setup_completed || false,
+      tax_id: updatedProfile?.tax_id || '',
       business_name: updatedProfile?.business_name || '',
       address: updatedProfile?.address || {},
       logo_url: updatedProfile?.logo_url || '',

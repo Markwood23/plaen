@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { MarketingHeader } from "@/components/marketing/marketing-header";
 import { MarketingFooter } from "@/components/marketing/marketing-footer";
@@ -9,12 +9,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { SmartButton } from "@/components/ui/smart-button";
 import { Badge } from "@/components/ui/badge";
-import { Lock1, Notification, Danger } from "iconsax-react";
+import { Lock1, Notification, Danger, TickCircle } from "iconsax-react";
 import { signIn } from "@/lib/auth/actions";
 
-export default function LoginPage() {
-  const year = new Date().getFullYear();
-  const router = useRouter();
+function LoginForm() {
+  const searchParams = useSearchParams();
+  const verified = searchParams.get("verified") === "true";
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -32,13 +32,74 @@ export default function LoginPage() {
       if (result?.error) {
         setError(result.error);
       }
-    } catch (err) {
+    } catch {
       // Redirect happened (success) or unexpected error
       // signIn redirects on success, so this may not execute
     } finally {
       setLoading(false);
     }
   };
+
+  return (
+    <div className="mt-10 rounded-3xl border border-gray-200 bg-white p-8 shadow-[0_24px_80px_rgba(15,15,15,0.06)]">
+      {verified && (
+        <div className="mb-6 flex items-center gap-2 rounded-xl bg-green-50 p-4 text-sm text-green-700">
+          <TickCircle size={18} className="text-green-600" variant="Bold" />
+          <span>Email verified successfully! You can now log in.</span>
+        </div>
+      )}
+      
+      {error && (
+        <div className="mb-6 flex items-center gap-2 rounded-xl bg-red-50 p-4 text-sm text-red-600">
+          <Danger size={18} color="#DC2626" />
+          <span>{error}</span>
+        </div>
+      )}
+      
+      <form className="space-y-5" onSubmit={handleSubmit}>
+        <div className="space-y-2">
+          <Label htmlFor="email">Email</Label>
+          <Input 
+            id="email" 
+            name="email" 
+            type="email" 
+            placeholder="you@example.com" 
+            required 
+            disabled={loading}
+          />
+        </div>
+        <div className="space-y-2">
+          <div className="flex items-center justify-between">
+            <Label htmlFor="password">Password</Label>
+            <Link href="/forgot-password" className="text-xs font-medium text-[#14462a] hover:underline">
+              Forgot password?
+            </Link>
+          </div>
+          <Input 
+            id="password" 
+            name="password" 
+            type="password" 
+            placeholder="Enter your password" 
+            required 
+            disabled={loading}
+          />
+        </div>
+        <SmartButton type="submit" className="w-full" disabled={loading}>
+          {loading ? "Logging in..." : "Log in"}
+        </SmartButton>
+      </form>
+      <p className="mt-6 text-center text-sm text-gray-600">
+        Don&apos;t have an account?{" "}
+        <Link href="/signup" className="font-medium text-black underline underline-offset-4 hover:text-gray-700">
+          Sign up free
+        </Link>
+      </p>
+    </div>
+  );
+}
+
+export default function LoginPage() {
+  const year = new Date().getFullYear();
 
   return (
     <>
@@ -63,53 +124,9 @@ export default function LoginPage() {
             </div>
           </div>
 
-          <div className="mt-10 rounded-3xl border border-gray-200 bg-white p-8 shadow-[0_24px_80px_rgba(15,15,15,0.06)]">
-            {error && (
-              <div className="mb-6 flex items-center gap-2 rounded-xl bg-red-50 p-4 text-sm text-red-600">
-                <Danger size={18} color="#DC2626" />
-                <span>{error}</span>
-              </div>
-            )}
-            
-            <form className="space-y-5" onSubmit={handleSubmit}>
-              <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
-                <Input 
-                  id="email" 
-                  name="email" 
-                  type="email" 
-                  placeholder="you@example.com" 
-                  required 
-                  disabled={loading}
-                />
-              </div>
-              <div className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <Label htmlFor="password">Password</Label>
-                  <Link href="/forgot-password" className="text-xs font-medium text-[#14462a] hover:underline">
-                    Forgot password?
-                  </Link>
-                </div>
-                <Input 
-                  id="password" 
-                  name="password" 
-                  type="password" 
-                  placeholder="Enter your password" 
-                  required 
-                  disabled={loading}
-                />
-              </div>
-              <SmartButton type="submit" className="w-full" disabled={loading}>
-                {loading ? "Logging in..." : "Log in"}
-              </SmartButton>
-            </form>
-            <p className="mt-6 text-center text-sm text-gray-600">
-              Don't have an account?{" "}
-              <Link href="/signup" className="font-medium text-black underline underline-offset-4 hover:text-gray-700">
-                Sign up free
-              </Link>
-            </p>
-          </div>
+          <Suspense fallback={<div className="mt-10 h-96 animate-pulse rounded-3xl bg-gray-100" />}>
+            <LoginForm />
+          </Suspense>
 
           <div className="mt-8 flex items-center justify-center gap-6 text-xs text-gray-500">
             <span className="flex items-center gap-1.5">
