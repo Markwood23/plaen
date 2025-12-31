@@ -35,6 +35,7 @@ import {
   Wallet,
 } from "iconsax-react";
 import { BalanceVisibilityProvider, useBalanceVisibility } from "@/contexts/balance-visibility-context";
+import { signOut } from "@/lib/auth/actions";
 
 // Balance toggle button component (must be inside the provider)
 function BalanceToggleButton() {
@@ -381,26 +382,18 @@ function UserMenu() {
           </Link>
         </DropdownMenuItem>
         <DropdownMenuSeparator className="my-2" />
-        <DropdownMenuItem 
-          className="gap-3 rounded-xl p-3 cursor-pointer group transition-all hover:bg-red-50"
-          onClick={() => {
-            // Clear any stored session data
-            if (typeof window !== 'undefined') {
-              localStorage.removeItem('user');
-              localStorage.removeItem('token');
-              sessionStorage.clear();
-            }
-            // Redirect to login page
-            window.location.href = '/login';
-          }}
-        >
-          <div 
-            className="h-8 w-8 rounded-full flex items-center justify-center transition-all"
-            style={{ backgroundColor: 'rgba(220, 38, 38, 0.08)' }}
-          >
-            <Logout size={16} color="#DC2626" />
-          </div>
-          <span className="text-base font-medium group-hover:text-red-600 transition-all" style={{ color: '#DC2626' }}>Log out</span>
+        <DropdownMenuItem asChild className="rounded-xl p-0 cursor-pointer group transition-all hover:bg-red-50">
+          <form action={signOut} className="w-full">
+            <button type="submit" className="w-full flex items-center gap-3 rounded-xl p-3">
+              <div 
+                className="h-8 w-8 rounded-full flex items-center justify-center transition-all"
+                style={{ backgroundColor: 'rgba(220, 38, 38, 0.08)' }}
+              >
+                <Logout size={16} color="#DC2626" />
+              </div>
+              <span className="text-base font-medium group-hover:text-red-600 transition-all" style={{ color: '#DC2626' }}>Log out</span>
+            </button>
+          </form>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

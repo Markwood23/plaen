@@ -73,16 +73,16 @@ export default function DashboardPage() {
   // Format currency
   const formatCurrency = (amount: number, currency: string = 'GHS') => {
     const symbol = currency === 'GHS' ? '₵' : currency === 'USD' ? '$' : currency;
-    return `\${symbol}\${(amount / 100).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    return `${symbol}${(amount / 100).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
   };
 
   // Format compact currency (e.g., ₵31.1k)
   const formatCompactCurrency = (amount: number, currency: string = 'GHS') => {
     const symbol = currency === 'GHS' ? '₵' : currency === 'USD' ? '$' : currency;
     const value = amount / 100;
-    if (value >= 1000000) return `\${symbol}\${(value / 1000000).toFixed(1)}M`;
-    if (value >= 1000) return `\${symbol}\${(value / 1000).toFixed(1)}k`;
-    return `\${symbol}\${value.toFixed(0)}`;
+    if (value >= 1000000) return `${symbol}${(value / 1000000).toFixed(1)}M`;
+    if (value >= 1000) return `${symbol}${(value / 1000).toFixed(1)}k`;
+    return `${symbol}${value.toFixed(0)}`;
   };
 
   // Determine if user is new (no data)
@@ -97,8 +97,8 @@ export default function DashboardPage() {
       label: "Incoming",
       value: formatCurrency(data.metrics.total_revenue),
       delta: data.metrics.revenue_change_percent > 0 
-        ? `+\${data.metrics.revenue_change_percent.toFixed(0)}%` 
-        : `\${data.metrics.revenue_change_percent.toFixed(0)}%`,
+        ? `+${data.metrics.revenue_change_percent.toFixed(0)}%` 
+        : `${data.metrics.revenue_change_percent.toFixed(0)}%`,
       icon: Card,
       up: data.metrics.revenue_change_percent >= 0,
       sparkline: "M2 20 Q10 8, 18 12 T34 8 Q42 14, 50 10 T62 6",
@@ -109,8 +109,8 @@ export default function DashboardPage() {
       label: "Outstanding",
       value: formatCurrency(data.metrics.total_outstanding),
       delta: data.metrics.outstanding_change_percent > 0 
-        ? `+\${data.metrics.outstanding_change_percent.toFixed(0)}%` 
-        : `\${data.metrics.outstanding_change_percent.toFixed(0)}%`,
+        ? `+${data.metrics.outstanding_change_percent.toFixed(0)}%` 
+        : `${data.metrics.outstanding_change_percent.toFixed(0)}%`,
       icon: Send2,
       up: data.metrics.outstanding_change_percent <= 0,
       sparkline: "M2 12 Q10 18, 18 14 T34 20 Q42 16, 50 22 T62 26",

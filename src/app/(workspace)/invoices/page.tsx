@@ -114,7 +114,7 @@ export default function InvoicesPage() {
   // Format currency
   const formatCurrency = (amount: number, currency: string = 'GHS') => {
     const symbol = currency === 'GHS' ? '₵' : currency === 'USD' ? '$' : currency;
-    return `\${symbol}\${(amount / 100).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    return `${symbol}${(amount / 100).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
   };
 
   // Calculate KPI stats from invoices
