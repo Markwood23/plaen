@@ -1,4 +1,4 @@
-import { createClient } from '@/lib/supabase/server'
+import { createClient, createAdminClient } from '@/lib/supabase/server'
 import { NextRequest, NextResponse } from 'next/server'
 import type { InvoiceInsert, InvoiceLineItemInsert, InvoiceStatus } from '@/types/database'
 
@@ -173,8 +173,9 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: invoiceError.message }, { status: 500 })
     }
     
-    // Insert line items if provided
+    // Insert line items if provided (use admin client to bypass RLS)
     if (body.items && body.items.length > 0) {
+      const adminClient = createAdminClient()
       const lineItems: InvoiceLineItemInsert[] = body.items.map((item: {
         description: string
         quantity?: number
@@ -188,7 +189,7 @@ export async function POST(request: NextRequest) {
         sort_order: index,
       }))
       
-      const { error: itemsError } = await supabase
+      const { error: itemsError } = await adminClient
         .from('invoice_line_items')
         .insert(lineItems)
       

@@ -52,14 +52,17 @@ export function SendInvoiceModal({
   const [copied, setCopied] = useState(false);
   const [successTitle, setSuccessTitle] = useState<string>('Payment Link Ready');
   const [successDescription, setSuccessDescription] = useState<string>('Your client can now view and pay this invoice');
-  const wasOpenRef = useRef(false);
+  const prevOpenRef = useRef(false);
 
   const currencySymbol = currency === 'GHS' ? '₵' : currency === 'USD' ? '$' : currency;
 
-  // Reset state only when the modal transitions from closed -> open.
-  // Avoid resetting mid-session when parent refetch changes props.
+  // Reset state ONLY when the modal transitions from closed -> open (fresh open).
+  // Do NOT reset if modal is already open (e.g., from parent refetch changing props).
   useEffect(() => {
-    if (open && !wasOpenRef.current) {
+    const justOpened = open && !prevOpenRef.current;
+    
+    if (justOpened) {
+      // Fresh open - reset everything
       setEmail(customerEmail);
       setError(null);
       setSuccess(false);
@@ -69,7 +72,7 @@ export function SendInvoiceModal({
       setSuccessDescription('Your client can now view and pay this invoice');
     }
 
-    wasOpenRef.current = open;
+    prevOpenRef.current = open;
   }, [open, customerEmail]);
 
   const handleSend = async (e: React.FormEvent) => {

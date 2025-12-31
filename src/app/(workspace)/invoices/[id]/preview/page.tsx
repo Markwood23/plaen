@@ -218,16 +218,19 @@ export default function InvoicePreviewPage({ params }: { params: Promise<{ id: s
 
       <SendInvoiceModal
         open={sendOpen}
-        onOpenChange={setSendOpen}
+        onOpenChange={(open) => {
+          setSendOpen(open);
+          // Refetch data when modal closes (not while open) to update status
+          if (!open) {
+            refetch();
+          }
+        }}
         invoiceId={id}
         invoiceNumber={invoiceData.invoice_number}
         customerEmail={invoiceData.customer?.email || ''}
         customerName={invoiceData.customer?.name || ''}
-        total={total}
+        total={total / 100}
         currency={invoiceData.currency || 'GHS'}
-        onSuccess={async () => {
-          await refetch();
-        }}
       />
 
       {/* Invoice Document */}

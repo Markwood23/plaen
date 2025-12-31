@@ -970,14 +970,18 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
       {/* Send Invoice Modal */}
       <SendInvoiceModal
         open={showSendModal}
-        onOpenChange={setShowSendModal}
+        onOpenChange={(open) => {
+          setShowSendModal(open);
+          if (!open) {
+            refetch();
+          }
+        }}
         invoiceId={id}
         invoiceNumber={invoiceData.invoice_number}
         customerEmail={invoiceData.customer?.email || ''}
         customerName={invoiceData.customer?.name || ''}
-        total={total}
+        total={total / 100}
         currency={invoiceData.currency || 'GHS'}
-        onSuccess={() => refetch()}
       />
     </div>
   );

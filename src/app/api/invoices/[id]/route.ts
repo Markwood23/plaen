@@ -133,10 +133,12 @@ export async function PATCH(
       return NextResponse.json({ error: 'Invoice not found' }, { status: 404 })
     }
     
-    // Handle line items update if provided
+    // Handle line items update if provided (use admin client to bypass RLS)
     if (body.items) {
+      const adminClient = createAdminClient()
+      
       // Delete existing line items
-      await supabase
+      await adminClient
         .from('invoice_line_items')
         .delete()
         .eq('invoice_id', id)
@@ -155,7 +157,7 @@ export async function PATCH(
         sort_order: index,
       }))
       
-      await supabase
+      await adminClient
         .from('invoice_line_items')
         .insert(lineItems)
     }
