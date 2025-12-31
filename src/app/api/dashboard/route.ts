@@ -77,13 +77,12 @@ export async function GET() {
       .select('*', { count: 'exact', head: true })
       .eq('user_id', user.id)
     
-    // Calculate AR aging
+    // Calculate AR aging with count and total for each bucket
     const arAging = {
-      current: 0,
-      days_1_30: 0,
-      days_31_60: 0,
-      days_61_90: 0,
-      days_over_90: 0,
+      current: { count: 0, total: 0 },    // 0-30 days
+      attention: { count: 0, total: 0 },   // 31-60 days
+      concerning: { count: 0, total: 0 },  // 61-90 days
+      critical: { count: 0, total: 0 },    // 90+ days
     }
     
     invoices?.forEach(inv => {
@@ -95,16 +94,18 @@ export async function GET() {
       const daysDiff = Math.floor((todayDate.getTime() - dueDate.getTime()) / (1000 * 60 * 60 * 24))
       const balance = Number(inv.balance_due)
       
-      if (daysDiff <= 0) {
-        arAging.current += balance
-      } else if (daysDiff <= 30) {
-        arAging.days_1_30 += balance
+      if (daysDiff <= 30) {
+        arAging.current.count++
+        arAging.current.total += balance
       } else if (daysDiff <= 60) {
-        arAging.days_31_60 += balance
+        arAging.attention.count++
+        arAging.attention.total += balance
       } else if (daysDiff <= 90) {
-        arAging.days_61_90 += balance
+        arAging.concerning.count++
+        arAging.concerning.total += balance
       } else {
-        arAging.days_over_90 += balance
+        arAging.critical.count++
+        arAging.critical.total += balance
       }
     })
     
