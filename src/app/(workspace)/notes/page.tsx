@@ -244,7 +244,7 @@ export default function FinanceNotesPage() {
         </h3>
 
         <p className="text-sm mb-4 line-clamp-3" style={{ color: "#B0B3B8" }}>
-          {note.preview || note.content?.substring(0, 150) || 'No content'}
+          {stripHtml(note.preview || note.content || '') || 'No content'}
         </p>
 
         {note.tags && note.tags.length > 0 && (
@@ -279,7 +279,7 @@ export default function FinanceNotesPage() {
             </div>
             {note.attachment_count > 0 && (
               <div className="flex items-center gap-1">
-                <Paperclip size={14} />
+                <Paperclip size={14} color="#65676B" />
                 <span>{note.attachment_count}</span>
               </div>
             )}
@@ -614,7 +614,7 @@ export default function FinanceNotesPage() {
                     disabled={pagination.page <= 1}
                     onClick={() => setFilters({ ...filters, page: pagination.page - 1 })}
                   >
-                    <ArrowLeft2 size={16} />
+                    <ArrowLeft2 size={16} color="#65676B" />
                   </Button>
                   <span className="text-sm px-3" style={{ color: '#2D2D2D' }}>
                     Page {pagination.page} of {pagination.totalPages}
@@ -626,7 +626,7 @@ export default function FinanceNotesPage() {
                     disabled={pagination.page >= pagination.totalPages}
                     onClick={() => setFilters({ ...filters, page: pagination.page + 1 })}
                   >
-                    <ArrowRight2 size={16} />
+                    <ArrowRight2 size={16} color="#65676B" />
                   </Button>
                 </div>
               </div>

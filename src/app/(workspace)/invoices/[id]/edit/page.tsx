@@ -228,7 +228,7 @@ export default function EditInvoicePage({ params }: { params: Promise<{ id: stri
         <div className="flex items-center gap-4">
           <Button variant="ghost" size="sm" asChild className="gap-2 -ml-2 rounded-full hover:bg-[rgba(240,242,245,0.5)]">
             <Link href={`/invoices/${id}`}>
-              <ArrowLeft2 size={16} />
+              <ArrowLeft2 size={16} color="#2D2D2D" />
               Back to Invoice
             </Link>
           </Button>

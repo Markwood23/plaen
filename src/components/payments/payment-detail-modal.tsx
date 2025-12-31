@@ -116,8 +116,13 @@ export function PaymentDetailModal({ payment, open, onOpenChange }: PaymentDetai
     }
   };
 
+  // Get contact info - prefer customer from invoice, fallback to payer name
+  // Filter out test payment emails (like ravesb_xxx_email@gmail.com)
   const contactName = payment.allocations[0]?.invoice?.customer?.name || payment.payer_name || 'Unknown';
-  const contactEmail = payment.allocations[0]?.invoice?.customer?.email || payment.payer_email;
+  const customerEmail = payment.allocations[0]?.invoice?.customer?.email;
+  // Only show payer email if it's not a test email (contains ravesb_ or sandbox)
+  const isTestEmail = payment.payer_email?.includes('ravesb_') || payment.payer_email?.includes('sandbox');
+  const contactEmail = customerEmail || (!isTestEmail ? payment.payer_email : null);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>

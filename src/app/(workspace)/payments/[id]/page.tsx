@@ -166,7 +166,7 @@ export default function PaymentDetailPage({ params }: { params: Promise<{ id: st
           <div className="flex items-center gap-4">
             <Button variant="ghost" size="sm" asChild className="gap-2 -ml-2 rounded-full hover:bg-[rgba(240,242,245,0.5)]">
               <Link href="/payments">
-                <ArrowLeft2 size={16} />
+                <ArrowLeft2 size={16} color="#2D2D2D" />
                 Back
               </Link>
             </Button>

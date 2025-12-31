@@ -172,9 +172,9 @@ export default function ReceiptDetailPage({ params }: { params: Promise<{ id: st
   // Loading state
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#0f0f0f]">
+      <div className="min-h-screen bg-gray-50">
         <div className="max-w-md mx-auto pt-8 px-4">
-          <Skeleton className="h-[600px] w-full rounded-3xl bg-[#1a1a1a]" />
+          <Skeleton className="h-[600px] w-full rounded-3xl bg-white" />
         </div>
       </div>
     );
@@ -183,12 +183,12 @@ export default function ReceiptDetailPage({ params }: { params: Promise<{ id: st
   // Error state
   if (error || !receipt) {
     return (
-      <div className="min-h-screen bg-[#0f0f0f] flex items-center justify-center">
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
-          <Receipt21 size={48} color="#6B7280" className="mx-auto mb-4" />
-          <h1 className="text-xl font-semibold text-white mb-2">Receipt Not Found</h1>
-          <p className="text-gray-400 mb-6">{error || "This receipt could not be found."}</p>
-          <Button variant="outline" asChild className="border-gray-700 text-white hover:bg-gray-800">
+          <Receipt21 size={48} color="#9CA3AF" className="mx-auto mb-4" />
+          <h1 className="text-xl font-semibold text-gray-900 mb-2">Receipt Not Found</h1>
+          <p className="text-gray-500 mb-6">{error || "This receipt could not be found."}</p>
+          <Button variant="outline" asChild className="border-gray-200 text-gray-900 hover:bg-gray-100">
             <Link href="/receipts">Back to Receipts</Link>
           </Button>
         </div>
@@ -200,7 +200,7 @@ export default function ReceiptDetailPage({ params }: { params: Promise<{ id: st
   const customerName = receipt.customer?.name || receipt.payment.payer_name || "Customer";
 
   return (
-    <div className="min-h-screen bg-[#0f0f0f] pb-12">
+    <div className="min-h-screen bg-gray-50 pb-12">
       {/* Print Styles */}
       <style jsx global>{`
         @media print {
@@ -224,12 +224,12 @@ export default function ReceiptDetailPage({ params }: { params: Promise<{ id: st
       `}</style>
 
       {/* Action Bar */}
-      <div className="print:hidden bg-[#0f0f0f] border-b border-gray-800 sticky top-0 z-10">
+      <div className="print:hidden bg-white border-b border-gray-200 sticky top-0 z-10">
         <div className="max-w-2xl mx-auto px-4 py-3">
           <div className="flex items-center justify-between">
-            <Button variant="ghost" size="sm" asChild className="gap-2 -ml-2 rounded-xl text-gray-300 hover:text-white hover:bg-gray-800">
+            <Button variant="ghost" size="sm" asChild className="gap-2 -ml-2 rounded-xl text-gray-600 hover:text-gray-900 hover:bg-gray-100">
               <Link href="/receipts">
-                <ArrowLeft2 size={16} color="#9CA3AF" />
+                <ArrowLeft2 size={16} color="#4B5563" />
                 Back
               </Link>
             </Button>
@@ -237,10 +237,10 @@ export default function ReceiptDetailPage({ params }: { params: Promise<{ id: st
               <Button
                 variant="outline"
                 size="sm"
-                className="rounded-xl border-gray-700 text-gray-300 hover:text-white hover:bg-gray-800"
+                className="rounded-xl border-gray-200 text-gray-600 hover:text-gray-900 hover:bg-gray-100"
                 onClick={handlePrint}
               >
-                <Printer size={14} color="#D1D5DB" className="mr-1.5" />
+                <Printer size={14} color="#4B5563" className="mr-1.5" />
                 Print
               </Button>
               <Button
@@ -291,8 +291,8 @@ export default function ReceiptDetailPage({ params }: { params: Promise<{ id: st
           {/* Dashed Separator */}
           <div className="px-8">
             <div className="border-t-2 border-dashed border-gray-200 relative">
-              <div className="absolute -left-4 -top-3 w-6 h-6 bg-[#0f0f0f] rounded-full" />
-              <div className="absolute -right-4 -top-3 w-6 h-6 bg-[#0f0f0f] rounded-full" />
+              <div className="absolute -left-4 -top-3 w-6 h-6 bg-gray-50 rounded-full" />
+              <div className="absolute -right-4 -top-3 w-6 h-6 bg-gray-50 rounded-full" />
             </div>
           </div>
 
@@ -440,7 +440,7 @@ export default function ReceiptDetailPage({ params }: { params: Promise<{ id: st
                 </>
               ) : (
                 <>
-                  <Copy size={12} />
+                  <Copy size={12} color="#14462a" />
                   <span>Copy receipt number</span>
                 </>
               )}

@@ -317,7 +317,7 @@ export function SendInvoiceModal({
                   </div>
                 ) : (
                   <div className="flex items-center gap-2">
-                    <Send2 size={18} />
+                    <Send2 size={18} color="white" />
                     <span>Send Invoice</span>
                   </div>
                 )}

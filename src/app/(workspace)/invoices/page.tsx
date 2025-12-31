@@ -644,7 +644,7 @@ export default function InvoicesPage() {
                     disabled={pagination.page <= 1}
                     onClick={() => setFilters({ ...filters, page: pagination.page - 1 })}
                   >
-                    <ArrowLeft2 size={16} />
+                    <ArrowLeft2 size={16} color="#65676B" />
                   </Button>
                   <span className="text-sm px-3" style={{ color: '#2D2D2D' }}>
                     Page {pagination.page} of {pagination.totalPages}
@@ -656,7 +656,7 @@ export default function InvoicesPage() {
                     disabled={pagination.page >= pagination.totalPages}
                     onClick={() => setFilters({ ...filters, page: pagination.page + 1 })}
                   >
-                    <ArrowRight2 size={16} />
+                    <ArrowRight2 size={16} color="#65676B" />
                   </Button>
                 </div>
               </div>
