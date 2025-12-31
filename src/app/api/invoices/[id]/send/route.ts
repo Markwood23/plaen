@@ -145,8 +145,9 @@ function generatePublicId(): string {
 }
 
 function formatAmount(amount: number): string {
+  const major = amount / 100
   return new Intl.NumberFormat('en-US', {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
-  }).format(amount)
+  }).format(major)
 }

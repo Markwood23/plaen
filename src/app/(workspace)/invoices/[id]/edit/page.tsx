@@ -72,7 +72,8 @@ export default function EditInvoicePage({ params }: { params: Promise<{ id: stri
           description: item.description || "",
           details: "",
           quantity: item.quantity || 1,
-          unitPrice: item.unit_price || 0,
+          // Convert from minor units (DB) to major units for editing
+          unitPrice: (item.unit_price || 0) / 100,
           tax: 0,
           discount: 0,
           discountType: "percent" as const,

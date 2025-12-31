@@ -238,10 +238,14 @@ export interface CreateInvoiceData {
 
 export async function createInvoice(data: CreateInvoiceData): Promise<{ success: boolean; invoice?: InvoiceDetail; error?: string }> {
   try {
+    const { line_items, ...rest } = data
+    // API expects `items`; keep `line_items` as the client-facing shape.
+    const payload = { ...rest, items: line_items }
+
     const response = await fetch('/api/invoices', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data),
+      body: JSON.stringify(payload),
     })
     
     if (!response.ok) {
@@ -259,10 +263,16 @@ export async function createInvoice(data: CreateInvoiceData): Promise<{ success:
 // Update invoice
 export async function updateInvoice(invoiceId: string, data: Partial<CreateInvoiceData>): Promise<{ success: boolean; invoice?: InvoiceDetail; error?: string }> {
   try {
+    const payload = (() => {
+      if (!('line_items' in data)) return data
+      const { line_items, ...rest } = data as CreateInvoiceData
+      return { ...rest, items: line_items }
+    })()
+
     const response = await fetch(`/api/invoices/${invoiceId}`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data),
+      body: JSON.stringify(payload),
     })
     
     if (!response.ok) {

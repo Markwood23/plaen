@@ -310,7 +310,8 @@ export default function CreateInvoicePage() {
         line_items: lineItems.map(item => ({
           description: item.description,
           quantity: item.quantity,
-          unit_price: item.unitPrice,
+          // Store in minor units (e.g., pesewas/cents) to match DB + payment flows
+          unit_price: Math.round(item.unitPrice * 100),
         })),
       };
       
