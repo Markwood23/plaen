@@ -1,9 +1,17 @@
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
+import { createClient as createServiceClient } from '@supabase/supabase-js'
 import { redirect } from 'next/navigation'
 import { revalidatePath } from 'next/cache'
 import { sendWelcomeEmail, isEmailConfigured } from '@/lib/email/mailjet'
+
+function getServiceClient() {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY
+  if (!url || !key) return null
+  return createServiceClient(url, key)
+}
 
 export async function signUp(formData: FormData) {
   const supabase = await createClient()
@@ -27,6 +35,29 @@ export async function signUp(formData: FormData) {
 
   if (error) {
     return { error: error.message }
+  }
+
+  // Always ensure a corresponding public.users profile row exists.
+  // This is critical when email confirmation is enabled (no session on signUp).
+  if (data?.user) {
+    try {
+      const service = getServiceClient()
+      if (service) {
+        await service
+          .from('users')
+          .upsert(
+            {
+              id: data.user.id,
+              email: data.user.email!,
+              full_name: fullName || null,
+              business_name: businessName || null,
+            },
+            { onConflict: 'id' }
+          )
+      }
+    } catch (e) {
+      console.error('Error ensuring user profile (service role):', e)
+    }
   }
 
   // If email confirmation is required

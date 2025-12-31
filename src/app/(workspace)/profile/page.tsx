@@ -44,6 +44,42 @@ export default function WorkspaceProfilePage() {
         .single();
 
       if (profileError) {
+        // If missing, try to create a minimal profile row then retry
+        if ((profileError as any)?.code === "PGRST116") {
+          const { error: upsertError } = await supabase
+            .from("users")
+            .upsert(
+              {
+                id: authUser.id,
+                email: authUser.email || "",
+              },
+              { onConflict: "id" }
+            );
+
+          if (!upsertError) {
+            const { data: createdProfile } = await supabase
+              .from("users")
+              .select("*")
+              .eq("id", authUser.id)
+              .single();
+
+            if (createdProfile) {
+              setUser(createdProfile);
+              setFormData({
+                full_name: createdProfile.full_name || "",
+                email: createdProfile.email || "",
+                phone: createdProfile.phone || "",
+                business_name: createdProfile.business_name || "",
+                address:
+                  (createdProfile.address as { street?: string; city?: string; country?: string }) || {},
+                default_currency: (createdProfile.default_currency || "GHS") as CurrencyCode,
+              });
+              setLoading(false);
+              return;
+            }
+          }
+        }
+
         console.error("Error fetching profile:", profileError);
         setError("Failed to load profile");
         setLoading(false);

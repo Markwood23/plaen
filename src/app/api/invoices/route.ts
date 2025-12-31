@@ -111,6 +111,21 @@ export async function POST(request: NextRequest) {
     if (authError || !user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
+
+    // Safety: ensure the public.users row exists (avoids FK violations on invoices.user_id)
+    try {
+      await supabase
+        .from('users')
+        .upsert(
+          {
+            id: user.id,
+            email: user.email || '',
+          },
+          { onConflict: 'id' }
+        )
+    } catch (e) {
+      console.warn('Failed to ensure user profile row:', e)
+    }
     
     const body = await request.json()
     
