@@ -451,48 +451,48 @@ export default function SettingsPage() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto py-8 px-4">
+    <div className="py-8 px-4">
       <div className="mb-8">
         <h1 className="text-2xl font-semibold text-gray-900">Settings</h1>
         <p className="text-sm text-gray-500 mt-1">Manage your account and preferences</p>
       </div>
 
       <Tabs defaultValue="profile" className="space-y-8">
-        <TabsList className="bg-gray-100 rounded-xl p-1 flex-wrap h-auto gap-1">
-          <TabsTrigger value="profile" className="rounded-lg data-[state=active]:bg-white data-[state=active]:shadow-sm px-4 py-2">
-            <User size={16} className="mr-2" />
+        <TabsList className="mb-8 flex flex-wrap gap-2 bg-transparent p-0 h-auto">
+          <TabsTrigger value="profile" className="rounded-full border border-gray-200 bg-white data-[state=active]:bg-[#14462a] data-[state=active]:text-white data-[state=active]:border-[#14462a] px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors">
+            <User size={16} color="currentColor" className="mr-2" />
             Profile
           </TabsTrigger>
-          <TabsTrigger value="business" className="rounded-lg data-[state=active]:bg-white data-[state=active]:shadow-sm px-4 py-2">
-            <Building size={16} className="mr-2" />
+          <TabsTrigger value="business" className="rounded-full border border-gray-200 bg-white data-[state=active]:bg-[#14462a] data-[state=active]:text-white data-[state=active]:border-[#14462a] px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors">
+            <Building size={16} color="currentColor" className="mr-2" />
             Business
           </TabsTrigger>
-          <TabsTrigger value="payments" className="rounded-lg data-[state=active]:bg-white data-[state=active]:shadow-sm px-4 py-2">
-            <Bank size={16} className="mr-2" />
+          <TabsTrigger value="payments" className="rounded-full border border-gray-200 bg-white data-[state=active]:bg-[#14462a] data-[state=active]:text-white data-[state=active]:border-[#14462a] px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors">
+            <Bank size={16} color="currentColor" className="mr-2" />
             Payments
           </TabsTrigger>
-          <TabsTrigger value="invoices" className="rounded-lg data-[state=active]:bg-white data-[state=active]:shadow-sm px-4 py-2">
-            <DocumentDownload size={16} className="mr-2" />
+          <TabsTrigger value="invoices" className="rounded-full border border-gray-200 bg-white data-[state=active]:bg-[#14462a] data-[state=active]:text-white data-[state=active]:border-[#14462a] px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors">
+            <DocumentDownload size={16} color="currentColor" className="mr-2" />
             Invoices
           </TabsTrigger>
-          <TabsTrigger value="branding" className="rounded-lg data-[state=active]:bg-white data-[state=active]:shadow-sm px-4 py-2">
-            <Brush2 size={16} className="mr-2" />
+          <TabsTrigger value="branding" className="rounded-full border border-gray-200 bg-white data-[state=active]:bg-[#14462a] data-[state=active]:text-white data-[state=active]:border-[#14462a] px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors">
+            <Brush2 size={16} color="currentColor" className="mr-2" />
             Branding
           </TabsTrigger>
-          <TabsTrigger value="notifications" className="rounded-lg data-[state=active]:bg-white data-[state=active]:shadow-sm px-4 py-2">
-            <Notification size={16} className="mr-2" />
+          <TabsTrigger value="notifications" className="rounded-full border border-gray-200 bg-white data-[state=active]:bg-[#14462a] data-[state=active]:text-white data-[state=active]:border-[#14462a] px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors">
+            <Notification size={16} color="currentColor" className="mr-2" />
             Notifications
           </TabsTrigger>
-          <TabsTrigger value="security" className="rounded-lg data-[state=active]:bg-white data-[state=active]:shadow-sm px-4 py-2">
-            <ShieldTick size={16} className="mr-2" />
+          <TabsTrigger value="security" className="rounded-full border border-gray-200 bg-white data-[state=active]:bg-[#14462a] data-[state=active]:text-white data-[state=active]:border-[#14462a] px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors">
+            <ShieldTick size={16} color="currentColor" className="mr-2" />
             Security
           </TabsTrigger>
-          <TabsTrigger value="billing" className="rounded-lg data-[state=active]:bg-white data-[state=active]:shadow-sm px-4 py-2">
-            <Wallet size={16} className="mr-2" />
+          <TabsTrigger value="billing" className="rounded-full border border-gray-200 bg-white data-[state=active]:bg-[#14462a] data-[state=active]:text-white data-[state=active]:border-[#14462a] px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors">
+            <Wallet size={16} color="currentColor" className="mr-2" />
             Billing
           </TabsTrigger>
-          <TabsTrigger value="data" className="rounded-lg data-[state=active]:bg-white data-[state=active]:shadow-sm px-4 py-2">
-            <Data size={16} className="mr-2" />
+          <TabsTrigger value="data" className="rounded-full border border-gray-200 bg-white data-[state=active]:bg-[#14462a] data-[state=active]:text-white data-[state=active]:border-[#14462a] px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors">
+            <Data size={16} color="currentColor" className="mr-2" />
             Data
           </TabsTrigger>
         </TabsList>
@@ -536,7 +536,7 @@ export default function SettingsPage() {
               <div className="space-y-2">
                 <Label htmlFor="phone">Phone Number</Label>
                 <div className="relative">
-                  <Call size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                  <Call size={16} color="#9CA3AF" className="absolute left-3 top-1/2 -translate-y-1/2" />
                   <Input 
                     id="phone" 
                     type="tel" 
@@ -1141,7 +1141,7 @@ export default function SettingsPage() {
                     onClick={() => setShowPasswords(p => ({ ...p, current: !p.current }))}
                     className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
                   >
-                    {showPasswords.current ? <EyeSlash size={18} /> : <Eye size={18} />}
+                    {showPasswords.current ? <EyeSlash size={18} color="#9CA3AF" /> : <Eye size={18} color="#9CA3AF" />}
                   </button>
                 </div>
               </div>
@@ -1160,7 +1160,7 @@ export default function SettingsPage() {
                     onClick={() => setShowPasswords(p => ({ ...p, new: !p.new }))}
                     className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
                   >
-                    {showPasswords.new ? <EyeSlash size={18} /> : <Eye size={18} />}
+                    {showPasswords.new ? <EyeSlash size={18} color="#9CA3AF" /> : <Eye size={18} color="#9CA3AF" />}
                   </button>
                 </div>
                 <p className="text-xs text-gray-500">Min 8 characters</p>
@@ -1180,7 +1180,7 @@ export default function SettingsPage() {
                     onClick={() => setShowPasswords(p => ({ ...p, confirm: !p.confirm }))}
                     className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
                   >
-                    {showPasswords.confirm ? <EyeSlash size={18} /> : <Eye size={18} />}
+                    {showPasswords.confirm ? <EyeSlash size={18} color="#9CA3AF" /> : <Eye size={18} color="#9CA3AF" />}
                   </button>
                 </div>
               </div>

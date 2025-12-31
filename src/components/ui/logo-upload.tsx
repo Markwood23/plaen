@@ -146,7 +146,7 @@ export function LogoUpload({
               {initials}
             </span>
           ) : (
-            <Building4 size={24} className="text-gray-400" />
+            <Building4 size={24} color="#9CA3AF" />
           )}
         </div>
 

@@ -326,7 +326,7 @@ export default function EditInvoicePage({ params }: { params: Promise<{ id: stri
                   className="w-full justify-start text-left font-normal mt-1.5 h-11 rounded-xl border-[#E4E6EB]"
                   disabled={hasPayments}
                 >
-                  <Calendar size={16} className="mr-2 text-[#65676B]" />
+                  <Calendar size={16} color="#65676B" className="mr-2" />
                   {format(issueDate, "MMM d, yyyy")}
                 </Button>
               </PopoverTrigger>
@@ -347,7 +347,7 @@ export default function EditInvoicePage({ params }: { params: Promise<{ id: stri
                   variant="outline"
                   className="w-full justify-start text-left font-normal mt-1.5 h-11 rounded-xl border-[#E4E6EB]"
                 >
-                  <Calendar size={16} className="mr-2 text-[#65676B]" />
+                  <Calendar size={16} color="#65676B" className="mr-2" />
                   {format(dueDate, "MMM d, yyyy")}
                 </Button>
               </PopoverTrigger>
@@ -374,7 +374,7 @@ export default function EditInvoicePage({ params }: { params: Promise<{ id: stri
             onClick={addLineItem}
             disabled={hasPayments}
           >
-            <Add size={14} />
+            <Add size={14} color="#2D2D2D" />
             Add Item
           </Button>
         </div>

@@ -136,7 +136,7 @@ export default function PublicReceiptPage({ params }: { params: Promise<{ id: st
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
-          <Receipt21 size={48} className="text-gray-400 mx-auto mb-4" />
+          <Receipt21 size={48} color="#9CA3AF" className="mx-auto mb-4" />
           <h1 className="text-xl font-semibold text-gray-900 mb-2">
             {error || "Receipt Not Found"}
           </h1>
@@ -169,7 +169,7 @@ export default function PublicReceiptPage({ params }: { params: Promise<{ id: st
             />
           ) : (
             <div className="mx-auto mb-4 h-16 w-16 rounded-xl bg-[#14462a]/10 flex items-center justify-center">
-              <Building size={32} className="text-[#14462a]" />
+              <Building size={32} color="#14462a" />
             </div>
           )}
           <h1 className="text-xl font-semibold text-gray-900">
@@ -183,7 +183,7 @@ export default function PublicReceiptPage({ params }: { params: Promise<{ id: st
           <div className="bg-green-50 border-b border-green-100 px-6 py-4 flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="h-10 w-10 rounded-full bg-green-100 flex items-center justify-center">
-                <TickCircle size={24} className="text-green-600" variant="Bold" />
+                <TickCircle size={24} color="#16A34A" variant="Bold" />
               </div>
               <div>
                 <p className="text-sm font-semibold text-green-800">Payment Confirmed</p>
@@ -302,12 +302,12 @@ export default function PublicReceiptPage({ params }: { params: Promise<{ id: st
           <div className="bg-gray-50 border-t border-gray-100 px-6 py-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <Verify size={18} className="text-[#14462a]" variant="Bold" />
+                <Verify size={18} color="#14462a" variant="Bold" />
                 <span className="text-xs font-medium text-[#14462a]">Verified Receipt</span>
               </div>
               {receipt.verification.hash_tail && (
                 <div className="flex items-center gap-2">
-                  <Shield size={14} className="text-gray-400" />
+                  <Shield size={14} color="#9CA3AF" />
                   <span className="font-mono text-xs text-gray-500">
                     {receipt.verification.algo.toUpperCase()}:...{receipt.verification.hash_tail}
                   </span>

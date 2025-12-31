@@ -44,7 +44,7 @@ function LoginForm() {
     <div className="mt-10 rounded-3xl border border-gray-200 bg-white p-8 shadow-[0_24px_80px_rgba(15,15,15,0.06)]">
       {verified && (
         <div className="mb-6 flex items-center gap-2 rounded-xl bg-green-50 p-4 text-sm text-green-700">
-          <TickCircle size={18} className="text-green-600" variant="Bold" />
+          <TickCircle size={18} color="#16A34A" variant="Bold" />
           <span>Email verified successfully! You can now log in.</span>
         </div>
       )}

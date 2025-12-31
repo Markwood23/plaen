@@ -229,7 +229,7 @@ export default function ReceiptDetailPage({ params }: { params: Promise<{ id: st
           <div className="flex items-center justify-between">
             <Button variant="ghost" size="sm" asChild className="gap-2 -ml-2 rounded-xl text-gray-300 hover:text-white hover:bg-gray-800">
               <Link href="/receipts">
-                <ArrowLeft2 size={16} />
+                <ArrowLeft2 size={16} color="#9CA3AF" />
                 Back
               </Link>
             </Button>
@@ -240,7 +240,7 @@ export default function ReceiptDetailPage({ params }: { params: Promise<{ id: st
                 className="rounded-xl border-gray-700 text-gray-300 hover:text-white hover:bg-gray-800"
                 onClick={handlePrint}
               >
-                <Printer size={14} className="mr-1.5" />
+                <Printer size={14} color="#D1D5DB" className="mr-1.5" />
                 Print
               </Button>
               <Button
@@ -248,7 +248,7 @@ export default function ReceiptDetailPage({ params }: { params: Promise<{ id: st
                 className="rounded-xl bg-[#14462a] hover:bg-[#1a5a38]"
                 onClick={handleDownloadPDF}
               >
-                <DocumentDownload size={14} className="mr-1.5" />
+                <DocumentDownload size={14} color="white" className="mr-1.5" />
                 Download
               </Button>
             </div>
@@ -402,7 +402,7 @@ export default function ReceiptDetailPage({ params }: { params: Promise<{ id: st
                   >
                     {receipt.invoice.status}
                   </Badge>
-                  <ExportSquare size={16} className="text-gray-400 group-hover:text-gray-600 transition-colors" />
+                  <ExportSquare size={16} color="#9CA3AF" />
                 </div>
               </Link>
               

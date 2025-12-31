@@ -82,8 +82,9 @@ export const SearchInput = React.forwardRef<HTMLInputElement, SearchInputProps>(
       <div className={cn("relative", fullWidth && "w-full", containerClassName)}>
         <SearchNormal1
           size={iconSizes[size]}
+          color="#B0B3B8"
           className={cn(
-            "absolute top-1/2 -translate-y-1/2 text-[#B0B3B8] pointer-events-none",
+            "absolute top-1/2 -translate-y-1/2 pointer-events-none",
             iconPositions[size]
           )}
         />
@@ -122,7 +123,7 @@ export const SearchInput = React.forwardRef<HTMLInputElement, SearchInputProps>(
             )}
             aria-label="Clear search"
           >
-            <CloseCircle size={iconSizes[size]} variant="Bold" />
+            <CloseCircle size={iconSizes[size]} color="#B0B3B8" variant="Bold" />
           </button>
         )}
       </div>

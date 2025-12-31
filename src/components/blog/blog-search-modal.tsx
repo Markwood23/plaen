@@ -163,7 +163,7 @@ export function BlogSearchModal({ open, onOpenChange, posts }: BlogSearchModalPr
                             {post.category}
                           </span>
                           <span className="inline-flex items-center gap-1">
-                            <Clock size={10} />
+                            <Clock size={10} color="#9CA3AF" />
                             {post.readTime}
                           </span>
                         </div>

@@ -172,7 +172,7 @@ function VerifyEmailContent() {
             // Success state
             <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 text-center">
               <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                <TickCircle size={32} className="text-green-600" variant="Bold" />
+                <TickCircle size={32} color="#16A34A" variant="Bold" />
               </div>
               <h1 className="text-2xl font-bold text-gray-900 mb-2">
                 Email Verified!
@@ -187,7 +187,7 @@ function VerifyEmailContent() {
             <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
               {/* Icon */}
               <div className="w-16 h-16 bg-brand/10 rounded-full flex items-center justify-center mx-auto mb-6">
-                <Sms size={32} className="text-brand" variant="Bold" />
+                <Sms size={32} color="#14462a" variant="Bold" />
               </div>
 
               {/* Title */}

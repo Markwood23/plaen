@@ -155,7 +155,7 @@ export function PaymentDetailModal({ payment, open, onOpenChange }: PaymentDetai
               </div>
             </div>
             <Badge variant="paid" className="rounded-full">
-              <TickCircle size={12} className="mr-1" /> Confirmed
+              <TickCircle size={12} color="#14462a" className="mr-1" /> Confirmed
             </Badge>
           </div>
 
@@ -252,7 +252,7 @@ export function PaymentDetailModal({ payment, open, onOpenChange }: PaymentDetai
                 className="flex-1 rounded-xl bg-[#14462a] hover:bg-[#0d3520]"
               >
                 <Link href={`/invoices/${payment.allocations[0]?.invoice?.id}`}>
-                  <Receipt21 size={18} className="mr-2" />
+                  <Receipt21 size={18} color="white" className="mr-2" />
                   View Invoice
                 </Link>
               </Button>

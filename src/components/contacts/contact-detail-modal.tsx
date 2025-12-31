@@ -611,7 +611,7 @@ export function ContactDetailModal({
                     disabled={deleting}
                     className="text-red-600 hover:text-red-700 hover:bg-red-50"
                   >
-                    <Trash size={16} className="mr-2" />
+                    <Trash size={16} color="#DC2626" className="mr-2" />
                     {deleting ? "Deleting..." : "Delete Contact"}
                   </Button>
                 )}

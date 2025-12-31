@@ -173,7 +173,7 @@ export default function NewNotePage() {
             <div className="flex items-center gap-2 text-sm text-[#B0B3B8]">
               {saveStatus === "saving" && (
                 <>
-                  <Refresh size={14} className="animate-spin" />
+                  <Refresh size={14} color="#B0B3B8" className="animate-spin" />
                   <span>Saving...</span>
                 </>
               )}

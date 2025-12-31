@@ -222,7 +222,7 @@ export function SendInvoiceModal({
                 onClick={openInNewTab}
                 className="flex-1 rounded-full h-11 border-gray-200 hover:bg-gray-50"
               >
-                <ExportSquare size={16} className="mr-2" />
+                <ExportSquare size={16} color="#2D2D2D" className="mr-2" />
                 Preview
               </Button>
               <Button
