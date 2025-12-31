@@ -163,6 +163,12 @@ export function usePayState(
         status: 'pending',
       }));
 
+      // If provider requires a redirect (e.g., Flutterwave checkout), go there.
+      if (data.redirect_url && typeof window !== 'undefined') {
+        window.location.href = data.redirect_url;
+        return;
+      }
+
       // Poll for payment status
       pollPaymentStatus(data.transaction_id);
     } catch (error) {

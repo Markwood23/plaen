@@ -17,7 +17,7 @@ export async function GET(
   const supabase = getServiceClient();
 
   // Check if this is a tx_ref (Flutterwave reference) or a payment ID
-  const isTxRef = transactionId.startsWith('plaen_');
+  const isTxRef = transactionId.toUpperCase().startsWith('PL-');
 
   if (isTxRef) {
     // Check if payment already recorded in our DB

@@ -62,33 +62,44 @@ export async function POST(
       .eq('id', user.id)
       .single()
     
-    // Check if already sent
-    if (invoice.status !== 'draft') {
-      return NextResponse.json({ 
-        error: 'Invoice has already been sent',
-        public_id: invoice.public_id,
-        public_url: invoice.public_id ? `${appUrl}/pay/${invoice.public_id}` : null
-      }, { status: 400 })
-    }
-    
-    // Generate public ID
-    const publicId = generatePublicId()
-    const publicUrl = `${appUrl}/pay/${publicId}`
-    
-    // Update invoice
-    const { data: updatedInvoice, error: updateError } = await supabase
-      .from('invoices')
-      .update({
-        status: 'sent',
-        public_id: publicId,
-        sent_at: new Date().toISOString()
-      })
-      .eq('id', id)
-      .select()
-      .single()
-    
-    if (updateError) {
-      return NextResponse.json({ error: updateError.message }, { status: 500 })
+    // Ensure we have a public link.
+    // Draft invoices: mark as sent + assign public_id.
+    // Non-draft invoices: keep status, but allow re-sending email using existing public_id.
+    let publicId: string = invoice.public_id || generatePublicId()
+    let publicUrl = `${appUrl}/pay/${publicId}`
+    let updatedInvoice = invoice
+
+    if (invoice.status === 'draft') {
+      const { data, error: updateError } = await supabase
+        .from('invoices')
+        .update({
+          status: 'sent',
+          public_id: publicId,
+          sent_at: new Date().toISOString(),
+        })
+        .eq('id', id)
+        .select()
+        .single()
+
+      if (updateError) {
+        return NextResponse.json({ error: updateError.message }, { status: 500 })
+      }
+
+      updatedInvoice = data
+    } else if (!invoice.public_id) {
+      // Invoice is already sent/paid/etc but missing a public_id: backfill one.
+      const { data, error: backfillError } = await supabase
+        .from('invoices')
+        .update({ public_id: publicId })
+        .eq('id', id)
+        .select()
+        .single()
+
+      if (backfillError) {
+        return NextResponse.json({ error: backfillError.message }, { status: 500 })
+      }
+
+      updatedInvoice = data
     }
     
     // Send email to customer if configured and customer has email

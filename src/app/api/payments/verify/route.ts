@@ -11,6 +11,27 @@ import { computeReceiptVerificationHash } from '@/lib/receipts/verification';
 import { sendPaymentConfirmationEmail, isEmailConfigured } from '@/lib/email/mailjet';
 import type { PaymentInsert } from '@/types/database';
 
+async function resolveInvoiceId(
+  supabase: ReturnType<typeof getServiceClient>,
+  invoiceIdOrPublicId: string
+): Promise<string | null> {
+  // Try UUID first
+  const { data: byId } = await supabase
+    .from('invoices')
+    .select('id')
+    .eq('id', invoiceIdOrPublicId)
+    .maybeSingle();
+  if (byId?.id) return byId.id;
+
+  // Fallback to public_id
+  const { data: byPublic } = await supabase
+    .from('invoices')
+    .select('id')
+    .eq('public_id', invoiceIdOrPublicId)
+    .maybeSingle();
+  return byPublic?.id ?? null;
+}
+
 // Service client for public verification
 function getServiceClient() {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
@@ -21,6 +42,13 @@ function getServiceClient() {
 export async function POST(request: NextRequest) {
   try {
     const { tx_ref, transaction_id, invoice_id } = await request.json();
+
+    console.info('[payments/verify] request', {
+      has_tx_ref: !!tx_ref,
+      has_transaction_id: !!transaction_id,
+      invoice_id: invoice_id ? String(invoice_id) : null,
+      flutterwave_configured: isFlutterwaveConfigured(),
+    });
 
     if (!tx_ref && !transaction_id) {
       return NextResponse.json(
@@ -60,6 +88,13 @@ export async function POST(request: NextRequest) {
 
     const paymentStatus = mapPaymentStatus(verificationData.status);
 
+    console.info('[payments/verify] flutterwave_result', {
+      mapped_status: paymentStatus,
+      flw_status: verificationData.status,
+      flw_ref: verificationData.flw_ref,
+      tx_ref: verificationData.tx_ref,
+    });
+
     if (paymentStatus === 'success') {
       // Check if we've already processed this payment
       const supabase = getServiceClient();
@@ -71,7 +106,22 @@ export async function POST(request: NextRequest) {
 
       // If not already processed, process it now
       if (!existingPayment && invoice_id) {
-        await processSuccessfulPayment(supabase, invoice_id, verificationData);
+        const resolvedInvoiceId = await resolveInvoiceId(supabase, String(invoice_id));
+        console.info('[payments/verify] resolve_invoice', {
+          invoice_id: String(invoice_id),
+          resolved_invoice_id: resolvedInvoiceId,
+          existing_payment: false,
+        });
+        if (resolvedInvoiceId) {
+          await processSuccessfulPayment(supabase, resolvedInvoiceId, verificationData);
+        } else {
+          console.error('Invoice not found for verification processing:', invoice_id);
+        }
+      } else if (existingPayment) {
+        console.info('[payments/verify] already_processed', {
+          payment_id: existingPayment.id,
+          flw_ref: verificationData.flw_ref,
+        });
       }
 
       return NextResponse.json({

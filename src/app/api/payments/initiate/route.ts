@@ -8,6 +8,12 @@ import {
   getSupportedPaymentMethods,
 } from '@/lib/payments/flutterwave';
 
+function isUuid(value: string): boolean {
+  return /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(
+    value
+  );
+}
+
 // Service client for public payment pages (no auth required)
 function getServiceClient() {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
@@ -42,21 +48,48 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    // Fetch invoice details to get customer info
+    // Fetch invoice details to get customer info.
+    // `invoice_id` may be either the internal UUID or the public_id used in /pay/[id].
     const supabase = getServiceClient();
-    const { data: invoice, error: invoiceError } = await supabase
-      .from('invoices')
-      .select('*')
-      .eq('id', invoice_id)
-      .single();
+    let invoice: any | null = null;
+    const invoiceIdInput = String(invoice_id);
+    const invoiceIdType = isUuid(invoiceIdInput) ? 'uuid' : 'public_id';
+    if (invoiceIdType === 'uuid') {
+      const { data } = await supabase.from('invoices').select('*').eq('id', invoice_id).single();
+      invoice = data;
+    } else {
+      const { data } = await supabase
+        .from('invoices')
+        .select('*')
+        .eq('public_id', invoice_id)
+        .single();
+      invoice = data;
+    }
 
-    if (invoiceError || !invoice) {
+    if (!invoice) {
+      console.info('[payments/initiate] invoice_not_found', {
+        invoice_id: invoiceIdInput,
+        invoice_id_type: invoiceIdType,
+        method,
+      });
       return NextResponse.json({ message: 'Invoice not found' }, { status: 404 });
     }
 
     // Generate unique transaction reference
-    const tx_ref = generateTxRef(invoice_id);
+    const tx_ref = generateTxRef(String(invoice.id));
     const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+    const callbackInvoiceId = invoice.public_id || invoice_id;
+
+    console.info('[payments/initiate] resolved_invoice', {
+      invoice_id: invoiceIdInput,
+      invoice_id_type: invoiceIdType,
+      resolved_invoice_id: invoice.id,
+      callback_invoice_id: String(callbackInvoiceId),
+      method,
+      amount,
+      tx_ref,
+      flutterwave_configured: isFlutterwaveConfigured(),
+    });
 
     // Determine customer + business info
     const [{ data: customer }, { data: userProfile }] = await Promise.all([
@@ -82,9 +115,9 @@ export async function POST(request: NextRequest) {
           network: network.toUpperCase() as 'MTN' | 'VODAFONE' | 'TIGO' | 'AIRTEL',
           email: customerEmail,
           fullname: customerName,
-          redirect_url: `${baseUrl}/pay/${invoice_id}/callback?tx_ref=${tx_ref}`,
+          redirect_url: `${baseUrl}/pay/${callbackInvoiceId}/callback?tx_ref=${tx_ref}`,
           meta: {
-            invoice_id,
+            invoice_id: invoice.id,
             invoice_number: invoice.invoice_number,
           },
         });
@@ -111,7 +144,7 @@ export async function POST(request: NextRequest) {
         tx_ref,
         amount,
         currency: invoice.currency || 'GHS',
-        redirect_url: `${baseUrl}/pay/${invoice_id}/callback?tx_ref=${tx_ref}`,
+        redirect_url: `${baseUrl}/pay/${callbackInvoiceId}/callback?tx_ref=${tx_ref}`,
         customer: {
           email: customerEmail,
           phone_number: customerPhone,
@@ -119,7 +152,7 @@ export async function POST(request: NextRequest) {
         },
         payment_options: getSupportedPaymentMethods(invoice.currency || 'GHS').join(','),
         meta: {
-          invoice_id,
+          invoice_id: invoice.id,
           invoice_number: invoice.invoice_number,
         },
         customizations: {
