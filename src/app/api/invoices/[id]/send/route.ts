@@ -122,6 +122,7 @@ export async function POST(
         dueDate: invoice.due_date ? format(new Date(invoice.due_date), 'MMM d, yyyy') : 'On Receipt',
         paymentLink: publicUrl,
         businessName: userProfile?.business_name || userProfile?.full_name || 'Your Business',
+        senderName: userProfile?.full_name || undefined,
         businessEmail: user.email || undefined,
       })
       

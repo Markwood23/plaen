@@ -285,7 +285,7 @@ export default function CreateInvoicePage() {
     
     if (!validateForm()) {
       // Scroll to first error
-      setErrors(prev => ({ ...prev, general: "Please fix the errors before sending the invoice" }));
+      setErrors(prev => ({ ...prev, general: "Please fix the errors before previewing the invoice" }));
       return;
     }
 
@@ -345,8 +345,8 @@ export default function CreateInvoicePage() {
           });
         }
 
-        // Redirect to preview and open send modal
-        router.push(`/invoices/${invoiceId}/preview?send=1`);
+        // Redirect to preview (send happens from the preview screen)
+        router.push(`/invoices/${invoiceId}/preview`);
       } else {
         setSubmitError(result.error || 'Failed to create invoice');
       }
@@ -740,7 +740,7 @@ export default function CreateInvoicePage() {
             disabled={submitting}
           >
             <Send2 size={16} color="currentColor" className="mr-2" />
-            {submitting ? 'Creating...' : 'Send Invoice'}
+            {submitting ? 'Creating...' : 'Preview Invoice'}
           </Button>
         </div>
       </div>

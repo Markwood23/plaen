@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -52,12 +52,14 @@ export function SendInvoiceModal({
   const [copied, setCopied] = useState(false);
   const [successTitle, setSuccessTitle] = useState<string>('Payment Link Ready');
   const [successDescription, setSuccessDescription] = useState<string>('Your client can now view and pay this invoice');
+  const wasOpenRef = useRef(false);
 
   const currencySymbol = currency === 'GHS' ? '₵' : currency === 'USD' ? '$' : currency;
 
-  // Reset state when modal opens
+  // Reset state only when the modal transitions from closed -> open.
+  // Avoid resetting mid-session when parent refetch changes props.
   useEffect(() => {
-    if (open) {
+    if (open && !wasOpenRef.current) {
       setEmail(customerEmail);
       setError(null);
       setSuccess(false);
@@ -66,6 +68,8 @@ export function SendInvoiceModal({
       setSuccessTitle('Payment Link Ready');
       setSuccessDescription('Your client can now view and pay this invoice');
     }
+
+    wasOpenRef.current = open;
   }, [open, customerEmail]);
 
   const handleSend = async (e: React.FormEvent) => {

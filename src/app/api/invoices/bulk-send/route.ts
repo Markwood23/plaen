@@ -83,7 +83,7 @@ export async function POST(request: NextRequest) {
     // Send emails if configured and requested
     let emailsSent = 0
     if (send_email && isEmailConfigured()) {
-      const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
+      const baseUrl = process.env.NEXT_PUBLIC_APP_URL || new URL(request.url).origin
       
       for (const invoice of invoices) {
         if (invoice.customer?.email) {
@@ -101,6 +101,7 @@ export async function POST(request: NextRequest) {
               }) : 'Upon receipt',
               paymentLink: `${baseUrl}/pay/${invoice.id}`,
               businessName: userProfile?.business_name || userProfile?.full_name || 'Plaen User',
+              senderName: userProfile?.full_name || undefined,
             })
             emailsSent++
           } catch (emailError) {

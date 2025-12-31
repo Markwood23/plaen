@@ -35,6 +35,7 @@ interface SendEmailParams {
   html: string
   text?: string
   customId?: string
+  fromName?: string
 }
 
 // Environment variables
@@ -43,6 +44,7 @@ const MAILJET_SECRET_KEY = process.env.MAILJET_SECRET_KEY
 const SENDER_EMAIL = process.env.MAILJET_SENDER_EMAIL || 'noreply@plaen.app'
 const SENDER_NAME = process.env.MAILJET_SENDER_NAME || 'Plaen'
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://plaen.app'
+const EMAIL_LOGO_URL = process.env.MAILJET_LOGO_URL || 'https://plaen.co/logos/plaen-logo.svg'
 
 // Brand colors
 const BRAND = {
@@ -59,12 +61,30 @@ const BRAND = {
   border: '#e5e7eb',
 }
 
-// Plaen Logo SVG for emails
-const LOGO_SVG = `<svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <path d="M3 3H12V12H3V3Z" fill="#ffffff"/>
-  <path d="M14 3H21L17.5 12H14V3Z" fill="#ffffff"/>
-  <path d="M12 14H21V21H12V14Z" fill="#ffffff"/>
-</svg>`
+function escapeHtmlAttr(value: string): string {
+  return value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
+}
+
+function ensureAbsoluteUrl(url: string): string {
+  const trimmed = String(url || '').trim()
+  if (!trimmed) return APP_URL
+  if (/^https?:\/\//i.test(trimmed)) return trimmed
+  if (trimmed.startsWith('//')) return `https:${trimmed}`
+  if (trimmed.startsWith('/')) return APP_URL.replace(/\/$/, '') + trimmed
+  return `https://${trimmed}`
+}
+
+function logoMarkup(): string {
+  const logoUrl = ensureAbsoluteUrl(EMAIL_LOGO_URL)
+  return `
+    <img src="${escapeHtmlAttr(logoUrl)}" width="32" height="32" alt="Plaen" style="display:block; width:32px; height:32px;" />
+  `
+}
 
 /**
  * Base email layout wrapper
@@ -169,7 +189,7 @@ function emailHeader(title?: string, bgColor: string = BRAND.primary): string {
             <table role="presentation">
               <tr>
                 <td style="padding-right: 12px; vertical-align: middle;">
-                  ${LOGO_SVG}
+                  ${logoMarkup()}
                 </td>
                 <td style="vertical-align: middle;">
                   <span style="color: #ffffff; font-size: 22px; font-weight: 700; letter-spacing: -0.5px;">Plaen</span>
@@ -195,11 +215,12 @@ function emailHeader(title?: string, bgColor: string = BRAND.primary): string {
  * Primary CTA button
  */
 function ctaButton(text: string, href: string, color: string = BRAND.primary): string {
+  const safeHref = ensureAbsoluteUrl(href)
   return `
   <table role="presentation" width="100%">
     <tr>
       <td align="center" style="padding: 8px 0;">
-        <a href="${href}" class="button" style="display: inline-block; padding: 14px 32px; background-color: ${color}; color: #ffffff; text-decoration: none; border-radius: 10px; font-size: 15px; font-weight: 600; letter-spacing: -0.2px;">
+        <a href="${escapeHtmlAttr(safeHref)}" target="_blank" rel="noopener noreferrer" class="button" style="display: inline-block; padding: 14px 32px; background-color: ${color}; color: #ffffff; text-decoration: none; border-radius: 10px; font-size: 15px; font-weight: 600; letter-spacing: -0.2px;">
           ${text}
         </a>
       </td>
@@ -251,7 +272,7 @@ export async function sendEmail(params: SendEmailParams): Promise<{ success: boo
   const message: EmailMessage = {
     From: {
       Email: SENDER_EMAIL,
-      Name: SENDER_NAME,
+      Name: params.fromName || SENDER_NAME,
     },
     To: [
       {
@@ -308,8 +329,10 @@ export async function sendInvoiceEmail(params: {
   dueDate: string
   paymentLink: string
   businessName: string
+  senderName?: string
   businessEmail?: string
 }): Promise<{ success: boolean; error?: string }> {
+  const paymentLink = ensureAbsoluteUrl(params.paymentLink)
   const content = `
     ${emailHeader('New Invoice')}
     <tr>
@@ -328,13 +351,14 @@ export async function sendInvoiceEmail(params: {
         ])}
         
         <div style="margin-top: 32px;">
-          ${ctaButton('View Invoice & Pay', params.paymentLink)}
+          ${ctaButton('View Invoice & Pay', paymentLink)}
         </div>
-        
+        ${params.businessEmail ? `
         <p style="margin: 28px 0 0; color: ${BRAND.textLight}; font-size: 14px; line-height: 1.6; text-align: center;">
           Questions about this invoice? Contact<br>
-          <a href="mailto:${params.businessEmail || ''}" style="color: ${BRAND.primary}; text-decoration: none; font-weight: 500;">${params.businessEmail || params.businessName}</a>
+          <a href="mailto:${escapeHtmlAttr(params.businessEmail)}" style="color: ${BRAND.primary}; text-decoration: none; font-weight: 500;">${params.businessEmail}</a>
         </p>
+        ` : ''}
       </td>
     </tr>
   `
@@ -365,6 +389,7 @@ Sent via Plaen
     html: emailLayout(content, `You have a new invoice for ${params.currency} ${params.amount} from ${params.businessName}`),
     text,
     customId: `invoice-${params.invoiceNumber}`,
+    fromName: params.senderName || params.businessName,
   })
 }
 
