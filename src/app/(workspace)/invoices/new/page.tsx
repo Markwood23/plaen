@@ -1,5 +1,7 @@
 "use client";
 
+import { useState, useEffect, useCallback, useRef } from "react";
+
 import { Button } from "@/components/ui/button";
 import { Input, NumberInput } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -9,6 +11,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Calendar as CalendarComponent } from "@/components/ui/calendar";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription } from "@/components/ui/dialog";
 import { format } from "date-fns";
 import { 
   ArrowLeft2, 
@@ -22,12 +25,17 @@ import {
   InfoCircle,
   Edit2,
   Warning2,
-  Note
+  Note,
+  UserAdd,
+  Sms,
+  Call
 } from "iconsax-react";
 import { Trash2 } from "lucide-react";
 import Link from "next/link";
-import { useState, useCallback } from "react";
+import { useRouter } from "next/navigation";
 import { useBalanceVisibility } from "@/contexts/balance-visibility-context";
+import { useContactsData } from "@/hooks/useContactsData";
+import { createInvoice } from "@/hooks/useInvoicesData";
 
 // Validation helper functions
 const isValidEmail = (email: string): boolean => {
@@ -54,9 +62,68 @@ const isValidPercentage = (value: number): boolean => {
 };
 
 export default function CreateInvoicePage() {
+  const router = useRouter();
   const [template, setTemplate] = useState("standard");
   const [selectedContact, setSelectedContact] = useState<string>("");
   const { maskAmount } = useBalanceVisibility();
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [attachmentFiles, setAttachmentFiles] = useState<File[]>([]);
+  const [attachmentError, setAttachmentError] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+  const handlePickAttachments = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleAttachmentsSelected = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
+    if (files.length === 0) return;
+
+    const allowed = new Set(['application/pdf', 'image/png', 'image/jpeg']);
+    const maxBytes = 10 * 1024 * 1024;
+    const valid: File[] = [];
+
+    for (const f of files) {
+      if (f.size > maxBytes) {
+        setAttachmentError('One or more files exceed 10MB');
+        continue;
+      }
+      if (!allowed.has(f.type)) {
+        setAttachmentError('Only PDF, PNG, JPG files are supported');
+        continue;
+      }
+      valid.push(f);
+    }
+
+    if (valid.length > 0) {
+      setAttachmentFiles((prev) => [...prev, ...valid]);
+    }
+
+    // Reset input so selecting same file again triggers change
+    e.target.value = '';
+  };
+
+  const handleRemoveAttachment = (index: number) => {
+    setAttachmentFiles((prev) => prev.filter((_, i) => i !== index));
+  };
+  
+  // Fetch real contacts from API
+  const { contacts: savedContacts, loading: contactsLoading, refetch: refetchContacts } = useContactsData({ limit: 100 });
+  
+  // Add New Customer Modal State
+  const [showAddCustomerModal, setShowAddCustomerModal] = useState(false);
+  const [newCustomerData, setNewCustomerData] = useState({
+    name: "",
+    email: "",
+    company: "",
+    phone: "",
+    address: "",
+    notes: ""
+  });
+  const [creatingCustomer, setCreatingCustomer] = useState(false);
+  const [customerCreateError, setCustomerCreateError] = useState<string | null>(null);
+  
   const [customerData, setCustomerData] = useState({
     name: "",
     email: "",
@@ -208,7 +275,7 @@ export default function CreateInvoicePage() {
   };
 
   // Handle form submission
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     // Mark all fields as touched
     setTouched({
       customerName: true,
@@ -216,25 +283,80 @@ export default function CreateInvoicePage() {
       customerPhone: true,
     });
     
-    if (validateForm()) {
-      // Form is valid, proceed with submission
-      console.log("Form is valid, submitting...");
-      // TODO: Submit invoice
-    } else {
+    if (!validateForm()) {
       // Scroll to first error
       setErrors(prev => ({ ...prev, general: "Please fix the errors before sending the invoice" }));
+      return;
+    }
+
+    setSubmitting(true);
+    setSubmitError(null);
+    setAttachmentError(null);
+    
+    try {
+      // Find or use selected contact ID
+      let customerId: string | undefined;
+      if (selectedContact && selectedContact !== "manual") {
+        customerId = selectedContact;
+      }
+      
+      // Prepare invoice data
+      const invoiceData = {
+        customer_id: customerId,
+        issue_date: format(issueDate, 'yyyy-MM-dd'),
+        due_date: format(dueDate, 'yyyy-MM-dd'),
+        currency: primaryCurrency.toUpperCase(),
+        notes: customerData.notes || undefined,
+        line_items: lineItems.map(item => ({
+          description: item.description,
+          quantity: item.quantity,
+          unit_price: item.unitPrice,
+        })),
+      };
+      
+      const result = await createInvoice(invoiceData);
+      
+      if (result.success && result.invoice) {
+        const invoiceId = result.invoice.id;
+
+        // Upload attachments (best-effort) after invoice creation
+        if (attachmentFiles.length > 0) {
+          await Promise.all(
+            attachmentFiles.map(async (file) => {
+              const formData = new FormData();
+              formData.set('entity_id', invoiceId);
+              formData.set('entity_type', 'invoice');
+              formData.set('file', file);
+
+              const res = await fetch('/api/attachments', {
+                method: 'POST',
+                body: formData,
+              });
+
+              if (!res.ok) {
+                const data = await res.json().catch(() => null);
+                throw new Error(data?.error || 'Attachment upload failed');
+              }
+            })
+          ).catch((err) => {
+            console.error('Attachment upload error:', err);
+            setAttachmentError(err instanceof Error ? err.message : 'Attachment upload failed');
+          });
+        }
+
+        // Redirect to the new invoice
+        router.push(`/invoices/${invoiceId}`);
+      } else {
+        setSubmitError(result.error || 'Failed to create invoice');
+      }
+    } catch (err) {
+      setSubmitError(err instanceof Error ? err.message : 'Failed to create invoice');
+    } finally {
+      setSubmitting(false);
     }
   };
 
-  // Sample contacts - in production, this would come from your database/API
-  const savedContacts = [
-    { id: "1", name: "Frank Murlo", email: "frank.murlo@email.com", phone: "+233 24 123 4567", company: "Murlo Industries" },
-    { id: "2", name: "Bill Norton", email: "bill.norton@email.com", phone: "+233 24 234 5678", company: "Norton & Co" },
-    { id: "3", name: "Jane Smith", email: "jane.smith@email.com", phone: "+233 24 345 6789", company: "Smith Ventures" },
-    { id: "4", name: "Acme Corp", email: "contact@acme.com", phone: "+233 24 456 7890", company: "Acme Corporation" },
-  ];
-
-  // Sample products/services - in production, this would come from your database/API
+  // Products/services - these could be fetched from an API in the future
   const savedProductsServices = [
     { 
       id: "1", 
@@ -293,7 +415,76 @@ export default function CreateInvoicePage() {
     },
   ];
 
+  // Handle creating a new customer inline
+  const handleCreateCustomer = async () => {
+    if (!newCustomerData.name.trim()) {
+      setCustomerCreateError("Customer name is required");
+      return;
+    }
+    
+    setCreatingCustomer(true);
+    setCustomerCreateError(null);
+    
+    try {
+      const response = await fetch("/api/contacts", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: newCustomerData.name,
+          email: newCustomerData.email || null,
+          phone: newCustomerData.phone || null,
+          company: newCustomerData.company || null,
+          address: newCustomerData.address ? { line1: newCustomerData.address } : {},
+          notes: newCustomerData.notes || null,
+        }),
+      });
+      
+      const data = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to create customer");
+      }
+      
+      // Refresh the contacts list
+      await refetchContacts();
+      
+      // Select the new customer
+      setSelectedContact(data.customer.id);
+      
+      // Fill in the customer data form
+      setCustomerData({
+        name: data.customer.name,
+        email: data.customer.email || "",
+        company: data.customer.company || "",
+        phone: data.customer.phone || "",
+        address: data.customer.address?.line1 || "",
+        notes: data.customer.notes || "",
+      });
+      
+      // Close modal and reset form
+      setShowAddCustomerModal(false);
+      setNewCustomerData({
+        name: "",
+        email: "",
+        company: "",
+        phone: "",
+        address: "",
+        notes: ""
+      });
+    } catch (err) {
+      setCustomerCreateError(err instanceof Error ? err.message : "Failed to create customer");
+    } finally {
+      setCreatingCustomer(false);
+    }
+  };
+
   const handleContactSelect = (contactId: string) => {
+    if (contactId === "add-new") {
+      // Open the add customer modal
+      setShowAddCustomerModal(true);
+      return;
+    }
+    
     setSelectedContact(contactId);
     if (contactId === "manual") {
       // Clear form for manual entry
@@ -306,16 +497,16 @@ export default function CreateInvoicePage() {
         notes: ""
       });
     } else {
-      // Autofill with selected contact
+      // Autofill with selected contact from API
       const contact = savedContacts.find(c => c.id === contactId);
       if (contact) {
         setCustomerData({
           name: contact.name,
-          email: contact.email,
-          company: contact.company,
-          phone: contact.phone,
-          address: "",
-          notes: ""
+          email: contact.email || "",
+          company: contact.company || "",
+          phone: contact.phone || "",
+          address: contact.address || "",
+          notes: contact.notes || ""
         });
       }
     }
@@ -525,10 +716,17 @@ export default function CreateInvoicePage() {
               {errors.general}
             </p>
           )}
+          {submitError && (
+            <p className="text-sm text-red-500 flex items-center gap-1.5 mr-2">
+              <Warning2 size={16} />
+              {submitError}
+            </p>
+          )}
           <Button 
             variant="outline" 
             size="sm"
             className="rounded-full px-5 h-10 border-[#E4E6EB] hover:bg-[rgba(240,242,245,0.5)] hover:border-[#B0B3B8]"
+            disabled={submitting}
           >
             <Note size={16} color="currentColor" className="mr-2" />
             Save Draft
@@ -538,9 +736,10 @@ export default function CreateInvoicePage() {
             className="rounded-full px-5 h-10 shadow-sm transition-all hover:shadow-md hover:scale-105"
             style={{ backgroundColor: '#14462a', color: 'white', fontWeight: 500 }}
             onClick={handleSubmit}
+            disabled={submitting}
           >
             <Send2 size={16} color="currentColor" className="mr-2" />
-            Send Invoice
+            {submitting ? 'Creating...' : 'Send Invoice'}
           </Button>
         </div>
       </div>
@@ -850,22 +1049,31 @@ export default function CreateInvoicePage() {
                   {/* Contact Selector */}
                   <div>
                     <Label className="text-sm text-[#2D2D2D] font-medium mb-2 block">Select Contact</Label>
-                    <Select value={selectedContact} onValueChange={handleContactSelect}>
+                    <Select value={selectedContact} onValueChange={handleContactSelect} disabled={contactsLoading}>
                       <SelectTrigger className="border-[#E4E6EB] h-11 rounded-xl hover:border-[#0D9488] transition-colors">
-                        <SelectValue placeholder="Choose from saved contacts or enter manually" />
+                        <SelectValue placeholder={contactsLoading ? "Loading contacts..." : "Choose from saved contacts or enter manually"} />
                       </SelectTrigger>
                       <SelectContent>
+                        <SelectItem value="add-new">
+                          <div className="flex items-center gap-2 text-[#14462a]">
+                            <UserAdd size={16} color="#14462a" />
+                            <span className="font-medium">Add New Customer</span>
+                          </div>
+                        </SelectItem>
                         <SelectItem value="manual">
                           <div className="flex items-center gap-2">
-                            <Add size={16} color="currentColor" />
+                            <Edit2 size={16} color="currentColor" />
                             <span>Enter manually</span>
                           </div>
                         </SelectItem>
+                        {savedContacts.length > 0 && (
+                          <div className="h-px bg-[#E4E6EB] my-1" />
+                        )}
                         {savedContacts.map(contact => (
                           <SelectItem key={contact.id} value={contact.id}>
                             <div className="flex flex-col items-start gap-0.5 py-1">
                               <span className="font-medium text-sm">{contact.name}</span>
-                              <span className="text-xs text-[#B0B3B8]">{contact.company} • {contact.email}</span>
+                              <span className="text-xs text-[#B0B3B8]">{contact.company || 'No company'} • {contact.email || 'No email'}</span>
                             </div>
                           </SelectItem>
                         ))}
@@ -874,7 +1082,9 @@ export default function CreateInvoicePage() {
                     <p className="text-xs text-[#B0B3B8] mt-1.5">
                       {selectedContact && selectedContact !== "manual" 
                         ? "Contact details loaded from your saved contacts"
-                        : "Select a contact to autofill or enter details manually"}
+                        : savedContacts.length === 0 && !contactsLoading
+                          ? "No contacts yet. Enter details manually or add contacts first."
+                          : "Select a contact to autofill or enter details manually"}
                     </p>
                   </div>
 
@@ -1543,14 +1753,171 @@ export default function CreateInvoicePage() {
                 <h2 className="text-base font-semibold text-[#2D2D2D] mb-1">Attachments</h2>
                 <p className="text-sm text-[#B0B3B8]">Attach supporting documents to this invoice</p>
               </div>
-              <div className="border-2 border-dashed border-[#E4E6EB] rounded-xl p-8 text-center hover:border-[#14462a] hover:bg-[rgba(20,70,42,0.02)] transition-all cursor-pointer">
+              <input
+                ref={fileInputRef}
+                type="file"
+                className="hidden"
+                multiple
+                accept="application/pdf,image/png,image/jpeg"
+                onChange={handleAttachmentsSelected}
+              />
+
+              <div
+                className="border-2 border-dashed border-[#E4E6EB] rounded-xl p-8 text-center hover:border-[#14462a] hover:bg-[rgba(20,70,42,0.02)] transition-all cursor-pointer"
+                onClick={handlePickAttachments}
+                role="button"
+                tabIndex={0}
+              >
                 <Add size={32} color="#B0B3B8" className="mx-auto mb-3" />
                 <p className="text-sm font-medium text-[#2D2D2D] mb-1">Click to upload files</p>
                 <p className="text-xs text-[#B0B3B8]">PDF, PNG, JPG up to 10MB each</p>
               </div>
+
+              {attachmentError && (
+                <p className="text-xs mt-3" style={{ color: '#DC2626' }}>
+                  {attachmentError}
+                </p>
+              )}
+
+              {attachmentFiles.length > 0 && (
+                <div className="mt-4 space-y-2">
+                  {attachmentFiles.map((file, idx) => (
+                    <div
+                      key={`${file.name}-${file.size}-${idx}`}
+                      className="flex items-center justify-between rounded-xl border border-[#E4E6EB] px-4 py-3"
+                    >
+                      <div className="min-w-0">
+                        <p className="text-sm font-medium text-[#2D2D2D] truncate">
+                          {file.name}
+                        </p>
+                        <p className="text-xs text-[#B0B3B8]">
+                          {(file.size / (1024 * 1024)).toFixed(2)} MB
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveAttachment(idx)}
+                        className="text-sm"
+                        style={{ color: '#DC2626', fontWeight: 500 }}
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           </TabsContent>
         </Tabs>
+      
+      {/* Add New Customer Modal */}
+      <Dialog open={showAddCustomerModal} onOpenChange={setShowAddCustomerModal}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <UserAdd size={20} color="#14462a" />
+              Add New Customer
+            </DialogTitle>
+            <DialogDescription>
+              Create a new customer to add to this invoice. They&apos;ll be saved to your contacts.
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="space-y-4 py-4">
+            {customerCreateError && (
+              <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-600 flex items-center gap-2">
+                <Warning2 size={16} />
+                {customerCreateError}
+              </div>
+            )}
+            
+            <div>
+              <Label className="text-sm font-medium mb-2 block">Customer Name *</Label>
+              <Input
+                placeholder="e.g. John Doe or ABC Company"
+                value={newCustomerData.name}
+                onChange={(e) => setNewCustomerData({ ...newCustomerData, name: e.target.value })}
+                className="h-10 rounded-lg"
+              />
+            </div>
+            
+            <div>
+              <Label className="text-sm font-medium mb-2 block">Email Address</Label>
+              <div className="relative">
+                <Sms size={16} color="#B0B3B8" className="absolute left-3 top-1/2 -translate-y-1/2" />
+                <Input
+                  type="email"
+                  placeholder="customer@example.com"
+                  value={newCustomerData.email}
+                  onChange={(e) => setNewCustomerData({ ...newCustomerData, email: e.target.value })}
+                  className="h-10 rounded-lg pl-10"
+                />
+              </div>
+            </div>
+            
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label className="text-sm font-medium mb-2 block">Phone</Label>
+                <div className="relative">
+                  <Call size={16} color="#B0B3B8" className="absolute left-3 top-1/2 -translate-y-1/2" />
+                  <Input
+                    type="tel"
+                    placeholder="+233 XX XXX XXXX"
+                    value={newCustomerData.phone}
+                    onChange={(e) => setNewCustomerData({ ...newCustomerData, phone: e.target.value })}
+                    className="h-10 rounded-lg pl-10"
+                  />
+                </div>
+              </div>
+              
+              <div>
+                <Label className="text-sm font-medium mb-2 block">Company</Label>
+                <div className="relative">
+                  <Building size={16} color="#B0B3B8" className="absolute left-3 top-1/2 -translate-y-1/2" />
+                  <Input
+                    placeholder="Company name"
+                    value={newCustomerData.company}
+                    onChange={(e) => setNewCustomerData({ ...newCustomerData, company: e.target.value })}
+                    className="h-10 rounded-lg pl-10"
+                  />
+                </div>
+              </div>
+            </div>
+            
+            <div>
+              <Label className="text-sm font-medium mb-2 block">Address</Label>
+              <Textarea
+                placeholder="Street address, city, country"
+                value={newCustomerData.address}
+                onChange={(e) => setNewCustomerData({ ...newCustomerData, address: e.target.value })}
+                className="rounded-lg resize-none"
+                rows={2}
+              />
+            </div>
+          </div>
+          
+          <DialogFooter className="gap-2">
+            <Button
+              variant="outline"
+              onClick={() => {
+                setShowAddCustomerModal(false);
+                setNewCustomerData({ name: "", email: "", company: "", phone: "", address: "", notes: "" });
+                setCustomerCreateError(null);
+              }}
+              className="rounded-lg"
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={handleCreateCustomer}
+              disabled={creatingCustomer || !newCustomerData.name.trim()}
+              className="rounded-lg bg-[#14462a] hover:bg-[#0d3320]"
+            >
+              {creatingCustomer ? "Creating..." : "Create & Select"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

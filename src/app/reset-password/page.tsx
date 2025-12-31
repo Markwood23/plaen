@@ -9,7 +9,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { SmartButton } from "@/components/ui/smart-button";
 import { Badge } from "@/components/ui/badge";
-import { Lock1, TickCircle, Eye, EyeSlash, ShieldTick } from "iconsax-react";
+import { Lock1, TickCircle, Eye, EyeSlash, ShieldTick, Danger } from "iconsax-react";
+import { updatePassword } from "@/lib/auth/actions";
 
 export default function ResetPasswordPage() {
   const year = new Date().getFullYear();
@@ -19,6 +20,7 @@ export default function ResetPasswordPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
   const passwordRequirements = [
@@ -30,7 +32,7 @@ export default function ResetPasswordPage() {
   const allRequirementsMet = passwordRequirements.every(req => req.met);
   const passwordsMatch = password === confirmPassword && confirmPassword.length > 0;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
 
@@ -44,8 +46,24 @@ export default function ResetPasswordPage() {
       return;
     }
 
-    // In production, this would call an API to reset password
-    setSubmitted(true);
+    setLoading(true);
+
+    try {
+      const formData = new FormData();
+      formData.append('password', password);
+      
+      const result = await updatePassword(formData);
+      
+      if (result?.error) {
+        setError(result.error);
+      } else {
+        setSubmitted(true);
+      }
+    } catch (err) {
+      // Redirect happened (success) - updatePassword redirects to /dashboard
+    } finally {
+      setLoading(false);
+    }
   };
 
   if (submitted) {
@@ -98,19 +116,26 @@ export default function ResetPasswordPage() {
         <div className="mx-auto flex min-h-[calc(100vh-200px)] max-w-md flex-col justify-center px-6 pt-32 pb-20">
           <div className="space-y-6 text-center">
             <Badge variant="outline" className="rounded-full border-gray-200 px-4 py-1 text-xs uppercase tracking-[0.35em] text-gray-500">
-              Reset Password
+              New Password
             </Badge>
             <div className="space-y-2">
               <h1 className="text-3xl font-semibold tracking-tight text-[#14462a] sm:text-4xl">
-                Create new password
+                Reset your password
               </h1>
               <p className="text-base leading-7 text-gray-600">
-                Enter a new password for your Plaen account.
+                Enter your new password below
               </p>
             </div>
           </div>
 
           <div className="mt-10 rounded-3xl border border-gray-200 bg-white p-8 shadow-[0_24px_80px_rgba(15,15,15,0.06)]">
+            {error && (
+              <div className="mb-6 flex items-center gap-2 rounded-xl bg-red-50 p-4 text-sm text-red-600">
+                <Danger size={18} color="#DC2626" />
+                <span>{error}</span>
+              </div>
+            )}
+            
             <form className="space-y-5" onSubmit={handleSubmit}>
               <div className="space-y-2">
                 <Label htmlFor="password">New password</Label>
@@ -118,10 +143,11 @@ export default function ResetPasswordPage() {
                   <Input 
                     id="password" 
                     type={showPassword ? "text" : "password"}
-                    placeholder="Enter new password"
+                    placeholder="Enter new password" 
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required 
+                    disabled={loading}
                   />
                   <button
                     type="button"
@@ -131,34 +157,30 @@ export default function ResetPasswordPage() {
                     {showPassword ? <EyeSlash size={18} /> : <Eye size={18} />}
                   </button>
                 </div>
-              </div>
-
-              {/* Password requirements */}
-              <div className="space-y-2 rounded-xl bg-gray-50 p-3">
-                {passwordRequirements.map((req, i) => (
-                  <div key={i} className="flex items-center gap-2 text-sm">
-                    <TickCircle 
-                      size={14} 
-                      color={req.met ? "#14462a" : "#9CA3AF"} 
-                      variant={req.met ? "Bold" : "Linear"} 
-                    />
-                    <span className={req.met ? "text-gray-900" : "text-gray-500"}>
+                <div className="mt-2 space-y-1">
+                  {passwordRequirements.map((req) => (
+                    <div 
+                      key={req.label} 
+                      className={`flex items-center gap-2 text-xs ${req.met ? "text-green-600" : "text-gray-400"}`}
+                    >
+                      <TickCircle size={14} variant={req.met ? "Bold" : "Linear"} />
                       {req.label}
-                    </span>
-                  </div>
-                ))}
+                    </div>
+                  ))}
+                </div>
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="confirmPassword">Confirm password</Label>
+                <Label htmlFor="confirmPassword">Confirm new password</Label>
                 <div className="relative">
                   <Input 
                     id="confirmPassword" 
                     type={showConfirmPassword ? "text" : "password"}
-                    placeholder="Confirm new password"
+                    placeholder="Confirm new password" 
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     required 
+                    disabled={loading}
                   />
                   <button
                     type="button"
@@ -168,27 +190,20 @@ export default function ResetPasswordPage() {
                     {showConfirmPassword ? <EyeSlash size={18} /> : <Eye size={18} />}
                   </button>
                 </div>
-                {confirmPassword && !passwordsMatch && (
-                  <p className="text-xs text-red-500">Passwords do not match</p>
-                )}
-                {passwordsMatch && (
-                  <p className="flex items-center gap-1 text-xs text-[#14462a]">
-                    <TickCircle size={12} variant="Bold" />
-                    Passwords match
-                  </p>
+                {confirmPassword && (
+                  <div className={`flex items-center gap-2 text-xs ${passwordsMatch ? "text-green-600" : "text-red-500"}`}>
+                    <TickCircle size={14} variant={passwordsMatch ? "Bold" : "Linear"} />
+                    {passwordsMatch ? "Passwords match" : "Passwords do not match"}
+                  </div>
                 )}
               </div>
 
-              {error && (
-                <p className="text-sm text-red-500 text-center">{error}</p>
-              )}
-
               <SmartButton 
                 type="submit" 
-                className="w-full"
-                disabled={!allRequirementsMet || !passwordsMatch}
+                className="w-full" 
+                disabled={!allRequirementsMet || !passwordsMatch || loading}
               >
-                Reset password
+                {loading ? "Resetting..." : "Reset password"}
               </SmartButton>
             </form>
           </div>
@@ -196,7 +211,7 @@ export default function ResetPasswordPage() {
           <div className="mt-8 flex items-center justify-center gap-6 text-xs text-gray-500">
             <span className="flex items-center gap-1.5">
               <ShieldTick size={14} color="#9CA3AF" variant="Bulk" />
-              Encrypted & secure
+              Secure connection
             </span>
           </div>
         </div>

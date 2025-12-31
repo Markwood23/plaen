@@ -8,17 +8,37 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { SmartButton } from "@/components/ui/smart-button";
 import { Badge } from "@/components/ui/badge";
-import { Lock1, Sms, TickCircle, ArrowLeft2 } from "iconsax-react";
+import { Lock1, Sms, TickCircle, ArrowLeft2, Danger } from "iconsax-react";
+import { resetPassword } from "@/lib/auth/actions";
 
 export default function ForgotPasswordPage() {
   const year = new Date().getFullYear();
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // In production, this would call an API to send reset email
-    setSubmitted(true);
+    setError(null);
+    setLoading(true);
+
+    try {
+      const formData = new FormData();
+      formData.append('email', email);
+      
+      const result = await resetPassword(formData);
+      
+      if (result?.error) {
+        setError(result.error);
+      } else {
+        setSubmitted(true);
+      }
+    } catch (err) {
+      setError('An unexpected error occurred. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -47,6 +67,13 @@ export default function ForgotPasswordPage() {
               </div>
 
               <div className="mt-10 rounded-3xl border border-gray-200 bg-white p-8 shadow-[0_24px_80px_rgba(15,15,15,0.06)]">
+                {error && (
+                  <div className="mb-6 flex items-center gap-2 rounded-xl bg-red-50 p-4 text-sm text-red-600">
+                    <Danger size={18} color="#DC2626" />
+                    <span>{error}</span>
+                  </div>
+                )}
+                
                 <form className="space-y-5" onSubmit={handleSubmit}>
                   <div className="space-y-2">
                     <Label htmlFor="email">Email address</Label>
@@ -57,10 +84,11 @@ export default function ForgotPasswordPage() {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       required 
+                      disabled={loading}
                     />
                   </div>
-                  <SmartButton type="submit" className="w-full">
-                    Send reset link
+                  <SmartButton type="submit" className="w-full" disabled={loading}>
+                    {loading ? "Sending..." : "Send reset link"}
                   </SmartButton>
                 </form>
                 <div className="mt-6 text-center">
@@ -99,13 +127,6 @@ export default function ForgotPasswordPage() {
                       <p className="mt-1">Check your spam folder, or <button onClick={() => setSubmitted(false)} className="font-medium text-[#14462a] hover:underline">try again</button> with a different email.</p>
                     </div>
                   </div>
-                  <SmartButton 
-                    variant="outline" 
-                    className="w-full border-gray-200 text-gray-700 hover:border-black hover:text-black"
-                    onClick={() => setSubmitted(false)}
-                  >
-                    Try another email
-                  </SmartButton>
                 </div>
                 <div className="mt-6 text-center">
                   <Link 
@@ -123,7 +144,7 @@ export default function ForgotPasswordPage() {
           <div className="mt-8 flex items-center justify-center gap-6 text-xs text-gray-500">
             <span className="flex items-center gap-1.5">
               <Lock1 size={14} color="#9CA3AF" variant="Bulk" />
-              Secure reset process
+              Secure reset
             </span>
           </div>
         </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import NextLink from "next/link";
 import {
@@ -37,15 +37,62 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { createNote, updateNote } from "@/hooks/useNotesData";
+import { useAutoSave, AutoSaveIndicator } from "@/hooks/useAutoSave";
 
 export default function NewNotePage() {
   const router = useRouter();
+  const [noteId, setNoteId] = useState<string | null>(null);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [tags, setTags] = useState<string[]>([]);
   const [newTag, setNewTag] = useState("");
   const [isAddingTag, setIsAddingTag] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const [isCreated, setIsCreated] = useState(false);
+
+  // Memoize the note data object for auto-save
+  const noteData = useMemo(() => ({
+    title,
+    content,
+    tags,
+  }), [title, content, tags]);
+
+  // Auto-save handler - creates note first time, then updates
+  const handleAutoSave = useCallback(async (data: typeof noteData) => {
+    if (!data.title.trim()) {
+      return { success: true }; // Don't save if no title
+    }
+
+    if (!noteId) {
+      // First save - create the note
+      const result = await createNote({
+        title: data.title,
+        content: data.content,
+        tags: data.tags,
+      });
+      if (result.success && result.note) {
+        setNoteId(result.note.id);
+        setIsCreated(true);
+      }
+      return result;
+    } else {
+      // Subsequent saves - update the note
+      return await updateNote(noteId, {
+        title: data.title,
+        content: data.content,
+        tags: data.tags,
+      });
+    }
+  }, [noteId]);
+
+  // Auto-save hook - only enabled after title is entered
+  const { status, lastSavedAt, error, forceSave } = useAutoSave({
+    data: noteData,
+    onSave: handleAutoSave,
+    debounceMs: 2000,
+    enabled: title.trim().length > 0,
+  });
 
   const handleAddTag = () => {
     if (newTag.trim() && !tags.includes(newTag.trim())) {
@@ -59,14 +106,13 @@ export default function NewNotePage() {
     setTags(tags.filter((tag) => tag !== tagToRemove));
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
+    if (!title.trim()) return;
+    
     setIsSaving(true);
-    // Simulate save
-    setTimeout(() => {
-      setIsSaving(false);
-      // In a real app, you'd save to backend and redirect
-      router.push("/notes");
-    }, 1000);
+    await forceSave();
+    setIsSaving(false);
+    router.push("/notes");
   };
 
   return (
@@ -85,11 +131,9 @@ export default function NewNotePage() {
           </NextLink>
           <div>
             <h1 className="text-lg font-semibold" style={{ color: "#2D2D2D" }}>
-              New Note
+              {isCreated ? "Editing Note" : "New Note"}
             </h1>
-            <p className="text-xs" style={{ color: "#B0B3B8" }}>
-              Not saved yet
-            </p>
+            <AutoSaveIndicator status={status} lastSavedAt={lastSavedAt} error={error} />
           </div>
         </div>
 

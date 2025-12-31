@@ -34,17 +34,34 @@ import {
 } from "iconsax-react";
 import { CedisCircle } from "@/components/icons/cedis-icon";
 import Link from "next/link";
-import { use, useState, useEffect } from "react";
+import { use, useState, useEffect, useRef } from "react";
 import { useBalanceVisibility } from "@/contexts/balance-visibility-context";
+import { useInvoiceDetail } from "@/hooks/useInvoicesData";
+import { Skeleton } from "@/components/ui/skeleton";
+import { RecordPaymentModal } from "@/components/invoices/record-payment-modal";
+import { SendInvoiceModal } from "@/components/invoices/send-invoice-modal";
+import { useRouter } from "next/navigation";
+import { updateInvoice } from "@/hooks/useInvoicesData";
 
 export default function InvoiceDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
+  const router = useRouter();
   const [copiedLink, setCopiedLink] = useState(false);
   const [copiedPaymentLink, setCopiedPaymentLink] = useState(false);
   const [activeAction, setActiveAction] = useState<string | null>(null);
   const [daysOverdue, setDaysOverdue] = useState<number>(0);
   const [isOverdue, setIsOverdue] = useState<boolean>(false);
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [showSendModal, setShowSendModal] = useState(false);
+  const [cancelling, setCancelling] = useState(false);
+  const [sendingReminder, setSendingReminder] = useState(false);
+  const [attachmentError, setAttachmentError] = useState<string | null>(null);
+  const [uploadingAttachments, setUploadingAttachments] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
   const { maskAmount } = useBalanceVisibility();
+
+  // Fetch real invoice data from API
+  const { invoice: invoiceData, loading, error, refetch } = useInvoiceDetail(id);
 
   const copyPaymentLink = () => {
     const paymentUrl = `${window.location.origin}/pay/${id}`;
@@ -58,121 +75,175 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
     return invoiceNumber;
   };
 
-  // Mock data - will be replaced with API call
-  const invoice = {
-    id: id,
-    invoiceNumber: "PL-A7K9X2",
-    issueDate: "Mar 21, 2023, 3:12 AM",
-    dueDate: "June 24, 11:59 PM",
-    paymentTerms: "Net 30",
-    status: "Waiting Payment",
-    
-    // From
-    from: {
-      businessName: "Your Business Name",
-      email: "hello@yourbusiness.com",
-      phone: "+233 24 000 0000",
-      address: "123 Business Street\nAccra, Ghana",
-      taxId: "TIN-123456789",
-      website: "www.yourbusiness.com"
-    },
-    
-    // Bill To
-    billTo: {
-      name: "Frank Murlo",
-      email: "aditya@gmail.com",
-      phone: "+233 24 123 4567",
-      company: "Murlo Industries",
-      address: "456 Client Avenue\nAccra, Ghana",
-    },
-    
-    // Currency
-    primaryCurrency: "ghs",
-    secondaryCurrency: "",
-    exchangeRate: "",
-    
-    // Line Items
-    items: [
-      {
-        id: 1,
-        description: "Website Design & Development",
-        details: "Complete website design and development service including responsive design, 5 pages, SEO optimization, and 3 months support",
-        quantity: 1,
-        unitPrice: 2500.00,
-        tax: 15,
-        discount: 0,
-        discountType: "percent"
-      },
-      {
-        id: 2,
-        description: "Logo Design Package",
-        details: "Professional logo design with 3 revisions, includes vector files, brand guidelines, and multiple format exports",
-        quantity: 2,
-        unitPrice: 500.00,
-        tax: 15,
-        discount: 10,
-        discountType: "percent"
-      },
-    ],
-    
-    // Payment Methods
-    paymentMethods: ["mtn", "bank", "card"],
-    
-    // Notes
-    notes: "Thank you for your business! Payment is due within 30 days. For questions, contact us at hello@yourbusiness.com",
-    termsAndConditions: "1. Payment is due within 30 days of invoice date\n2. Late payments may incur additional fees\n3. All prices are in Ghana Cedis (GHS)\n4. Goods remain property of seller until full payment is received",
-    
-    // Payments
-    payments: [] as Array<{ id: string; rail: string; reference: string; amount: number; date: string }>,
-    // Attachments
-    attachments: [
-      { id: 'a1', name: 'Invoice_20230602', size: '2.2mb', date: 'Tue, 23 June 2023' },
-      { id: 'a2', name: 'Invoice_20230602', size: '2.2mb', date: 'Tue, 23 June 2023' },
-      { id: 'a3', name: 'Invoice_20230602', size: '2.2mb', date: 'Tue, 23 June 2023' },
-    ],
-    
-    // Activity
-    activity: [
-      { date: "Mar 21, 2023, 3:12 AM", action: "Invoice was sent to aditya@gmail.com", description: "", type: "sent" },
-      { date: "Mar 21, 2023, 3:12 AM", action: "Invoice was finalized", description: "", type: "finalized" },
-      { date: "Mar 21, 2023, 3:12 AM", action: "Invoice payment page was created", description: "", type: "created" },
-    ],
+  // Format date for display
+  const formatDate = (dateString: string | null) => {
+    if (!dateString) return 'Not set';
+    try {
+      const date = new Date(dateString);
+      return date.toLocaleDateString('en-US', { 
+        month: 'short', 
+        day: 'numeric', 
+        year: 'numeric',
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true
+      });
+    } catch {
+      return dateString;
+    }
   };
 
-  // Calculate totals
-  const calculateItemTotal = (item: typeof invoice.items[0]) => {
-    const subtotal = item.quantity * item.unitPrice;
-    const taxAmount = (subtotal * item.tax) / 100;
-    const discountAmount = item.discountType === "percent" 
-      ? (subtotal * item.discount) / 100 
-      : item.discount;
-    return subtotal + taxAmount - discountAmount;
+  // Format currency based on invoice currency
+  const formatCurrency = (amount: number, currency?: string) => {
+    const curr = currency?.toUpperCase() || 'GHS';
+    const symbol = curr === 'GHS' ? '₵' : curr === 'USD' ? '$' : curr;
+    return `${symbol}${amount.toFixed(2)}`;
   };
 
-  const subtotal = invoice.items.reduce((sum, item) => sum + (item.quantity * item.unitPrice), 0);
-  const totalTax = invoice.items.reduce((sum, item) => sum + ((item.quantity * item.unitPrice * item.tax) / 100), 0);
-  const totalDiscount = invoice.items.reduce((sum, item) => {
-    const itemSubtotal = item.quantity * item.unitPrice;
-    return sum + (item.discountType === "percent" 
-      ? (itemSubtotal * item.discount) / 100 
-      : item.discount);
-  }, 0);
-  const total = subtotal + totalTax - totalDiscount;
-  const amountPaid = invoice.payments.reduce((sum: number, p: { amount: number }) => sum + p.amount, 0);
-  const balanceDue = total - amountPaid;
-  const paidPercentage = amountPaid > 0 ? Math.round((amountPaid / total) * 100) : 0;
+  // Calculate totals from line items
+  const lineItems = invoiceData?.line_items || [];
+  const subtotal = lineItems.reduce((sum, item) => sum + (item.quantity * item.unit_price), 0);
+  const total = invoiceData?.total || subtotal;
+  const amountPaid = (total - (invoiceData?.balance_due || 0));
+  const balanceDue = invoiceData?.balance_due || 0;
+  const paidPercentage = total > 0 ? Math.round((amountPaid / total) * 100) : 0;
+
+  const attachments = invoiceData?.attachments || [];
+
+  const handlePickAttachments = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleUploadAttachments = async (files: File[]) => {
+    if (files.length === 0) return;
+    setAttachmentError(null);
+    setUploadingAttachments(true);
+    try {
+      await Promise.all(
+        files.map(async (file) => {
+          const formData = new FormData();
+          formData.set('entity_id', id);
+          formData.set('entity_type', 'invoice');
+          formData.set('file', file);
+
+          const res = await fetch('/api/attachments', {
+            method: 'POST',
+            body: formData,
+          });
+
+          if (!res.ok) {
+            const data = await res.json().catch(() => null);
+            throw new Error(data?.error || 'Attachment upload failed');
+          }
+        })
+      );
+      await refetch();
+    } catch (err) {
+      console.error('Attachment upload error:', err);
+      setAttachmentError(err instanceof Error ? err.message : 'Attachment upload failed');
+    } finally {
+      setUploadingAttachments(false);
+    }
+  };
+
+  const handleAttachmentsSelected = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
+    e.target.value = '';
+    if (files.length === 0) return;
+
+    const allowed = new Set(['application/pdf', 'image/png', 'image/jpeg']);
+    const maxBytes = 10 * 1024 * 1024;
+    const valid: File[] = [];
+
+    for (const f of files) {
+      if (f.size > maxBytes) {
+        setAttachmentError('One or more files exceed 10MB');
+        continue;
+      }
+      if (!allowed.has(f.type)) {
+        setAttachmentError('Only PDF, PNG, JPG files are supported');
+        continue;
+      }
+      valid.push(f);
+    }
+
+    await handleUploadAttachments(valid);
+  };
+
+  const handleDeleteAttachment = async (attachmentId: string) => {
+    setAttachmentError(null);
+    try {
+      const res = await fetch(`/api/attachments/${attachmentId}`, { method: 'DELETE' });
+      const data = await res.json().catch(() => null);
+      if (!res.ok) {
+        throw new Error(data?.error || 'Failed to delete attachment');
+      }
+      await refetch();
+    } catch (err) {
+      console.error('Attachment delete error:', err);
+      setAttachmentError(err instanceof Error ? err.message : 'Failed to delete attachment');
+    }
+  };
   
   // Check if overdue - using useEffect to avoid hydration mismatch
-  const dueDate = new Date(invoice.dueDate);
-  
   useEffect(() => {
-    const now = new Date();
-    const overdue = now > dueDate && balanceDue > 0;
-    setIsOverdue(overdue);
-    if (overdue) {
-      setDaysOverdue(Math.floor((now.getTime() - dueDate.getTime()) / (1000 * 60 * 60 * 24)));
+    if (invoiceData?.due_date && balanceDue > 0) {
+      const dueDate = new Date(invoiceData.due_date);
+      const now = new Date();
+      const overdue = now > dueDate;
+      setIsOverdue(overdue);
+      if (overdue) {
+        setDaysOverdue(Math.floor((now.getTime() - dueDate.getTime()) / (1000 * 60 * 60 * 24)));
+      }
     }
-  }, [dueDate, balanceDue]);
+  }, [invoiceData?.due_date, balanceDue]);
+
+  // Handle cancel invoice
+  const handleCancelInvoice = async () => {
+    if (!confirm("Are you sure you want to cancel this invoice? This action cannot be undone.")) {
+      return;
+    }
+
+    setCancelling(true);
+    try {
+      const result = await updateInvoice(id, { status: "cancelled" } as Parameters<typeof updateInvoice>[1]);
+      if (result.success) {
+        refetch();
+      } else {
+        alert(result.error || "Failed to cancel invoice");
+      }
+    } catch (err) {
+      alert("Failed to cancel invoice");
+    } finally {
+      setCancelling(false);
+    }
+  };
+
+  // Handle send reminder
+  const handleSendReminder = async () => {
+    if (!invoiceData?.customer?.email) {
+      alert("This customer doesn't have an email address. Please add one to send reminders.");
+      return;
+    }
+
+    setSendingReminder(true);
+    try {
+      const response = await fetch(`/api/invoices/${id}/reminder`, {
+        method: 'POST',
+      });
+      const data = await response.json();
+      
+      if (response.ok) {
+        alert(`Reminder sent successfully to ${invoiceData.customer.email}`);
+      } else {
+        alert(data.error || data.message || 'Failed to send reminder');
+      }
+    } catch (err) {
+      alert('Failed to send reminder. Please try again.');
+    } finally {
+      setSendingReminder(false);
+    }
+  };
 
   const getActivityIcon = (type: string) => {
     switch (type) {
@@ -182,6 +253,8 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
         return <TickCircle size={12} color="#0D9488" />;
       case "created":
         return <Receipt21 size={12} color="#14462a" />;
+      case "payment":
+        return <TickCircle size={12} color="#14462a" />;
       default:
         return <div className="h-2 w-2 rounded-full bg-white" />;
     }
@@ -190,15 +263,86 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
   const getActivityIconBackground = (type: string) => {
     switch (type) {
       case "sent":
-        return 'rgba(20, 70, 42, 0.08)'; // Blue
+        return 'rgba(20, 70, 42, 0.08)';
       case "finalized":
-        return 'rgba(13, 148, 136, 0.08)'; // Green
+        return 'rgba(13, 148, 136, 0.08)';
       case "created":
-        return 'rgba(20, 70, 42, 0.08)'; // Purple
+        return 'rgba(20, 70, 42, 0.08)';
+      case "payment":
+        return 'rgba(20, 70, 42, 0.08)';
       default:
         return 'rgba(240, 242, 245, 0.5)';
     }
   };
+
+  // Loading state
+  if (loading) {
+    return (
+      <div className="space-y-6">
+        <div className="flex items-center gap-4">
+          <Skeleton className="h-8 w-16" />
+          <div>
+            <Skeleton className="h-8 w-32 mb-2" />
+            <Skeleton className="h-4 w-48" />
+          </div>
+        </div>
+        <Skeleton className="h-12 w-full rounded-full" />
+        <div className="grid grid-cols-2 gap-8">
+          <div className="space-y-3">
+            <Skeleton className="h-6 w-full" />
+            <Skeleton className="h-6 w-full" />
+            <Skeleton className="h-6 w-full" />
+          </div>
+          <div className="space-y-3">
+            <Skeleton className="h-6 w-full" />
+            <Skeleton className="h-6 w-full" />
+            <Skeleton className="h-6 w-full" />
+          </div>
+        </div>
+        <div className="space-y-4 mt-8">
+          <Skeleton className="h-6 w-24" />
+          <Skeleton className="h-16 w-full" />
+          <Skeleton className="h-16 w-full" />
+        </div>
+      </div>
+    );
+  }
+
+  // Error state
+  if (error || !invoiceData) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[400px] space-y-4">
+        <div className="h-16 w-16 rounded-full bg-red-50 flex items-center justify-center">
+          <CloseCircle size={32} color="#DC2626" />
+        </div>
+        <h2 className="text-xl font-semibold text-gray-900">
+          {error || 'Invoice not found'}
+        </h2>
+        <p className="text-gray-500 text-center max-w-md">
+          This invoice may have been deleted or you don&apos;t have permission to view it.
+        </p>
+        <Button asChild className="rounded-full" style={{ backgroundColor: '#14462a' }}>
+          <Link href="/invoices">Back to Invoices</Link>
+        </Button>
+      </div>
+    );
+  }
+
+  // Build activity from allocations and created date
+  const activity = [
+    ...(invoiceData.allocations || []).map(alloc => ({
+      date: alloc.payment?.payment_date ? formatDate(alloc.payment.payment_date) : 'Unknown',
+      action: `Payment of ${formatCurrency(alloc.amount, invoiceData.currency)} received`,
+      description: alloc.payment?.reference ? `Ref: ${alloc.payment.reference}` : '',
+      type: 'payment'
+    })),
+    {
+      date: formatDate(invoiceData.created_at),
+      action: 'Invoice was created',
+      description: '',
+      type: 'created'
+    }
+  ].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
   return (
     <div className="space-y-6">
@@ -214,17 +358,17 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
             </Button>
             <div>
               <h1 className="text-3xl tracking-tight" style={{ color: '#2D2D2D', fontWeight: 600 }}>
-                {formatInvoiceNumber(invoice.invoiceNumber)}
+                {formatInvoiceNumber(invoiceData.invoice_number)}
               </h1>
               <div className="flex items-center gap-2 mt-1.5">
                 <p className="text-base" style={{ color: '#2D2D2D', fontWeight: 500 }}>
-                  {maskAmount(`₵${balanceDue.toFixed(2)}`)} due
+                  {maskAmount(formatCurrency(balanceDue, invoiceData.currency))} due
                 </p>
                 {amountPaid > 0 && (
                   <>
                     <span style={{ color: '#B0B3B8' }}>•</span>
                     <p className="text-sm" style={{ color: '#B0B3B8' }}>
-                      {maskAmount(`₵${amountPaid.toFixed(2)}`)} paid
+                      {maskAmount(formatCurrency(amountPaid, invoiceData.currency))} paid
                     </p>
                   </>
                 )}
@@ -247,6 +391,7 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
                 size="sm" 
                 className="rounded-full px-5 h-9" 
                 style={{ backgroundColor: '#14462a', color: 'white', fontWeight: 500 }}
+                onClick={() => setShowPaymentModal(true)}
               >
                 <CedisCircle size={14} color="currentColor" className="mr-1.5" />
                 Record Payment
@@ -258,11 +403,23 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
                 size="sm" 
                 className="rounded-full px-5 h-9 hover:bg-[rgba(240,242,245,0.8)]" 
                 style={{ borderColor: '#DC2626', color: '#DC2626', fontWeight: 400 }}
+                onClick={handleSendReminder}
+                disabled={sendingReminder}
               >
                 <Sms size={14} color="currentColor" className="mr-1.5" />
-                Send Reminder
+                {sendingReminder ? 'Sending...' : 'Send Reminder'}
               </Button>
             )}
+            <Button 
+              variant="outline" 
+              size="sm" 
+              className="rounded-full px-5 h-9 hover:bg-[rgba(240,242,245,0.8)]" 
+              style={{ borderColor: '#E4E6EB', color: '#2D2D2D', fontWeight: 400 }}
+              onClick={() => setShowSendModal(true)}
+            >
+              <Send2 size={14} color="currentColor" className="mr-1.5" />
+              Send Invoice
+            </Button>
             <Button 
               variant="outline" 
               size="sm" 
@@ -329,9 +486,12 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
               }
             }}
             onClick={() => setActiveAction('edit')}
+            asChild
           >
-            <Edit2 size={14} color="currentColor" className="mr-1.5" />
-            Edit
+            <Link href={`/invoices/${id}/edit`}>
+              <Edit2 size={14} color="currentColor" className="mr-1.5" />
+              Edit
+            </Link>
           </Button>
           <Button 
             variant="ghost" 
@@ -354,7 +514,10 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
                 e.currentTarget.style.color = '#2D2D2D';
               }
             }}
-            onClick={() => setActiveAction('download')}
+            onClick={() => {
+              setActiveAction('download');
+              router.push(`/invoices/${id}/preview`);
+            }}
           >
             <DocumentDownload size={14} color="currentColor" className="mr-1.5" />
             Download PDF
@@ -468,14 +631,20 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
                 <span className="text-sm font-medium group-hover:text-[#14462a] transition-all" style={{ color: '#2D2D2D' }}>View public page</span>
               </DropdownMenuItem>
               <DropdownMenuSeparator className="my-2" />
-              <DropdownMenuItem className="gap-3 rounded-xl p-3 cursor-pointer group transition-all hover:bg-red-50">
+              <DropdownMenuItem 
+                className="gap-3 rounded-xl p-3 cursor-pointer group transition-all hover:bg-red-50"
+                onClick={handleCancelInvoice}
+                disabled={cancelling || invoiceData.status === 'cancelled' || invoiceData.status === 'paid'}
+              >
                 <div 
                   className="h-8 w-8 rounded-full flex items-center justify-center transition-all"
                   style={{ backgroundColor: 'rgba(220, 38, 38, 0.08)' }}
                 >
                   <CloseCircle size={16} color="#DC2626" />
                 </div>
-                <span className="text-sm font-medium group-hover:text-red-600 transition-all" style={{ color: '#DC2626' }}>Cancel invoice</span>
+                <span className="text-sm font-medium group-hover:text-red-600 transition-all" style={{ color: '#DC2626' }}>
+                  {cancelling ? "Cancelling..." : "Cancel invoice"}
+                </span>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -483,7 +652,7 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
       </div>
 
       {/* Payment Status Bar (for partially paid/pending) */}
-      {invoice.status !== "Paid" && amountPaid > 0 && (
+      {invoiceData.status !== "paid" && amountPaid > 0 && (
         <div className="rounded-xl p-4" style={{ border: '1px solid #E4E6EB', backgroundColor: 'rgba(240, 242, 245, 0.5)' }}>
           <div className="flex items-center justify-between mb-3">
             <div>
@@ -491,10 +660,15 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
                 Payment Progress: {paidPercentage}%
               </p>
               <p className="text-sm" style={{ color: '#B0B3B8' }}>
-                ₵{amountPaid.toFixed(2)} paid of ₵{total.toFixed(2)} total
+                {formatCurrency(amountPaid, invoiceData.currency)} paid of {formatCurrency(total, invoiceData.currency)} total
               </p>
             </div>
-            <Button size="sm" className="rounded-full px-5 py-2 h-auto" style={{ backgroundColor: '#14462a', color: 'white', fontWeight: 500 }}>
+            <Button 
+              size="sm" 
+              className="rounded-full px-5 py-2 h-auto" 
+              style={{ backgroundColor: '#14462a', color: 'white', fontWeight: 500 }}
+              onClick={() => setShowPaymentModal(true)}
+            >
               <CedisCircle size={14} color="currentColor" className="mr-1.5" />
               Record Payment
             </Button>
@@ -513,39 +687,56 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
             <div className="space-y-3">
               <div className="flex items-center justify-between">
                 <span className="text-sm" style={{ color: '#B0B3B8' }}>Invoice ID</span>
-                <span className="text-sm" style={{ color: '#2D2D2D', fontWeight: 500 }}>{formatInvoiceNumber(invoice.invoiceNumber)}</span>
+                <span className="text-sm" style={{ color: '#2D2D2D', fontWeight: 500 }}>{formatInvoiceNumber(invoiceData.invoice_number)}</span>
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-sm" style={{ color: '#B0B3B8' }}>Issue Date</span>
-                <span className="text-sm" style={{ color: '#2D2D2D', fontWeight: 500 }}>{invoice.issueDate}</span>
+                <span className="text-sm" style={{ color: '#2D2D2D', fontWeight: 500 }}>{formatDate(invoiceData.issue_date)}</span>
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-sm" style={{ color: '#B0B3B8' }}>Due Date</span>
-                <span className="text-sm" style={{ color: '#2D2D2D', fontWeight: 500 }}>{invoice.dueDate}</span>
+                <span className="text-sm" style={{ color: '#2D2D2D', fontWeight: 500 }}>{formatDate(invoiceData.due_date)}</span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-sm" style={{ color: '#B0B3B8' }}>Payment Terms</span>
-                <span className="text-sm" style={{ color: '#2D2D2D', fontWeight: 500 }}>{invoice.paymentTerms}</span>
+                <span className="text-sm" style={{ color: '#B0B3B8' }}>Status</span>
+                <Badge 
+                  variant="outline" 
+                  className="rounded-full px-3"
+                  style={{ 
+                    backgroundColor: invoiceData.status === 'paid' ? 'rgba(13, 148, 136, 0.1)' : 
+                                    invoiceData.status === 'overdue' ? 'rgba(220, 38, 38, 0.1)' : 
+                                    'rgba(20, 70, 42, 0.08)',
+                    color: invoiceData.status === 'paid' ? '#0D9488' : 
+                           invoiceData.status === 'overdue' ? '#DC2626' : '#14462a',
+                    borderColor: 'transparent'
+                  }}
+                >
+                  {invoiceData.status ? invoiceData.status.charAt(0).toUpperCase() + invoiceData.status.slice(1).replace('_', ' ') : 'Draft'}
+                </Badge>
               </div>
             </div>
             <div className="space-y-3">
-              <div className="flex items-center justify-between">
-                <span className="text-sm" style={{ color: '#B0B3B8' }}>Billed to</span>
-                <span className="text-sm" style={{ color: '#14462a', fontWeight: 500 }}>{invoice.billTo.email}</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-sm" style={{ color: '#B0B3B8' }}>Client Name</span>
-                <span className="text-sm" style={{ color: '#2D2D2D', fontWeight: 500 }}>{invoice.billTo.name}</span>
-              </div>
-              {invoice.billTo.company && (
-                <div className="flex items-center justify-between">
-                  <span className="text-sm" style={{ color: '#B0B3B8' }}>Company</span>
-                  <span className="text-sm" style={{ color: '#2D2D2D', fontWeight: 500 }}>{invoice.billTo.company}</span>
-                </div>
+              {invoiceData.customer && (
+                <>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm" style={{ color: '#B0B3B8' }}>Billed to</span>
+                    <span className="text-sm" style={{ color: '#14462a', fontWeight: 500 }}>{invoiceData.customer.email || 'No email'}</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm" style={{ color: '#B0B3B8' }}>Client Name</span>
+                    <span className="text-sm" style={{ color: '#2D2D2D', fontWeight: 500 }}>{invoiceData.customer.name}</span>
+                  </div>
+                  {invoiceData.customer.company && (
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm" style={{ color: '#B0B3B8' }}>Company</span>
+                      <span className="text-sm" style={{ color: '#2D2D2D', fontWeight: 500 }}>{invoiceData.customer.company}</span>
+                    </div>
+                  )}
+                </>
               )}
               <div className="flex items-center justify-between">
                 <span className="text-sm" style={{ color: '#B0B3B8' }}>Currency</span>
-                <span className="text-sm" style={{ color: '#2D2D2D', fontWeight: 500 }}>{invoice.primaryCurrency.toUpperCase()}</span>
+                <span className="text-sm" style={{ color: '#2D2D2D', fontWeight: 500 }}>{invoiceData.currency?.toUpperCase() || 'GHS'}</span>
               </div>
             </div>
           </div>
@@ -572,25 +763,26 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
 
           {/* Table Rows */}
           <div className="space-y-4">
-            {invoice.items.map((item) => (
-              <div key={item.id} className="grid grid-cols-12 gap-4">
-                <div className="col-span-6">
-                  <p className="text-base mb-1" style={{ color: '#2D2D2D', fontWeight: 500 }}>{item.description}</p>
-                  {item.details && (
-                    <p className="text-sm" style={{ color: '#B0B3B8' }}>{item.details}</p>
-                  )}
+            {lineItems.length === 0 ? (
+              <p className="text-sm text-gray-500 text-center py-4">No line items</p>
+            ) : (
+              lineItems.map((item) => (
+                <div key={item.id} className="grid grid-cols-12 gap-4">
+                  <div className="col-span-6">
+                    <p className="text-base mb-1" style={{ color: '#2D2D2D', fontWeight: 500 }}>{item.description}</p>
+                  </div>
+                  <div className="col-span-2 text-center">
+                    <p className="text-base" style={{ color: '#2D2D2D', fontWeight: 500 }}>{item.quantity}</p>
+                  </div>
+                  <div className="col-span-2 text-right">
+                    <p className="text-base" style={{ color: '#2D2D2D', fontWeight: 500 }}>{maskAmount(formatCurrency(item.unit_price, invoiceData.currency))}</p>
+                  </div>
+                  <div className="col-span-2 text-right">
+                    <p className="text-base" style={{ color: '#2D2D2D', fontWeight: 500 }}>{maskAmount(formatCurrency(item.total, invoiceData.currency))}</p>
+                  </div>
                 </div>
-                <div className="col-span-2 text-center">
-                  <p className="text-base" style={{ color: '#2D2D2D', fontWeight: 500 }}>{item.quantity}</p>
-                </div>
-                <div className="col-span-2 text-right">
-                  <p className="text-base" style={{ color: '#2D2D2D', fontWeight: 500 }}>{maskAmount(`₵${item.unitPrice.toFixed(2)}`)}</p>
-                </div>
-                <div className="col-span-2 text-right">
-                  <p className="text-base" style={{ color: '#2D2D2D', fontWeight: 500 }}>{maskAmount(`₵${calculateItemTotal(item).toFixed(2)}`)}</p>
-                </div>
-              </div>
-            ))}
+              ))
+            )}
           </div>
         </div>
 
@@ -599,143 +791,194 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
           <div className="w-full max-w-sm space-y-3">
             <div className="grid grid-cols-2 gap-8 items-center py-2">
               <span className="text-base text-right" style={{ color: '#B0B3B8' }}>Subtotal</span>
-              <span className="text-base text-right" style={{ color: '#2D2D2D', fontWeight: 500 }}>{maskAmount(`₵${subtotal.toFixed(2)}`)}</span>
+              <span className="text-base text-right" style={{ color: '#2D2D2D', fontWeight: 500 }}>{maskAmount(formatCurrency(subtotal, invoiceData.currency))}</span>
             </div>
-            {totalTax > 0 && (
-              <div className="grid grid-cols-2 gap-8 items-center py-2">
-                <span className="text-base text-right" style={{ color: '#B0B3B8' }}>Tax</span>
-                <span className="text-base text-right" style={{ color: '#2D2D2D', fontWeight: 500 }}>{maskAmount(`₵${totalTax.toFixed(2)}`)}</span>
-              </div>
-            )}
-            {totalDiscount > 0 && (
-              <div className="grid grid-cols-2 gap-8 items-center py-2">
-                <span className="text-base text-right" style={{ color: '#B0B3B8' }}>Discount</span>
-                <span className="text-base text-right" style={{ color: '#2D2D2D', fontWeight: 500 }}>{maskAmount(`-₵${totalDiscount.toFixed(2)}`)}</span>
-              </div>
-            )}
             <div className="grid grid-cols-2 gap-8 items-center py-2">
               <span className="text-base text-right" style={{ color: '#2D2D2D', fontWeight: 500 }}>Total</span>
-              <span className="text-base text-right" style={{ color: '#2D2D2D', fontWeight: 500 }}>{maskAmount(`₵${total.toFixed(2)}`)}</span>
+              <span className="text-base text-right" style={{ color: '#2D2D2D', fontWeight: 500 }}>{maskAmount(formatCurrency(total, invoiceData.currency))}</span>
             </div>
             {amountPaid > 0 && (
               <div className="grid grid-cols-2 gap-8 items-center py-2">
                 <span className="text-base text-right" style={{ color: '#B0B3B8' }}>Amount Paid</span>
-                <span className="text-base text-right" style={{ color: '#0D9488', fontWeight: 500 }}>{maskAmount(`-₵${amountPaid.toFixed(2)}`)}</span>
+                <span className="text-base text-right" style={{ color: '#0D9488', fontWeight: 500 }}>{maskAmount(`-${formatCurrency(amountPaid, invoiceData.currency)}`)}</span>
               </div>
             )}
             <div className="grid grid-cols-2 gap-8 items-center pt-4">
               <span className="text-base font-semibold text-right" style={{ color: '#2D2D2D' }}>Balance Due</span>
-              <span className="text-base font-bold text-right" style={{ color: balanceDue > 0 ? '#2D2D2D' : '#0D9488' }}>{maskAmount(`₵${balanceDue.toFixed(2)}`)}</span>
+              <span className="text-base font-bold text-right" style={{ color: balanceDue > 0 ? '#2D2D2D' : '#0D9488' }}>{maskAmount(formatCurrency(balanceDue, invoiceData.currency))}</span>
             </div>
           </div>
         </div>
 
         {/* Payment History */}
-        {invoice.payments.length > 0 && (
+        {invoiceData.allocations && invoiceData.allocations.length > 0 && (
           <div className="mb-8">
             <h2 className="text-lg mb-4" style={{ color: '#2D2D2D', fontWeight: 600 }}>Payment History</h2>
             <div className="space-y-4">
-              {invoice.payments.map((payment) => (
-                <div key={payment.id} className="flex items-center justify-between">
+              {invoiceData.allocations.map((allocation) => (
+                <div key={allocation.id} className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <div className="h-10 w-10 rounded-full flex items-center justify-center" style={{ backgroundColor: 'rgba(20, 70, 42, 0.08)' }}>
                       <TickCircle size={18} color="#14462a" />
                     </div>
                     <div>
                       <p className="text-sm font-medium" style={{ color: '#2D2D2D' }}>
-                        {payment.rail === 'mtn_mobile_money' && 'MTN Mobile Money'}
-                        {payment.rail === 'bank_transfer' && 'Bank Transfer'}
-                        {payment.rail === 'card' && 'Card Payment'}
-                        {payment.rail === 'cash' && 'Cash'}
+                        {allocation.payment?.payment_method === 'mobile_money' && 'Mobile Money'}
+                        {allocation.payment?.payment_method === 'bank_transfer' && 'Bank Transfer'}
+                        {allocation.payment?.payment_method === 'card' && 'Card Payment'}
+                        {allocation.payment?.payment_method === 'cash' && 'Cash'}
+                        {!allocation.payment?.payment_method && 'Payment'}
                       </p>
                       <p className="text-xs" style={{ color: '#B0B3B8' }}>
-                        Ref: {payment.reference} • {payment.date}
+                        {allocation.payment?.reference && `Ref: ${allocation.payment.reference} • `}
+                        {allocation.payment?.payment_date && formatDate(allocation.payment.payment_date)}
                       </p>
                     </div>
                   </div>
-                  <p className="text-base font-medium" style={{ color: '#14462a' }}>{maskAmount(`₵${payment.amount.toFixed(2)}`)}</p>
+                  <p className="text-base font-medium" style={{ color: '#14462a' }}>{maskAmount(formatCurrency(allocation.amount, invoiceData.currency))}</p>
                 </div>
               ))}
             </div>
           </div>
         )}
 
+        {/* Attachments */}
+        <div className="mb-12">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-lg" style={{ color: '#2D2D2D', fontWeight: 600 }}>Attachments</h2>
+            <div className="flex items-center gap-2">
+              <input
+                ref={fileInputRef}
+                type="file"
+                className="hidden"
+                multiple
+                accept="application/pdf,image/png,image/jpeg"
+                onChange={handleAttachmentsSelected}
+              />
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handlePickAttachments}
+                disabled={uploadingAttachments}
+              >
+                {uploadingAttachments ? 'Uploading...' : 'Upload'}
+              </Button>
+            </div>
+          </div>
+
+          {attachmentError && (
+            <p className="text-xs mb-3" style={{ color: '#DC2626' }}>
+              {attachmentError}
+            </p>
+          )}
+
+          {attachments.length === 0 ? (
+            <p className="text-sm" style={{ color: '#B0B3B8' }}>No attachments</p>
+          ) : (
+            <div className="space-y-2">
+              {attachments.map((att) => (
+                <div
+                  key={att.id}
+                  className="flex items-center justify-between rounded-xl border border-[#E4E6EB] px-4 py-3"
+                >
+                  <div className="min-w-0">
+                    <p className="text-sm font-medium text-[#2D2D2D] truncate">{att.file_name}</p>
+                    <p className="text-xs text-[#B0B3B8]">
+                      {att.mime_type || 'file'}
+                      {att.file_size ? ` • ${(att.file_size / (1024 * 1024)).toFixed(2)} MB` : ''}
+                    </p>
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    {att.download_url ? (
+                      <a
+                        href={att.download_url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="text-sm"
+                        style={{ color: '#14462a', fontWeight: 500 }}
+                      >
+                        Download
+                      </a>
+                    ) : (
+                      <span className="text-xs text-[#B0B3B8]">Unavailable</span>
+                    )}
+                    <button
+                      type="button"
+                      onClick={() => handleDeleteAttachment(att.id)}
+                      className="text-sm"
+                      style={{ color: '#DC2626', fontWeight: 500 }}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
         {/* Notes */}
-        {invoice.notes && (
+        {invoiceData.notes && (
           <div className="mb-12">
             <h2 className="text-lg mb-4" style={{ color: '#2D2D2D', fontWeight: 600 }}>Notes</h2>
             <p className="text-sm" style={{ color: '#2D2D2D', lineHeight: '1.6' }}>
-              {invoice.notes}
+              {invoiceData.notes}
             </p>
           </div>
         )}
 
-        {/* Activity & Attachments - Single Section */}
+        {/* Activity */}
         <div>
-          <h2 className="text-lg mb-6" style={{ color: '#2D2D2D', fontWeight: 600 }}>Activity & Attachments</h2>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            {/* Activity */}
-            <div>
-              <h3 className="text-sm mb-4" style={{ color: '#B0B3B8', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Log Activity</h3>
-              <div className="space-y-6">
-                {invoice.activity.map((item, index) => (
-                  <div key={index} className="relative flex gap-4">
-                    {index !== invoice.activity.length - 1 && (
-                      <div className="absolute left-[15px] top-10 bottom-0 w-px" style={{ backgroundColor: '#E4E6EB' }} />
-                    )}
-                    <div className="shrink-0 mt-0.5">
-                      <div className="h-8 w-8 rounded-full flex items-center justify-center" style={{ backgroundColor: getActivityIconBackground(item.type) }}>
-                        {getActivityIcon(item.type)}
-                      </div>
-                    </div>
-                    <div className="flex-1 pb-2">
-                      <p className="text-sm mb-0.5" style={{ color: '#2D2D2D', fontWeight: 500 }}>
-                        {item.action}
-                      </p>
-                      <p className="text-xs" style={{ color: '#B0B3B8' }}>{item.date}</p>
+          <h2 className="text-lg mb-6" style={{ color: '#2D2D2D', fontWeight: 600 }}>Activity</h2>
+          <div>
+            <div className="space-y-6">
+              {activity.map((item, index) => (
+                <div key={index} className="relative flex gap-4">
+                  {index !== activity.length - 1 && (
+                    <div className="absolute left-[15px] top-10 bottom-0 w-px" style={{ backgroundColor: '#E4E6EB' }} />
+                  )}
+                  <div className="shrink-0 mt-0.5">
+                    <div className="h-8 w-8 rounded-full flex items-center justify-center" style={{ backgroundColor: getActivityIconBackground(item.type) }}>
+                      {getActivityIcon(item.type)}
                     </div>
                   </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Attachments */}
-            <div>
-              <h3 className="text-sm mb-4" style={{ color: '#B0B3B8', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Attachments</h3>
-              <div className="space-y-6">
-                {invoice.attachments.map((f) => (
-                  <div key={f.id} className="flex items-center gap-3">
-                    <div className="h-10 w-10 rounded-full flex items-center justify-center" style={{ backgroundColor: 'rgba(240, 242, 245, 0.5)' }}>
-                      <Image src="/icons/archive.png" alt="File" width={20} height={20} />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm truncate" style={{ color: '#2D2D2D', fontWeight: 500 }}>{f.name}</p>
-                      <p className="text-xs" style={{ color: '#B0B3B8' }}>{f.size} • {f.date}</p>
-                    </div>
-                    <Button 
-                      variant="ghost" 
-                      size="sm" 
-                      className="rounded-full px-4 h-8 transition-all" 
-                      style={{ color: '#2D2D2D', fontWeight: 400 }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.backgroundColor = 'rgba(20, 70, 42, 0.04)';
-                        e.currentTarget.style.color = '#14462a';
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.backgroundColor = 'transparent';
-                        e.currentTarget.style.color = '#2D2D2D';
-                      }}
-                    >
-                      <DocumentDownload size={14} color="currentColor" className="mr-1.5" />
-                      Download
-                    </Button>
+                  <div className="flex-1 pb-2">
+                    <p className="text-sm mb-0.5" style={{ color: '#2D2D2D', fontWeight: 500 }}>
+                      {item.action}
+                    </p>
+                    <p className="text-xs" style={{ color: '#B0B3B8' }}>{item.date}</p>
                   </div>
-                ))}
-              </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
       </div>
+
+      {/* Record Payment Modal */}
+      <RecordPaymentModal
+        open={showPaymentModal}
+        onOpenChange={setShowPaymentModal}
+        invoiceId={id}
+        invoiceNumber={invoiceData.invoice_number}
+        balanceDue={balanceDue}
+        currency={invoiceData.currency || 'GHS'}
+        onSuccess={() => refetch()}
+      />
+
+      {/* Send Invoice Modal */}
+      <SendInvoiceModal
+        open={showSendModal}
+        onOpenChange={setShowSendModal}
+        invoiceId={id}
+        invoiceNumber={invoiceData.invoice_number}
+        customerEmail={invoiceData.customer?.email || ''}
+        customerName={invoiceData.customer?.name || ''}
+        total={total}
+        currency={invoiceData.currency || 'GHS'}
+        onSuccess={() => refetch()}
+      />
     </div>
   );
 }

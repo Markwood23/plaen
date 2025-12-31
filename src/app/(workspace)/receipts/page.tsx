@@ -1,6 +1,11 @@
 "use client";
 
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import { format } from "date-fns";
+import { DateRange } from "react-day-picker";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { 
   RefreshCircle, 
   SearchNormal1, 
@@ -14,73 +19,159 @@ import {
   Trash, 
   ReceiptText,
   Clock,
-  Danger
+  Danger,
+  Edit2,
+  ArrowLeft2,
+  ArrowRight2,
+  Filter,
+  Money,
+  Category2,
 } from "iconsax-react";
-import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useState } from "react";
-import { DateRange } from "react-day-picker";
-import { format } from "date-fns";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import Link from "next/link";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Calendar } from "@/components/ui/calendar";
 import { useBalanceVisibility } from "@/contexts/balance-visibility-context";
+import { useReceiptsData, deleteReceipt, verifyReceipt } from "@/hooks/useReceiptsData";
+import { EmptyState } from "@/components/ui/empty-state";
 
-const receiptsData = [
-  { id: 1, receiptId: "#REC001", date: "Dec 15, 2024", vendor: "Office Supplies Co", category: "Office Supplies", amount: "₵523.45", status: "Verified", paymentMethod: "MTN MoMo" },
-  { id: 2, receiptId: "#REC002", date: "Dec 14, 2024", vendor: "Tech Solutions Ltd", category: "Equipment", amount: "₵2,450.00", status: "Pending", paymentMethod: "Bank Transfer" },
-  { id: 3, receiptId: "#REC003", date: "Dec 12, 2024", vendor: "Coffee Corner", category: "Meals", amount: "₵85.20", status: "Verified", paymentMethod: "Cash" },
-  { id: 4, receiptId: "#REC004", date: "Dec 10, 2024", vendor: "Internet Service", category: "Utilities", amount: "₵350.00", status: "Verified", paymentMethod: "Bank Transfer" },
-  { id: 5, receiptId: "#REC005", date: "Dec 8, 2024", vendor: "Fuel Station", category: "Transport", amount: "₵180.00", status: "Flagged", paymentMethod: "Cash" },
-  { id: 6, receiptId: "#REC006", date: "Dec 5, 2024", vendor: "Marketing Agency", category: "Marketing", amount: "₵1,850.00", status: "Pending", paymentMethod: "MTN MoMo" },
-];
+// Loading skeletons
+function TableSkeleton({ rows = 5 }: { rows?: number }) {
+  return (
+    <div className="space-y-3 p-4">
+      {Array.from({ length: rows }).map((_, i) => (
+        <div key={i} className="flex items-center gap-4 animate-pulse">
+          <div className="h-4 w-4 bg-gray-200 rounded" />
+          <div className="h-9 w-9 bg-gray-200 rounded-full" />
+          <div className="h-4 w-24 bg-gray-200 rounded" />
+          <div className="h-4 w-32 bg-gray-200 rounded flex-1" />
+          <div className="h-4 w-24 bg-gray-200 rounded" />
+          <div className="h-4 w-20 bg-gray-200 rounded" />
+          <div className="h-4 w-16 bg-gray-200 rounded" />
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function KPISkeleton() {
+  return (
+    <div className="group relative rounded-2xl p-6 animate-pulse" style={{ backgroundColor: 'rgba(176, 179, 184, 0.08)' }}>
+      <div className="flex items-center justify-between mb-4">
+        <div className="h-12 w-12 rounded-xl bg-gray-200" />
+        <div className="h-6 w-10 rounded-full bg-gray-200" />
+      </div>
+      <div className="h-4 w-16 bg-gray-200 rounded mb-2" />
+      <div className="h-8 w-24 bg-gray-200 rounded" />
+    </div>
+  );
+}
 
 export default function ReceiptsPage() {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedStatus, setSelectedStatus] = useState("all");
+  const [selectedCategory, setSelectedCategory] = useState("all");
   const [dateRange, setDateRange] = useState<DateRange | undefined>();
-  const [selectedRows, setSelectedRows] = useState<number[]>([]);
+  const [selectedRows, setSelectedRows] = useState<string[]>([]);
   const { maskAmount } = useBalanceVisibility();
-  
-  const currentReceipts = receiptsData;
-  
+
+  const { receipts, loading, error, pagination, refetch, setFilters, filters } = useReceiptsData({
+    page: 1,
+    limit: 10,
+  });
+
+  // Update filters when search or status changes
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setFilters({
+        ...filters,
+        search: searchQuery || undefined,
+        status: selectedStatus !== 'all' ? selectedStatus : undefined,
+        category: selectedCategory !== 'all' ? selectedCategory : undefined,
+        dateFrom: dateRange?.from ? format(dateRange.from, 'yyyy-MM-dd') : undefined,
+        dateTo: dateRange?.to ? format(dateRange.to, 'yyyy-MM-dd') : undefined,
+        page: 1,
+      });
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [searchQuery, selectedStatus, selectedCategory, dateRange]);
+
+  // Calculate KPIs from receipts
+  const totalReceipts = pagination.total;
+  const verifiedCount = receipts.filter(r => r.status === 'verified').length;
+  const pendingCount = receipts.filter(r => r.status === 'pending').length;
+  const flaggedCount = receipts.filter(r => r.status === 'flagged').length;
+  const totalAmount = receipts.reduce((sum, r) => sum + (r.amount || 0), 0);
+
   // Handle select all
-  const allSelected = currentReceipts.length > 0 && selectedRows.length === currentReceipts.length && currentReceipts.every(receipt => selectedRows.includes(receipt.id));
+  const allSelected = receipts.length > 0 && selectedRows.length === receipts.length;
   const someSelected = selectedRows.length > 0 && !allSelected;
 
   const toggleSelectAll = () => {
     if (allSelected) {
       setSelectedRows([]);
     } else {
-      setSelectedRows(currentReceipts.map((r) => r.id));
+      setSelectedRows(receipts.map(r => r.id));
     }
   };
 
-  const toggleSelectRow = (id: number) => {
-    if (selectedRows.includes(id)) {
-      setSelectedRows(selectedRows.filter(rowId => rowId !== id));
+  const toggleSelectRow = (id: string) => {
+    setSelectedRows(prev =>
+      prev.includes(id) ? prev.filter(rowId => rowId !== id) : [...prev, id]
+    );
+  };
+
+  const handleDelete = async (receiptId: string) => {
+    const confirmed = window.confirm('Are you sure you want to delete this receipt?');
+    if (!confirmed) return;
+
+    const result = await deleteReceipt(receiptId);
+    if (result.success) {
+      refetch();
     } else {
-      setSelectedRows([...selectedRows, id]);
+      alert(result.error || 'Failed to delete receipt');
     }
+  };
+
+  const handleVerify = async (receiptId: string) => {
+    const result = await verifyReceipt(receiptId);
+    if (result.success) {
+      refetch();
+    } else {
+      alert(result.error || 'Failed to verify receipt');
+    }
+  };
+
+  const formatAmount = (amount: number, currency: string = '₵') => {
+    return maskAmount(`${currency}${amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`);
+  };
+
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString('en-US', { 
+      month: 'short', 
+      day: 'numeric', 
+      year: 'numeric' 
+    });
   };
 
   const getStatusBadge = (status: string) => {
     switch (status) {
-      case "Verified":
+      case "verified":
         return (
           <Badge variant="verified">
             <TickCircle size={14} color="#14462a" variant="Bold" /> Verified
           </Badge>
         );
-      case "Pending":
+      case "pending":
         return (
           <Badge variant="pending">
             <Clock size={14} color="#D97706" variant="Bold" /> Pending
           </Badge>
         );
-      case "Flagged":
+      case "flagged":
         return (
           <Badge variant="flagged">
             <Danger size={14} color="#DC2626" variant="Bold" /> Flagged
@@ -90,6 +181,9 @@ export default function ReceiptsPage() {
         return null;
     }
   };
+
+  // Check if user has no receipts at all (for empty state)
+  const isNewUser = !loading && receipts.length === 0 && !searchQuery && selectedStatus === 'all' && selectedCategory === 'all' && !dateRange;
 
   return (
     <div className="space-y-6">
@@ -105,366 +199,321 @@ export default function ReceiptsPage() {
             size="sm"
             className="rounded-xl border-0 shadow-sm transition-all hover:shadow-md hover:scale-105"
             style={{ backgroundColor: 'white' }}
+            onClick={() => refetch()}
           >
-            <RefreshCircle size={16} color="#2D2D2D" variant="Linear" className="mr-2" />
+            <RefreshCircle size={16} color="#65676B" className="mr-2" />
             Refresh
           </Button>
           <Button
             size="sm"
             className="rounded-full shadow-sm transition-all hover:shadow-md hover:scale-105"
             style={{ backgroundColor: '#14462a', color: 'white' }}
+            asChild
           >
-            <Add size={16} color="white" variant="Linear" className="mr-2" />
-            Add Receipt
+            <Link href="/receipts/new">
+              <Add size={16} color="white" className="mr-2" />
+              Add Receipt
+            </Link>
           </Button>
         </div>
       </div>
 
-      {/* KPI Cards */}
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
-        <div className="group relative rounded-2xl p-6 transition-all duration-300 hover:scale-[1.02]" style={{ backgroundColor: 'rgba(13, 148, 136, 0.04)' }}>
-          <div className="flex items-center justify-between mb-4">
-            <div 
-              className="h-12 w-12 rounded-xl flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110"
-              style={{ backgroundColor: 'rgba(13, 148, 136, 0.12)' }}
-            >
-              <TickCircle size={24} color="#0D9488" variant="Linear" />
-            </div>
-            <div
-              className="inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-semibold"
-              style={{ backgroundColor: 'rgba(13, 148, 136, 0.12)', color: '#0D9488' }}
-            >
-              +5%
-            </div>
-          </div>
-          <p className="text-sm mb-2" style={{ color: '#65676B', fontWeight: 500 }}>Verified</p>
-          <div className="text-3xl tracking-tight" style={{ color: '#2D2D2D', fontWeight: 700 }}>{maskAmount("₵5,238.65")}</div>
-          <p className="text-xs mt-3" style={{ color: '#B0B3B8' }}>This month</p>
-        </div>
-
-        <div className="group relative rounded-2xl p-6 transition-all duration-300 hover:scale-[1.02]" style={{ backgroundColor: 'rgba(245, 158, 11, 0.04)' }}>
-          <div className="flex items-center justify-between mb-4">
-            <div 
-              className="h-12 w-12 rounded-xl flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110"
-              style={{ backgroundColor: 'rgba(245, 158, 11, 0.12)' }}
-            >
-              <Clock size={24} color="#F59E0B" variant="Bulk" />
-            </div>
-            <div
-              className="inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-semibold"
-              style={{ backgroundColor: 'rgba(245, 158, 11, 0.12)', color: '#F59E0B' }}
-            >
-              12
-            </div>
-          </div>
-          <p className="text-sm mb-2" style={{ color: '#65676B', fontWeight: 500 }}>Pending Review</p>
-          <div className="text-3xl tracking-tight" style={{ color: '#2D2D2D', fontWeight: 700 }}>{maskAmount("₵4,650.00")}</div>
-          <p className="text-xs mt-3" style={{ color: '#B0B3B8' }}>Awaiting verification</p>
-        </div>
-
-        <div className="group relative rounded-2xl p-6 transition-all duration-300 hover:scale-[1.02]" style={{ backgroundColor: 'rgba(20, 70, 42, 0.04)' }}>
-          <div className="flex items-center justify-between mb-4">
-            <div 
-              className="h-12 w-12 rounded-xl flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110"
-              style={{ backgroundColor: 'rgba(20, 70, 42, 0.12)' }}
-            >
-              <ReceiptText size={24} color="#14462a" variant="Bulk" />
-            </div>
-            <div
-              className="inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-semibold"
-              style={{ backgroundColor: 'rgba(20, 70, 42, 0.12)', color: '#14462a' }}
-            >
-              48
-            </div>
-          </div>
-          <p className="text-sm mb-2" style={{ color: '#65676B', fontWeight: 500 }}>Total Receipts</p>
-          <div className="text-3xl tracking-tight" style={{ color: '#2D2D2D', fontWeight: 700 }}>156</div>
-          <p className="text-xs mt-3" style={{ color: '#B0B3B8' }}>All time</p>
-        </div>
-
-        <div className="group relative rounded-2xl p-6 transition-all duration-300 hover:scale-[1.02]" style={{ backgroundColor: 'rgba(220, 38, 38, 0.04)' }}>
-          <div className="flex items-center justify-between mb-4">
-            <div 
-              className="h-12 w-12 rounded-xl flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110"
-              style={{ backgroundColor: 'rgba(220, 38, 38, 0.12)' }}
-            >
-              <Danger size={24} color="#DC2626" variant="Bulk" />
-            </div>
-            <div
-              className="inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-semibold"
-              style={{ backgroundColor: 'rgba(220, 38, 38, 0.12)', color: '#DC2626' }}
-            >
-              3
-            </div>
-          </div>
-          <p className="text-sm mb-2" style={{ color: '#65676B', fontWeight: 500 }}>Flagged</p>
-          <div className="text-3xl tracking-tight" style={{ color: '#2D2D2D', fontWeight: 700 }}>{maskAmount("₵265.20")}</div>
-          <p className="text-xs mt-3" style={{ color: '#B0B3B8' }}>Requires attention</p>
-        </div>
-      </div>
-
-      {/* Search and Filters */}
-      <div className="rounded-2xl p-6" style={{ backgroundColor: '#FAFBFC' }}>
-        <div className="flex items-center justify-between mb-5">
-          <div>
-            <h3 className="text-sm font-semibold" style={{ color: '#2D2D2D' }}>Filter Receipts</h3>
-            <p className="text-xs mt-0.5" style={{ color: '#B0B3B8' }}>Refine your search results</p>
-          </div>
-          <button className="text-xs font-medium px-3 py-1.5 rounded-full transition-all hover:bg-white" style={{ color: '#14462a' }}>
-            Clear all
-          </button>
-        </div>
-        
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
-          <div>
-            <label htmlFor="search" className="block text-xs mb-2 font-medium" style={{ color: '#65676B' }}>
-              Search
-            </label>
-            <div className="relative group">
-              <SearchNormal1 size={16} color="#B0B3B8" variant="Linear" className="absolute left-3.5 top-1/2 -translate-y-1/2 transition-colors" />
-              <Input
-                id="search"
-                placeholder="Search receipts..."
-                className="h-11 pl-10 rounded-xl border-0 shadow-sm transition-all focus:shadow-md focus:scale-[1.01]"
-                style={{ backgroundColor: '#FAFBFC' }}
-              />
-            </div>
-          </div>
-          <div>
-            <label htmlFor="category" className="block text-xs mb-2 font-medium" style={{ color: '#65676B' }}>
-              Category
-            </label>
-            <Select defaultValue="all">
-              <SelectTrigger id="category" className="h-11 w-full rounded-xl border-0 shadow-sm transition-all hover:shadow-md" style={{ backgroundColor: '#FAFBFC' }}>
-                <SelectValue placeholder="All categories" />
-              </SelectTrigger>
-              <SelectContent className="rounded-2xl p-2" style={{ boxShadow: '0 4px 16px rgba(0, 0, 0, 0.1)' }}>
-                <SelectItem value="all" className="rounded-xl px-3 py-2.5 cursor-pointer transition-all">
-                  <span className="font-medium" style={{ color: '#2D2D2D' }}>All categories</span>
-                </SelectItem>
-                <SelectItem value="office" className="rounded-xl px-3 py-2.5 cursor-pointer transition-all">
-                  <span className="font-medium" style={{ color: '#2D2D2D' }}>Office Supplies</span>
-                </SelectItem>
-                <SelectItem value="equipment" className="rounded-xl px-3 py-2.5 cursor-pointer transition-all">
-                  <span className="font-medium" style={{ color: '#2D2D2D' }}>Equipment</span>
-                </SelectItem>
-                <SelectItem value="meals" className="rounded-xl px-3 py-2.5 cursor-pointer transition-all">
-                  <span className="font-medium" style={{ color: '#2D2D2D' }}>Meals</span>
-                </SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-          <div>
-            <label htmlFor="status" className="block text-xs mb-2 font-medium" style={{ color: '#65676B' }}>
-              Status
-            </label>
-            <Select defaultValue="all">
-              <SelectTrigger id="status" className="h-11 w-full rounded-xl border-0 shadow-sm transition-all hover:shadow-md" style={{ backgroundColor: '#FAFBFC' }}>
-                <SelectValue placeholder="All statuses" />
-              </SelectTrigger>
-              <SelectContent className="rounded-2xl p-2" style={{ boxShadow: '0 4px 16px rgba(0, 0, 0, 0.1)' }}>
-                <SelectItem value="all" className="rounded-xl px-3 py-2.5 cursor-pointer transition-all">
-                  <span className="font-medium" style={{ color: '#2D2D2D' }}>All statuses</span>
-                </SelectItem>
-                <SelectItem value="verified" className="rounded-xl px-3 py-2.5 cursor-pointer transition-all">
-                  <div className="flex items-center gap-3">
-                    <div className="h-2.5 w-2.5 rounded-full ring-2 ring-offset-1" style={{ backgroundColor: '#14462a' }}></div>
-                    <span className="font-medium" style={{ color: '#2D2D2D' }}>Verified</span>
-                  </div>
-                </SelectItem>
-                <SelectItem value="pending" className="rounded-xl px-3 py-2.5 cursor-pointer transition-all">
-                  <div className="flex items-center gap-3">
-                    <div className="h-2.5 w-2.5 rounded-full ring-2 ring-offset-1" style={{ backgroundColor: '#F59E0B' }}></div>
-                    <span className="font-medium" style={{ color: '#2D2D2D' }}>Pending</span>
-                  </div>
-                </SelectItem>
-                <SelectItem value="flagged" className="rounded-xl px-3 py-2.5 cursor-pointer transition-all">
-                  <div className="flex items-center gap-3">
-                    <div className="h-2.5 w-2.5 rounded-full ring-2 ring-offset-1" style={{ backgroundColor: '#DC2626' }}></div>
-                    <span className="font-medium" style={{ color: '#2D2D2D' }}>Flagged</span>
-                  </div>
-                </SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-          <div>
-            <label className="block text-xs mb-2 font-medium" style={{ color: '#65676B' }}>
-              Date Range
-            </label>
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button
-                  variant="outline"
-                  className="h-11 w-full justify-start text-left rounded-xl border-0 shadow-sm transition-all hover:shadow-md"
-                  style={{ backgroundColor: 'white', color: dateRange ? '#2D2D2D' : '#B0B3B8', fontWeight: 400 }}
-                >
-                  <CalendarIcon size={16} color="#B0B3B8" variant="Linear" className="mr-2" />
-                  {dateRange?.from ? (
-                    dateRange.to ? (
-                      <>
-                        {format(dateRange.from, "LLL dd, y")} - {format(dateRange.to, "LLL dd, y")}
-                      </>
-                    ) : (
-                      format(dateRange.from, "LLL dd, y")
-                    )
-                  ) : (
-                    <span>Pick a date range</span>
-                  )}
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-auto p-0" align="end">
-                <Calendar
-                  mode="range"
-                  selected={dateRange}
-                  onSelect={setDateRange}
-                  numberOfMonths={2}
-                />
-              </PopoverContent>
-            </Popover>
-          </div>
-        </div>
-      </div>
-
-      {/* Receipt Table */}
-      <div className="rounded-2xl overflow-hidden" style={{ backgroundColor: 'white', boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.05)' }}>
-        {/* Bulk Actions Bar */}
-        {selectedRows.length > 0 && (
-          <div className="flex items-center justify-between px-6 py-4 border-b" style={{ backgroundColor: 'rgba(20, 70, 42, 0.04)', borderColor: 'rgba(20, 70, 42, 0.1)' }}>
-            <div className="flex items-center gap-3">
-              <div className="h-8 w-8 rounded-full flex items-center justify-center" style={{ backgroundColor: 'rgba(20, 70, 42, 0.12)' }}>
-                <TickCircle size={16} color="#14462a" variant="Linear" />
+      {/* Stats Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {loading ? (
+          <>
+            <KPISkeleton />
+            <KPISkeleton />
+            <KPISkeleton />
+            <KPISkeleton />
+          </>
+        ) : (
+          <>
+            <div className="group relative rounded-2xl p-6 transition-all duration-300 hover:scale-[1.02]" style={{ backgroundColor: 'rgba(20, 70, 42, 0.04)' }}>
+              <div className="flex items-center justify-between mb-4">
+                <div className="h-12 w-12 rounded-full flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110" style={{ backgroundColor: 'rgba(20, 70, 42, 0.12)' }}>
+                  <ReceiptText size={24} color="#14462a" variant="Bulk" />
+                </div>
+                <div className="flex items-center gap-1 px-2 py-1 rounded-full" style={{ backgroundColor: 'rgba(20, 70, 42, 0.12)' }}>
+                  <span className="text-xs font-semibold" style={{ color: '#14462a' }}>{totalReceipts}</span>
+                </div>
               </div>
-              <div>
-                <p className="text-sm font-semibold" style={{ color: '#2D2D2D' }}>
-                  {selectedRows.length} {selectedRows.length === 1 ? 'receipt' : 'receipts'} selected
-                </p>
-                <p className="text-xs" style={{ color: '#65676B' }}>
-                  Choose an action to apply
-                </p>
+              <p className="text-sm mb-2" style={{ color: '#65676B', fontWeight: 500 }}>Total Receipts</p>
+              <p className="text-3xl tracking-tight" style={{ color: '#2D2D2D', fontWeight: 700 }}>{totalReceipts}</p>
+            </div>
+
+            <div className="group relative rounded-2xl p-6 transition-all duration-300 hover:scale-[1.02]" style={{ backgroundColor: 'rgba(20, 70, 42, 0.04)' }}>
+              <div className="flex items-center justify-between mb-4">
+                <div className="h-12 w-12 rounded-full flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110" style={{ backgroundColor: 'rgba(20, 70, 42, 0.12)' }}>
+                  <TickCircle size={24} color="#14462a" variant="Bulk" />
+                </div>
               </div>
+              <p className="text-sm mb-2" style={{ color: '#65676B', fontWeight: 500 }}>Verified</p>
+              <p className="text-3xl tracking-tight" style={{ color: '#2D2D2D', fontWeight: 700 }}>{verifiedCount}</p>
             </div>
-            <div className="flex items-center gap-2">
-              <Button 
-                variant="outline" 
-                size="sm" 
-                className="rounded-xl border-0 shadow-sm transition-all hover:shadow-md hover:scale-105" 
-                style={{ backgroundColor: 'white' }}
-              >
-                <DocumentDownload size={16} color="#2D2D2D" variant="Linear" className="mr-2" /> Export Selected
-              </Button>
-              <Button 
-                variant="ghost" 
-                size="sm" 
-                className="rounded-xl transition-all hover:bg-white"
-                onClick={() => setSelectedRows([])}
-              >
-                Clear Selection
-              </Button>
+
+            <div className="group relative rounded-2xl p-6 transition-all duration-300 hover:scale-[1.02]" style={{ backgroundColor: 'rgba(217, 119, 6, 0.04)' }}>
+              <div className="flex items-center justify-between mb-4">
+                <div className="h-12 w-12 rounded-full flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110" style={{ backgroundColor: 'rgba(217, 119, 6, 0.12)' }}>
+                  <Clock size={24} color="#D97706" variant="Bulk" />
+                </div>
+              </div>
+              <p className="text-sm mb-2" style={{ color: '#65676B', fontWeight: 500 }}>Pending</p>
+              <p className="text-3xl tracking-tight" style={{ color: '#2D2D2D', fontWeight: 700 }}>{pendingCount}</p>
             </div>
-          </div>
+
+            <div className="group relative rounded-2xl p-6 transition-all duration-300 hover:scale-[1.02]" style={{ backgroundColor: 'rgba(220, 38, 38, 0.04)' }}>
+              <div className="flex items-center justify-between mb-4">
+                <div className="h-12 w-12 rounded-full flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110" style={{ backgroundColor: 'rgba(220, 38, 38, 0.12)' }}>
+                  <Danger size={24} color="#DC2626" variant="Bulk" />
+                </div>
+              </div>
+              <p className="text-sm mb-2" style={{ color: '#65676B', fontWeight: 500 }}>Flagged</p>
+              <p className="text-3xl tracking-tight" style={{ color: '#2D2D2D', fontWeight: 700 }}>{flaggedCount}</p>
+            </div>
+          </>
         )}
+      </div>
 
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead className="w-12">
-                <Checkbox 
-                  checked={allSelected}
-                  {...(someSelected && { 'data-state': 'indeterminate' })}
-                  onCheckedChange={toggleSelectAll}
-                  aria-label="Select all"
+      {/* Search and Filters - Only show if user has receipts */}
+      {!isNewUser && (
+        <div className="rounded-2xl p-6" style={{ backgroundColor: '#FAFBFC' }}>
+          <div className="flex items-center justify-between mb-5">
+            <div>
+              <h3 className="text-sm font-semibold" style={{ color: '#2D2D2D' }}>Filter Receipts</h3>
+              <p className="text-xs mt-0.5" style={{ color: '#B0B3B8' }}>Search and filter your receipts</p>
+            </div>
+            <button
+              onClick={() => {
+                setSearchQuery('');
+                setSelectedStatus('all');
+                setSelectedCategory('all');
+                setDateRange(undefined);
+              }}
+              className="text-xs font-medium px-3 py-1.5 rounded-full transition-all hover:bg-white"
+              style={{ color: '#14462a' }}
+            >
+              Clear all
+            </button>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div className="md:col-span-2">
+              <label className="text-xs mb-2 block font-medium" style={{ color: '#65676B' }}>Search</label>
+              <div className="relative">
+                <SearchNormal1 size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2" style={{ color: '#B0B3B8' }} />
+                <Input
+                  placeholder="Search by vendor, receipt ID..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="pl-10 h-11 rounded-xl border-0 shadow-sm transition-all focus:shadow-md"
+                  style={{ backgroundColor: 'white', color: '#2D2D2D' }}
                 />
-              </TableHead>
-              <TableHead>
-                <button className="flex items-center gap-1 hover:text-[#14462a] transition-colors">
-                  Receipt ID <ArrowSwapVertical size={14} color="#B0B3B8" variant="Linear" />
-                </button>
-              </TableHead>
-              <TableHead>
-                <button className="flex items-center gap-1 hover:text-[#14462a] transition-colors">
-                  Date <ArrowSwapVertical size={14} color="#B0B3B8" variant="Linear" />
-                </button>
-              </TableHead>
-              <TableHead>
-                <button className="flex items-center gap-1 hover:text-[#14462a] transition-colors">
-                  Vendor <ArrowSwapVertical size={14} color="#B0B3B8" variant="Linear" />
-                </button>
-              </TableHead>
-              <TableHead>Category</TableHead>
-              <TableHead>
-                <button className="flex items-center gap-1 hover:text-[#14462a] transition-colors">
-                  Amount <ArrowSwapVertical size={14} color="#B0B3B8" variant="Linear" />
-                </button>
-              </TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead className="w-12"></TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {currentReceipts.map((receipt) => (
-              <TableRow 
-                key={receipt.id}
-                data-state={selectedRows.includes(receipt.id) ? "selected" : undefined}
-                className="cursor-pointer"
-              >
-                <TableCell onClick={(e) => e.stopPropagation()}>
-                  <Checkbox 
-                    checked={selectedRows.includes(receipt.id)}
-                    onCheckedChange={() => toggleSelectRow(receipt.id)}
-                    aria-label={`Select receipt ${receipt.receiptId}`}
-                  />
-                </TableCell>
-                <TableCell className="font-medium">{receipt.receiptId}</TableCell>
-                <TableCell className="text-[#65676B]">{receipt.date}</TableCell>
-                <TableCell>{receipt.vendor}</TableCell>
-                <TableCell className="text-[#65676B]">{receipt.category}</TableCell>
-                <TableCell className="font-medium">{maskAmount(receipt.amount)}</TableCell>
-                <TableCell>
-                  {getStatusBadge(receipt.status)}
-                </TableCell>
-                <TableCell onClick={(e) => e.stopPropagation()}>
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <button className="inline-flex items-center rounded-full p-1.5 transition-all hover:bg-[rgba(20,70,42,0.06)]">
-                        <More size={16} color="#B0B3B8" variant="Linear" />
-                      </button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end" className="rounded-2xl w-56 p-2" style={{ boxShadow: '0 4px 20px rgba(0, 0, 0, 0.12)', border: '1px solid rgba(0, 0, 0, 0.06)' }}>
-                      <DropdownMenuItem className="gap-3 rounded-xl p-3 cursor-pointer group transition-all hover:bg-[rgba(20,70,42,0.06)]">
-                        <div 
-                          className="h-8 w-8 rounded-full flex items-center justify-center transition-all"
+              </div>
+            </div>
+
+            <div>
+              <label className="text-xs mb-2 block font-medium" style={{ color: '#65676B' }}>Status</label>
+              <Select value={selectedStatus} onValueChange={setSelectedStatus}>
+                <SelectTrigger className="h-11 rounded-xl border-0 shadow-sm transition-all hover:shadow-md" style={{ backgroundColor: 'white' }}>
+                  <SelectValue placeholder="All statuses" />
+                </SelectTrigger>
+                <SelectContent className="rounded-xl">
+                  <SelectItem value="all">All Statuses</SelectItem>
+                  <SelectItem value="verified">Verified</SelectItem>
+                  <SelectItem value="pending">Pending</SelectItem>
+                  <SelectItem value="flagged">Flagged</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div>
+              <label className="text-xs mb-2 block font-medium" style={{ color: '#65676B' }}>Category</label>
+              <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+                <SelectTrigger className="h-11 rounded-xl border-0 shadow-sm transition-all hover:shadow-md" style={{ backgroundColor: 'white' }}>
+                  <SelectValue placeholder="All categories" />
+                </SelectTrigger>
+                <SelectContent className="rounded-xl">
+                  <SelectItem value="all">All Categories</SelectItem>
+                  <SelectItem value="office_supplies">Office Supplies</SelectItem>
+                  <SelectItem value="equipment">Equipment</SelectItem>
+                  <SelectItem value="meals">Meals</SelectItem>
+                  <SelectItem value="utilities">Utilities</SelectItem>
+                  <SelectItem value="transport">Transport</SelectItem>
+                  <SelectItem value="marketing">Marketing</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Receipts Table */}
+      <div className="rounded-2xl overflow-hidden" style={{ backgroundColor: 'white', boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.05)' }}>
+        {loading ? (
+          <TableSkeleton rows={5} />
+        ) : isNewUser ? (
+          <EmptyState
+            icon={ReceiptText}
+            iconColor="#14462a"
+            title="No receipts yet"
+            description="Start tracking your expense receipts to manage your finances better."
+            actionLabel="Add Your First Receipt"
+            actionHref="/receipts/new"
+          />
+        ) : receipts.length === 0 ? (
+          <EmptyState
+            icon={SearchNormal1}
+            title="No results found"
+            description={searchQuery ? `No receipts matching "${searchQuery}"` : "No receipts match your filters. Try adjusting your search criteria."}
+            size="sm"
+          />
+        ) : (
+          <>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="w-12">
+                    <Checkbox
+                      checked={allSelected}
+                      {...(someSelected && { 'data-state': 'indeterminate' })}
+                      onCheckedChange={toggleSelectAll}
+                      aria-label="Select all"
+                    />
+                  </TableHead>
+                  <TableHead>Receipt ID</TableHead>
+                  <TableHead>Date</TableHead>
+                  <TableHead>Vendor</TableHead>
+                  <TableHead>Category</TableHead>
+                  <TableHead>Amount</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead>Payment Method</TableHead>
+                  <TableHead className="w-12"></TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {receipts.map((receipt) => (
+                  <TableRow
+                    key={receipt.id}
+                    className="cursor-pointer hover:bg-gray-50"
+                    onClick={() => window.location.href = `/receipts/${receipt.id}`}
+                  >
+                    <TableCell onClick={(e) => e.stopPropagation()}>
+                      <Checkbox
+                        checked={selectedRows.includes(receipt.id)}
+                        onCheckedChange={() => toggleSelectRow(receipt.id)}
+                        aria-label={`Select ${receipt.receipt_id}`}
+                      />
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex items-center gap-3">
+                        <div
+                          className="h-9 w-9 rounded-full flex items-center justify-center shrink-0"
                           style={{ backgroundColor: 'rgba(20, 70, 42, 0.08)' }}
                         >
-                          <Eye size={16} color="#14462a" variant="Linear" />
+                          <ReceiptText size={16} color="#14462a" />
                         </div>
-                        <span className="text-sm font-medium group-hover:text-[#14462a] transition-all" style={{ color: '#2D2D2D' }}>View Receipt</span>
-                      </DropdownMenuItem>
-                      <DropdownMenuItem className="gap-3 rounded-xl p-3 cursor-pointer group transition-all hover:bg-[rgba(20,70,42,0.06)]">
-                        <div 
-                          className="h-8 w-8 rounded-full flex items-center justify-center transition-all"
-                          style={{ backgroundColor: 'rgba(13, 148, 136, 0.08)' }}
-                        >
-                          <DocumentDownload size={16} color="#0D9488" variant="Linear" />
-                        </div>
-                        <span className="text-sm font-medium group-hover:text-[#14462a] transition-all" style={{ color: '#2D2D2D' }}>Download</span>
-                      </DropdownMenuItem>
-                      <DropdownMenuSeparator className="my-2" />
-                      <DropdownMenuItem className="gap-3 rounded-xl p-3 cursor-pointer group transition-all hover:bg-red-50">
-                        <div 
-                          className="h-8 w-8 rounded-full flex items-center justify-center transition-all"
-                          style={{ backgroundColor: 'rgba(220, 38, 38, 0.08)' }}
-                        >
-                          <Trash size={16} color="#DC2626" variant="Linear" />
-                        </div>
-                        <span className="text-sm font-medium transition-all" style={{ color: '#DC2626' }}>Delete</span>
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+                        <span className="font-medium" style={{ color: '#2D2D2D' }}>
+                          {receipt.receipt_id}
+                        </span>
+                      </div>
+                    </TableCell>
+                    <TableCell className="text-sm" style={{ color: '#65676B' }}>
+                      {formatDate(receipt.date)}
+                    </TableCell>
+                    <TableCell className="font-medium" style={{ color: '#2D2D2D' }}>
+                      {receipt.vendor}
+                    </TableCell>
+                    <TableCell>
+                      <Badge variant="outline" className="rounded-full capitalize">
+                        {receipt.category?.replace(/_/g, ' ') || 'Uncategorized'}
+                      </Badge>
+                    </TableCell>
+                    <TableCell className="font-semibold" style={{ color: '#2D2D2D' }}>
+                      {formatAmount(receipt.amount, receipt.currency)}
+                    </TableCell>
+                    <TableCell>{getStatusBadge(receipt.status)}</TableCell>
+                    <TableCell className="text-sm" style={{ color: '#65676B' }}>
+                      {receipt.payment_method}
+                    </TableCell>
+                    <TableCell onClick={(e) => e.stopPropagation()}>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <button className="inline-flex items-center rounded-full p-1.5 transition-all hover:bg-[rgba(20,70,42,0.06)]">
+                            <More size={16} color="#B0B3B8" />
+                          </button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end" className="rounded-2xl w-48 p-2">
+                          <DropdownMenuItem asChild className="rounded-xl p-3 cursor-pointer">
+                            <Link href={`/receipts/${receipt.id}`}>
+                              <Eye size={16} color="#14462a" className="mr-2" />
+                              <span>View</span>
+                            </Link>
+                          </DropdownMenuItem>
+                          <DropdownMenuItem asChild className="rounded-xl p-3 cursor-pointer">
+                            <Link href={`/receipts/${receipt.id}/edit`}>
+                              <Edit2 size={16} color="#14462a" className="mr-2" />
+                              <span>Edit</span>
+                            </Link>
+                          </DropdownMenuItem>
+                          {receipt.status === 'pending' && (
+                            <DropdownMenuItem
+                              className="rounded-xl p-3 cursor-pointer"
+                              onClick={() => handleVerify(receipt.id)}
+                            >
+                              <TickCircle size={16} color="#14462a" className="mr-2" />
+                              <span>Verify</span>
+                            </DropdownMenuItem>
+                          )}
+                          <DropdownMenuSeparator className="my-2" />
+                          <DropdownMenuItem
+                            className="rounded-xl p-3 cursor-pointer text-red-600"
+                            onClick={() => handleDelete(receipt.id)}
+                          >
+                            <Trash size={16} color="#DC2626" className="mr-2" />
+                            <span>Delete</span>
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+
+            {/* Pagination */}
+            {pagination.totalPages > 1 && (
+              <div className="flex items-center justify-between px-6 py-4 border-t">
+                <p className="text-sm" style={{ color: '#65676B' }}>
+                  Showing {((pagination.page - 1) * pagination.limit) + 1} to {Math.min(pagination.page * pagination.limit, pagination.total)} of {pagination.total} receipts
+                </p>
+                <div className="flex items-center gap-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="rounded-xl"
+                    disabled={pagination.page <= 1}
+                    onClick={() => setFilters({ ...filters, page: pagination.page - 1 })}
+                  >
+                    <ArrowLeft2 size={16} />
+                  </Button>
+                  <span className="text-sm px-3" style={{ color: '#2D2D2D' }}>
+                    Page {pagination.page} of {pagination.totalPages}
+                  </span>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="rounded-xl"
+                    disabled={pagination.page >= pagination.totalPages}
+                    onClick={() => setFilters({ ...filters, page: pagination.page + 1 })}
+                  >
+                    <ArrowRight2 size={16} />
+                  </Button>
+                </div>
+              </div>
+            )}
+          </>
+        )}
       </div>
     </div>
   );

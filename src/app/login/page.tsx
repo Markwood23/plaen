@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { MarketingHeader } from "@/components/marketing/marketing-header";
@@ -8,15 +9,35 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { SmartButton } from "@/components/ui/smart-button";
 import { Badge } from "@/components/ui/badge";
-import { Lock1, Notification } from "iconsax-react";
+import { Lock1, Notification, Danger } from "iconsax-react";
+import { signIn } from "@/lib/auth/actions";
 
 export default function LoginPage() {
   const year = new Date().getFullYear();
   const router = useRouter();
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    router.push("/dashboard");
+    setError(null);
+    setLoading(true);
+
+    const formData = new FormData(e.currentTarget);
+
+    try {
+      const result = await signIn(formData);
+      
+      // If we get here without redirect, there was an error
+      if (result?.error) {
+        setError(result.error);
+      }
+    } catch (err) {
+      // Redirect happened (success) or unexpected error
+      // signIn redirects on success, so this may not execute
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -43,10 +64,24 @@ export default function LoginPage() {
           </div>
 
           <div className="mt-10 rounded-3xl border border-gray-200 bg-white p-8 shadow-[0_24px_80px_rgba(15,15,15,0.06)]">
+            {error && (
+              <div className="mb-6 flex items-center gap-2 rounded-xl bg-red-50 p-4 text-sm text-red-600">
+                <Danger size={18} color="#DC2626" />
+                <span>{error}</span>
+              </div>
+            )}
+            
             <form className="space-y-5" onSubmit={handleSubmit}>
               <div className="space-y-2">
                 <Label htmlFor="email">Email</Label>
-                <Input id="email" type="email" placeholder="you@example.com" required />
+                <Input 
+                  id="email" 
+                  name="email" 
+                  type="email" 
+                  placeholder="you@example.com" 
+                  required 
+                  disabled={loading}
+                />
               </div>
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
@@ -55,10 +90,17 @@ export default function LoginPage() {
                     Forgot password?
                   </Link>
                 </div>
-                <Input id="password" type="password" placeholder="Enter your password" required />
+                <Input 
+                  id="password" 
+                  name="password" 
+                  type="password" 
+                  placeholder="Enter your password" 
+                  required 
+                  disabled={loading}
+                />
               </div>
-              <SmartButton type="submit" className="w-full">
-                Log in
+              <SmartButton type="submit" className="w-full" disabled={loading}>
+                {loading ? "Logging in..." : "Log in"}
               </SmartButton>
             </form>
             <p className="mt-6 text-center text-sm text-gray-600">

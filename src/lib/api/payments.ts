@@ -99,10 +99,10 @@ class PaymentAPI {
   }
 
   /**
-   * Fetch invoice details by ID
+   * Fetch invoice details by ID (public endpoint - no auth required)
    */
   async getInvoice(invoiceId: string): Promise<Invoice> {
-    const response = await fetch(`${this.baseUrl}/invoices/${invoiceId}`, {
+    const response = await fetch(`${this.baseUrl}/pay/${invoiceId}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

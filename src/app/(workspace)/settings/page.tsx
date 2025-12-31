@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   User,
   Notification,
@@ -53,6 +53,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ColorPicker } from "@/components/ui/color-picker";
 import { CedisCircle } from "@/components/icons/cedis-icon";
+import { useSettingsData } from "@/hooks/useSettingsData";
 
 // Security verification types
 type VerificationType = "password" | "email-otp" | "sms-otp" | "2fa";
@@ -102,6 +103,9 @@ function CooldownIndicator({ lastChanged, cooldownDays }: { lastChanged: Date | 
 }
 
 export default function SettingsPage() {
+  // API data hook
+  const { settings: apiSettings, loading: settingsLoading, error: settingsError, updateSettings, saving } = useSettingsData();
+  
   const [showChangePlanModal, setShowChangePlanModal] = useState(false);
   const [showBillingHistoryModal, setShowBillingHistoryModal] = useState(false);
   const [showPaymentMethodModal, setShowPaymentMethodModal] = useState(false);
@@ -225,6 +229,86 @@ export default function SettingsPage() {
     lateFeeEnabled: false,
     lateFeePercent: 0,
   });
+
+  // Sync local state with API settings when they load
+  useEffect(() => {
+    if (apiSettings) {
+      setNotifications({
+        invoicePaid: apiSettings.notifications?.invoice_paid ?? true,
+        paymentReceived: apiSettings.notifications?.payment_received ?? true,
+        invoiceOverdue: apiSettings.notifications?.invoice_overdue ?? true,
+        weeklyReport: apiSettings.notifications?.weekly_report ?? false,
+        monthlyReport: apiSettings.notifications?.monthly_report ?? true,
+        remindersSent: apiSettings.notifications?.reminders_sent ?? true,
+        newCustomer: apiSettings.notifications?.new_customer ?? false,
+      });
+      setPaymentMethods({
+        flutterwaveEnabled: apiSettings.payment_methods?.flutterwave_enabled ?? false,
+        paystackEnabled: apiSettings.payment_methods?.paystack_enabled ?? false,
+        bankTransferEnabled: apiSettings.payment_methods?.bank_transfer_enabled ?? true,
+        momoEnabled: apiSettings.payment_methods?.momo_enabled ?? true,
+        cryptoEnabled: apiSettings.payment_methods?.crypto_enabled ?? false,
+      });
+      setInvoiceDefaults({
+        dueDateDays: apiSettings.default_payment_terms ?? 30,
+        onTimeThreshold: apiSettings.invoice_settings?.on_time_threshold_days ?? 3,
+        autoReminders: apiSettings.invoice_settings?.auto_reminders ?? true,
+        defaultTaxRate: apiSettings.invoice_settings?.default_tax_rate ?? 0,
+        lateFeeEnabled: apiSettings.invoice_settings?.late_fee_enabled ?? false,
+        lateFeePercent: apiSettings.invoice_settings?.late_fee_percent ?? 0,
+      });
+    }
+  }, [apiSettings]);
+
+  // Handler to save settings to API
+  const handleSaveSettings = async (section: 'notifications' | 'payment_methods' | 'invoice_settings' | 'branding') => {
+    let updates: Parameters<typeof updateSettings>[0] = {};
+    
+    switch (section) {
+      case 'notifications':
+        updates = {
+          notifications: {
+            invoice_paid: notifications.invoicePaid,
+            payment_received: notifications.paymentReceived,
+            invoice_overdue: notifications.invoiceOverdue,
+            weekly_report: notifications.weeklyReport,
+            monthly_report: notifications.monthlyReport,
+            reminders_sent: notifications.remindersSent,
+            new_customer: notifications.newCustomer,
+          }
+        };
+        break;
+      case 'payment_methods':
+        updates = {
+          payment_methods: {
+            flutterwave_enabled: paymentMethods.flutterwaveEnabled,
+            paystack_enabled: paymentMethods.paystackEnabled,
+            bank_transfer_enabled: paymentMethods.bankTransferEnabled,
+            momo_enabled: paymentMethods.momoEnabled,
+            crypto_enabled: paymentMethods.cryptoEnabled,
+          }
+        };
+        break;
+      case 'invoice_settings':
+        updates = {
+          default_payment_terms: invoiceDefaults.dueDateDays,
+          invoice_settings: {
+            on_time_threshold_days: invoiceDefaults.onTimeThreshold,
+            auto_reminders: invoiceDefaults.autoReminders,
+            default_tax_rate: invoiceDefaults.defaultTaxRate,
+            late_fee_enabled: invoiceDefaults.lateFeeEnabled,
+            late_fee_percent: invoiceDefaults.lateFeePercent,
+          }
+        };
+        break;
+    }
+    
+    try {
+      await updateSettings(updates);
+    } catch (err) {
+      console.error('Failed to save settings:', err);
+    }
+  };
 
   const handleSwitchChange = (key: string, value: boolean) => {
     setNotifications({ ...notifications, [key]: value });

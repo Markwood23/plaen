@@ -6,89 +6,127 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { X, FileText, Mail, Phone, Building2, MapPin, Hash, Calendar, Zap, TrendingUp, DollarSign } from "lucide-react";
-import { TickCircle, CloseCircle, RefreshCircle, Clock, Coin1 } from "iconsax-react";
-import { useState } from "react";
+import { FileText, Mail, Phone, Building2, MapPin, AlertCircle } from "lucide-react";
+import { TickCircle, CloseCircle, Clock, Coin1, Trash } from "iconsax-react";
+import { useState, useEffect, useCallback } from "react";
+import { useRouter } from "next/navigation";
+import { Skeleton } from "@/components/ui/skeleton";
 
-type Contact = {
-  id: number;
+interface ContactStats {
+  total_invoices: number;
+  total_revenue: number;
+  outstanding_balance: number;
+  paid_invoices: number;
+}
+
+interface RecentInvoice {
+  id: string;
+  invoice_number: string;
+  total: number;
+  status: string;
+  due_date: string;
+  created_at: string;
+}
+
+interface Contact {
+  id: string;
   name: string;
   email: string;
   phone: string;
   company: string;
-  totalInvoices: number;
-  totalPaid: string;
-  status: string;
-  avatar: string;
-  tags: string[];
-  category: string;
-  paymentTerms: string;
-  paymentBehavior: string;
-  notes: string;
-  // Extended fields for detail view
-  billingAddress?: string;
-  taxId?: string;
-};
-
-type Invoice = {
-  id: string;
-  date: string;
-  amount: string;
-  status: string;
-  dueDate: string;
-  purpose?: string;
-  balanceDue?: string;
-};
-
-// Removed Transfer type - invoice-first approach only
-
-interface ContactDetailModalProps {
-  contact: Contact | null;
-  isOpen: boolean;
-  onClose: () => void;
-  onSave?: (contact: Contact) => void;
-  mode?: "view" | "edit" | "create";
+  address?: string;
+  notes?: string;
+  tags?: string[];
+  created_at?: string;
 }
 
-// Mock invoice history data
-const mockInvoiceHistory: Invoice[] = [
-  { id: "PL-R4T8W2", date: "2024-11-10", amount: "₵2,450.00", status: "Paid", dueDate: "2024-11-25", purpose: "Web design services", balanceDue: "₵0.00" },
-  { id: "PL-K9M3P6", date: "2024-10-15", amount: "₵1,850.00", status: "Partially Paid", dueDate: "2024-10-30", purpose: "Monthly retainer", balanceDue: "₵850.00" },
-  { id: "PL-J2N7Q1", date: "2024-09-20", amount: "₵3,200.00", status: "Paid", dueDate: "2024-10-05", purpose: "Consulting services", balanceDue: "₵0.00" },
-  { id: "PL-H5L9S4", date: "2024-08-18", amount: "₵2,100.00", status: "Paid", dueDate: "2024-09-02", purpose: "Development work", balanceDue: "₵0.00" },
-];
+interface ContactDetailModalProps {
+  contactId?: string | null;
+  isOpen: boolean;
+  onClose: () => void;
+  onSave?: () => void;
+  mode?: "view" | "edit" | "create";
+  initialData?: Partial<Contact>;
+}
 
 const availableTags = ["VIP", "New", "International", "Tech", "Regular", "Corporate"];
-const categories = ["Corporate", "Freelance", "International"];
-const paymentTermsOptions = ["Due on receipt", "Net 15", "Net 30", "Net 45", "Net 60"];
-const paymentBehaviorOptions = ["Fast", "On-time", "Slow"];
 
-export function ContactDetailModal({ contact, isOpen, onClose, onSave, mode = "view" }: ContactDetailModalProps) {
+export function ContactDetailModal({ 
+  contactId, 
+  isOpen, 
+  onClose, 
+  onSave, 
+  mode = "view",
+  initialData
+}: ContactDetailModalProps) {
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [saving, setSaving] = useState(false);
+  const [deleting, setDeleting] = useState(false);
   const [editMode, setEditMode] = useState(mode === "edit" || mode === "create");
-  const [formData, setFormData] = useState<Contact>(
-    contact || {
-      id: 0,
-      name: "",
-      email: "",
-      phone: "",
-      company: "",
-      totalInvoices: 0,
-      totalPaid: "₵0.00",
-      status: "Active",
-      avatar: "",
-      tags: [],
-      category: "Corporate",
-      paymentTerms: "Net 30",
-      paymentBehavior: "On-time",
-      notes: "",
-      billingAddress: "",
-      taxId: "",
+  
+  const [contact, setContact] = useState<Contact | null>(null);
+  const [stats, setStats] = useState<ContactStats | null>(null);
+  const [recentInvoices, setRecentInvoices] = useState<RecentInvoice[]>([]);
+  
+  const [formData, setFormData] = useState<Contact>({
+    id: "",
+    name: initialData?.name || "",
+    email: initialData?.email || "",
+    phone: initialData?.phone || "",
+    company: initialData?.company || "",
+    address: initialData?.address || "",
+    notes: initialData?.notes || "",
+    tags: initialData?.tags || [],
+  });
+
+  const fetchContact = useCallback(async () => {
+    if (!contactId) return;
+    
+    setLoading(true);
+    setError(null);
+    
+    try {
+      const response = await fetch(`/api/contacts/${contactId}`);
+      const data = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to fetch contact");
+      }
+      
+      setContact(data.customer);
+      setStats(data.stats);
+      setRecentInvoices(data.recent_invoices || []);
+      setFormData({
+        id: data.customer.id,
+        name: data.customer.name || "",
+        email: data.customer.email || "",
+        phone: data.customer.phone || "",
+        company: data.customer.company || "",
+        address: data.customer.address || "",
+        notes: data.customer.notes || "",
+        tags: data.customer.tags || [],
+      });
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to load contact");
+    } finally {
+      setLoading(false);
     }
-  );
+  }, [contactId]);
+
+  useEffect(() => {
+    if (isOpen && contactId && mode !== "create") {
+      fetchContact();
+    }
+  }, [isOpen, contactId, mode, fetchContact]);
+
+  useEffect(() => {
+    setEditMode(mode === "edit" || mode === "create");
+  }, [mode]);
 
   const getInitials = (name: string) => {
     if (!name) return "?";
@@ -100,19 +138,103 @@ export function ContactDetailModal({ contact, isOpen, onClose, onSave, mode = "v
       .slice(0, 2);
   };
 
-  const handleSave = () => {
-    if (onSave) {
-      onSave(formData);
+  const formatCurrency = (amount: number) => {
+    const formatted = (amount / 100).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    return "₵" + formatted;
+  };
+
+  const formatDate = (dateString: string) => {
+    if (!dateString) return "-";
+    return new Date(dateString).toLocaleDateString('en-US', { 
+      month: 'short', 
+      day: 'numeric', 
+      year: 'numeric' 
+    });
+  };
+
+  const handleSave = async () => {
+    setSaving(true);
+    setError(null);
+
+    try {
+      const url = mode === "create" ? "/api/contacts" : `/api/contacts/${contactId}`;
+      const method = mode === "create" ? "POST" : "PATCH";
+      
+      const response = await fetch(url, {
+        method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          company: formData.company,
+          address: formData.address,
+          notes: formData.notes,
+          tags: formData.tags,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to save contact");
+      }
+
+      setEditMode(false);
+      onSave?.();
+      
+      if (mode === "create") {
+        onClose();
+      } else {
+        fetchContact();
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to save contact");
+    } finally {
+      setSaving(false);
     }
-    setEditMode(false);
-    onClose();
+  };
+
+  const handleDelete = async () => {
+    if (!contactId) return;
+    if (!confirm("Are you sure you want to delete this contact? This action cannot be undone.")) return;
+
+    setDeleting(true);
+    setError(null);
+
+    try {
+      const response = await fetch(`/api/contacts/${contactId}`, {
+        method: "DELETE",
+      });
+
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.error || "Failed to delete contact");
+      }
+
+      onSave?.();
+      onClose();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to delete contact");
+    } finally {
+      setDeleting(false);
+    }
   };
 
   const handleCancel = () => {
     if (mode === "create") {
       onClose();
-    } else {
-      setFormData(contact!);
+    } else if (contact) {
+      setFormData({
+        id: contact.id,
+        name: contact.name || "",
+        email: contact.email || "",
+        phone: contact.phone || "",
+        company: contact.company || "",
+        address: contact.address || "",
+        notes: contact.notes || "",
+        tags: contact.tags || [],
+      });
       setEditMode(false);
     }
   };
@@ -120,7 +242,9 @@ export function ContactDetailModal({ contact, isOpen, onClose, onSave, mode = "v
   const toggleTag = (tag: string) => {
     setFormData((prev) => ({
       ...prev,
-      tags: prev.tags.includes(tag) ? prev.tags.filter((t) => t !== tag) : [...prev.tags, tag],
+      tags: prev.tags?.includes(tag) 
+        ? prev.tags.filter((t) => t !== tag) 
+        : [...(prev.tags || []), tag],
     }));
   };
 
@@ -133,39 +257,43 @@ export function ContactDetailModal({ contact, isOpen, onClose, onSave, mode = "v
   };
 
   const getStatusBadge = (status: string) => {
-    switch (status) {
-      case "Paid":
+    switch (status?.toLowerCase()) {
+      case "paid":
         return (
           <Badge className="gap-1.5 px-2.5 py-1 rounded-full font-medium" style={{ backgroundColor: 'rgba(20, 70, 42, 0.1)', color: '#14462a', borderColor: 'transparent' }}>
             <TickCircle size={14} color="#14462a" variant="Bold" /> Paid
           </Badge>
         );
-      case "Partially Paid":
+      case "partially_paid":
         return (
           <Badge className="gap-1.5 px-2.5 py-1 rounded-full font-medium" style={{ backgroundColor: 'rgba(13, 148, 136, 0.1)', color: '#0D9488', borderColor: 'transparent' }}>
             <Coin1 size={14} color="#0D9488" variant="Bold" /> Partial
           </Badge>
         );
-      case "Cancelled":
+      case "sent":
+        return (
+          <Badge className="gap-1.5 px-2.5 py-1 rounded-full font-medium" style={{ backgroundColor: 'rgba(59, 130, 246, 0.1)', color: '#2563EB', borderColor: 'transparent' }}>
+            <Clock size={14} color="#2563EB" variant="Bold" /> Sent
+          </Badge>
+        );
+      case "overdue":
+        return (
+          <Badge className="gap-1.5 px-2.5 py-1 rounded-full font-medium" style={{ backgroundColor: 'rgba(220, 38, 38, 0.1)', color: '#DC2626', borderColor: 'transparent' }}>
+            <CloseCircle size={14} color="#DC2626" variant="Bold" /> Overdue
+          </Badge>
+        );
+      case "draft":
         return (
           <Badge className="gap-1.5 px-2.5 py-1 rounded-full font-medium" style={{ backgroundColor: 'rgba(101, 103, 107, 0.1)', color: '#65676B', borderColor: 'transparent' }}>
-            <CloseCircle size={14} color="#65676B" variant="Bold" /> Cancelled
-          </Badge>
-        );
-      case "Refunded":
-        return (
-          <Badge className="gap-1.5 px-2.5 py-1 rounded-full font-medium" style={{ backgroundColor: 'rgba(225, 29, 72, 0.1)', color: '#BE123C', borderColor: 'transparent' }}>
-            <RefreshCircle size={14} color="#BE123C" variant="Bold" /> Refunded
-          </Badge>
-        );
-      case "Pending":
-        return (
-          <Badge className="gap-1.5 px-2.5 py-1 rounded-full font-medium" style={{ backgroundColor: 'rgba(245, 158, 11, 0.1)', color: '#D97706', borderColor: 'transparent' }}>
-            <Clock size={14} color="#D97706" variant="Bold" /> Pending
+            Draft
           </Badge>
         );
       default:
-        return null;
+        return (
+          <Badge className="gap-1.5 px-2.5 py-1 rounded-full font-medium" style={{ backgroundColor: 'rgba(101, 103, 107, 0.1)', color: '#65676B', borderColor: 'transparent' }}>
+            {status || "Unknown"}
+          </Badge>
+        );
     }
   };
 
@@ -173,396 +301,344 @@ export function ContactDetailModal({ contact, isOpen, onClose, onSave, mode = "v
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="!max-w-[70vw] w-full max-h-[90vh] overflow-y-auto" showCloseButton={false}>
+      <DialogContent className="!max-w-[70vw] w-full max-h-[90vh] overflow-y-auto bg-white rounded-2xl" showCloseButton={true}>
         <DialogHeader>
-          <div className="flex items-center justify-between">
-            <DialogTitle className="text-2xl font-semibold text-[#2D2D2D]">
-              {mode === "create" ? "New Contact" : editMode ? "Edit Contact" : "Contact Details"}
-            </DialogTitle>
-            <button
-              onClick={onClose}
-              className="rounded-md p-1.5 hover:bg-[#F9F9F9] transition-colors"
-            >
-              <X className="h-5 w-5 text-[#949494]" />
-            </button>
-          </div>
+          <DialogTitle className="text-2xl font-semibold text-[#2D2D2D]">
+            {mode === "create" ? "New Contact" : editMode ? "Edit Contact" : "Contact Details"}
+          </DialogTitle>
         </DialogHeader>
 
-        <div className="space-y-6 pt-4">
-          {/* Contact Header */}
-          <div className="flex items-center gap-4 pb-6 border-b border-[#EBECE7]">
-            <Avatar className="h-16 w-16 shrink-0">
-              <AvatarImage src={formData.avatar} alt={formData.name} />
-              <AvatarFallback className="bg-[#F9F9F9] text-[#2D2D2D] text-lg font-medium border-2 border-[#EBECE7]">
-                {getInitials(formData.name)}
-              </AvatarFallback>
-            </Avatar>
-            <div className="flex-1">
-              <h3 className="text-xl font-semibold text-[#2D2D2D]">{formData.name || "Unnamed Contact"}</h3>
-              <p className="text-sm text-[#949494]">{formData.company}</p>
-              {!editMode && (
-                <div className="flex items-center gap-2 mt-2">
-                  {formData.status === "Active" ? (
-                    <Badge className="bg-[#14462a] text-white border-[#14462a] font-medium">
-                      Active
-                    </Badge>
-                  ) : (
-                    <Badge className="bg-gray-100 text-[#949494] border-[#EBECE7] font-medium">
-                      Inactive
-                    </Badge>
-                  )}
-                  <Badge variant="outline" className="border-[#EBECE7] text-[#2D2D2D]">
-                    {formData.category}
-                  </Badge>
+        {loading ? (
+          <div className="space-y-6 pt-4">
+            <div className="flex items-center gap-4 pb-6 border-b border-[#EBECE7]">
+              <Skeleton className="h-16 w-16 rounded-full" />
+              <div className="flex-1 space-y-2">
+                <Skeleton className="h-6 w-48" />
+                <Skeleton className="h-4 w-32" />
+              </div>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+              <Skeleton className="h-24 rounded-xl" />
+              <Skeleton className="h-24 rounded-xl" />
+              <Skeleton className="h-24 rounded-xl" />
+              <Skeleton className="h-24 rounded-xl" />
+            </div>
+          </div>
+        ) : error && mode !== "create" ? (
+          <div className="flex flex-col items-center justify-center py-12 space-y-4">
+            <div className="h-16 w-16 rounded-full bg-red-50 flex items-center justify-center">
+              <AlertCircle className="h-8 w-8 text-red-500" />
+            </div>
+            <p className="text-gray-600">{error}</p>
+            <Button variant="outline" onClick={onClose}>Close</Button>
+          </div>
+        ) : (
+          <div className="space-y-6 pt-4">
+            {/* Contact Header */}
+            <div className="flex items-center gap-4 pb-6 border-b border-[#EBECE7]">
+              <Avatar className="h-16 w-16 shrink-0">
+                <AvatarFallback className="bg-[#F9F9F9] text-[#2D2D2D] text-lg font-medium border-2 border-[#EBECE7]">
+                  {getInitials(formData.name)}
+                </AvatarFallback>
+              </Avatar>
+              <div className="flex-1">
+                <h3 className="text-xl font-semibold text-[#2D2D2D]">{formData.name || "Unnamed Contact"}</h3>
+                <p className="text-sm text-[#949494]">{formData.company || "No company"}</p>
+              </div>
+              {!editMode && mode !== "create" && (
+                <div className="flex items-center gap-2 flex-wrap">
+                  <Button
+                    onClick={() => router.push(`/invoices/new?customerId=${contactId}`)}
+                    className="bg-[#14462a] text-white hover:bg-[#14462a]/90"
+                  >
+                    <FileText className="h-4 w-4 mr-2" />
+                    Create Invoice
+                  </Button>
+                  <Button
+                    onClick={() => { if (formData.email) window.location.href = `mailto:${formData.email}`; }}
+                    variant="outline"
+                    disabled={!formData.email}
+                    className="border-[#EBECE7] hover:bg-[#F9F9F9]"
+                  >
+                    <Mail className="h-4 w-4 mr-2" />
+                    Email
+                  </Button>
+                  <Button
+                    onClick={() => { if (formData.phone) window.location.href = `tel:${formData.phone}`; }}
+                    variant="outline"
+                    disabled={!formData.phone}
+                    className="border-[#EBECE7] hover:bg-[#F9F9F9]"
+                  >
+                    <Phone className="h-4 w-4 mr-2" />
+                    Call
+                  </Button>
+                  <Button
+                    onClick={() => setEditMode(true)}
+                    variant="outline"
+                    className="border-[#EBECE7] hover:bg-[#F9F9F9]"
+                  >
+                    Edit
+                  </Button>
                 </div>
               )}
             </div>
-            {!editMode && mode !== "create" && (
-              <div className="flex items-center gap-2 flex-wrap">
-                {/* Primary Action - Create Invoice */}
-                <Button
-                  onClick={() => {
-                    // Create Invoice for this customer
-                    console.log("Create invoice for:", formData.name);
-                    // In real app: router.push(`/invoices/new?customerId=${formData.id}`);
-                  }}
-                  className="bg-[#14462a] text-white hover:bg-[#14462a]/90"
-                >
-                  <FileText className="h-4 w-4 mr-2" />
-                  Create Invoice
-                </Button>
-                
-                {/* Secondary Actions */}
-                <Button
-                  onClick={() => {
-                    window.location.href = `mailto:${formData.email}`;
-                  }}
-                  variant="outline"
-                  className="border-[#EBECE7] hover:bg-[#F9F9F9]"
-                >
-                  <Mail className="h-4 w-4 mr-2" />
-                  Email
-                </Button>
-                <Button
-                  onClick={() => {
-                    window.location.href = `tel:${formData.phone}`;
-                  }}
-                  variant="outline"
-                  className="border-[#EBECE7] hover:bg-[#F9F9F9]"
-                >
-                  <Phone className="h-4 w-4 mr-2" />
-                  Call
-                </Button>
-                <Button
-                  onClick={() => setEditMode(true)}
-                  variant="outline"
-                  className="border-[#EBECE7] hover:bg-[#F9F9F9]"
-                >
-                  Edit
-                </Button>
+
+            {/* Stats Cards - Only show in view/edit mode */}
+            {mode !== "create" && stats && (
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div className="p-4 rounded-xl" style={{ backgroundColor: 'rgba(20, 70, 42, 0.04)' }}>
+                  <p className="text-xs font-medium text-[#949494] uppercase tracking-wide mb-1">Total Invoices</p>
+                  <p className="text-2xl font-bold text-[#2D2D2D]">{stats.total_invoices}</p>
+                </div>
+                <div className="p-4 rounded-xl" style={{ backgroundColor: 'rgba(20, 70, 42, 0.04)' }}>
+                  <p className="text-xs font-medium text-[#949494] uppercase tracking-wide mb-1">Total Revenue</p>
+                  <p className="text-2xl font-bold text-[#2D2D2D]">{formatCurrency(stats.total_revenue)}</p>
+                </div>
+                <div className="p-4 rounded-xl" style={{ backgroundColor: 'rgba(20, 70, 42, 0.04)' }}>
+                  <p className="text-xs font-medium text-[#949494] uppercase tracking-wide mb-1">Outstanding</p>
+                  <p className="text-2xl font-bold text-[#2D2D2D]">{formatCurrency(stats.outstanding_balance)}</p>
+                </div>
+                <div className="p-4 rounded-xl" style={{ backgroundColor: 'rgba(20, 70, 42, 0.04)' }}>
+                  <p className="text-xs font-medium text-[#949494] uppercase tracking-wide mb-1">Paid Invoices</p>
+                  <p className="text-2xl font-bold text-[#2D2D2D]">{stats.paid_invoices}</p>
+                </div>
               </div>
             )}
-          </div>
 
-          {/* Contact Information */}
-          <div>
-            <h4 className="text-sm font-semibold text-[#2D2D2D] mb-4 flex items-center gap-2">
-              <Building2 className="h-4 w-4" />
-              Contact Information
-            </h4>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <Label htmlFor="name" className="text-xs font-medium text-[#949494] uppercase tracking-wide">
-                  Full Name
-                </Label>
-                <Input
-                  id="name"
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  disabled={!editMode}
-                  className="mt-1.5"
-                  placeholder="John Doe"
-                />
-              </div>
-              <div>
-                <Label htmlFor="company" className="text-xs font-medium text-[#949494] uppercase tracking-wide">
-                  Company
-                </Label>
-                <Input
-                  id="company"
-                  value={formData.company}
-                  onChange={(e) => setFormData({ ...formData, company: e.target.value })}
-                  disabled={!editMode}
-                  className="mt-1.5"
-                  placeholder="Company Name"
-                />
-              </div>
-              <div>
-                <Label htmlFor="email" className="text-xs font-medium text-[#949494] uppercase tracking-wide">
-                  Email
-                </Label>
-                <div className="relative mt-1.5">
-                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#949494]" />
+            {/* Contact Information */}
+            <div>
+              <h4 className="text-sm font-semibold text-[#2D2D2D] mb-4 flex items-center gap-2">
+                <Building2 className="h-4 w-4" />
+                Contact Information
+              </h4>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="name" className="text-xs font-medium text-[#949494] uppercase tracking-wide">
+                    Full Name
+                  </Label>
                   <Input
-                    id="email"
-                    type="email"
-                    value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    id="name"
+                    value={formData.name}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     disabled={!editMode}
-                    className="pl-10"
-                    placeholder="contact@example.com"
+                    className="mt-1.5"
+                    placeholder="John Doe"
                   />
                 </div>
-              </div>
-              <div>
-                <Label htmlFor="phone" className="text-xs font-medium text-[#949494] uppercase tracking-wide">
-                  Phone
-                </Label>
-                <div className="relative mt-1.5">
-                  <Phone className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#949494]" />
+                <div>
+                  <Label htmlFor="company" className="text-xs font-medium text-[#949494] uppercase tracking-wide">
+                    Company
+                  </Label>
                   <Input
-                    id="phone"
-                    value={formData.phone}
-                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                    id="company"
+                    value={formData.company}
+                    onChange={(e) => setFormData({ ...formData, company: e.target.value })}
                     disabled={!editMode}
-                    className="pl-10"
-                    placeholder="+233 24 123 4567"
+                    className="mt-1.5"
+                    placeholder="Company Name"
                   />
                 </div>
-              </div>
-              <div className="md:col-span-2">
-                <Label htmlFor="billingAddress" className="text-xs font-medium text-[#949494] uppercase tracking-wide">
-                  Billing Address
-                </Label>
-                <div className="relative mt-1.5">
-                  <MapPin className="absolute left-3 top-3 h-4 w-4 text-[#949494]" />
-                  <Textarea
-                    id="billingAddress"
-                    value={formData.billingAddress || ""}
-                    onChange={(e) => setFormData({ ...formData, billingAddress: e.target.value })}
-                    disabled={!editMode}
-                    className="pl-10 min-h-[80px]"
-                    placeholder="Street address, city, postal code"
-                  />
-                </div>
-              </div>
-              <div>
-                <Label htmlFor="taxId" className="text-xs font-medium text-[#949494] uppercase tracking-wide">
-                  Tax ID / Business Number
-                </Label>
-                <div className="relative mt-1.5">
-                  <Hash className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#949494]" />
-                  <Input
-                    id="taxId"
-                    value={formData.taxId || ""}
-                    onChange={(e) => setFormData({ ...formData, taxId: e.target.value })}
-                    disabled={!editMode}
-                    className="pl-10"
-                    placeholder="Optional"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <Separator className="bg-[#EBECE7]" />
-
-          {/* Payment & Relationship Settings */}
-          <div>
-            <h4 className="text-sm font-semibold text-[#2D2D2D] mb-4 flex items-center gap-2">
-              <DollarSign className="h-4 w-4" />
-              Payment & Relationship
-            </h4>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div>
-                <Label htmlFor="category" className="text-xs font-medium text-[#949494] uppercase tracking-wide">
-                  Category
-                </Label>
-                <Select
-                  value={formData.category}
-                  onValueChange={(value) => setFormData({ ...formData, category: value })}
-                  disabled={!editMode}
-                >
-                  <SelectTrigger className="mt-1.5">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {categories.map((cat) => (
-                      <SelectItem key={cat} value={cat}>
-                        {cat}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              <div>
-                <Label htmlFor="paymentTerms" className="text-xs font-medium text-[#949494] uppercase tracking-wide">
-                  Default Payment Terms
-                </Label>
-                <Select
-                  value={formData.paymentTerms}
-                  onValueChange={(value) => setFormData({ ...formData, paymentTerms: value })}
-                  disabled={!editMode}
-                >
-                  <SelectTrigger className="mt-1.5">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {paymentTermsOptions.map((term) => (
-                      <SelectItem key={term} value={term}>
-                        {term}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              <div>
-                <Label htmlFor="paymentBehavior" className="text-xs font-medium text-[#949494] uppercase tracking-wide">
-                  Payment Behavior
-                </Label>
-                <Select
-                  value={formData.paymentBehavior}
-                  onValueChange={(value) => setFormData({ ...formData, paymentBehavior: value })}
-                  disabled={!editMode}
-                >
-                  <SelectTrigger className="mt-1.5">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {paymentBehaviorOptions.map((behavior) => (
-                      <SelectItem key={behavior} value={behavior}>
-                        <div className="flex items-center gap-2">
-                          {behavior === "Fast" && <Zap className="h-3.5 w-3.5 text-green-600" />}
-                          {behavior === "On-time" && <Clock className="h-3.5 w-3.5 text-[#14462a]" />}
-                          {behavior === "Slow" && <TrendingUp className="h-3.5 w-3.5 text-orange-600 rotate-180" />}
-                          {behavior}
-                        </div>
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-          </div>
-
-          {/* Tags */}
-          <div>
-            <Label className="text-xs font-medium text-[#949494] uppercase tracking-wide mb-3 block">
-              Tags
-            </Label>
-            <div className="flex flex-wrap gap-2">
-              {editMode ? (
-                availableTags.map((tag) => {
-                  const isSelected = formData.tags.includes(tag);
-                  return (
-                    <button
-                      key={tag}
-                      onClick={() => toggleTag(tag)}
-                      className={`px-3 py-1.5 rounded-md text-xs font-medium border transition-all ${
-                        isSelected
-                          ? getTagClassName(tag)
-                          : "border-[#EBECE7] text-[#949494] hover:border-[#14462a] hover:text-[#14462a]"
-                      }`}
-                    >
-                      {tag}
-                    </button>
-                  );
-                })
-              ) : formData.tags.length > 0 ? (
-                formData.tags.map((tag, idx) => (
-                  <Badge key={idx} className={getTagClassName(tag)}>
-                    {tag}
-                  </Badge>
-                ))
-              ) : (
-                <span className="text-sm text-[#949494]">No tags</span>
-              )}
-            </div>
-          </div>
-
-          {/* Notes */}
-          <div>
-            <Label htmlFor="notes" className="text-xs font-medium text-[#949494] uppercase tracking-wide">
-              Internal Notes
-            </Label>
-            <Textarea
-              id="notes"
-              value={formData.notes}
-              onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-              disabled={!editMode}
-              className="mt-1.5 min-h-[100px]"
-              placeholder="Add any notes about this contact (payment preferences, communication style, project history, etc.)"
-            />
-          </div>
-
-          {/* Invoice History - Only show in view/edit mode, not create */}
-          {mode !== "create" && (
-            <>
-              <Separator className="bg-[#EBECE7]" />
-              <div>
-                <div className="flex items-center justify-between mb-4">
-                  <h4 className="text-sm font-semibold text-[#2D2D2D] flex items-center gap-2">
-                    <FileText className="h-4 w-4" />
-                    Invoice History
-                  </h4>
-                  <div className="text-sm text-[#949494]">
-                    {formData.totalInvoices} invoices · {formData.totalPaid} total paid
+                <div>
+                  <Label htmlFor="email" className="text-xs font-medium text-[#949494] uppercase tracking-wide">
+                    Email
+                  </Label>
+                  <div className="relative mt-1.5">
+                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#949494]" />
+                    <Input
+                      id="email"
+                      type="email"
+                      value={formData.email}
+                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                      disabled={!editMode}
+                      className="pl-10"
+                      placeholder="contact@example.com"
+                    />
                   </div>
                 </div>
-                
-                <Table className="[&_th]:py-4 [&_td]:py-4">
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead className="w-[120px]">Invoice</TableHead>
-                      <TableHead className="w-[110px]">Date</TableHead>
-                      <TableHead className="w-[110px]">Due Date</TableHead>
-                      <TableHead className="min-w-[180px]">Purpose</TableHead>
-                      <TableHead className="w-[120px]">Amount</TableHead>
-                      <TableHead className="w-[110px]">Balance Due</TableHead>
-                      <TableHead className="w-[100px]">Status</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {mockInvoiceHistory.map((invoice) => (
-                      <TableRow key={invoice.id}>
-                        <TableCell className="font-medium text-[#2D2D2D]">{invoice.id}</TableCell>
-                        <TableCell className="text-[#949494] font-normal">{invoice.date}</TableCell>
-                        <TableCell className="text-[#949494] font-normal">{invoice.dueDate}</TableCell>
-                        <TableCell className="text-[#2D2D2D]">{invoice.purpose || "—"}</TableCell>
-                        <TableCell className="font-medium text-[#2D2D2D]">{invoice.amount}</TableCell>
-                        <TableCell className="font-medium text-[#2D2D2D]">{invoice.balanceDue || "₵0.00"}</TableCell>
-                        <TableCell>
-                          {getStatusBadge(invoice.status)}
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
+                <div>
+                  <Label htmlFor="phone" className="text-xs font-medium text-[#949494] uppercase tracking-wide">
+                    Phone
+                  </Label>
+                  <div className="relative mt-1.5">
+                    <Phone className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#949494]" />
+                    <Input
+                      id="phone"
+                      value={formData.phone}
+                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                      disabled={!editMode}
+                      className="pl-10"
+                      placeholder="+233 24 123 4567"
+                    />
+                  </div>
+                </div>
+                <div className="md:col-span-2">
+                  <Label htmlFor="address" className="text-xs font-medium text-[#949494] uppercase tracking-wide">
+                    Address
+                  </Label>
+                  <div className="relative mt-1.5">
+                    <MapPin className="absolute left-3 top-3 h-4 w-4 text-[#949494]" />
+                    <Textarea
+                      id="address"
+                      value={formData.address || ""}
+                      onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+                      disabled={!editMode}
+                      className="pl-10 min-h-[80px]"
+                      placeholder="Street address, city, postal code"
+                    />
+                  </div>
+                </div>
               </div>
-            </>
-          )}
+            </div>
 
-          {/* Actions */}
-          <div className="flex items-center justify-end gap-3 pt-4 border-t border-[#EBECE7]">
-            {editMode ? (
+            <Separator className="bg-[#EBECE7]" />
+
+            {/* Tags */}
+            <div>
+              <Label className="text-xs font-medium text-[#949494] uppercase tracking-wide mb-3 block">
+                Tags
+              </Label>
+              <div className="flex flex-wrap gap-2">
+                {editMode ? (
+                  availableTags.map((tag) => {
+                    const isSelected = formData.tags?.includes(tag);
+                    const baseClass = "px-3 py-1.5 rounded-md text-xs font-medium border transition-all";
+                    const selectedClass = isSelected ? getTagClassName(tag) : "border-[#EBECE7] text-[#949494] hover:border-[#14462a] hover:text-[#14462a]";
+                    return (
+                      <button
+                        key={tag}
+                        type="button"
+                        onClick={() => toggleTag(tag)}
+                        className={`${baseClass} ${selectedClass}`}
+                      >
+                        {tag}
+                      </button>
+                    );
+                  })
+                ) : formData.tags && formData.tags.length > 0 ? (
+                  formData.tags.map((tag, idx) => (
+                    <Badge key={idx} className={getTagClassName(tag)}>
+                      {tag}
+                    </Badge>
+                  ))
+                ) : (
+                  <span className="text-sm text-[#949494]">No tags</span>
+                )}
+              </div>
+            </div>
+
+            {/* Notes */}
+            <div>
+              <Label htmlFor="notes" className="text-xs font-medium text-[#949494] uppercase tracking-wide">
+                Internal Notes
+              </Label>
+              <Textarea
+                id="notes"
+                value={formData.notes || ""}
+                onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
+                disabled={!editMode}
+                className="mt-1.5 min-h-[100px]"
+                placeholder="Add any notes about this contact..."
+              />
+            </div>
+
+            {/* Recent Invoices - Only show in view/edit mode */}
+            {mode !== "create" && recentInvoices.length > 0 && (
               <>
-                <Button variant="outline" onClick={handleCancel} className="border-[#EBECE7]">
-                  Cancel
-                </Button>
-                <Button
-                  onClick={handleSave}
-                  className="bg-[#14462a] text-white hover:bg-[#14462a]/90"
-                >
-                  {mode === "create" ? "Create Contact" : "Save Changes"}
-                </Button>
+                <Separator className="bg-[#EBECE7]" />
+                <div>
+                  <div className="flex items-center justify-between mb-4">
+                    <h4 className="text-sm font-semibold text-[#2D2D2D] flex items-center gap-2">
+                      <FileText className="h-4 w-4" />
+                      Recent Invoices
+                    </h4>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => router.push(`/invoices?customerId=${contactId}`)}
+                      className="text-[#14462a] hover:text-[#14462a]/80"
+                    >
+                      View All
+                    </Button>
+                  </div>
+                  
+                  <Table className="[&_th]:py-4 [&_td]:py-4">
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead className="w-[120px]">Invoice</TableHead>
+                        <TableHead className="w-[110px]">Date</TableHead>
+                        <TableHead className="w-[110px]">Due Date</TableHead>
+                        <TableHead className="w-[120px]">Amount</TableHead>
+                        <TableHead className="w-[100px]">Status</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {recentInvoices.map((invoice) => (
+                        <TableRow 
+                          key={invoice.id} 
+                          className="cursor-pointer hover:bg-gray-50"
+                          onClick={() => router.push(`/invoices/${invoice.id}`)}
+                        >
+                          <TableCell className="font-medium text-[#2D2D2D]">{invoice.invoice_number}</TableCell>
+                          <TableCell className="text-[#949494] font-normal">{formatDate(invoice.created_at)}</TableCell>
+                          <TableCell className="text-[#949494] font-normal">{formatDate(invoice.due_date)}</TableCell>
+                          <TableCell className="font-medium text-[#2D2D2D]">{formatCurrency(invoice.total)}</TableCell>
+                          <TableCell>
+                            {getStatusBadge(invoice.status)}
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
               </>
-            ) : (
-              <Button variant="outline" onClick={onClose} className="border-[#EBECE7]">
-                Close
-              </Button>
             )}
+
+            {/* Error Message */}
+            {error && (
+              <div className="flex items-center gap-2 p-3 rounded-xl bg-red-50 text-red-700">
+                <AlertCircle className="h-4 w-4" />
+                <span className="text-sm">{error}</span>
+              </div>
+            )}
+
+            {/* Actions */}
+            <div className="flex items-center justify-between pt-4 border-t border-[#EBECE7]">
+              <div>
+                {!editMode && mode !== "create" && (
+                  <Button 
+                    variant="ghost" 
+                    onClick={handleDelete}
+                    disabled={deleting}
+                    className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                  >
+                    <Trash size={16} className="mr-2" />
+                    {deleting ? "Deleting..." : "Delete Contact"}
+                  </Button>
+                )}
+              </div>
+              <div className="flex items-center gap-3">
+                {editMode ? (
+                  <>
+                    <Button variant="outline" onClick={handleCancel} disabled={saving} className="border-[#EBECE7]">
+                      Cancel
+                    </Button>
+                    <Button
+                      onClick={handleSave}
+                      disabled={saving || !formData.name}
+                      className="bg-[#14462a] text-white hover:bg-[#14462a]/90"
+                    >
+                      {saving ? "Saving..." : mode === "create" ? "Create Contact" : "Save Changes"}
+                    </Button>
+                  </>
+                ) : (
+                  <Button variant="outline" onClick={onClose} className="border-[#EBECE7]">
+                    Close
+                  </Button>
+                )}
+              </div>
+            </div>
           </div>
-        </div>
+        )}
       </DialogContent>
     </Dialog>
   );

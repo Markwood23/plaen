@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { SmartButton } from "@/components/ui/smart-button";
 import { Badge } from "@/components/ui/badge";
+import { signUp } from "@/lib/auth/actions";
 import { 
   TickCircle, 
   Lock1, 
@@ -876,6 +877,7 @@ export default function SignupPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [authError, setAuthError] = useState<string | null>(null);
   
   const [formData, setFormData] = useState<FormData>({
     accountType: null,
@@ -952,10 +954,34 @@ export default function SignupPage() {
 
   const handleSubmit = async () => {
     setIsLoading(true);
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    setIsLoading(false);
-    setIsComplete(true);
+    setAuthError(null);
+    
+    try {
+      // Create FormData for server action
+      const authFormData = new FormData();
+      authFormData.append('email', formData.email);
+      authFormData.append('password', formData.password);
+      authFormData.append('full_name', `${formData.firstName} ${formData.lastName}`);
+      authFormData.append('business_name', formData.businessName || formData.workspaceName);
+      
+      const result = await signUp(authFormData);
+      
+      if (result?.error) {
+        setAuthError(result.error);
+        setIsLoading(false);
+        return;
+      }
+      
+      // If email confirmation required
+      if (result?.success && result?.message) {
+        setIsComplete(true);
+      }
+      // Otherwise redirect happens in server action
+    } catch (err) {
+      // Redirect happened (success) or unexpected error
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   // Auto-fill workspace name from user's name
