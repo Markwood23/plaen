@@ -35,6 +35,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useBalanceVisibility } from "@/contexts/balance-visibility-context";
 import { useContactsData } from "@/hooks/useContactsData";
+import { useSettingsData } from "@/hooks/useSettingsData";
 import { createInvoice } from "@/hooks/useInvoicesData";
 
 // Validation helper functions
@@ -110,6 +111,9 @@ export default function CreateInvoicePage() {
   
   // Fetch real contacts from API
   const { contacts: savedContacts, loading: contactsLoading, refetch: refetchContacts } = useContactsData({ limit: 100 });
+  
+  // Fetch user profile/settings for "From" section
+  const { settings: userSettings, loading: settingsLoading } = useSettingsData();
   
   // Add New Customer Modal State
   const [showAddCustomerModal, setShowAddCustomerModal] = useState(false);
@@ -1003,36 +1007,52 @@ export default function CreateInvoicePage() {
                 
                 {/* Read-only business info display */}
                 <div className="space-y-4 p-5 rounded-xl bg-white border border-[#E4E6EB]">
-                  <div>
-                    <p className="text-xs text-[#B0B3B8] font-medium uppercase tracking-wide mb-1">Business Name</p>
-                    <p className="text-sm text-[#2D2D2D] font-medium">Your Business Name</p>
-                  </div>
-                  <div>
-                    <p className="text-xs text-[#B0B3B8] font-medium uppercase tracking-wide mb-1">Email</p>
-                    <p className="text-sm text-[#2D2D2D]">your@business.com</p>
-                  </div>
-                  <div>
-                    <p className="text-xs text-[#B0B3B8] font-medium uppercase tracking-wide mb-1">Phone</p>
-                    <p className="text-sm text-[#2D2D2D]">+233 XX XXX XXXX</p>
-                  </div>
-                  <div>
-                    <p className="text-xs text-[#B0B3B8] font-medium uppercase tracking-wide mb-1">Address</p>
-                    <p className="text-sm text-[#2D2D2D] leading-relaxed">
-                      123 Business Street<br />
-                      Accra, Greater Accra<br />
-                      Ghana
-                    </p>
-                  </div>
-                  <div className="grid grid-cols-2 gap-4 pt-2">
-                    <div>
-                      <p className="text-xs text-[#B0B3B8] font-medium uppercase tracking-wide mb-1">Tax/VAT Number</p>
-                      <p className="text-sm text-[#2D2D2D]">GH123456789</p>
+                  {settingsLoading ? (
+                    <div className="animate-pulse space-y-4">
+                      <div className="h-4 w-32 bg-gray-200 rounded" />
+                      <div className="h-4 w-48 bg-gray-200 rounded" />
+                      <div className="h-4 w-40 bg-gray-200 rounded" />
                     </div>
-                    <div>
-                      <p className="text-xs text-[#B0B3B8] font-medium uppercase tracking-wide mb-1">Website</p>
-                      <p className="text-sm text-[#2D2D2D]">www.yourbusiness.com</p>
-                    </div>
-                  </div>
+                  ) : (
+                    <>
+                      <div>
+                        <p className="text-xs text-[#B0B3B8] font-medium uppercase tracking-wide mb-1">Business Name</p>
+                        <p className="text-sm text-[#2D2D2D] font-medium">
+                          {userSettings?.business_name || userSettings?.full_name || <span className="text-[#B0B3B8] italic">Not set</span>}
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-xs text-[#B0B3B8] font-medium uppercase tracking-wide mb-1">Email</p>
+                        <p className="text-sm text-[#2D2D2D]">
+                          {userSettings?.email || <span className="text-[#B0B3B8] italic">Not set</span>}
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-xs text-[#B0B3B8] font-medium uppercase tracking-wide mb-1">Phone</p>
+                        <p className="text-sm text-[#2D2D2D]">
+                          {userSettings?.phone || <span className="text-[#B0B3B8] italic">Not set</span>}
+                        </p>
+                      </div>
+                      {(userSettings?.address?.line1 || userSettings?.address?.city || userSettings?.address?.country) && (
+                        <div>
+                          <p className="text-xs text-[#B0B3B8] font-medium uppercase tracking-wide mb-1">Address</p>
+                          <p className="text-sm text-[#2D2D2D] leading-relaxed">
+                            {userSettings.address.line1 && <>{userSettings.address.line1}<br /></>}
+                            {userSettings.address.line2 && <>{userSettings.address.line2}<br /></>}
+                            {[userSettings.address.city, userSettings.address.state].filter(Boolean).join(', ')}
+                            {(userSettings.address.city || userSettings.address.state) && <br />}
+                            {userSettings.address.country}
+                          </p>
+                        </div>
+                      )}
+                      {userSettings?.tax_id && (
+                        <div>
+                          <p className="text-xs text-[#B0B3B8] font-medium uppercase tracking-wide mb-1">Tax/VAT Number</p>
+                          <p className="text-sm text-[#2D2D2D]">{userSettings.tax_id}</p>
+                        </div>
+                      )}
+                    </>
+                  )}
                 </div>
                 
                 <p className="text-xs text-[#B0B3B8] mt-3">
