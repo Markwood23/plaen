@@ -20,7 +20,7 @@ const supportedCryptos = [
     name: "USD Coin (USDC)",
     description: "A stable cryptocurrency pegged to the US Dollar, providing price stability.",
     icon: "$",
-    color: "#0D9488",
+    color: "#14462a",
     features: [
       "Price stable (pegged to USD)",
       "Fast and cheap transfers",
@@ -59,7 +59,7 @@ const advantages = [
     title: "Lower Fees",
     description: "Cryptocurrency payments typically cost 1-3% compared to 3-5% for traditional methods.",
     icon: Bitcoin,
-    color: "#0D9488",
+    color: "#14462a",
   },
   {
     title: "Enhanced Security",
@@ -217,9 +217,9 @@ export default function CryptoPaymentsPage() {
         <li><strong>Price at time of payment:</strong> Invoice shows equivalent at payment time</li>
       </ul>
 
-      <div className="not-prose my-6 rounded-lg border border-[#0D948815] bg-[#0D948808] p-4">
+      <div className="not-prose my-6 rounded-lg border border-[#14462a15] bg-[#14462a08] p-4">
         <p className="text-sm text-gray-700">
-          <strong className="text-[#0D9488]">💡 Recommendation:</strong> For business payments, 
+          <strong className="text-[#14462a]">💡 Recommendation:</strong> For business payments, 
           consider accepting USDC (USD Coin) which maintains stable value and eliminates 
           volatility concerns.
         </p>

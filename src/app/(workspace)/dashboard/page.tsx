@@ -102,7 +102,7 @@ export default function DashboardPage() {
       icon: Card,
       up: (data.metrics.revenue_change_percent ?? 0) >= 0,
       sparkline: "M2 20 Q10 8, 18 12 T34 8 Q42 14, 50 10 T62 6",
-      iconColor: "#0D9488",
+      iconColor: "#14462a",
       iconBg: "rgba(13, 148, 136, 0.08)",
     },
     {
@@ -237,7 +237,7 @@ export default function DashboardPage() {
                   {data && data.metrics.total_invoices > 0 && (
                     <div
                       className="inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-semibold"
-                      style={kpi.up ? { backgroundColor: 'rgba(13, 148, 136, 0.12)', color: '#0D9488' } : { backgroundColor: 'rgba(220, 38, 38, 0.12)', color: '#DC2626' }}
+                      style={kpi.up ? { backgroundColor: 'rgba(13, 148, 136, 0.12)', color: '#14462a' } : { backgroundColor: 'rgba(220, 38, 38, 0.12)', color: '#DC2626' }}
                     >
                       {kpi.delta}
                     </div>

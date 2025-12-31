@@ -69,7 +69,7 @@ function ProPreview() {
       <div className="rounded-lg border border-gray-200 bg-white p-2">
         <div className="flex items-center justify-between mb-2">
           <span className="text-[9px] text-gray-500">Revenue this month</span>
-          <TrendUp size={12} color="#0D9488" />
+          <TrendUp size={12} color="#14462a" />
         </div>
         <div className="h-8 flex items-end gap-0.5">
           {[30, 45, 35, 55, 40, 60, 50].map((h, i) => (
@@ -82,7 +82,7 @@ function ProPreview() {
         </div>
       </div>
       <div className="flex items-center gap-2 rounded-lg bg-teal-50 px-3 py-2">
-        <Global size={16} color="#0D9488" variant="Bulk" />
+        <Global size={16} color="#14462a" variant="Bulk" />
         <span className="text-xs font-medium text-teal-700">Multiple workspaces</span>
       </div>
     </div>
@@ -102,8 +102,8 @@ function TeamsPreview() {
             key={i}
             className="h-8 w-8 rounded-full border-2 border-white flex items-center justify-center text-[10px] font-semibold"
             style={{ 
-              backgroundColor: ['#14462a', '#0D9488', '#14462a', '#0D9488'][i-1] + '20',
-              color: ['#14462a', '#0D9488', '#14462a', '#0D9488'][i-1]
+              backgroundColor: ['#14462a', '#14462a', '#14462a', '#14462a'][i-1] + '20',
+              color: ['#14462a', '#14462a', '#14462a', '#14462a'][i-1]
             }}
           >
             {['KA', 'AO', 'DM', 'SA'][i-1]}
@@ -114,7 +114,7 @@ function TeamsPreview() {
         </div>
       </div>
       <div className="flex items-center gap-2 rounded-lg bg-teal-50 px-3 py-2">
-        <ShieldTick size={16} color="#0D9488" variant="Bulk" />
+        <ShieldTick size={16} color="#14462a" variant="Bulk" />
         <span className="text-xs font-medium text-teal-700">Role permissions</span>
       </div>
     </div>
@@ -137,7 +137,7 @@ const pricingTiers = [
     highlighted: true,
     href: "/signup",
     buttonLabel: "Get started free",
-    color: "#0D9488",
+    color: "#14462a",
     preview: FreePreview,
   },
   {
@@ -205,7 +205,7 @@ const faqs = [
 
 const transactionFees = [
   { method: "Mobile Money", fee: "1.5%", icon: Mobile, color: "#D97706" },
-  { method: "Bank Transfer", fee: "1.0%", icon: Building, color: "#0D9488" },
+  { method: "Bank Transfer", fee: "1.0%", icon: Building, color: "#14462a" },
   { method: "Card", fee: "2.9%", icon: Card, color: "#0284C7" },
   { method: "Crypto", fee: "0.5%", icon: Bitcoin, color: "#EA580C" },
 ];

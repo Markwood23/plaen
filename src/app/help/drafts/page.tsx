@@ -9,7 +9,7 @@ export default function DraftsPage() {
       title="Saving and Managing Drafts"
       description="Learn how to save invoice drafts, manage work in progress, and efficiently handle multiple invoice projects."
       category="Creating Invoices"
-      categoryColor="#0D9488"
+      categoryColor="#14462a"
       readTime="3 min read"
       relatedArticles={[
         {

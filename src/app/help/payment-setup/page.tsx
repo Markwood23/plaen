@@ -24,7 +24,7 @@ const paymentMethods = [
     icon: Bitcoin,
     name: "Cryptocurrency",
     description: "Bitcoin, USDC, Ethereum",
-    color: "#0D9488",
+    color: "#14462a",
     speed: "Minutes",
     fees: "Low"
   }
@@ -173,9 +173,9 @@ export default function PaymentSetupPage() {
         <li><strong>Ethereum (ETH):</strong> Popular, fast transactions</li>
       </ul>
 
-      <div className="not-prose my-6 rounded-lg border border-[#0D948815] bg-[#0D948808] p-4">
+      <div className="not-prose my-6 rounded-lg border border-[#14462a15] bg-[#14462a08] p-4">
         <p className="text-sm text-gray-700">
-          <strong className="text-[#0D9488]">💡 Stablecoins recommended:</strong> USDC maintains 
+          <strong className="text-[#14462a]">💡 Stablecoins recommended:</strong> USDC maintains 
           a stable value tied to USD, eliminating price volatility concerns for you and your clients.
         </p>
       </div>

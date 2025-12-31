@@ -36,8 +36,8 @@ export default function ComingSoonPage() {
           <div className="grid w-full gap-4 text-left sm:grid-cols-3">
             <div className="rounded-2xl border border-gray-200 bg-white/80 p-4">
               <div className="flex items-center gap-3">
-                <div className="h-8 w-8 rounded-lg bg-[#0D9488]/10 flex items-center justify-center">
-                  <Setting2 size={18} color="#0D9488" variant="Bulk" />
+                <div className="h-8 w-8 rounded-lg bg-[#14462a]/10 flex items-center justify-center">
+                  <Setting2 size={18} color="#14462a" variant="Bulk" />
                 </div>
                 <div className="text-sm font-medium text-black">In progress</div>
               </div>
@@ -45,8 +45,8 @@ export default function ComingSoonPage() {
             </div>
             <div className="rounded-2xl border border-gray-200 bg-white/80 p-4">
               <div className="flex items-center gap-3">
-                <div className="h-8 w-8 rounded-lg bg-[#0D9488]/10 flex items-center justify-center">
-                  <Calendar size={18} color="#0D9488" variant="Bulk" />
+                <div className="h-8 w-8 rounded-lg bg-[#14462a]/10 flex items-center justify-center">
+                  <Calendar size={18} color="#14462a" variant="Bulk" />
                 </div>
                 <div className="text-sm font-medium text-black">Staged releases</div>
               </div>

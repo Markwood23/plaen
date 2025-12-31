@@ -266,8 +266,8 @@ export function ContactDetailModal({
         );
       case "partially_paid":
         return (
-          <Badge className="gap-1.5 px-2.5 py-1 rounded-full font-medium" style={{ backgroundColor: 'rgba(13, 148, 136, 0.1)', color: '#0D9488', borderColor: 'transparent' }}>
-            <Coin1 size={14} color="#0D9488" variant="Bold" /> Partial
+          <Badge className="gap-1.5 px-2.5 py-1 rounded-full font-medium" style={{ backgroundColor: 'rgba(13, 148, 136, 0.1)', color: '#14462a', borderColor: 'transparent' }}>
+            <Coin1 size={14} color="#14462a" variant="Bold" /> Partial
           </Badge>
         );
       case "sent":

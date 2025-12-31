@@ -133,7 +133,7 @@ export default function PaymentDetailPage({ params }: { params: Promise<{ id: st
   const getActivityIcon = (type: string) => {
     switch (type) {
       case "confirmed":
-        return <TickCircle size={12} color="#0D9488" />;
+        return <TickCircle size={12} color="#14462a" />;
       case "received":
         return <CedisCircle size={12} color="#14462a" />;
       case "initiated":
@@ -192,7 +192,7 @@ export default function PaymentDetailPage({ params }: { params: Promise<{ id: st
                 )}
                 {payment.isOnTime && (
                   <Badge variant="partial">
-                    <Clock size={12} color="#0D9488" /> On-time (≤3 days)
+                    <Clock size={12} color="#14462a" /> On-time (≤3 days)
                   </Badge>
                 )}
               </div>
@@ -227,8 +227,8 @@ export default function PaymentDetailPage({ params }: { params: Promise<{ id: st
             >
               {copiedRef ? (
                 <>
-                  <TickCircle size={16} color="#0D9488" />
-                  <span style={{ color: '#0D9488' }}>Copied</span>
+                  <TickCircle size={16} color="#14462a" />
+                  <span style={{ color: '#14462a' }}>Copied</span>
                 </>
               ) : (
                 <>
@@ -273,7 +273,7 @@ export default function PaymentDetailPage({ params }: { params: Promise<{ id: st
                     className="h-8 w-8 rounded-full flex items-center justify-center transition-all"
                     style={{ backgroundColor: 'rgba(13, 148, 136, 0.08)' }}
                   >
-                    <Sms size={16} color="#0D9488" />
+                    <Sms size={16} color="#14462a" />
                   </div>
                   <span className="text-sm font-medium group-hover:text-[#14462a] transition-all" style={{ color: '#2D2D2D' }}>
                     Email Receipt
@@ -572,7 +572,7 @@ export default function PaymentDetailPage({ params }: { params: Promise<{ id: st
                   className="h-10 w-10 rounded-full flex items-center justify-center transition-all"
                   style={{ backgroundColor: 'rgba(13, 148, 136, 0.08)' }}
                 >
-                  <Sms size={20} color="#0D9488" />
+                  <Sms size={20} color="#14462a" />
                 </div>
                 <div className="flex-1 text-left">
                   <p className="text-sm font-medium transition-all group-hover:text-[#14462a]" style={{ color: '#2D2D2D' }}>

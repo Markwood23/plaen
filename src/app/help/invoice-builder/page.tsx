@@ -29,7 +29,7 @@ const builderSections = [
     icon: DocumentText,
     title: "Line Items",
     description: "Services and products",
-    color: "#0D9488"
+    color: "#14462a"
   },
   {
     icon: Wallet,
@@ -45,7 +45,7 @@ export default function InvoiceBuilderPage() {
       title="Invoice Builder Guide"
       description="Master the invoice builder to create professional, detailed invoices that help you get paid faster."
       category="Creating Invoices"
-      categoryColor="#0D9488"
+      categoryColor="#14462a"
       readTime="5 min read"
       relatedArticles={[
         {
@@ -188,19 +188,19 @@ export default function InvoiceBuilderPage() {
       <h3>Tips for Line Items</h3>
       <div className="not-prose my-6 space-y-3">
         <div className="flex items-start gap-3">
-          <TickCircle size={18} color="#0D9488" variant="Bulk" className="flex-shrink-0 mt-1" />
+          <TickCircle size={18} color="#14462a" variant="Bulk" className="flex-shrink-0 mt-1" />
           <span className="text-gray-700">Be specific in descriptions—helps clients understand value</span>
         </div>
         <div className="flex items-start gap-3">
-          <TickCircle size={18} color="#0D9488" variant="Bulk" className="flex-shrink-0 mt-1" />
+          <TickCircle size={18} color="#14462a" variant="Bulk" className="flex-shrink-0 mt-1" />
           <span className="text-gray-700">Group related items together</span>
         </div>
         <div className="flex items-start gap-3">
-          <TickCircle size={18} color="#0D9488" variant="Bulk" className="flex-shrink-0 mt-1" />
+          <TickCircle size={18} color="#14462a" variant="Bulk" className="flex-shrink-0 mt-1" />
           <span className="text-gray-700">Include dates or project phases for clarity</span>
         </div>
         <div className="flex items-start gap-3">
-          <TickCircle size={18} color="#0D9488" variant="Bulk" className="flex-shrink-0 mt-1" />
+          <TickCircle size={18} color="#14462a" variant="Bulk" className="flex-shrink-0 mt-1" />
           <span className="text-gray-700">Save common items for quick reuse</span>
         </div>
       </div>
@@ -243,8 +243,8 @@ export default function InvoiceBuilderPage() {
         </div>
         <div className="flex items-center justify-between rounded-lg border border-gray-200 p-4">
           <div className="flex items-center gap-3">
-            <div className="h-8 w-8 rounded-lg bg-[#0D948815] flex items-center justify-center">
-              <span className="text-xs font-bold text-[#0D9488]">₿</span>
+            <div className="h-8 w-8 rounded-lg bg-[#14462a15] flex items-center justify-center">
+              <span className="text-xs font-bold text-[#14462a]">₿</span>
             </div>
             <span className="font-medium text-black">Cryptocurrency</span>
           </div>

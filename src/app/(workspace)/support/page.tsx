@@ -52,7 +52,7 @@ const articleContent: Record<string, {
         <div className="grid gap-4 sm:grid-cols-2 mb-8">
           {[
             { icon: UserAdd, title: "Add client details", description: "Enter your client's name, email, and billing address.", color: "#B45309", step: 1 },
-            { icon: Receipt21, title: "Add line items", description: "Describe your services with quantities and prices.", color: "#0D9488", step: 2 },
+            { icon: Receipt21, title: "Add line items", description: "Describe your services with quantities and prices.", color: "#14462a", step: 2 },
             { icon: Wallet, title: "Set payment options", description: "Choose how you want to receive payment.", color: "#D97706", step: 3 },
             { icon: Send2, title: "Send invoice", description: "Review and send directly to your client.", color: "#14462a", step: 4 },
           ].map((step) => {
@@ -266,7 +266,7 @@ const articleContent: Record<string, {
         <div className="space-y-4 mb-6">
           {[
             { icon: Mobile, title: "Mobile Money", desc: "MTN MoMo, Vodafone Cash, AirtelTigo Money", color: "#F59E0B", popular: true },
-            { icon: Bank, title: "Bank Transfer", desc: "Direct bank transfers in GHS and USD", color: "#0D9488", popular: false },
+            { icon: Bank, title: "Bank Transfer", desc: "Direct bank transfers in GHS and USD", color: "#14462a", popular: false },
             { icon: Card, title: "Card Payments", desc: "Visa, Mastercard via Paystack/Flutterwave", color: "#14462a", popular: false },
             { icon: Bitcoin, title: "Cryptocurrency", desc: "Bitcoin, USDT, USDC, Ethereum", color: "#F7931A", popular: false },
           ].map((method) => {
@@ -306,7 +306,7 @@ const articleContent: Record<string, {
     title: "How to Create an Invoice",
     description: "Master the invoice builder to create professional invoices in minutes.",
     category: "Invoices & Payments",
-    categoryColor: "#0D9488",
+    categoryColor: "#14462a",
     readTime: "5 min read",
     content: (
       <>
@@ -339,7 +339,7 @@ const articleContent: Record<string, {
             "Always preview before sending",
           ].map((tip) => (
             <div key={tip} className="flex items-center gap-3">
-              <TickCircle size={16} color="#0D9488" variant="Bulk" />
+              <TickCircle size={16} color="#14462a" variant="Bulk" />
               <span className="text-sm text-gray-700">{tip}</span>
             </div>
           ))}
@@ -405,7 +405,7 @@ const helpCategories = [
   {
     title: "Invoices & Payments",
     icon: Receipt21,
-    color: "#0D9488",
+    color: "#14462a",
     articles: [
       { title: "How to create an invoice", slug: "invoice-builder", views: "4.1K" },
       { title: "Setting payment terms", slug: "payment-terms-guide", views: "2.7K" },
@@ -505,7 +505,7 @@ export default function SupportPage() {
             title: "Email Support",
             description: "support@plaen.tech",
             action: "Send Email",
-            color: "#0D9488",
+            color: "#14462a",
             available: true,
           },
           {
@@ -532,7 +532,7 @@ export default function SupportPage() {
                 </div>
                 {option.available && (
                   <Badge variant="partial">
-                    <div className="h-1.5 w-1.5 rounded-full mr-1.5" style={{ backgroundColor: "#0D9488" }} />
+                    <div className="h-1.5 w-1.5 rounded-full mr-1.5" style={{ backgroundColor: "#14462a" }} />
                     Available
                   </Badge>
                 )}

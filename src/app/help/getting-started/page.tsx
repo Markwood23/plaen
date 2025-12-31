@@ -48,7 +48,7 @@ const quickTips = [
     title: "Customize your invoices",
     description: "Add your logo, business colors, and custom fields to match your brand.",
     icon: DocumentText,
-    color: "#0D9488"
+    color: "#14462a"
   },
   {
     title: "Invite team members", 

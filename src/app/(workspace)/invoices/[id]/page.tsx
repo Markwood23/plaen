@@ -251,7 +251,7 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
       case "sent":
         return <Send2 size={12} color="#14462a" />;
       case "finalized":
-        return <TickCircle size={12} color="#0D9488" />;
+        return <TickCircle size={12} color="#14462a" />;
       case "created":
         return <Receipt21 size={12} color="#14462a" />;
       case "payment":
@@ -627,7 +627,7 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
                   className="h-8 w-8 rounded-full flex items-center justify-center transition-all"
                   style={{ backgroundColor: 'rgba(13, 148, 136, 0.08)' }}
                 >
-                  <Eye size={16} color="#0D9488" />
+                  <Eye size={16} color="#14462a" />
                 </div>
                 <span className="text-sm font-medium group-hover:text-[#14462a] transition-all" style={{ color: '#2D2D2D' }}>View public page</span>
               </DropdownMenuItem>
@@ -707,7 +707,7 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
                     backgroundColor: invoiceData.status === 'paid' ? 'rgba(13, 148, 136, 0.1)' : 
                                     invoiceData.status === 'overdue' ? 'rgba(220, 38, 38, 0.1)' : 
                                     'rgba(20, 70, 42, 0.08)',
-                    color: invoiceData.status === 'paid' ? '#0D9488' : 
+                    color: invoiceData.status === 'paid' ? '#14462a' : 
                            invoiceData.status === 'overdue' ? '#DC2626' : '#14462a',
                     borderColor: 'transparent'
                   }}
@@ -801,12 +801,12 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
             {amountPaid > 0 && (
               <div className="grid grid-cols-2 gap-8 items-center py-2">
                 <span className="text-base text-right" style={{ color: '#B0B3B8' }}>Amount Paid</span>
-                <span className="text-base text-right" style={{ color: '#0D9488', fontWeight: 500 }}>{maskAmount(`-${formatCurrency(amountPaid, invoiceData.currency)}`)}</span>
+                <span className="text-base text-right" style={{ color: '#14462a', fontWeight: 500 }}>{maskAmount(`-${formatCurrency(amountPaid, invoiceData.currency)}`)}</span>
               </div>
             )}
             <div className="grid grid-cols-2 gap-8 items-center pt-4">
               <span className="text-base font-semibold text-right" style={{ color: '#2D2D2D' }}>Balance Due</span>
-              <span className="text-base font-bold text-right" style={{ color: balanceDue > 0 ? '#2D2D2D' : '#0D9488' }}>{maskAmount(formatCurrency(balanceDue, invoiceData.currency))}</span>
+              <span className="text-base font-bold text-right" style={{ color: balanceDue > 0 ? '#2D2D2D' : '#14462a' }}>{maskAmount(formatCurrency(balanceDue, invoiceData.currency))}</span>
             </div>
           </div>
         </div>

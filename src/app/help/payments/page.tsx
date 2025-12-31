@@ -13,7 +13,7 @@ const paymentStatuses = [
   {
     status: "Processing",
     description: "Payment initiated, being processed",
-    color: "#0D9488",
+    color: "#14462a",
     icon: RefreshCircle
   },
   {

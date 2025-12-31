@@ -421,14 +421,14 @@ export default function SettingsPage() {
                   <Label htmlFor="firstName">First Name</Label>
                   <span className="text-xs text-gray-400">(Changes are logged)</span>
                 </div>
-                <Input id="firstName" placeholder="Enter first name" defaultValue="John" />
+                <Input id="firstName" placeholder="Enter first name" defaultValue={apiSettings.full_name?.split(' ')[0] || ''} />
               </div>
               <div className="space-y-2">
                 <div className="flex items-center gap-2">
                   <Label htmlFor="lastName">Last Name</Label>
                   <span className="text-xs text-gray-400">(Changes are logged)</span>
                 </div>
-                <Input id="lastName" placeholder="Enter last name" defaultValue="Doe" />
+                <Input id="lastName" placeholder="Enter last name" defaultValue={apiSettings.full_name?.split(' ').slice(1).join(' ') || ''} />
               </div>
               
               {/* Email with verification */}
@@ -442,7 +442,7 @@ export default function SettingsPage() {
                     id="email" 
                     type="email" 
                     placeholder="email@example.com" 
-                    defaultValue="john@example.com" 
+                    defaultValue={apiSettings.email || ''} 
                     disabled
                     className="flex-1"
                   />
@@ -457,7 +457,7 @@ export default function SettingsPage() {
                 </div>
                 {pendingChanges.email && (
                   <div className="flex items-center gap-2 text-xs text-teal-600 bg-teal-50 px-3 py-2 rounded-lg">
-                    <TickCircle size={14} color="#0D9488" />
+                    <TickCircle size={14} color="#14462a" />
                     <span>Pending: {pendingChanges.email.value} - Check your new email to confirm</span>
                   </div>
                 )}
@@ -1098,7 +1098,7 @@ export default function SettingsPage() {
             <p className="text-sm text-gray-500 mb-4">Appears in all outgoing invoice emails</p>
             <Textarea
               placeholder="Best regards,&#10;Your Name&#10;Your Company"
-              defaultValue="Best regards,&#10;John Doe&#10;Plaen Technologies"
+              defaultValue={`Best regards,\n${apiSettings.full_name || 'Your Name'}\n${apiSettings.business_name || 'Your Business'}`}
             />
           </div>
 
@@ -1681,7 +1681,7 @@ export default function SettingsPage() {
                   <ul className="space-y-2 mb-6">
                     {plan.features.map((feature) => (
                       <li key={feature} className="flex items-start gap-2 text-sm text-gray-600">
-                        <TickCircle size={16} color="#0D9488" className="mt-0.5 flex-shrink-0" />
+                        <TickCircle size={16} color="#14462a" className="mt-0.5 flex-shrink-0" />
                         {feature}
                       </li>
                     ))}
@@ -1963,7 +1963,7 @@ export default function SettingsPage() {
                 ) : (
                   <>
                     <div className="flex items-center gap-2 text-xs text-teal-600 bg-teal-50 px-3 py-2 rounded-lg">
-                      <TickCircle size={14} color="#0D9488" />
+                      <TickCircle size={14} color="#14462a" />
                       <span>Code sent! Check your {verificationType === "email-otp" ? "email" : "phone"}</span>
                     </div>
                     <div className="space-y-2">

@@ -86,7 +86,7 @@ export function ColorPicker({ value, onChange, label, description }: ColorPicker
                     "#B0B3B8", // Light Gray
                     "#DC2626", // Error Red
                     "#F59E0B", // Warning Orange
-                    "#0D9488", // Success Green
+                    "#14462a", // Success Green
                     "#3B82F6", // Blue
                     "#8B5CF6", // Violet
                     "#EC4899", // Pink

@@ -9,7 +9,7 @@ export default function ItemsTotalsPage() {
       title="Adding Items and Totals"
       description="Learn how to add line items, apply discounts, include taxes, and calculate accurate invoice totals."
       category="Creating Invoices"
-      categoryColor="#0D9488"
+      categoryColor="#14462a"
       readTime="3 min read"
       relatedArticles={[
         {
@@ -215,19 +215,19 @@ export default function ItemsTotalsPage() {
       <h2>Best Practices</h2>
       <div className="not-prose my-8 space-y-3">
         <div className="flex items-start gap-3">
-          <TickCircle size={18} color="#0D9488" variant="Bulk" className="flex-shrink-0 mt-1" />
+          <TickCircle size={18} color="#14462a" variant="Bulk" className="flex-shrink-0 mt-1" />
           <span className="text-gray-700">Break down large projects into clear phases or deliverables</span>
         </div>
         <div className="flex items-start gap-3">
-          <TickCircle size={18} color="#0D9488" variant="Bulk" className="flex-shrink-0 mt-1" />
+          <TickCircle size={18} color="#14462a" variant="Bulk" className="flex-shrink-0 mt-1" />
           <span className="text-gray-700">Include dates for time-based services</span>
         </div>
         <div className="flex items-start gap-3">
-          <TickCircle size={18} color="#0D9488" variant="Bulk" className="flex-shrink-0 mt-1" />
+          <TickCircle size={18} color="#14462a" variant="Bulk" className="flex-shrink-0 mt-1" />
           <span className="text-gray-700">Always double-check calculations before sending</span>
         </div>
         <div className="flex items-start gap-3">
-          <TickCircle size={18} color="#0D9488" variant="Bulk" className="flex-shrink-0 mt-1" />
+          <TickCircle size={18} color="#14462a" variant="Bulk" className="flex-shrink-0 mt-1" />
           <span className="text-gray-700">Explain any discounts or adjustments clearly</span>
         </div>
       </div>

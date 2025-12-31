@@ -158,7 +158,7 @@ export function EmptyContacts({ onAddContact }: { onAddContact?: () => void }) {
   return (
     <EmptyState
       icon={People}
-      iconColor="#0D9488"
+      iconColor="#14462a"
       title="No contacts yet"
       description="Add your first client or customer to start sending invoices."
       actionLabel="Add Contact"

@@ -140,7 +140,7 @@ export function RecordPaymentModal({
         <DialogContent className="sm:max-w-md">
           <div className="flex flex-col items-center justify-center py-8 space-y-4">
             <div className="h-16 w-16 rounded-full bg-green-50 flex items-center justify-center">
-              <TickCircle size={32} color="#0D9488" variant="Bold" />
+              <TickCircle size={32} color="#14462a" variant="Bold" />
             </div>
             <h3 className="text-xl font-semibold text-gray-900">Payment Recorded!</h3>
             <p className="text-gray-500 text-center">

@@ -238,7 +238,7 @@ Below is a summary of our current outstanding invoices:`);
     const presets = {
       default: {},
       info: { backgroundColor: 'rgba(247, 249, 250, 0.3)', borderLeft: '3px solid #14462a' },
-      success: { backgroundColor: 'rgba(247, 249, 250, 0.3)', borderLeft: '3px solid #0D9488' },
+      success: { backgroundColor: 'rgba(247, 249, 250, 0.3)', borderLeft: '3px solid #14462a' },
       warning: { backgroundColor: 'rgba(247, 249, 250, 0.3)', borderLeft: '3px solid #F59E0B' },
       error: { backgroundColor: 'rgba(247, 249, 250, 0.3)', borderLeft: '3px solid #EF4444' },
     };
@@ -403,8 +403,8 @@ Below is a summary of our current outstanding invoices:`);
       case 'invoice-table':
         return widgetWrapper(
           "Invoice Table Widget",
-          <Note size={16} color="#0D9488" variant="Linear" />,
-          "#0D9488",
+          <Note size={16} color="#14462a" variant="Linear" />,
+          "#14462a",
           <div className="rounded-2xl overflow-hidden" style={{ backgroundColor: "white", boxShadow: "0 1px 3px 0 rgba(0, 0, 0, 0.05)" }}>
             <Table>
               <TableHeader>
@@ -454,7 +454,7 @@ Below is a summary of our current outstanding invoices:`);
               { label: "Total Outstanding", value: mockARMetrics.totalOutstanding, icon: CedisCircle, color: "#14462a", bg: "rgba(20, 70, 42, 0.04)" },
               { label: "Overdue Amount", value: mockARMetrics.overdue, icon: Chart, color: "#EF4444", bg: "rgba(239, 68, 68, 0.04)" },
               { label: "DSO", value: `${mockARMetrics.dso} days`, icon: Calendar, color: "#F59E0B", bg: "rgba(245, 158, 11, 0.04)" },
-              { label: "On-Time Rate", value: mockARMetrics.onTimeRate, icon: TickCircle, color: "#0D9488", bg: "rgba(13, 148, 136, 0.04)" },
+              { label: "On-Time Rate", value: mockARMetrics.onTimeRate, icon: TickCircle, color: "#14462a", bg: "rgba(13, 148, 136, 0.04)" },
             ].map((metric) => {
               const Icon = metric.icon;
               return (
@@ -545,7 +545,7 @@ Below is a summary of our current outstanding invoices:`);
                         className="rounded-full" 
                         style={{ 
                           backgroundColor: client.status === "Good" ? "rgba(13, 148, 136, 0.08)" : client.status === "Attention" ? "rgba(245, 158, 11, 0.08)" : "rgba(239, 68, 68, 0.08)", 
-                          color: client.status === "Good" ? "#0D9488" : client.status === "Attention" ? "#F59E0B" : "#EF4444"
+                          color: client.status === "Good" ? "#14462a" : client.status === "Attention" ? "#F59E0B" : "#EF4444"
                         }}
                       >
                         {client.status}
@@ -837,7 +837,7 @@ Below is a summary of our current outstanding invoices:`);
               autoFocus
             />
             <Button size="sm" variant="ghost" className="h-7 w-7 p-0 rounded-full" onClick={handleAddTag}>
-              <TickCircle size={14} color="#0D9488" variant="Linear" />
+              <TickCircle size={14} color="#14462a" variant="Linear" />
             </Button>
             <Button size="sm" variant="ghost" className="h-7 w-7 p-0 rounded-full" onClick={() => { setIsAddingTag(false); setNewTag(""); }}>
               <CloseCircle size={14} color="#B0B3B8" variant="Linear" />
@@ -996,7 +996,7 @@ Below is a summary of our current outstanding invoices:`);
                 onClick={() => setShowInvoiceTable(true)}
                 disabled={showInvoiceTable}
               >
-                <Note size={16} color="#0D9488" variant="Linear" className="mr-2" />
+                <Note size={16} color="#14462a" variant="Linear" className="mr-2" />
                 <div>
                   <div className="font-medium text-sm group-hover:text-[#14462a]">Invoice Table</div>
                   <div className="text-xs" style={{ color: "#B0B3B8" }}>Recent invoices overview</div>
@@ -1165,7 +1165,7 @@ Below is a summary of our current outstanding invoices:`);
                     className="rounded-xl px-3 py-2 cursor-pointer text-sm hover:bg-[rgba(20,70,42,0.06)] group transition-all"
                     onClick={() => addBlock(block.id, 'invoice-table')}
                   >
-                    <Note size={16} color="#0D9488" variant="Linear" className="mr-2" />
+                    <Note size={16} color="#14462a" variant="Linear" className="mr-2" />
                     <span className="group-hover:text-[#14462a]">Invoice Table</span>
                   </DropdownMenuItem>
                   <DropdownMenuItem 
@@ -1223,7 +1223,7 @@ Below is a summary of our current outstanding invoices:`);
             className="w-full text-left px-3 py-2 rounded-xl hover:bg-gray-50 flex items-center gap-2 text-sm"
             onClick={() => addWidgetAtCursor(contextMenu.blockId, 'invoice-table')}
           >
-            <Note size={16} color="#0D9488" variant="Linear" />
+            <Note size={16} color="#14462a" variant="Linear" />
             Invoice Table
           </button>
           <button
@@ -1283,7 +1283,7 @@ Below is a summary of our current outstanding invoices:`);
             className="w-full text-left px-3 py-2 rounded-xl hover:bg-gray-50 flex items-center gap-2 text-sm"
             onClick={() => applyStylePreset(styleMenu.blockId, 'success')}
           >
-            <div className="h-4 w-4 rounded" style={{ backgroundColor: 'rgba(247, 249, 250, 0.3)', borderLeft: '3px solid #0D9488' }} />
+            <div className="h-4 w-4 rounded" style={{ backgroundColor: 'rgba(247, 249, 250, 0.3)', borderLeft: '3px solid #14462a' }} />
             Success (Green)
           </button>
           <button

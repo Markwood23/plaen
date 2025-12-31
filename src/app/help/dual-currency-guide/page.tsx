@@ -9,7 +9,7 @@ export default function DualCurrencyGuidePage() {
       title="Understanding Dual Currency Invoicing"
       description="When and how to use GHS and USD on the same invoice for international clients and currency flexibility."
       category="Creating Invoices"
-      categoryColor="#0D9488"
+      categoryColor="#14462a"
       readTime="4 min read"
       relatedArticles={[
         {

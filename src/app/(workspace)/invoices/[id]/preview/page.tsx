@@ -143,7 +143,7 @@ export default function InvoicePreviewPage({ params }: { params: Promise<{ id: s
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'paid': return { bg: '#E8F9F1', text: '#0D9488' };
+      case 'paid': return { bg: '#E8F9F1', text: '#14462a' };
       case 'partially_paid': return { bg: '#FFF4E6', text: '#F59E0B' };
       case 'sent': return { bg: '#EBF5FF', text: '#3B82F6' };
       case 'overdue': return { bg: '#FEF2F2', text: '#DC2626' };

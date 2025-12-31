@@ -42,7 +42,7 @@ const testimonials = [
     type: "business",
     initials: "AO",
     image: "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=150&h=150&fit=crop&crop=face",
-    color: "#0D9488",
+    color: "#14462a",
     quote: "We needed professional invoicing without the complexity. Plaen delivers exactly that: clean, structured, and our clients take us more seriously.",
     metrics: { label: "Client satisfaction", value: "95%" },
     featured: true,
@@ -68,7 +68,7 @@ const testimonials = [
     type: "freelancer",
     initials: "SA",
     image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop&crop=face",
-    color: "#0D9488",
+    color: "#14462a",
     quote: "Before Plaen, I was using Word documents for invoices. Now my clients see me as a real professional. The mobile money integration is a game-changer.",
     metrics: { label: "Professional image", value: "100%" },
     featured: false,
@@ -94,7 +94,7 @@ const testimonials = [
     type: "freelancer",
     initials: "EB",
     image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=150&h=150&fit=crop&crop=face",
-    color: "#0D9488",
+    color: "#14462a",
     quote: "I love that my clients don't need to create accounts to pay. The secure link system is brilliant and removes so much friction.",
     metrics: { label: "Payment completion", value: "92%" },
     featured: false,
@@ -102,9 +102,9 @@ const testimonials = [
 ];
 
 const stats = [
-  { label: "User satisfaction", value: "98%", icon: TrendUp, color: "#0D9488" },
+  { label: "User satisfaction", value: "98%", icon: TrendUp, color: "#14462a" },
   { label: "Faster payments", value: "2.5x", icon: Clock, color: "#14462a" },
-  { label: "Active users", value: "10K+", icon: People, color: "#0D9488" },
+  { label: "Active users", value: "10K+", icon: People, color: "#14462a" },
   { label: "Countries served", value: "15+", icon: Global, color: "#14462a" },
 ];
 
@@ -244,19 +244,19 @@ export default function TestimonialsPage() {
                         <span 
                           className="inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-medium"
                           style={{ 
-                            backgroundColor: testimonial.type === 'freelancer' ? '#D9770615' : '#0D948815',
-                            color: testimonial.type === 'freelancer' ? '#D97706' : '#0D9488'
+                            backgroundColor: testimonial.type === 'freelancer' ? '#D9770615' : '#14462a15',
+                            color: testimonial.type === 'freelancer' ? '#D97706' : '#14462a'
                           }}
                         >
                           {testimonial.type === 'freelancer' ? (
-                            <User size={14} color={testimonial.type === 'freelancer' ? '#D97706' : '#0D9488'} />
+                            <User size={14} color={testimonial.type === 'freelancer' ? '#D97706' : '#14462a'} />
                           ) : (
-                            <Building size={14} color="#0D9488" />
+                            <Building size={14} color="#14462a" />
                           )}
                           {testimonial.type === 'freelancer' ? 'Freelancer' : 'Business'}
                         </span>
                         <div className="flex items-center gap-2 text-xs text-gray-500">
-                          <TickCircle size={14} color="#0D9488" variant="Bold" />
+                          <TickCircle size={14} color="#14462a" variant="Bold" />
                           Verified user
                         </div>
                       </div>
@@ -347,14 +347,14 @@ export default function TestimonialsPage() {
 
                 <div className="rounded-2xl border border-gray-200 bg-white p-6 text-center">
                   <div className="mx-auto mb-4 h-14 w-14 rounded-2xl bg-teal-50 flex items-center justify-center">
-                    <Building size={28} color="#0D9488" variant="Bulk" />
+                    <Building size={28} color="#14462a" variant="Bulk" />
                   </div>
                   <h3 className="font-semibold text-black mb-2">Small Businesses</h3>
                   <p className="text-sm text-gray-600 mb-4">
                     Agencies, studios, and service providers scaling their operations.
                   </p>
                   <div className="flex items-center justify-center gap-2 text-xs text-teal-700">
-                    <TrendUp size={14} color="#0D9488" />
+                    <TrendUp size={14} color="#14462a" />
                     <span>65% better cash flow</span>
                   </div>
                 </div>

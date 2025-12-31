@@ -67,7 +67,7 @@ export default function WorkspaceBillingPage() {
               <p className="text-xs uppercase tracking-[0.3em]" style={{ color: '#B0B3B8' }}>Current plan</p>
               <Badge 
                 className="rounded-full px-2.5 py-0.5 text-xs" 
-                style={{ backgroundColor: 'rgba(13, 148, 136, 0.12)', color: '#0D9488', border: 'none' }}
+                style={{ backgroundColor: 'rgba(13, 148, 136, 0.12)', color: '#14462a', border: 'none' }}
               >
                 Active
               </Badge>
@@ -107,7 +107,7 @@ export default function WorkspaceBillingPage() {
             'Dual currency invoicing',
           ].map((item) => (
             <div key={item} className="flex items-start gap-2">
-              <TickCircle size={16} color="#0D9488" className="mt-0.5 flex-shrink-0" />
+              <TickCircle size={16} color="#14462a" className="mt-0.5 flex-shrink-0" />
               <span className="text-sm" style={{ color: '#65676B' }}>{item}</span>
             </div>
           ))}
@@ -147,9 +147,9 @@ export default function WorkspaceBillingPage() {
                   <p className="text-sm font-semibold" style={{ color: '#2D2D2D' }}>{maskAmount(invoice.amount)}</p>
                   <Badge 
                     className="rounded-full px-2 py-0.5 text-xs mt-1" 
-                    style={{ backgroundColor: 'rgba(13, 148, 136, 0.12)', color: '#0D9488', border: 'none' }}
+                    style={{ backgroundColor: 'rgba(13, 148, 136, 0.12)', color: '#14462a', border: 'none' }}
                   >
-                    <TickCircle size={12} color="#0D9488" className="mr-1" />
+                    <TickCircle size={12} color="#14462a" className="mr-1" />
                     Paid
                   </Badge>
                 </div>
@@ -219,7 +219,7 @@ export default function WorkspaceBillingPage() {
                   <ul className="space-y-2 mb-6">
                     {plan.features.map((feature) => (
                       <li key={feature} className="flex items-start gap-2 text-sm" style={{ color: '#65676B' }}>
-                        <TickCircle size={16} className="mt-0.5 flex-shrink-0" style={{ color: '#0D9488' }} />
+                        <TickCircle size={16} className="mt-0.5 flex-shrink-0" style={{ color: '#14462a' }} />
                         {feature}
                       </li>
                     ))}

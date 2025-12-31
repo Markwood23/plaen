@@ -65,7 +65,7 @@ const advantages = [
     title: "Wide Coverage",
     description: "Available across Africa with extensive agent networks.",
     icon: Global,
-    color: "#0D9488",
+    color: "#14462a",
   }
 ];
 

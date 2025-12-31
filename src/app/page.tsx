@@ -149,15 +149,15 @@ function ProfessionalismPreview() {
       </div>
       <div className="flex-1 space-y-1.5">
         <div className="flex items-center gap-2">
-          <TickCircle size={12} color="#0D9488" variant="Bold" />
+          <TickCircle size={12} color="#14462a" variant="Bold" />
           <div className="h-1.5 w-16 rounded-full bg-gray-200" />
         </div>
         <div className="flex items-center gap-2">
-          <TickCircle size={12} color="#0D9488" variant="Bold" />
+          <TickCircle size={12} color="#14462a" variant="Bold" />
           <div className="h-1.5 w-12 rounded-full bg-gray-200" />
         </div>
         <div className="flex items-center gap-2">
-          <TickCircle size={12} color="#0D9488" variant="Bold" />
+          <TickCircle size={12} color="#14462a" variant="Bold" />
           <div className="h-1.5 w-20 rounded-full bg-gray-200" />
         </div>
       </div>
@@ -193,7 +193,7 @@ function SecurePaymentPreview() {
   return (
     <div className="flex flex-col items-center gap-2">
       <div className="flex items-center gap-2 rounded-full bg-teal-50 px-3 py-1.5 border border-teal-200">
-        <Lock1 size={12} color="#0D9488" variant="Bold" />
+        <Lock1 size={12} color="#14462a" variant="Bold" />
         <span className="text-[9px] font-medium text-teal-700">plaen.co/pay/inv_28x...</span>
       </div>
       <div className="flex items-center gap-1.5 text-[8px] text-gray-500">
@@ -251,7 +251,7 @@ function ReceiptLedgerPreview() {
             r.status === 'verified' ? 'bg-teal-100' : 'bg-amber-100'
           }`}>
             {r.status === 'verified' ? (
-              <TickCircle size={10} color="#0D9488" variant="Bold" />
+              <TickCircle size={10} color="#14462a" variant="Bold" />
             ) : (
               <Timer1 size={10} color="#D97706" variant="Bold" />
             )}
@@ -302,7 +302,7 @@ const accentColors = {
   amber: "#D97706",     // Bright amber - payments/money
   rose: "#E11D48",      // Vibrant rose - receipts/docs
   sky: "#0284C7",       // Bright sky - reminders/notifications
-  teal: "#0D9488",      // Teal - analytics/security/success
+  teal: "#14462a",      // Teal - analytics/security/success
   brand: "#14462a",     // Brand green - primary
   orange: "#EA580C",    // Orange - speed/time
 };

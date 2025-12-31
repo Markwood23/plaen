@@ -218,10 +218,10 @@ export default function PaymentsPage() {
             <div className="group relative rounded-2xl p-6 transition-all duration-300 hover:scale-[1.02]" style={{ backgroundColor: 'rgba(13, 148, 136, 0.04)' }}>
               <div className="flex items-center justify-between mb-4">
                 <div className="h-12 w-12 rounded-full flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110" style={{ backgroundColor: 'rgba(13, 148, 136, 0.12)' }}>
-                  <Coin1 size={24} color="#0D9488" variant="Bulk" />
+                  <Coin1 size={24} color="#14462a" variant="Bulk" />
                 </div>
                 <div className="flex items-center gap-1 px-2 py-1 rounded-full" style={{ backgroundColor: 'rgba(13, 148, 136, 0.12)' }}>
-                  <span className="text-xs font-semibold" style={{ color: '#0D9488' }}>{pagination.total}</span>
+                  <span className="text-xs font-semibold" style={{ color: '#14462a' }}>{pagination.total}</span>
                 </div>
               </div>
               <p className="text-sm mb-2" style={{ color: '#65676B', fontWeight: 500 }}>Total Collected</p>
@@ -263,7 +263,7 @@ export default function PaymentsPage() {
             <div className="group relative rounded-2xl p-6 transition-all duration-300 hover:scale-[1.02]" style={{ backgroundColor: 'rgba(13, 148, 136, 0.04)' }}>
               <div className="flex items-center justify-between mb-4">
                 <div className="h-12 w-12 rounded-full flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110" style={{ backgroundColor: 'rgba(13, 148, 136, 0.12)' }}>
-                  <Clock size={24} color="#0D9488" variant="Bulk" />
+                  <Clock size={24} color="#14462a" variant="Bulk" />
                 </div>
               </div>
               <p className="text-sm mb-2" style={{ color: '#65676B', fontWeight: 500 }}>This Month</p>

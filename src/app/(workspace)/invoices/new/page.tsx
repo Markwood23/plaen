@@ -1071,7 +1071,7 @@ export default function CreateInvoicePage() {
                   <div>
                     <Label className="text-sm text-[#2D2D2D] font-medium mb-2 block">Select Contact</Label>
                     <Select value={selectedContact} onValueChange={handleContactSelect} disabled={contactsLoading}>
-                      <SelectTrigger className="border-[#E4E6EB] h-11 rounded-xl hover:border-[#0D9488] transition-colors">
+                      <SelectTrigger className="border-[#E4E6EB] h-11 rounded-xl hover:border-[#14462a] transition-colors">
                         <SelectValue placeholder={contactsLoading ? "Loading contacts..." : "Choose from saved contacts or enter manually"} />
                       </SelectTrigger>
                       <SelectContent>
@@ -1118,7 +1118,7 @@ export default function CreateInvoicePage() {
                       className={`h-11 rounded-xl transition-colors ${
                         touched.customerName && errors.customerName 
                           ? 'border-red-500 hover:border-red-500 focus:border-red-500 focus:ring-red-500/20' 
-                          : 'border-[#E4E6EB] hover:border-[#0D9488] focus:border-[#0D9488]'
+                          : 'border-[#E4E6EB] hover:border-[#14462a] focus:border-[#14462a]'
                       }`}
                       value={customerData.name}
                       onChange={(e) => {
@@ -1147,7 +1147,7 @@ export default function CreateInvoicePage() {
                       className={`h-11 rounded-xl transition-colors ${
                         touched.customerEmail && errors.customerEmail 
                           ? 'border-red-500 hover:border-red-500 focus:border-red-500 focus:ring-red-500/20' 
-                          : 'border-[#E4E6EB] hover:border-[#0D9488] focus:border-[#0D9488]'
+                          : 'border-[#E4E6EB] hover:border-[#14462a] focus:border-[#14462a]'
                       }`}
                       value={customerData.email}
                       onChange={(e) => {
@@ -1174,7 +1174,7 @@ export default function CreateInvoicePage() {
                     <Label className="text-sm text-[#2D2D2D] font-medium mb-2 block">Company/Organization</Label>
                     <Input 
                       placeholder="Client Company Name"
-                      className="h-11 rounded-xl border-[#E4E6EB] hover:border-[#0D9488] focus:border-[#0D9488] transition-colors"
+                      className="h-11 rounded-xl border-[#E4E6EB] hover:border-[#14462a] focus:border-[#14462a] transition-colors"
                       value={customerData.company}
                       onChange={(e) => setCustomerData({...customerData, company: e.target.value})}
                     />
@@ -1186,7 +1186,7 @@ export default function CreateInvoicePage() {
                       className={`h-11 rounded-xl transition-colors ${
                         touched.customerPhone && errors.customerPhone 
                           ? 'border-red-500 hover:border-red-500 focus:border-red-500 focus:ring-red-500/20' 
-                          : 'border-[#E4E6EB] hover:border-[#0D9488] focus:border-[#0D9488]'
+                          : 'border-[#E4E6EB] hover:border-[#14462a] focus:border-[#14462a]'
                       }`}
                       value={customerData.phone}
                       onChange={(e) => {
@@ -1211,7 +1211,7 @@ export default function CreateInvoicePage() {
                     <Label className="text-sm text-[#2D2D2D] font-medium mb-2 block">Billing Address</Label>
                     <Textarea 
                       placeholder="Street Address&#10;City, Region&#10;Country"
-                      className="resize-none rounded-xl border-[#E4E6EB] hover:border-[#0D9488] focus:border-[#0D9488] transition-colors"
+                      className="resize-none rounded-xl border-[#E4E6EB] hover:border-[#14462a] focus:border-[#14462a] transition-colors"
                       rows={4}
                       value={customerData.address}
                       onChange={(e) => setCustomerData({...customerData, address: e.target.value})}
@@ -1221,7 +1221,7 @@ export default function CreateInvoicePage() {
                     <Label className="text-sm text-[#2D2D2D] font-medium mb-2 block">Customer Notes</Label>
                     <Input 
                       placeholder="e.g., Billing Department, Account #12345"
-                      className="h-11 rounded-xl border-[#E4E6EB] hover:border-[#0D9488] focus:border-[#0D9488] transition-colors"
+                      className="h-11 rounded-xl border-[#E4E6EB] hover:border-[#14462a] focus:border-[#14462a] transition-colors"
                       value={customerData.notes}
                       onChange={(e) => setCustomerData({...customerData, notes: e.target.value})}
                     />
@@ -1440,7 +1440,7 @@ export default function CreateInvoicePage() {
                   </div>
                   <div className="flex justify-between py-2">
                     <span className="text-sm text-[#65676B]">Total Discount</span>
-                    <span className="text-sm font-medium text-[#0D9488]">{maskAmount(`-₵${totals.totalDiscount.toFixed(2)}`)}</span>
+                    <span className="text-sm font-medium text-[#14462a]">{maskAmount(`-₵${totals.totalDiscount.toFixed(2)}`)}</span>
                   </div>
                   <div className="h-px bg-[#E4E6EB]" />
                   <div className="flex justify-between py-3 bg-white px-4 rounded-xl border border-[#E4E6EB]">
@@ -1520,7 +1520,7 @@ export default function CreateInvoicePage() {
                 <div>
                   <Label className="text-sm text-[#2D2D2D] font-medium mb-2 block">Primary Currency*</Label>
                   <Select value={primaryCurrency} onValueChange={handlePrimaryCurrencyChange}>
-                    <SelectTrigger className="border-[#E4E6EB] h-11 rounded-xl hover:border-[#0D9488] transition-colors">
+                    <SelectTrigger className="border-[#E4E6EB] h-11 rounded-xl hover:border-[#14462a] transition-colors">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -1536,7 +1536,7 @@ export default function CreateInvoicePage() {
                 <div>
                   <Label className="text-sm text-[#2D2D2D] font-medium mb-2 block">Secondary Currency</Label>
                   <Select value={secondaryCurrency} onValueChange={handleSecondaryCurrencyChange}>
-                    <SelectTrigger className="border-[#E4E6EB] h-11 rounded-xl hover:border-[#0D9488] transition-colors">
+                    <SelectTrigger className="border-[#E4E6EB] h-11 rounded-xl hover:border-[#14462a] transition-colors">
                       <SelectValue placeholder="None (optional)" />
                     </SelectTrigger>
                     <SelectContent>
@@ -1581,7 +1581,7 @@ export default function CreateInvoicePage() {
                     <PopoverTrigger asChild>
                       <Button 
                         variant="outline" 
-                        className="w-full h-11 justify-start text-left border-[#E4E6EB] font-normal rounded-xl hover:border-[#0D9488] transition-colors bg-white"
+                        className="w-full h-11 justify-start text-left border-[#E4E6EB] font-normal rounded-xl hover:border-[#14462a] transition-colors bg-white"
                       >
                         <Calendar size={16} color="#B0B3B8" className="mr-2" />
                         {exchangeRateDate ? format(exchangeRateDate, "MMM d, yyyy") : "Select date"}
@@ -1693,7 +1693,7 @@ export default function CreateInvoicePage() {
                     <div>
                       <Label className="text-xs text-[#B0B3B8] mb-2 block">Discount Type</Label>
                       <Select>
-                        <SelectTrigger className="border-[#E4E6EB] h-11 rounded-xl hover:border-[#0D9488] transition-colors">
+                        <SelectTrigger className="border-[#E4E6EB] h-11 rounded-xl hover:border-[#14462a] transition-colors">
                           <SelectValue placeholder="None" />
                         </SelectTrigger>
                         <SelectContent>
@@ -1710,7 +1710,7 @@ export default function CreateInvoicePage() {
                         min={0}
                         step={1}
                         placeholder="e.g., 5 for 5%"
-                        className="border-[#E4E6EB] h-11 rounded-xl hover:border-[#0D9488] focus:border-[#0D9488] transition-colors"
+                        className="border-[#E4E6EB] h-11 rounded-xl hover:border-[#14462a] focus:border-[#14462a] transition-colors"
                       />
                     </div>
                     <div>
@@ -1720,7 +1720,7 @@ export default function CreateInvoicePage() {
                         min={0}
                         step={1}
                         placeholder="e.g., 7 days"
-                        className="border-[#E4E6EB] h-11 rounded-xl hover:border-[#0D9488] focus:border-[#0D9488] transition-colors"
+                        className="border-[#E4E6EB] h-11 rounded-xl hover:border-[#14462a] focus:border-[#14462a] transition-colors"
                       />
                     </div>
                   </div>
@@ -1733,7 +1733,7 @@ export default function CreateInvoicePage() {
                     <div>
                       <Label className="text-xs text-[#B0B3B8] mb-2 block">Fee Type</Label>
                       <Select>
-                        <SelectTrigger className="border-[#E4E6EB] h-11 rounded-xl hover:border-[#0D9488] transition-colors">
+                        <SelectTrigger className="border-[#E4E6EB] h-11 rounded-xl hover:border-[#14462a] transition-colors">
                           <SelectValue placeholder="None" />
                         </SelectTrigger>
                         <SelectContent>
@@ -1750,7 +1750,7 @@ export default function CreateInvoicePage() {
                         min={0}
                         step={1}
                         placeholder="e.g., 10 for 10%"
-                        className="border-[#E4E6EB] h-11 rounded-xl hover:border-[#0D9488] focus:border-[#0D9488] transition-colors"
+                        className="border-[#E4E6EB] h-11 rounded-xl hover:border-[#14462a] focus:border-[#14462a] transition-colors"
                       />
                     </div>
                     <div>
@@ -1760,7 +1760,7 @@ export default function CreateInvoicePage() {
                         min={0}
                         step={1}
                         placeholder="e.g., 7 days"
-                        className="border-[#E4E6EB] h-11 rounded-xl hover:border-[#0D9488] focus:border-[#0D9488] transition-colors"
+                        className="border-[#E4E6EB] h-11 rounded-xl hover:border-[#14462a] focus:border-[#14462a] transition-colors"
                       />
                     </div>
                   </div>

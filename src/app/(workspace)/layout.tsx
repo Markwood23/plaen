@@ -382,7 +382,7 @@ function UserMenu() {
               className="h-8 w-8 rounded-full flex items-center justify-center transition-all"
               style={{ backgroundColor: 'rgba(13, 148, 136, 0.08)' }}
             >
-              <Wallet size={16} color="#0D9488" />
+              <Wallet size={16} color="#14462a" />
             </div>
             <span className="text-base font-medium group-hover:text-[#14462a] transition-all" style={{ color: '#2D2D2D' }}>Billing</span>
           </Link>

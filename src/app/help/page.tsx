@@ -33,7 +33,7 @@ const categories = [
     name: "Creating Invoices",
     icon: DocumentText,
     description: "Everything about building professional invoices",
-    color: "#0D9488",
+    color: "#14462a",
     articles: [
       { title: "Invoice builder walkthrough", slug: "invoice-builder", readTime: "6 min" },
       { title: "Adding items and calculating totals", slug: "items-totals", readTime: "3 min" },
@@ -92,7 +92,7 @@ const popularArticles = [
     title: "Understanding dual currency invoicing",
     description: "When and how to use GHS and USD on the same invoice",
     category: "Creating Invoices",
-    categoryColor: "#0D9488",
+    categoryColor: "#14462a",
     readTime: "4 min",
     slug: "dual-currency-guide",
     popular: true

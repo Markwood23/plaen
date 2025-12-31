@@ -31,7 +31,7 @@ const stats = [
     value: "190+",
     description: "Deep dives on invoicing best practices",
     icon: Book1,
-    color: "#0D9488",
+    color: "#14462a",
   },
   {
     label: "Average read time",
@@ -153,7 +153,7 @@ export default function BlogPage() {
             <div className="grid items-center gap-16 lg:grid-cols-[1.15fr,0.85fr]">
               <div className="flex flex-col gap-8">
                 <div className="inline-flex items-center gap-2 self-start rounded-full border border-gray-200 px-4 py-1 text-xs uppercase tracking-[0.35em] text-gray-500">
-                  <Book1 size={14} color="#0D9488" variant="Bold" /> Weekly insights
+                  <Book1 size={14} color="#14462a" variant="Bold" /> Weekly insights
                 </div>
                 <div className="space-y-6">
                   <h1 className="text-4xl font-semibold tracking-tight text-[#14462a] sm:text-5xl">

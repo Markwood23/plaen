@@ -298,7 +298,7 @@ export default function PayPage({ params }: { params: Promise<{ id: string }> })
                 {invoice.status === 'partially_paid' && (
                   <span 
                     className="inline-flex items-center gap-1.5 text-sm px-3 py-1.5 rounded-full font-medium"
-                    style={{ backgroundColor: 'rgba(13, 148, 136, 0.1)', color: '#0D9488' }}
+                    style={{ backgroundColor: 'rgba(13, 148, 136, 0.1)', color: '#14462a' }}
                   >
                     <Clock className="h-4 w-4" />
                     Partially Paid
@@ -575,7 +575,7 @@ export default function PayPage({ params }: { params: Promise<{ id: string }> })
                             className="inline-block text-sm px-2 py-0.5 rounded"
                             style={{ 
                               backgroundColor: payment.status === 'completed' || payment.status === 'Confirmed' ? '#E8F9F1' : '#FFF4E6',
-                              color: payment.status === 'completed' || payment.status === 'Confirmed' ? '#0D9488' : '#F59E0B'
+                              color: payment.status === 'completed' || payment.status === 'Confirmed' ? '#14462a' : '#F59E0B'
                             }}
                           >
                             {payment.status}

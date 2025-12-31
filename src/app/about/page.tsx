@@ -33,7 +33,7 @@ const values = [
     title: "Context matters",
     description: "Payments carry meaning. Finance notes preserve the story behind every transaction.",
     icon: Heart,
-    color: "#0D9488",
+    color: "#14462a",
   },
   {
     title: "Regional reality",
@@ -186,7 +186,7 @@ export default function AboutPage() {
                   </div>
                 </div>
                 <div className="flex items-center gap-4">
-                  <Building size={24} color="#0D9488" variant="Bulk" />
+                  <Building size={24} color="#14462a" variant="Bulk" />
                   <div>
                     <p className="font-medium text-gray-900">No registration required</p>
                     <p className="text-sm text-gray-500">Clients pay without creating accounts</p>

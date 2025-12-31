@@ -370,11 +370,11 @@ export default function InvoicesPage() {
                   className="h-12 w-12 rounded-xl flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110"
                   style={{ backgroundColor: 'rgba(13, 148, 136, 0.12)' }}
                 >
-                  <TickCircle size={24} color="#0D9488" variant="Bulk" />
+                  <TickCircle size={24} color="#14462a" variant="Bulk" />
                 </div>
                 <div
                   className="inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-semibold"
-                  style={{ backgroundColor: 'rgba(13, 148, 136, 0.12)', color: '#0D9488' }}
+                  style={{ backgroundColor: 'rgba(13, 148, 136, 0.12)', color: '#14462a' }}
                 >
                   {stats.paid.length}
                 </div>

@@ -2,7 +2,7 @@ import { DocumentText, Profile2User, Wallet3, ReceiptText, NotificationBing, Tic
 
 // Accent color palette - complements primary green (#14462a)
 const accentColors = {
-  teal: "#0D9488",      // Teal - invoicing/success
+  brand: "#14462a",     // Brand green - invoicing/success
   warmAmber: "#B45309", // Warm amber - contacts/people
   amber: "#D97706",     // Bright amber - payments/money
   rose: "#E11D48",      // Vibrant rose - receipts/docs
@@ -84,7 +84,7 @@ function PaymentPreview() {
         <div className="flex-1 h-[2px] bg-gradient-to-r from-amber-300 via-teal-300 to-teal-500 rounded-full" />
         <div className="flex flex-col items-center gap-1">
           <div className="h-10 w-10 rounded-xl bg-teal-100 flex items-center justify-center">
-            <TickCircle size={18} color="#0D9488" variant="Bold" />
+            <TickCircle size={18} color="#14462a" variant="Bold" />
           </div>
           <span className="text-[8px] text-gray-500">Confirmed</span>
         </div>
@@ -167,7 +167,7 @@ const pillars = [
     icon: DocumentText,
     title: "Invoice Builder",
     description: "Compose dual-currency invoices with live totals, tax calculations, and professional templates.",
-    color: accentColors.teal,
+    color: accentColors.brand,
     preview: InvoicePreview,
   },
   {

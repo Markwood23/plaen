@@ -66,7 +66,7 @@ function SetupPreview() {
           <span className="text-[7px] font-medium text-amber-700">MoMo</span>
         </div>
         <div className="flex items-center gap-1 rounded-full bg-teal-50 px-2 py-0.5">
-          <Bank size={8} color="#0D9488" />
+          <Bank size={8} color="#14462a" />
           <span className="text-[7px] font-medium text-teal-700">Bank</span>
         </div>
       </div>
@@ -100,7 +100,7 @@ function BuilderPreview() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-1.5">
               <div className="h-3 w-3 rounded bg-teal-100 flex items-center justify-center">
-                <DocumentText1 size={8} color="#0D9488" />
+                <DocumentText1 size={8} color="#14462a" />
               </div>
               <span className="text-[8px] text-gray-600">Design Services</span>
             </div>
@@ -157,7 +157,7 @@ function SendPayPreview() {
             <Mobile size={8} color="#D97706" />
           </div>
           <div className="h-4 w-4 rounded bg-teal-100 flex items-center justify-center">
-            <Bank size={8} color="#0D9488" />
+            <Bank size={8} color="#14462a" />
           </div>
           <div className="h-4 w-4 rounded bg-orange-100 flex items-center justify-center">
             <Bitcoin size={8} color="#EA580C" />
@@ -239,7 +239,7 @@ const steps = [
     description:
       "Every payment generates a timestamped receipt. Your documentation stays organized without manual updates. Finance notes keep context alongside every transaction.",
     icon: ReceiptText,
-    color: "#0D9488",
+    color: "#14462a",
     preview: ReceiptPreview,
   },
 ];
@@ -331,7 +331,7 @@ export default function HowItWorksPage() {
                 {steps.map((step, index) => {
                   const Icon = step.icon;
                   const bgColors = ['bg-[#14462a]/10', 'bg-amber-50', 'bg-sky-50', 'bg-teal-50'];
-                  const iconColors = ['#14462a', '#D97706', '#0284C7', '#0D9488'];
+                  const iconColors = ['#14462a', '#D97706', '#0284C7', '#14462a'];
                   return (
                     <div
                       key={step.title}
@@ -389,8 +389,8 @@ export default function HowItWorksPage() {
 
               <div className="mt-16 grid gap-8 md:grid-cols-3">
                 <div className="group space-y-3 text-center">
-                  <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-[#0D9488]/10 transition group-hover:bg-[#0D9488]">
-                    <Setting2 size={24} color="#0D9488" variant="Bulk" className="transition group-hover:hidden" />
+                  <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-[#14462a]/10 transition group-hover:bg-[#14462a]">
+                    <Setting2 size={24} color="#14462a" variant="Bulk" className="transition group-hover:hidden" />
                     <Setting2 size={24} color="white" variant="Bulk" className="hidden transition group-hover:block" />
                   </div>
                   <h3 className="text-lg font-semibold text-black">Built-in Professionalism</h3>

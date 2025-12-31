@@ -16,7 +16,7 @@ const paymentTerms = [
     description: "Payment due within 15 days of invoice date",
     bestFor: "Small to medium projects, regular clients",
     icon: Clock,
-    color: "#0D9488"
+    color: "#14462a"
   },
   {
     name: "Net 30",
@@ -40,7 +40,7 @@ export default function DueDatesPage() {
       title="Setting Due Dates and Terms"
       description="Learn how to set appropriate payment terms and due dates to optimize cash flow while maintaining good client relationships."
       category="Creating Invoices"
-      categoryColor="#0D9488"
+      categoryColor="#14462a"
       readTime="2 min read"
       relatedArticles={[
         {

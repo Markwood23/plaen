@@ -14,7 +14,7 @@ const tips = [
     title: "Send Invoices at the Right Time",
     description: "Send invoices at the beginning of the day when clients are checking their phones and have available balance.",
     icon: Clock,
-    color: "#0D9488"
+    color: "#14462a"
   },
   {
     title: "Use Payment Links",

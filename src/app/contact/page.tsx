@@ -161,7 +161,7 @@ export default function ContactPage() {
                     {submitted ? (
                       <div className="flex flex-col items-center justify-center text-center py-8">
                         <div className="h-16 w-16 rounded-full bg-teal-100 flex items-center justify-center mb-5">
-                          <TickCircle size={32} color="#0D9488" variant="Bold" />
+                          <TickCircle size={32} color="#14462a" variant="Bold" />
                         </div>
                         <h3 className="text-xl font-semibold text-gray-900 mb-2">Message sent!</h3>
                         <p className="text-sm text-gray-600 mb-6">

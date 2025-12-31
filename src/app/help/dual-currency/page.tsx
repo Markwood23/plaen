@@ -9,7 +9,7 @@ export default function DualCurrencyPage() {
       title="Dual Currency Invoicing"
       description="Set up and use dual currency invoicing to show both GHS and USD amounts, giving clients payment flexibility."
       category="Creating Invoices"
-      categoryColor="#0D9488"
+      categoryColor="#14462a"
       readTime="4 min read"
       relatedArticles={[
         {

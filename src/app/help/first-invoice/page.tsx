@@ -14,7 +14,7 @@ const invoiceSteps = [
     icon: DocumentText,
     title: "Add line items",
     description: "Describe your services with quantities and prices.",
-    color: "#0D9488"
+    color: "#14462a"
   },
   {
     icon: Wallet,
