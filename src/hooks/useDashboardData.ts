@@ -20,6 +20,12 @@ interface ARAging {
   critical: { count: number; total: number }
 }
 
+interface ChartDataPoint {
+  month: string
+  revenue: number
+  invoiced: number
+}
+
 interface RecentInvoice {
   id: string
   invoice_number: string
@@ -52,6 +58,7 @@ interface RecentPayment {
 export interface DashboardData {
   metrics: DashboardMetrics
   arAging: ARAging
+  chartData: ChartDataPoint[]
   recentInvoices: RecentInvoice[]
   recentPayments: RecentPayment[]
 }
@@ -107,6 +114,7 @@ export function useDashboardData(): UseDashboardDataResult {
       setData({
         metrics: { ...defaultMetrics, ...(result.metrics ?? {}) },
         arAging: result.ar_aging || defaultARAging,
+        chartData: result.chart_data || [],
         recentInvoices: result.recent_invoices || [],
         recentPayments: result.recent_payments || [],
       })

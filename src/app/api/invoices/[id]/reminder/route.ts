@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import { NextRequest, NextResponse } from 'next/server'
 import { sendPaymentReminderEmail, isEmailConfigured } from '@/lib/email/mailjet'
 import { format, differenceInDays } from 'date-fns'
+import { notifyReminderSent } from '@/lib/notifications/create'
 
 // POST /api/invoices/[id]/reminder - Send payment reminder email
 export async function POST(
@@ -102,6 +103,14 @@ export async function POST(
         message: emailResult.error
       }, { status: 500 })
     }
+
+    // Create in-app notification
+    await notifyReminderSent(
+      user.id,
+      invoice.invoice_number,
+      customer.name || 'Customer',
+      id
+    )
     
     // Log the reminder sent (optional: could track in database)
     console.log(`Reminder sent for invoice ${invoice.invoice_number} to ${customer.email}`)

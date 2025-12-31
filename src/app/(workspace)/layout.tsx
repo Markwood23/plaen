@@ -33,8 +33,14 @@ import {
   Eye,
   EyeSlash,
   Wallet,
+  TickCircle,
+  Clock,
+  Danger,
+  Send2,
+  MoneyRecive,
 } from "iconsax-react";
 import { BalanceVisibilityProvider, useBalanceVisibility } from "@/contexts/balance-visibility-context";
+import { NotificationsProvider, useNotifications } from "@/contexts/notifications-context";
 import { signOut } from "@/lib/auth/actions";
 import { AuthProvider, useAuth } from "@/contexts/auth-context";
 
@@ -85,6 +91,7 @@ export default function WorkspaceLayout({
   return (
     <AuthProvider>
       <BalanceVisibilityProvider>
+        <NotificationsProvider>
     <div className="min-h-screen bg-white flex overflow-hidden" style={{ color: '#2D2D2D' }}>
       {/* Desktop sidebar */}
       <aside className="hidden md:flex w-64 shrink-0 flex-col bg-white h-screen" style={{ borderRight: '1px solid #E4E6EB' }}>
@@ -237,16 +244,7 @@ export default function WorkspaceLayout({
             </Link>
             
             {/* Notifications */}
-            <button 
-              className="relative h-10 w-10 rounded-full flex items-center justify-center transition-all hover:bg-[rgba(240,242,245,0.8)] hover:scale-105"
-              aria-label="Notifications"
-            >
-              <Notification size={20} color="#2D2D2D" />
-              {/* Notification badge */}
-              <span className="absolute top-1.5 right-1.5 h-2 w-2 rounded-full" style={{ backgroundColor: '#EF4444' }}>
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75" style={{ backgroundColor: '#EF4444' }} />
-              </span>
-            </button>
+            <NotificationsDropdown />
             
             {/* Balance Visibility Toggle */}
             <BalanceToggleButton />
@@ -261,6 +259,7 @@ export default function WorkspaceLayout({
         </main>
       </div>
     </div>
+        </NotificationsProvider>
       </BalanceVisibilityProvider>
     </AuthProvider>
   );
@@ -332,6 +331,163 @@ function MobileNav({
         </nav>
       </SheetContent>
     </Sheet>
+  );
+}
+
+// Notification type icons and colors
+const notificationConfig: Record<string, { icon: typeof TickCircle; color: string; bgColor: string }> = {
+  invoice_paid: { icon: TickCircle, color: "#14462a", bgColor: "rgba(20, 70, 42, 0.1)" },
+  payment_received: { icon: MoneyRecive, color: "#14462a", bgColor: "rgba(20, 70, 42, 0.1)" },
+  invoice_overdue: { icon: Danger, color: "#EF4444", bgColor: "rgba(239, 68, 68, 0.1)" },
+  invoice_sent: { icon: Send2, color: "#3B82F6", bgColor: "rgba(59, 130, 246, 0.1)" },
+  invoice_viewed: { icon: Eye, color: "#8B5CF6", bgColor: "rgba(139, 92, 246, 0.1)" },
+  new_customer: { icon: People, color: "#14462a", bgColor: "rgba(20, 70, 42, 0.1)" },
+  reminder_sent: { icon: Clock, color: "#F59E0B", bgColor: "rgba(245, 158, 11, 0.1)" },
+  system: { icon: Notification, color: "#6B7280", bgColor: "rgba(107, 114, 128, 0.1)" },
+};
+
+function NotificationsDropdown() {
+  const { notifications, unreadCount, isLoading, markAsRead, markAllAsRead } = useNotifications();
+
+  const formatTime = (dateString: string) => {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffMs = now.getTime() - date.getTime();
+    const diffMins = Math.floor(diffMs / 60000);
+    const diffHours = Math.floor(diffMs / 3600000);
+    const diffDays = Math.floor(diffMs / 86400000);
+
+    if (diffMins < 1) return "Just now";
+    if (diffMins < 60) return `${diffMins}m ago`;
+    if (diffHours < 24) return `${diffHours}h ago`;
+    if (diffDays < 7) return `${diffDays}d ago`;
+    return date.toLocaleDateString();
+  };
+
+  const handleNotificationClick = async (notification: { id: string; is_read: boolean; link?: string }) => {
+    if (!notification.is_read) {
+      await markAsRead([notification.id]);
+    }
+    if (notification.link) {
+      window.location.href = notification.link;
+    }
+  };
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <button 
+          className="relative h-10 w-10 rounded-full flex items-center justify-center transition-all hover:bg-[rgba(240,242,245,0.8)] hover:scale-105"
+          aria-label="Notifications"
+        >
+          <Notification size={20} color="#2D2D2D" />
+          {unreadCount > 0 && (
+            <span className="absolute top-1.5 right-1.5 h-2 w-2 rounded-full" style={{ backgroundColor: '#EF4444' }}>
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75" style={{ backgroundColor: '#EF4444' }} />
+            </span>
+          )}
+        </button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent 
+        align="end" 
+        className="w-96 rounded-2xl p-0 overflow-hidden" 
+        style={{ boxShadow: '0 4px 20px rgba(0, 0, 0, 0.15)', border: '1px solid rgba(0, 0, 0, 0.06)' }}
+      >
+        {/* Header */}
+        <div className="px-4 py-3 flex items-center justify-between" style={{ borderBottom: '1px solid #E4E6EB' }}>
+          <h3 className="font-semibold text-base" style={{ color: '#2D2D2D' }}>Notifications</h3>
+          {unreadCount > 0 && (
+            <button 
+              onClick={(e) => { e.preventDefault(); markAllAsRead(); }}
+              className="text-sm font-medium hover:underline"
+              style={{ color: '#14462a' }}
+            >
+              Mark all as read
+            </button>
+          )}
+        </div>
+
+        {/* Notifications List */}
+        <div className="max-h-[400px] overflow-y-auto">
+          {isLoading ? (
+            <div className="p-8 text-center">
+              <div className="animate-spin h-6 w-6 border-2 border-[#14462a] border-t-transparent rounded-full mx-auto"></div>
+              <p className="text-sm mt-2" style={{ color: '#65676B' }}>Loading...</p>
+            </div>
+          ) : notifications.length === 0 ? (
+            <div className="p-8 text-center">
+              <div 
+                className="h-12 w-12 rounded-full flex items-center justify-center mx-auto mb-3"
+                style={{ backgroundColor: 'rgba(20, 70, 42, 0.08)' }}
+              >
+                <Notification size={24} color="#14462a" />
+              </div>
+              <p className="font-medium text-base" style={{ color: '#2D2D2D' }}>No notifications yet</p>
+              <p className="text-sm mt-1" style={{ color: '#65676B' }}>
+                You&apos;ll be notified when something happens
+              </p>
+            </div>
+          ) : (
+            notifications.slice(0, 10).map((notification) => {
+              const config = notificationConfig[notification.type] || notificationConfig.system;
+              const IconComponent = config.icon;
+
+              return (
+                <button
+                  key={notification.id}
+                  onClick={() => handleNotificationClick(notification)}
+                  className={cn(
+                    "w-full px-4 py-3 flex items-start gap-3 text-left transition-colors hover:bg-[rgba(240,242,245,0.5)]",
+                    !notification.is_read && "bg-[rgba(20,70,42,0.03)]"
+                  )}
+                  style={{ borderBottom: '1px solid #F0F2F5' }}
+                >
+                  <div 
+                    className="h-10 w-10 rounded-full flex items-center justify-center shrink-0"
+                    style={{ backgroundColor: config.bgColor }}
+                  >
+                    <IconComponent size={18} color={config.color} />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p 
+                      className={cn("text-sm", !notification.is_read && "font-semibold")}
+                      style={{ color: '#2D2D2D' }}
+                    >
+                      {notification.title}
+                    </p>
+                    <p className="text-sm truncate" style={{ color: '#65676B' }}>
+                      {notification.message}
+                    </p>
+                    <p className="text-xs mt-1" style={{ color: '#B0B3B8' }}>
+                      {formatTime(notification.created_at)}
+                    </p>
+                  </div>
+                  {!notification.is_read && (
+                    <div 
+                      className="h-2 w-2 rounded-full shrink-0 mt-2"
+                      style={{ backgroundColor: '#14462a' }}
+                    />
+                  )}
+                </button>
+              );
+            })
+          )}
+        </div>
+
+        {/* Footer */}
+        {notifications.length > 0 && (
+          <div className="px-4 py-2" style={{ borderTop: '1px solid #E4E6EB' }}>
+            <Link 
+              href="/notifications"
+              className="block text-center text-sm font-medium py-2 rounded-xl transition-colors hover:bg-[rgba(20,70,42,0.06)]"
+              style={{ color: '#14462a' }}
+            >
+              View all notifications
+            </Link>
+          </div>
+        )}
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }
 

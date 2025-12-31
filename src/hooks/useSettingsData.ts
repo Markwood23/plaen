@@ -24,6 +24,7 @@ export interface InvoiceSettings {
 export interface BrandingSettings {
   accent_color: string
   theme: 'light' | 'dark' | 'system'
+  email_signature?: string
 }
 
 export interface PaymentMethodSettings {
@@ -85,6 +86,7 @@ export interface Settings {
   
   // Business info
   business_name: string
+  business_type: string
   address: AddressInfo
   logo_url: string
   
@@ -115,6 +117,7 @@ const defaultSettings: Settings = {
   setup_completed: false,
   tax_id: '',
   business_name: '',
+  business_type: 'llc',
   address: {},
   logo_url: '',
   default_currency: 'GHS',

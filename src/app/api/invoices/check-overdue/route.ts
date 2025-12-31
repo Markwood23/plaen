@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient as createServiceClient } from '@supabase/supabase-js';
 import { sendPaymentReminderEmail, isEmailConfigured } from '@/lib/email/mailjet';
+import { notifyInvoiceOverdue } from '@/lib/notifications/create';
 
 function getServiceClient() {
   return createServiceClient(
@@ -91,27 +92,28 @@ export async function POST(request: NextRequest) {
 
     // Send overdue notification emails if configured
     let emailsSent = 0;
+    
+    // Get customer and user info for emails and notifications
+    const customerIds = [...new Set(
+      overdueInvoices
+        .map(inv => inv.customer_id)
+        .filter((id): id is string => typeof id === 'string')
+    )];
+    
+    const userIds = [...new Set(overdueInvoices.map(inv => inv.user_id))];
+
+    const [{ data: customers }, { data: users }] = await Promise.all([
+      customerIds.length > 0
+        ? supabase.from('customers').select('id, name, email').in('id', customerIds)
+        : Promise.resolve({ data: [] as Array<{ id: string; name: string | null; email: string | null }> }),
+      supabase.from('users').select('id, full_name, business_name').in('id', userIds),
+    ]);
+
+    const customersMap = new Map((customers || []).map(c => [c.id, c]));
+    const usersMap = new Map((users || []).map(u => [u.id, u]));
+
     if (sendEmails && isEmailConfigured()) {
       const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
-
-      // Get customer and user info for emails
-      const customerIds = [...new Set(
-        overdueInvoices
-          .map(inv => inv.customer_id)
-          .filter((id): id is string => typeof id === 'string')
-      )];
-      
-      const userIds = [...new Set(overdueInvoices.map(inv => inv.user_id))];
-
-      const [{ data: customers }, { data: users }] = await Promise.all([
-        customerIds.length > 0
-          ? supabase.from('customers').select('id, name, email').in('id', customerIds)
-          : Promise.resolve({ data: [] as Array<{ id: string; name: string | null; email: string | null }> }),
-        supabase.from('users').select('id, full_name, business_name').in('id', userIds),
-      ]);
-
-      const customersMap = new Map((customers || []).map(c => [c.id, c]));
-      const usersMap = new Map((users || []).map(u => [u.id, u]));
 
       for (const invoice of overdueInvoices) {
         const customer = invoice.customer_id ? customersMap.get(invoice.customer_id) : null;
@@ -145,6 +147,21 @@ export async function POST(request: NextRequest) {
             console.error(`Failed to send overdue email for invoice ${invoice.id}:`, emailError);
           }
         }
+      }
+    }
+
+    // Create in-app notifications for overdue invoices
+    for (const invoice of overdueInvoices) {
+      const customer = invoice.customer_id ? customersMap.get(invoice.customer_id) : null;
+      try {
+        await notifyInvoiceOverdue(
+          invoice.user_id,
+          invoice.invoice_number || '',
+          customer?.name || 'Customer',
+          invoice.id
+        );
+      } catch (notifError) {
+        console.error(`Failed to create overdue notification for invoice ${invoice.id}:`, notifError);
       }
     }
 

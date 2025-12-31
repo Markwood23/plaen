@@ -1,28 +1,57 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useMemo } from 'react';
 import { LineChart, Line, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { Calendar } from 'lucide-react';
 
-export default function ProfitRevenueChart() {
-  const [timeframe, setTimeframe] = useState('weekly');
+interface ChartDataPoint {
+  month: string
+  revenue: number
+  invoiced: number
+}
 
-  const data = [
-    { month: 'Sep', revenue: 25000, profit: 42000 },
-    { month: 'Oct', revenue: 32000, profit: 35000 },
-    { month: 'Nov', revenue: 52000, profit: 30000 },
-    { month: 'Dec', revenue: 58000, profit: 55000 },
-    { month: 'Jan', revenue: 65000, profit: 62000 },
-    { month: 'Feb', revenue: 58000, profit: 48000 },
-    { month: 'Mar', revenue: 42000, profit: 40000 }
-  ];
+interface ProfitRevenueChartProps {
+  data: ChartDataPoint[]
+  currency?: string
+}
+
+export default function ProfitRevenueChart({ data, currency = 'GHS' }: ProfitRevenueChartProps) {
+  // Format currency for display
+  const currencySymbol = currency === 'GHS' ? '₵' : currency === 'USD' ? '$' : currency
+
+  // Calculate max value for Y axis domain
+  const maxValue = useMemo(() => {
+    if (!data || data.length === 0) return 10000
+    const max = Math.max(
+      ...data.map(d => Math.max(d.revenue || 0, d.invoiced || 0))
+    )
+    // Round up to a nice number
+    const magnitude = Math.pow(10, Math.floor(Math.log10(max || 1)))
+    return Math.ceil((max || 10000) / magnitude) * magnitude || 10000
+  }, [data])
+
+  // Generate Y axis ticks
+  const yAxisTicks = useMemo(() => {
+    const step = maxValue / 4
+    return [step, step * 2, step * 3, maxValue]
+  }, [maxValue])
 
   const CustomTooltip = ({ active, payload }: any) => {
     if (active && payload && payload.length) {
+      const point = payload[0].payload
       return (
         <div className="bg-white rounded-2xl shadow-2xl p-5 border border-gray-100 transform -translate-y-2">
-          <p className="text-xs font-medium text-gray-400 uppercase tracking-wider mb-1">This Month</p>
-          <p className="text-3xl font-bold tracking-tight">220,342,123</p>
-          <p className="text-xs text-gray-400 mt-2">{payload[0].payload.month}</p>
+          <p className="text-xs font-medium text-gray-400 uppercase tracking-wider mb-2">{point.month}</p>
+          <div className="space-y-1">
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 rounded-full bg-[#14462a]"></div>
+              <p className="text-sm font-semibold">{currencySymbol}{(point.revenue / 100).toLocaleString('en-US', { minimumFractionDigits: 2 })}</p>
+              <span className="text-xs text-gray-400">Revenue</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 rounded-full bg-[#65a37a]"></div>
+              <p className="text-sm font-semibold">{currencySymbol}{(point.invoiced / 100).toLocaleString('en-US', { minimumFractionDigits: 2 })}</p>
+              <span className="text-xs text-gray-400">Invoiced</span>
+            </div>
+          </div>
         </div>
       );
     }
@@ -30,7 +59,11 @@ export default function ProfitRevenueChart() {
   };
 
   const formatYAxis = (value: number) => {
-    return `${(value / 1000).toFixed(0)},000`;
+    // Values are in minor units (cents), convert to major units
+    const majorValue = value / 100
+    if (majorValue >= 1000000) return `${currencySymbol}${(majorValue / 1000000).toFixed(1)}M`
+    if (majorValue >= 1000) return `${currencySymbol}${(majorValue / 1000).toFixed(0)}k`
+    return `${currencySymbol}${majorValue.toFixed(0)}`
   };
 
   return (
@@ -54,7 +87,7 @@ export default function ProfitRevenueChart() {
                   <stop offset="50%" stopColor="#14462a" stopOpacity={0.15}/>
                   <stop offset="100%" stopColor="#14462a" stopOpacity={0}/>
                 </linearGradient>
-                <linearGradient id="profitGradient" x1="0" y1="0" x2="0" y2="1">
+                <linearGradient id="invoicedGradient" x1="0" y1="0" x2="0" y2="1">
                   <stop offset="0%" stopColor="#14462a" stopOpacity={0.2}/>
                   <stop offset="50%" stopColor="#14462a" stopOpacity={0.06}/>
                   <stop offset="100%" stopColor="#14462a" stopOpacity={0}/>
@@ -88,11 +121,11 @@ export default function ProfitRevenueChart() {
                 tickLine={false}
                 tick={{ fill: '#9ca3af', fontSize: 13, fontWeight: 500 }}
                 tickFormatter={formatYAxis}
-                domain={[0, 80000]}
-                ticks={[20000, 40000, 60000, 80000]}
+                domain={[0, maxValue]}
+                ticks={yAxisTicks}
                 dx={-5}
                 label={{ 
-                  value: 'Amount (GHS)', 
+                  value: `Amount (${currency})`, 
                   angle: -90, 
                   position: 'insideLeft',
                   offset: -50,
@@ -111,15 +144,15 @@ export default function ProfitRevenueChart() {
                 animationDuration={200}
               />
               
-              {/* Profit area gradient (gray) - behind */}
+              {/* Invoiced area gradient (lighter) - behind */}
               <Area
                 type="monotone"
-                dataKey="profit"
+                dataKey="invoiced"
                 stroke="none"
-                fill="url(#profitGradient)"
+                fill="url(#invoicedGradient)"
               />
               
-              {/* Revenue area gradient (black) - in front */}
+              {/* Revenue area gradient (darker) - in front */}
               <Area
                 type="monotone"
                 dataKey="revenue"
@@ -127,10 +160,10 @@ export default function ProfitRevenueChart() {
                 fill="url(#revenueGradient)"
               />
               
-              {/* Profit line (lighter green) - behind */}
+              {/* Invoiced line (lighter green) - behind */}
               <Line 
                 type="monotone" 
-                dataKey="profit" 
+                dataKey="invoiced" 
                 stroke="#65a37a" 
                 strokeWidth={3.5}
                 dot={false}
@@ -172,14 +205,14 @@ export default function ProfitRevenueChart() {
                 <div className="w-2.5 h-2.5 rounded-full bg-[#14462a] group-hover:scale-110 transition-transform duration-200"></div>
                 <div className="absolute inset-0 w-2.5 h-2.5 rounded-full bg-[#14462a] opacity-20 blur-sm"></div>
               </div>
-              <span className="text-sm font-semibold text-gray-900 group-hover:text-[#14462a] transition-colors">Revenue</span>
+              <span className="text-sm font-semibold text-gray-900 group-hover:text-[#14462a] transition-colors">Revenue (Paid)</span>
             </div>
             <div className="flex items-center gap-3 group cursor-pointer">
               <div className="relative">
                 <div className="w-2.5 h-2.5 rounded-full bg-[#65a37a] group-hover:scale-110 transition-transform duration-200"></div>
                 <div className="absolute inset-0 w-2.5 h-2.5 rounded-full bg-[#65a37a] opacity-20 blur-sm"></div>
               </div>
-              <span className="text-sm font-semibold text-gray-900 group-hover:text-[#14462a] transition-colors">Profit</span>
+              <span className="text-sm font-semibold text-gray-900 group-hover:text-[#14462a] transition-colors">Invoiced</span>
           </div>
         </div>
       </div>

@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { sendInvoiceEmail, isEmailConfigured } from '@/lib/email/mailjet'
 import { format } from 'date-fns'
 import { checkRateLimit, getClientIdentifier, RATE_LIMITS, rateLimitedResponse } from '@/lib/rate-limit'
+import { notifyInvoiceSent } from '@/lib/notifications/create'
 
 // POST /api/invoices/[id]/send - Send invoice and generate public link
 export async function POST(
@@ -163,6 +164,16 @@ export async function POST(
         emailError = emailResult.error || 'Mailjet send failed'
         console.error('Failed to send invoice email:', emailError)
       }
+    }
+
+    // Create in-app notification for invoice sent
+    if (emailSent) {
+      await notifyInvoiceSent(
+        user.id,
+        invoice.invoice_number,
+        recipientEmail || '',
+        id
+      )
     }
     
     return NextResponse.json({

@@ -8,6 +8,7 @@ import {
 } from '@/lib/payments/flutterwave';
 import { computeReceiptVerificationHash } from '@/lib/receipts/verification';
 import { sendPaymentConfirmationEmail, isEmailConfigured } from '@/lib/email/mailjet';
+import { notifyPaymentReceived, notifyInvoicePaid } from '@/lib/notifications/create';
 import type { PaymentInsert } from '@/types/database';
 
 // Service client for webhooks (server-to-server)
@@ -202,6 +203,30 @@ export async function POST(request: NextRequest) {
       } catch (emailError) {
         console.error('Failed to send payment confirmation email:', emailError);
       }
+    }
+
+    // Create in-app notifications
+    const currency = verifiedData.currency || invoice.currency || 'GHS';
+    const amountFormatted = `${currency} ${amountMajor}`;
+    
+    // Always notify about payment received
+    await notifyPaymentReceived(
+      invoice.user_id,
+      amountFormatted,
+      invoice.invoice_number,
+      payment.id,
+      invoiceId
+    );
+
+    // If invoice is fully paid, send additional notification
+    if (updatedInvoice?.status === 'paid') {
+      const totalFormatted = `${currency} ${(Number(invoice.total || 0) / 100).toFixed(2)}`;
+      await notifyInvoicePaid(
+        invoice.user_id,
+        invoice.invoice_number,
+        totalFormatted,
+        invoiceId
+      );
     }
 
     console.log('Payment processed successfully:', {

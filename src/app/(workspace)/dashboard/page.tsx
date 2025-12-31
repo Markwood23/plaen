@@ -85,6 +85,39 @@ export default function DashboardPage() {
     return `${symbol}${value.toFixed(0)}`;
   };
 
+  // Generate sparkline path from chart data
+  const generateSparkline = (dataKey: 'revenue' | 'invoiced', isUp: boolean): string => {
+    if (!data?.chartData || data.chartData.length === 0) {
+      // Default flat line
+      return "M2 16 L62 16";
+    }
+    
+    const values = data.chartData.map(d => d[dataKey] || 0);
+    const maxVal = Math.max(...values, 1);
+    const minVal = Math.min(...values, 0);
+    const range = maxVal - minVal || 1;
+    
+    // Map to SVG coordinates (width 60, height 24, with padding)
+    const points = values.map((v, i) => {
+      const x = 2 + (i * 60) / (values.length - 1 || 1);
+      const y = 4 + (1 - (v - minVal) / range) * 24;
+      return { x, y };
+    });
+    
+    // Generate smooth curve using quadratic bezier
+    if (points.length < 2) return "M2 16 L62 16";
+    
+    let path = `M${points[0].x} ${points[0].y}`;
+    for (let i = 1; i < points.length; i++) {
+      const prev = points[i - 1];
+      const curr = points[i];
+      const cpX = (prev.x + curr.x) / 2;
+      path += ` Q${cpX} ${prev.y}, ${curr.x} ${curr.y}`;
+    }
+    
+    return path;
+  };
+
   // Determine if user is new (no data)
   const isNewUser = data && 
     data.metrics.total_invoices === 0 && 
@@ -101,7 +134,7 @@ export default function DashboardPage() {
         : `${(data.metrics.revenue_change_percent ?? 0).toFixed(0)}%`,
       icon: Card,
       up: (data.metrics.revenue_change_percent ?? 0) >= 0,
-      sparkline: "M2 20 Q10 8, 18 12 T34 8 Q42 14, 50 10 T62 6",
+      sparkline: generateSparkline('revenue', (data.metrics.revenue_change_percent ?? 0) >= 0),
       iconColor: "#14462a",
       iconBg: "rgba(13, 148, 136, 0.08)",
     },
@@ -113,7 +146,7 @@ export default function DashboardPage() {
         : `${(data.metrics.outstanding_change_percent ?? 0).toFixed(0)}%`,
       icon: Send2,
       up: (data.metrics.outstanding_change_percent ?? 0) <= 0,
-      sparkline: "M2 12 Q10 18, 18 14 T34 20 Q42 16, 50 22 T62 26",
+      sparkline: generateSparkline('invoiced', (data.metrics.outstanding_change_percent ?? 0) <= 0),
       iconColor: "#14462a",
       iconBg: "rgba(20, 70, 42, 0.08)",
     },
@@ -455,7 +488,7 @@ export default function DashboardPage() {
               size="sm"
             />
           ) : (
-            <ProfitRevenueChart />
+            <ProfitRevenueChart data={data?.chartData || []} currency="GHS" />
           )}
         </div>
       </section>

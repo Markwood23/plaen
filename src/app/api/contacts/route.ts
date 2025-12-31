@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { NextRequest, NextResponse } from 'next/server'
 import type { CustomerInsert } from '@/types/database'
+import { notifyNewCustomer } from '@/lib/notifications/create'
 
 // GET /api/contacts - List customers
 export async function GET(request: NextRequest) {
@@ -98,6 +99,9 @@ export async function POST(request: NextRequest) {
       console.error('Error creating customer:', error)
       return NextResponse.json({ error: error.message }, { status: 500 })
     }
+
+    // Create notification for new customer
+    await notifyNewCustomer(user.id, customer.name, customer.id)
     
     return NextResponse.json({ customer }, { status: 201 })
   } catch (error) {
