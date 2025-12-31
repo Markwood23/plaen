@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { NextRequest, NextResponse } from 'next/server'
+import { checkRateLimit, getClientIdentifier, RATE_LIMITS, rateLimitedResponse } from '@/lib/rate-limit'
 
 // Bucket configurations for server-side validation
 const BUCKET_CONFIG = {
@@ -35,6 +36,13 @@ export async function POST(request: NextRequest) {
     const { data: { user }, error: authError } = await supabase.auth.getUser()
     if (authError || !user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+
+    // Rate limiting for uploads
+    const clientId = getClientIdentifier(request, user.id)
+    const rateLimitResult = checkRateLimit(clientId, RATE_LIMITS.api.upload)
+    if (!rateLimitResult.success) {
+      return rateLimitedResponse(rateLimitResult)
     }
     
     const formData = await request.formData()

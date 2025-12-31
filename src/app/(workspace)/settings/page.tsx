@@ -54,6 +54,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { ColorPicker } from "@/components/ui/color-picker";
 import { CedisCircle } from "@/components/icons/cedis-icon";
 import { useSettingsData } from "@/hooks/useSettingsData";
+import { LogoUpload } from "@/components/ui/logo-upload";
 
 // Security verification types
 type VerificationType = "password" | "email-otp" | "sms-otp" | "2fa";
@@ -1051,20 +1052,18 @@ export default function SettingsPage() {
         <TabsContent value="branding" className="space-y-8">
           <div>
             <h2 className="text-lg font-semibold text-gray-900 mb-1">Business Logo</h2>
-            <p className="text-sm text-gray-500 mb-6">Upload your company logo</p>
+            <p className="text-sm text-gray-500 mb-6">Upload your company logo for invoices and emails</p>
 
-            <div className="flex items-start gap-4">
-              <div className="h-20 w-20 rounded-2xl bg-gray-100 flex items-center justify-center">
-                <DocumentUpload size={20} color="#9CA3AF" />
-              </div>
-              <div className="flex-1">
-                <Button variant="outline" className="rounded-xl mb-2">
-                  <DocumentUpload size={16} color="currentColor" className="mr-2" />
-                  Upload Logo
-                </Button>
-                <p className="text-xs text-gray-500">Square image, PNG or SVG, min 200×200px</p>
-              </div>
-            </div>
+            <LogoUpload
+              currentUrl={apiSettings.logo_url || null}
+              businessName={apiSettings.business_name}
+              onUploadComplete={(url) => {
+                updateSettings({ logo_url: url });
+              }}
+              onDeleteComplete={() => {
+                updateSettings({ logo_url: '' });
+              }}
+            />
           </div>
 
           <div>

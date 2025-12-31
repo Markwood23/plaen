@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient as createServiceClient } from '@supabase/supabase-js';
 import { sendOTPEmail, isEmailConfigured } from '@/lib/email/mailjet';
+import { checkRateLimit, getClientIdentifier, RATE_LIMITS, rateLimitedResponse } from '@/lib/rate-limit';
 
 function getServiceClient() {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -17,6 +18,13 @@ function generateOTP(): string {
 // POST /api/auth/send-otp - Send OTP verification code to email
 export async function POST(request: NextRequest) {
   try {
+    // Rate limiting - same limit as forgotPassword since it sends emails
+    const clientId = getClientIdentifier(request);
+    const rateLimitResult = checkRateLimit(clientId, RATE_LIMITS.auth.forgotPassword);
+    if (!rateLimitResult.success) {
+      return rateLimitedResponse(rateLimitResult);
+    }
+
     const body = await request.json();
     const { email, name, userId } = body;
 

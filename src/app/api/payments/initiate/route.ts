@@ -7,6 +7,7 @@ import {
   isFlutterwaveConfigured,
   getSupportedPaymentMethods,
 } from '@/lib/payments/flutterwave';
+import { checkRateLimit, getClientIdentifier, RATE_LIMITS, rateLimitedResponse } from '@/lib/rate-limit';
 
 function isUuid(value: string): boolean {
   return /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(
@@ -23,6 +24,13 @@ function getServiceClient() {
 
 export async function POST(request: NextRequest) {
   try {
+    // Rate limiting for payment initiations
+    const clientId = getClientIdentifier(request);
+    const rateLimitResult = checkRateLimit(clientId, RATE_LIMITS.payment.initiate);
+    if (!rateLimitResult.success) {
+      return rateLimitedResponse(rateLimitResult);
+    }
+
     const body = await request.json();
     const { invoice_id, method, amount, phone_number, network } = body;
 

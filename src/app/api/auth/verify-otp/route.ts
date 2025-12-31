@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient as createServiceClient } from '@supabase/supabase-js';
+import { checkRateLimit, getClientIdentifier, RATE_LIMITS, rateLimitedResponse } from '@/lib/rate-limit';
 
 function getServiceClient() {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -11,6 +12,13 @@ function getServiceClient() {
 // POST /api/auth/verify-otp - Verify OTP code
 export async function POST(request: NextRequest) {
   try {
+    // Rate limiting
+    const clientId = getClientIdentifier(request);
+    const rateLimitResult = checkRateLimit(clientId, RATE_LIMITS.auth.verifyOtp);
+    if (!rateLimitResult.success) {
+      return rateLimitedResponse(rateLimitResult);
+    }
+
     const body = await request.json();
     const { email, code, userId } = body;
 

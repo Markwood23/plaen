@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import { NextRequest, NextResponse } from 'next/server'
 import { sendInvoiceEmail, isEmailConfigured } from '@/lib/email/mailjet'
 import { format } from 'date-fns'
+import { checkRateLimit, getClientIdentifier, RATE_LIMITS, rateLimitedResponse } from '@/lib/rate-limit'
 
 // POST /api/invoices/[id]/send - Send invoice and generate public link
 export async function POST(
@@ -16,6 +17,13 @@ export async function POST(
     const { data: { user }, error: authError } = await supabase.auth.getUser()
     if (authError || !user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+
+    // Rate limiting for email sending
+    const clientId = getClientIdentifier(request, user.id)
+    const rateLimitResult = checkRateLimit(clientId, RATE_LIMITS.email.send)
+    if (!rateLimitResult.success) {
+      return rateLimitedResponse(rateLimitResult)
     }
     
     // Parse request body for optional email flag and recipient override
