@@ -106,9 +106,9 @@ export function useDashboardData(): UseDashboardDataResult {
       
       setData({
         metrics: { ...defaultMetrics, ...(result.metrics ?? {}) },
-        arAging: result.arAging || defaultARAging,
-        recentInvoices: result.recentInvoices || [],
-        recentPayments: result.recentPayments || [],
+        arAging: result.ar_aging || defaultARAging,
+        recentInvoices: result.recent_invoices || [],
+        recentPayments: result.recent_payments || [],
       })
     } catch (err) {
       console.error('Dashboard fetch error:', err)

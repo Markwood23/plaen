@@ -42,10 +42,13 @@ export async function GET() {
         id,
         invoice_number,
         total,
+        balance_due,
         status,
+        issue_date,
         due_date,
+        currency,
         created_at,
-        customer:customers(id, name)
+        customer:customers(id, name, email)
       `)
       .eq('user_id', user.id)
       .order('created_at', { ascending: false })
