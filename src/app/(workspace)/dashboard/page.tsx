@@ -93,9 +93,15 @@ export default function DashboardPage() {
     }
     
     const values = data.chartData.map(d => d[dataKey] || 0);
-    const maxVal = Math.max(...values, 1);
-    const minVal = Math.min(...values, 0);
-    const range = maxVal - minVal || 1;
+    const maxVal = Math.max(...values);
+    const minVal = Math.min(...values);
+    
+    // If all values are the same (or all zero), show a flat line
+    if (maxVal === minVal) {
+      return "M2 16 L62 16";
+    }
+    
+    const range = maxVal - minVal;
     
     // Map to SVG coordinates (width 60, height 24, with padding)
     const points = values.map((v, i) => {

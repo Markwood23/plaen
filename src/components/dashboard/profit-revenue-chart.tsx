@@ -17,16 +17,26 @@ export default function ProfitRevenueChart({ data, currency = 'GHS' }: ProfitRev
   // Format currency for display
   const currencySymbol = currency === 'GHS' ? '₵' : currency === 'USD' ? '$' : currency
 
+  // Add unique index to data for proper rendering
+  const chartData = useMemo(() => {
+    if (!data || data.length === 0) return []
+    return data.map((d, index) => ({
+      ...d,
+      uniqueKey: `${d.month}-${index}`,
+    }))
+  }, [data])
+
   // Calculate max value for Y axis domain
   const maxValue = useMemo(() => {
-    if (!data || data.length === 0) return 10000
+    if (!chartData || chartData.length === 0) return 100000 // Default to ₵1000
     const max = Math.max(
-      ...data.map(d => Math.max(d.revenue || 0, d.invoiced || 0))
+      ...chartData.map(d => Math.max(d.revenue || 0, d.invoiced || 0))
     )
+    if (max === 0) return 100000 // Default if no data
     // Round up to a nice number
-    const magnitude = Math.pow(10, Math.floor(Math.log10(max || 1)))
-    return Math.ceil((max || 10000) / magnitude) * magnitude || 10000
-  }, [data])
+    const magnitude = Math.pow(10, Math.floor(Math.log10(max)))
+    return Math.ceil(max / magnitude) * magnitude
+  }, [chartData])
 
   // Generate Y axis ticks
   const yAxisTicks = useMemo(() => {
@@ -71,7 +81,7 @@ export default function ProfitRevenueChart({ data, currency = 'GHS' }: ProfitRev
       <div className="relative">
           <ResponsiveContainer width="100%" height={420}>
             <LineChart
-              data={data}
+              data={chartData}
               margin={{ top: 30, right: 40, left: 80, bottom: 60 }}
             >
               <defs>
@@ -102,12 +112,13 @@ export default function ProfitRevenueChart({ data, currency = 'GHS' }: ProfitRev
               />
               
               <XAxis 
-                dataKey="month" 
+                dataKey="uniqueKey" 
                 axisLine={false}
                 tickLine={false}
                 tick={{ fill: '#9ca3af', fontSize: 14, fontWeight: 500 }}
                 dy={12}
                 padding={{ left: 20, right: 20 }}
+                tickFormatter={(value) => value.split('-')[0]}
                 label={{ 
                   value: 'Months', 
                   position: 'insideBottom', 
@@ -150,6 +161,8 @@ export default function ProfitRevenueChart({ data, currency = 'GHS' }: ProfitRev
                 dataKey="invoiced"
                 stroke="none"
                 fill="url(#invoicedGradient)"
+                baseValue={0}
+                isAnimationActive={false}
               />
               
               {/* Revenue area gradient (darker) - in front */}
@@ -158,6 +171,8 @@ export default function ProfitRevenueChart({ data, currency = 'GHS' }: ProfitRev
                 dataKey="revenue"
                 stroke="none"
                 fill="url(#revenueGradient)"
+                baseValue={0}
+                isAnimationActive={false}
               />
               
               {/* Invoiced line (lighter green) - behind */}
