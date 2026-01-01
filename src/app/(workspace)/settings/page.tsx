@@ -318,8 +318,25 @@ export default function SettingsPage() {
       return;
     }
     
+    // Validate password requirements
     if (newPassword.length < 8) {
       setPasswordError("Password must be at least 8 characters");
+      return;
+    }
+    if (!/[A-Z]/.test(newPassword)) {
+      setPasswordError("Password must contain at least one uppercase letter");
+      return;
+    }
+    if (!/[a-z]/.test(newPassword)) {
+      setPasswordError("Password must contain at least one lowercase letter");
+      return;
+    }
+    if (!/\d/.test(newPassword)) {
+      setPasswordError("Password must contain at least one number");
+      return;
+    }
+    if (!/[!@#$%^&*(),.?":{}|<>]/.test(newPassword)) {
+      setPasswordError("Password must contain at least one special character (!@#$%^&*...)");
       return;
     }
     
@@ -1163,7 +1180,29 @@ export default function SettingsPage() {
                     {showPasswords.new ? <EyeSlash size={18} color="#9CA3AF" /> : <Eye size={18} color="#9CA3AF" />}
                   </button>
                 </div>
-                <p className="text-xs text-gray-500">Min 8 characters</p>
+                {/* Password requirements */}
+                {newPassword && (
+                  <div className="mt-2 p-3 rounded-lg bg-gray-50 border border-gray-100">
+                    <p className="text-xs font-medium text-gray-600 mb-2">Password requirements:</p>
+                    <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-xs">
+                      <span className={newPassword.length >= 8 ? "text-green-600" : "text-gray-400"}>
+                        {newPassword.length >= 8 ? "✓" : "○"} 8+ characters
+                      </span>
+                      <span className={/[A-Z]/.test(newPassword) ? "text-green-600" : "text-gray-400"}>
+                        {/[A-Z]/.test(newPassword) ? "✓" : "○"} Uppercase letter
+                      </span>
+                      <span className={/[a-z]/.test(newPassword) ? "text-green-600" : "text-gray-400"}>
+                        {/[a-z]/.test(newPassword) ? "✓" : "○"} Lowercase letter
+                      </span>
+                      <span className={/\d/.test(newPassword) ? "text-green-600" : "text-gray-400"}>
+                        {/\d/.test(newPassword) ? "✓" : "○"} Number
+                      </span>
+                      <span className={/[!@#$%^&*(),.?":{}|<>]/.test(newPassword) ? "text-green-600" : "text-gray-400"}>
+                        {/[!@#$%^&*(),.?":{}|<>]/.test(newPassword) ? "✓" : "○"} Special character
+                      </span>
+                    </div>
+                  </div>
+                )}
               </div>
               <div className="space-y-2">
                 <Label htmlFor="confirmPassword">Confirm New Password</Label>

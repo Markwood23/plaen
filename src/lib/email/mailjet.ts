@@ -1934,7 +1934,7 @@ Plaen Security
 export async function sendAccountDeletedEmail(params: {
   email: string
   name?: string
-}): Promise<boolean> {
+}): Promise<{ success: boolean; messageId?: string; error?: string }> {
   const deletionContent = `
 <!DOCTYPE html>
 <html lang="en">
