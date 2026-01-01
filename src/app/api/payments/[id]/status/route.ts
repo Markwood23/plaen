@@ -104,9 +104,36 @@ export async function GET(
   }
 
   const invoiceId = payment.payment_allocations?.[0]?.invoice_id;
-  const { data: invoice } = invoiceId
-    ? await supabase.from('invoices').select('invoice_number').eq('id', invoiceId).single()
-    : { data: null };
+  
+  // Get invoice and user/business details for receipt
+  let invoice = null;
+  let businessName = null;
+  if (invoiceId) {
+    const { data: invoiceData } = await supabase
+      .from('invoices')
+      .select('invoice_number, user_id, total, amount_paid')
+      .eq('id', invoiceId)
+      .single();
+    
+    if (invoiceData) {
+      invoice = invoiceData;
+      
+      // Get business name from user
+      const { data: user } = await supabase
+        .from('users')
+        .select('business_name, full_name')
+        .eq('id', invoiceData.user_id)
+        .single();
+      
+      businessName = user?.business_name || user?.full_name || null;
+    }
+  }
+
+  // Generate receipt number format
+  const receiptNumber = `REC-${Date.now().toString(36).toUpperCase()}-${transactionId.substring(0, 4).toUpperCase()}`;
+  
+  // Calculate remaining balance
+  const remainingBalance = invoice ? (invoice.total - invoice.amount_paid) / 100 : 0;
 
   return NextResponse.json({
     transaction_id: transactionId,
@@ -116,5 +143,10 @@ export async function GET(
     timestamp: payment.payment_date || payment.created_at,
     invoice_number: invoice?.invoice_number || null,
     reference: payment.transaction_id || payment.reference,
+    receipt_number: receiptNumber,
+    payer_name: payment.payer_name || null,
+    payer_email: payment.payer_email || null,
+    business_name: businessName,
+    remaining_balance: remainingBalance,
   });
 }

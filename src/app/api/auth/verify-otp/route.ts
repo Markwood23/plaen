@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient as createServiceClient } from '@supabase/supabase-js';
 import { checkRateLimit, getClientIdentifier, RATE_LIMITS, rateLimitedResponse } from '@/lib/rate-limit';
+import { sendWelcomeEmail, isEmailConfigured } from '@/lib/email/mailjet';
 
 function getServiceClient() {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -122,6 +123,14 @@ export async function POST(request: NextRequest) {
     } catch (e) {
       // This might fail if using older Supabase version, that's okay
       console.warn('Could not update auth email_confirmed:', e);
+    }
+
+    // Send welcome email after successful verification
+    if (isEmailConfigured()) {
+      sendWelcomeEmail({
+        email: user.email,
+        name: user.full_name || 'there',
+      }).catch(err => console.error('Failed to send welcome email:', err));
     }
 
     return NextResponse.json({

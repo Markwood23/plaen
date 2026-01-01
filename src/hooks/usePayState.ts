@@ -29,10 +29,16 @@ export interface PaymentState {
 export interface ReceiptData {
   transactionId: string;
   amount: number;
-  method: PaymentMethod;
+  method: PaymentMethod | string;
   timestamp: string;
   invoiceNumber: string;
   reference: string;
+  receiptNumber?: string;
+  payerName?: string;
+  payerEmail?: string;
+  businessName?: string;
+  currency?: string;
+  remainingBalance?: number;
 }
 
 interface UsePayStateReturn {
@@ -208,6 +214,12 @@ export function usePayState(
             timestamp: data.timestamp,
             invoiceNumber: data.invoice_number,
             reference: data.reference,
+            receiptNumber: data.receipt_number,
+            payerName: data.payer_name,
+            payerEmail: data.payer_email,
+            businessName: data.business_name,
+            currency: data.currency || 'GHS',
+            remainingBalance: data.remaining_balance,
           };
 
           setState(prev => ({

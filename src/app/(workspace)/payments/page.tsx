@@ -485,7 +485,7 @@ export default function PaymentsPage() {
                     <TableCell>
                       {new Date(payment.payment_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                     </TableCell>
-                    <TableCell>
+                    <TableCell onClick={(e) => e.stopPropagation()}>
                       {payment.allocations.length > 0 ? (
                         <div className="space-y-1">
                           {payment.allocations.map(alloc => (
@@ -493,6 +493,7 @@ export default function PaymentsPage() {
                               key={alloc.id}
                               href={`/invoices/${alloc.invoice?.id}`}
                               className="text-[#14462a] hover:underline block"
+                              onClick={(e) => e.stopPropagation()}
                             >
                               {alloc.invoice?.invoice_number || '-'}
                             </Link>
@@ -529,7 +530,13 @@ export default function PaymentsPage() {
                           </button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end" className="rounded-2xl w-48 p-2">
-                          <DropdownMenuItem className="rounded-xl p-3 cursor-pointer">
+                          <DropdownMenuItem 
+                            className="rounded-xl p-3 cursor-pointer"
+                            onClick={() => {
+                              setSelectedPayment(payment);
+                              setIsModalOpen(true);
+                            }}
+                          >
                             <Eye size={16} color="#14462a" className="mr-2" />
                             <span>View Details</span>
                           </DropdownMenuItem>
