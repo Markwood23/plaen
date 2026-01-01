@@ -28,8 +28,10 @@ function ResetPasswordForm() {
 
   const passwordRequirements = [
     { label: "At least 8 characters", met: password.length >= 8 },
-    { label: "Contains a number", met: /\d/.test(password) },
     { label: "Contains uppercase letter", met: /[A-Z]/.test(password) },
+    { label: "Contains lowercase letter", met: /[a-z]/.test(password) },
+    { label: "Contains a number", met: /\d/.test(password) },
+    { label: "Contains special character (!@#$...)", met: /[!@#$%^&*(),.?":{}|<>]/.test(password) },
   ];
 
   const allRequirementsMet = passwordRequirements.every(req => req.met);
