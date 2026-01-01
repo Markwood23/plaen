@@ -25,6 +25,7 @@ export async function signUp(formData: FormData) {
   const country = formData.get('country') as string || null
   const invoicePrefix = formData.get('invoice_prefix') as string || 'GH'
 
+  // Create user without email confirmation (we'll handle it ourselves)
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
@@ -33,7 +34,7 @@ export async function signUp(formData: FormData) {
         full_name: fullName,
         business_name: businessName,
       },
-      emailRedirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/auth/callback`,
+      // Don't use Supabase email redirect - we'll send our own verification email
     },
   })
 
@@ -146,41 +147,10 @@ export async function signOut() {
   redirect('/login')
 }
 
-export async function resetPassword(formData: FormData) {
-  const supabase = await createClient()
-
-  const email = formData.get('email') as string
-
-  const { error } = await supabase.auth.resetPasswordForEmail(email, {
-    redirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/reset-password`,
-  })
-
-  if (error) {
-    return { error: error.message }
-  }
-
-  return { 
-    success: true, 
-    message: 'Password reset link sent to your email.' 
-  }
-}
-
-export async function updatePassword(formData: FormData) {
-  const supabase = await createClient()
-
-  const password = formData.get('password') as string
-
-  const { error } = await supabase.auth.updateUser({
-    password,
-  })
-
-  if (error) {
-    return { error: error.message }
-  }
-
-  revalidatePath('/', 'layout')
-  redirect('/dashboard')
-}
+// Note: Password reset is now handled via API routes:
+// - /api/auth/forgot-password (request reset)
+// - /api/auth/reset-password (verify token + update password)
+// These use custom email templates via Mailjet instead of Supabase's built-in emails.
 
 export async function updateProfile(formData: FormData) {
   const supabase = await createClient()

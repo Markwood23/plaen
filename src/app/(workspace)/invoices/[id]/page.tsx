@@ -471,28 +471,35 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
             className="rounded-full px-5 h-9 transition-all" 
             style={{ 
               backgroundColor: activeAction === 'edit' ? 'rgba(20, 70, 42, 0.08)' : 'transparent',
-              color: activeAction === 'edit' ? '#14462a' : '#2D2D2D', 
-              fontWeight: activeAction === 'edit' ? 500 : 400 
+              color: invoiceData.status === 'paid' || invoiceData.status === 'cancelled' 
+                ? '#B0B3B8' 
+                : activeAction === 'edit' ? '#14462a' : '#2D2D2D', 
+              fontWeight: activeAction === 'edit' ? 500 : 400,
+              cursor: invoiceData.status === 'paid' || invoiceData.status === 'cancelled' ? 'not-allowed' : 'pointer',
+              opacity: invoiceData.status === 'paid' || invoiceData.status === 'cancelled' ? 0.6 : 1
             }}
+            disabled={invoiceData.status === 'paid' || invoiceData.status === 'cancelled'}
             onMouseEnter={(e) => {
-              if (activeAction !== 'edit') {
+              if (activeAction !== 'edit' && invoiceData.status !== 'paid' && invoiceData.status !== 'cancelled') {
                 e.currentTarget.style.backgroundColor = 'rgba(20, 70, 42, 0.04)';
                 e.currentTarget.style.color = '#14462a';
               }
             }}
             onMouseLeave={(e) => {
-              if (activeAction !== 'edit') {
+              if (activeAction !== 'edit' && invoiceData.status !== 'paid' && invoiceData.status !== 'cancelled') {
                 e.currentTarget.style.backgroundColor = 'transparent';
                 e.currentTarget.style.color = '#2D2D2D';
               }
             }}
-            onClick={() => setActiveAction('edit')}
-            asChild
+            onClick={() => {
+              if (invoiceData.status !== 'paid' && invoiceData.status !== 'cancelled') {
+                setActiveAction('edit');
+                router.push(`/invoices/${id}/edit`);
+              }
+            }}
           >
-            <Link href={`/invoices/${id}/edit`}>
-              <Edit2 size={14} color="currentColor" className="mr-1.5" />
-              Edit
-            </Link>
+            <Edit2 size={14} color="currentColor" className="mr-1.5" />
+            Edit
           </Button>
           <Button 
             variant="ghost" 

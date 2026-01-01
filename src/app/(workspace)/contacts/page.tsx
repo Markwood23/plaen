@@ -467,7 +467,7 @@ export default function ContactsPage() {
                     <TableCell>
                       <div className="flex items-center gap-3">
                         <Avatar className="h-8 w-8 shrink-0">
-                          <AvatarFallback className="text-xs" style={{ backgroundColor: 'rgba(20, 70, 42, 0.08)', color: '#14462a', fontWeight: 600 }}>
+                          <AvatarFallback className="text-xs" style={{ backgroundColor: '#14462a', color: 'white', fontWeight: 600 }}>
                             {getInitials(contact.name)}
                           </AvatarFallback>
                         </Avatar>

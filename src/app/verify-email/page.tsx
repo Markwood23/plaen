@@ -3,7 +3,8 @@
 import { useState, useEffect, useRef, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, Sms, TickCircle, CloseCircle, RefreshCircle } from "iconsax-react";
+import { ArrowLeft, Sms, TickCircle, CloseCircle, RefreshCircle, Danger } from "iconsax-react";
+import { SmartButton } from "@/components/ui/smart-button";
 
 function VerifyEmailContent() {
   const router = useRouter();
@@ -11,6 +12,7 @@ function VerifyEmailContent() {
   const email = searchParams.get("email") || "";
   const userId = searchParams.get("userId") || "";
   const name = searchParams.get("name") || "";
+  const token = searchParams.get("token"); // For link-based verification
 
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const [loading, setLoading] = useState(false);
@@ -19,8 +21,43 @@ function VerifyEmailContent() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
   const [cooldown, setCooldown] = useState(0);
+  const [tokenVerifying, setTokenVerifying] = useState(!!token);
+  const [tokenValid, setTokenValid] = useState<boolean | null>(null);
   
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
+
+  // Handle token-based verification
+  useEffect(() => {
+    async function verifyToken() {
+      if (!token) return;
+      
+      setTokenVerifying(true);
+      try {
+        const response = await fetch(`/api/auth/verify-email?token=${token}`);
+        const data = await response.json();
+        
+        if (data.valid) {
+          setTokenValid(true);
+          setSuccess(true);
+          setTimeout(() => {
+            router.push("/login?verified=true");
+          }, 2000);
+        } else {
+          setTokenValid(false);
+          setError(data.error || "Invalid or expired verification link");
+        }
+      } catch {
+        setTokenValid(false);
+        setError("Verification failed. Please try again.");
+      } finally {
+        setTokenVerifying(false);
+      }
+    }
+    
+    if (token) {
+      verifyToken();
+    }
+  }, [token, router]);
 
   // Start cooldown timer
   useEffect(() => {
@@ -30,9 +67,9 @@ function VerifyEmailContent() {
     }
   }, [cooldown]);
 
-  // Send OTP on initial load
+  // Send OTP on initial load (only for OTP flow, not token flow)
   useEffect(() => {
-    if (email && !success) {
+    if (email && !success && !token) {
       sendOTP();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -151,6 +188,53 @@ function VerifyEmailContent() {
         start + middle.replace(/./g, "•") + end
       )
     : "";
+
+  // Token verification loading state
+  if (tokenVerifying) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin w-8 h-8 border-2 border-brand border-t-transparent rounded-full mx-auto mb-4" />
+          <p className="text-gray-600">Verifying your email...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Token verification failed state
+  if (token && tokenValid === false) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
+        <div className="w-full max-w-md">
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 text-center">
+            <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6">
+              <Danger size={32} color="#DC2626" />
+            </div>
+            <h1 className="text-2xl font-bold text-gray-900 mb-2">
+              Invalid Verification Link
+            </h1>
+            <p className="text-gray-600 mb-6">
+              {error || "This verification link is invalid or has expired."}
+            </p>
+            <SmartButton 
+              className="w-full"
+              onClick={() => router.push("/signup")}
+            >
+              Sign up again
+            </SmartButton>
+            <div className="mt-4">
+              <Link 
+                href="/login" 
+                className="text-sm font-medium text-gray-600 hover:text-black transition"
+              >
+                Already verified? Log in
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">

@@ -15,7 +15,12 @@ import { signIn } from "@/lib/auth/actions";
 function LoginForm() {
   const searchParams = useSearchParams();
   const verified = searchParams.get("verified") === "true";
-  const [error, setError] = useState<string | null>(null);
+  const urlError = searchParams.get("error");
+  const [error, setError] = useState<string | null>(() => {
+    if (urlError === "invalid_link") return "Invalid or expired link. Please try again.";
+    if (urlError === "verification_failed") return "Verification failed. Please try again or request a new link.";
+    return null;
+  });
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {

@@ -16,6 +16,7 @@ import {
   Copy,
   ExportSquare,
   ShieldTick,
+  Sms,
 } from "iconsax-react";
 
 interface ReceiptDetail {
@@ -78,6 +79,8 @@ export default function ReceiptDetailPage({ params }: { params: Promise<{ id: st
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
+  const [resending, setResending] = useState(false);
+  const [resendSuccess, setResendSuccess] = useState(false);
 
   useEffect(() => {
     async function fetchReceipt() {
@@ -111,7 +114,8 @@ export default function ReceiptDetailPage({ params }: { params: Promise<{ id: st
 
   const formatCurrency = (amount: number, currency: string = "GHS") => {
     const symbol = currency === "GHS" ? "₵" : currency === "USD" ? "$" : currency + " ";
-    return `${symbol}${(amount / 100).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    // Note: API already returns amounts in major units (dollars/cedis), no division needed
+    return `${symbol}${amount.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
   };
 
   const formatDateTime = (dateString: string | null) => {
@@ -169,6 +173,35 @@ export default function ReceiptDetailPage({ params }: { params: Promise<{ id: st
     }
   };
 
+  const handleResendReceipt = async () => {
+    if (!receipt?.customer?.email) return;
+    
+    setResending(true);
+    try {
+      const response = await fetch(`/api/receipts/${id}/resend`, {
+        method: 'POST',
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to resend receipt');
+      }
+      
+      setResendSuccess(true);
+      setTimeout(() => setResendSuccess(false), 3000);
+    } catch (err) {
+      console.error('Error resending receipt:', err);
+    } finally {
+      setResending(false);
+    }
+  };
+
+  // Format receipt number for display (shorten if too long)
+  const formatReceiptNumber = (receiptNumber: string) => {
+    if (receiptNumber.length <= 12) return receiptNumber;
+    // Show first 4 and last 8 characters
+    return `${receiptNumber.slice(0, 4)}...${receiptNumber.slice(-8)}`;
+  };
+
   // Loading state
   if (loading) {
     return (
@@ -196,7 +229,7 @@ export default function ReceiptDetailPage({ params }: { params: Promise<{ id: st
     );
   }
 
-  const businessName = receipt.business?.name || "Your Business";
+  const businessName = receipt.business?.name || (receipt.snapshot_data as { business_name?: string })?.business_name || "Your Business";
   const customerName = receipt.customer?.name || receipt.payment.payer_name || "Customer";
 
   return (
@@ -234,6 +267,27 @@ export default function ReceiptDetailPage({ params }: { params: Promise<{ id: st
               </Link>
             </Button>
             <div className="flex items-center gap-2">
+              {receipt.customer?.email && (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="rounded-xl border-gray-200 text-gray-600 hover:text-gray-900 hover:bg-gray-100"
+                  onClick={handleResendReceipt}
+                  disabled={resending}
+                >
+                  {resendSuccess ? (
+                    <>
+                      <TickCircle size={14} color="#14462a" className="mr-1.5" />
+                      <span className="text-[#14462a]">Sent!</span>
+                    </>
+                  ) : (
+                    <>
+                      <Sms size={14} color="#4B5563" className="mr-1.5" />
+                      {resending ? 'Sending...' : 'Resend Receipt'}
+                    </>
+                  )}
+                </Button>
+              )}
               <Button
                 variant="outline"
                 size="sm"
@@ -274,7 +328,7 @@ export default function ReceiptDetailPage({ params }: { params: Promise<{ id: st
               </div>
               {/* Receipt Info */}
               <div className="text-right">
-                <p className="text-xs text-gray-400">Receipt № {receipt.receipt_number}</p>
+                <p className="text-xs text-gray-400" title={receipt.receipt_number}>Receipt № {formatReceiptNumber(receipt.receipt_number)}</p>
                 <p className="text-xs text-gray-400">{formatDateTime(receipt.payment.date)}</p>
               </div>
             </div>
@@ -284,7 +338,7 @@ export default function ReceiptDetailPage({ params }: { params: Promise<{ id: st
           <div className="px-8 pb-6">
             <h1 className="text-2xl font-bold text-gray-900 mb-1">Payment Successful!</h1>
             <p className="text-sm text-gray-500">
-              Your payment <span className="font-medium text-[#14462a]">№ {receipt.receipt_number}</span> has been processed
+              Your payment <span className="font-medium text-[#14462a]" title={receipt.receipt_number}>№ {formatReceiptNumber(receipt.receipt_number)}</span> has been processed
             </p>
           </div>
 

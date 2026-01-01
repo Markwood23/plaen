@@ -9,7 +9,6 @@ import { Label } from "@/components/ui/label";
 import { SmartButton } from "@/components/ui/smart-button";
 import { Badge } from "@/components/ui/badge";
 import { Lock1, Sms, TickCircle, ArrowLeft2, Danger } from "iconsax-react";
-import { resetPassword } from "@/lib/auth/actions";
 
 export default function ForgotPasswordPage() {
   const year = new Date().getFullYear();
@@ -24,13 +23,16 @@ export default function ForgotPasswordPage() {
     setLoading(true);
 
     try {
-      const formData = new FormData();
-      formData.append('email', email);
+      const response = await fetch('/api/auth/forgot-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
       
-      const result = await resetPassword(formData);
+      const result = await response.json();
       
-      if (result?.error) {
-        setError(result.error);
+      if (!response.ok) {
+        setError(result.error || 'Failed to send reset link');
       } else {
         setSubmitted(true);
       }

@@ -53,6 +53,13 @@ export async function GET(
       return NextResponse.json({ error: "Receipt not found" }, { status: 404 });
     }
 
+    // Get business/user profile data
+    const { data: userProfile } = await supabase
+      .from("users")
+      .select("full_name, business_name, email, phone, logo_url")
+      .eq("id", user.id)
+      .single();
+
     // Get invoice details if linked
     let invoice = null;
     let customer = null;
@@ -129,6 +136,12 @@ export async function GET(
         phone: customer.phone,
         company: customer.company,
       } : null,
+      business: {
+        name: userProfile?.business_name || userProfile?.full_name || null,
+        email: userProfile?.email || null,
+        phone: userProfile?.phone || null,
+        logo_url: userProfile?.logo_url || null,
+      },
       created_at: receipt.created_at,
     };
 

@@ -9,7 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { FileText, Mail, Phone, Building2, MapPin, AlertCircle } from "lucide-react";
+import { FileText, Mail, Building2, MapPin, AlertCircle, Phone } from "lucide-react";
 import { TickCircle, CloseCircle, Clock, Coin1, Trash } from "iconsax-react";
 import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
@@ -127,6 +127,26 @@ export function ContactDetailModal({
   useEffect(() => {
     setEditMode(mode === "edit" || mode === "create");
   }, [mode]);
+
+  // Reset form data when opening in create mode
+  useEffect(() => {
+    if (isOpen && mode === "create") {
+      setFormData({
+        id: "",
+        name: initialData?.name || "",
+        email: initialData?.email || "",
+        phone: initialData?.phone || "",
+        company: initialData?.company || "",
+        address: initialData?.address || "",
+        notes: initialData?.notes || "",
+        tags: initialData?.tags || [],
+      });
+      setContact(null);
+      setStats(null);
+      setRecentInvoices([]);
+      setError(null);
+    }
+  }, [isOpen, mode, initialData]);
 
   const getInitials = (name: string) => {
     if (!name) return "?";
@@ -362,15 +382,6 @@ export function ContactDetailModal({
                   >
                     <Mail className="h-4 w-4 mr-2" />
                     Email
-                  </Button>
-                  <Button
-                    onClick={() => { if (formData.phone) window.location.href = `tel:${formData.phone}`; }}
-                    variant="outline"
-                    disabled={!formData.phone}
-                    className="border-[#EBECE7] hover:bg-[#F9F9F9]"
-                  >
-                    <Phone className="h-4 w-4 mr-2" />
-                    Call
                   </Button>
                   <Button
                     onClick={() => setEditMode(true)}

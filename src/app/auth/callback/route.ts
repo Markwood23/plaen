@@ -4,11 +4,39 @@ import { NextResponse } from 'next/server'
 export async function GET(request: Request) {
   const requestUrl = new URL(request.url)
   const code = requestUrl.searchParams.get('code')
+  const token_hash = requestUrl.searchParams.get('token_hash')
+  const type = requestUrl.searchParams.get('type')
   const next = requestUrl.searchParams.get('next') ?? '/dashboard'
 
-  if (code) {
-    const supabase = await createClient()
+  const supabase = await createClient()
+
+  // Handle token-based auth (email confirmation, password recovery)
+  if (token_hash && type) {
+    const { error } = await supabase.auth.verifyOtp({
+      token_hash,
+      type: type as 'signup' | 'recovery' | 'email',
+    })
+
+    if (!error) {
+      // For password recovery, redirect to reset password page
+      if (type === 'recovery') {
+        return NextResponse.redirect(new URL('/reset-password', requestUrl.origin))
+      }
+      
+      // For email confirmation, redirect to login with success message
+      if (type === 'signup' || type === 'email') {
+        return NextResponse.redirect(new URL('/login?verified=true', requestUrl.origin))
+      }
+      
+      return NextResponse.redirect(new URL(next, requestUrl.origin))
+    }
     
+    // Error handling
+    return NextResponse.redirect(new URL('/login?error=verification_failed', requestUrl.origin))
+  }
+
+  // Handle code-based auth (OAuth, magic link)
+  if (code) {
     const { data, error } = await supabase.auth.exchangeCodeForSession(code)
     
     if (!error && data?.user) {
