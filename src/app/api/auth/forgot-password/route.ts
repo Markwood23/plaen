@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 import { randomBytes } from 'crypto'
 import { sendPasswordResetEmail } from '@/lib/email/mailjet'
+import { checkRateLimit, getRateLimitIdentifier, RATE_LIMITS } from '@/lib/security/rate-limit'
 
 const supabaseAdmin = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -10,6 +11,20 @@ const supabaseAdmin = createClient(
 
 export async function POST(request: Request) {
   try {
+    // Rate limiting
+    const identifier = getRateLimitIdentifier(request, 'forgotPassword')
+    const rateLimit = checkRateLimit(identifier, RATE_LIMITS.forgotPassword)
+    
+    if (!rateLimit.allowed) {
+      return NextResponse.json(
+        { error: rateLimit.message },
+        { 
+          status: 429,
+          headers: { 'Retry-After': String(rateLimit.retryAfter) }
+        }
+      )
+    }
+
     const { email } = await request.json()
 
     if (!email) {

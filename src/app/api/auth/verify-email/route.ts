@@ -1,7 +1,8 @@
 import { NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 import { randomBytes } from 'crypto'
-import { sendEmailVerificationEmail } from '@/lib/email/mailjet'
+import { sendEmailVerificationEmail, sendWelcomeEmail } from '@/lib/email/mailjet'
+import { checkRateLimit, getRateLimitIdentifier, RATE_LIMITS } from '@/lib/security/rate-limit'
 
 const supabaseAdmin = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -11,6 +12,20 @@ const supabaseAdmin = createClient(
 // Send verification email
 export async function POST(request: Request) {
   try {
+    // Rate limiting
+    const identifier = getRateLimitIdentifier(request, 'verifyEmail')
+    const rateLimit = checkRateLimit(identifier, RATE_LIMITS.verifyEmail)
+    
+    if (!rateLimit.allowed) {
+      return NextResponse.json(
+        { error: rateLimit.message },
+        { 
+          status: 429,
+          headers: { 'Retry-After': String(rateLimit.retryAfter) }
+        }
+      )
+    }
+
     const { userId, email, name } = await request.json()
 
     if (!userId || !email) {
@@ -97,16 +112,26 @@ export async function GET(request: Request) {
       .eq('id', verificationToken.id)
 
     // Update user's email_verified status
-    await supabaseAdmin
+    const { data: profile } = await supabaseAdmin
       .from('users')
       .update({ email_verified: true })
       .eq('id', verificationToken.user_id)
+      .select('full_name, email')
+      .single()
 
     // Also update auth.users email_confirmed_at
     await supabaseAdmin.auth.admin.updateUserById(
       verificationToken.user_id,
       { email_confirm: true }
     )
+
+    // Send welcome email now that user is verified
+    if (profile) {
+      sendWelcomeEmail({
+        email: profile.email,
+        name: profile.full_name || 'there',
+      }).catch(err => console.error('Failed to send welcome email:', err))
+    }
 
     return NextResponse.json({ 
       valid: true, 

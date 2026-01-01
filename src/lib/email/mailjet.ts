@@ -1605,3 +1605,326 @@ Plaen
     customId: `verify-${Date.now()}`,
   })
 }
+
+/**
+ * Send password changed security alert - Clean minimal style
+ */
+export async function sendPasswordChangedEmail(params: {
+  email: string
+  name?: string
+  ipAddress?: string
+  userAgent?: string
+  timestamp?: Date
+}): Promise<{ success: boolean; error?: string }> {
+  const changeTime = params.timestamp || new Date()
+  const formattedTime = changeTime.toLocaleString('en-US', {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    timeZoneName: 'short'
+  })
+
+  const alertContent = `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Password Changed</title>
+  <span style="display: none; max-height: 0; overflow: hidden;">Your Plaen password was just changed</span>
+</head>
+<body style="margin: 0; padding: 0; background-color: #F8F9FA; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;">
+  <table role="presentation" width="100%" style="background-color: #F8F9FA;">
+    <tr>
+      <td align="center" style="padding: 40px 20px;">
+        <table role="presentation" width="600" style="max-width: 600px; background-color: #FFFFFF; border-radius: 12px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.08);">
+          
+          <!-- Header -->
+          <tr>
+            <td style="padding: 48px 48px 24px;">
+              <table role="presentation" cellpadding="0" cellspacing="0" style="border-collapse: collapse; margin-bottom: 24px;">
+                <tr>
+                  <td style="width: 14px; height: 14px; background-color: #14462a;"></td>
+                  <td style="width: 2px;"></td>
+                  <td style="width: 10px; height: 14px; background-color: #14462a;"></td>
+                </tr>
+                <tr><td colspan="3" style="height: 2px;"></td></tr>
+                <tr>
+                  <td style="width: 14px; height: 10px;"></td>
+                  <td style="width: 2px;"></td>
+                  <td style="width: 10px; height: 10px; background-color: #14462a;"></td>
+                </tr>
+              </table>
+              <h1 style="margin: 0 0 8px; color: #2D2D2D; font-size: 22px; font-weight: 700; letter-spacing: -0.3px;">🔐 Password Changed</h1>
+              <p style="margin: 0; color: #B0B3B8; font-size: 14px;">Security notification</p>
+            </td>
+          </tr>
+          
+          <!-- Content -->
+          <tr>
+            <td style="padding: 0 48px 24px;">
+              <p style="margin: 0 0 16px; color: #2D2D2D; font-size: 15px; line-height: 1.6;">
+                Hi${params.name ? ` <strong>${params.name}</strong>` : ''},
+              </p>
+              <p style="margin: 0 0 20px; color: #6B7280; font-size: 15px; line-height: 1.6;">
+                Your Plaen account password was successfully changed.
+              </p>
+            </td>
+          </tr>
+          
+          <!-- Details Box -->
+          <tr>
+            <td style="padding: 0 48px 32px;">
+              <table role="presentation" width="100%" style="background-color: #F8F9FA; border-radius: 12px;">
+                <tr>
+                  <td style="padding: 20px 24px;">
+                    <p style="margin: 0 0 8px; color: #B0B3B8; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">When</p>
+                    <p style="margin: 0 0 16px; color: #2D2D2D; font-size: 14px;">${formattedTime}</p>
+                    ${params.ipAddress ? `
+                    <p style="margin: 0 0 8px; color: #B0B3B8; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">IP Address</p>
+                    <p style="margin: 0; color: #2D2D2D; font-size: 14px;">${params.ipAddress}</p>
+                    ` : ''}
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          
+          <!-- Warning -->
+          <tr>
+            <td style="padding: 0 48px 32px;">
+              <table role="presentation" width="100%" style="background-color: #FEF3C7; border-radius: 12px; border-left: 4px solid #F59E0B;">
+                <tr>
+                  <td style="padding: 16px 20px;">
+                    <p style="margin: 0; color: #92400E; font-size: 14px; line-height: 1.5;">
+                      <strong>Didn't make this change?</strong><br>
+                      If you didn't change your password, your account may be compromised. Please <a href="${APP_URL}/forgot-password" style="color: #92400E; font-weight: 600;">reset your password immediately</a> and contact our support team.
+                    </p>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          
+          <!-- Footer -->
+          <tr>
+            <td style="padding: 24px 48px 32px; border-top: 1px solid #E5E7EB;">
+              <p style="margin: 0; color: #B0B3B8; font-size: 12px; text-align: center;">
+                This is an automated security alert from Plaen.<br>
+                <a href="${APP_URL}" style="color: #14462a; text-decoration: none;">plaen.tech</a>
+              </p>
+            </td>
+          </tr>
+          
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
+`
+
+  const text = `
+PASSWORD CHANGED
+
+Hi${params.name ? ` ${params.name}` : ''},
+
+Your Plaen account password was successfully changed.
+
+When: ${formattedTime}
+${params.ipAddress ? `IP Address: ${params.ipAddress}` : ''}
+
+Didn't make this change?
+If you didn't change your password, your account may be compromised. 
+Please reset your password immediately: ${APP_URL}/forgot-password
+
+—
+Plaen Security
+`
+
+  return sendEmail({
+    to: params.email,
+    toName: params.name,
+    subject: '🔐 Your Plaen password was changed',
+    html: alertContent,
+    text,
+    customId: `password-changed-${Date.now()}`,
+  })
+}
+
+/**
+ * Send new login security alert - Clean minimal style
+ */
+export async function sendLoginAlertEmail(params: {
+  email: string
+  name?: string
+  ipAddress?: string
+  userAgent?: string
+  location?: string
+  timestamp?: Date
+}): Promise<{ success: boolean; error?: string }> {
+  const loginTime = params.timestamp || new Date()
+  const formattedTime = loginTime.toLocaleString('en-US', {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    timeZoneName: 'short'
+  })
+
+  // Parse user agent for device info
+  let deviceInfo = 'Unknown device'
+  if (params.userAgent) {
+    if (params.userAgent.includes('iPhone')) deviceInfo = 'iPhone'
+    else if (params.userAgent.includes('iPad')) deviceInfo = 'iPad'
+    else if (params.userAgent.includes('Android')) deviceInfo = 'Android device'
+    else if (params.userAgent.includes('Mac')) deviceInfo = 'Mac'
+    else if (params.userAgent.includes('Windows')) deviceInfo = 'Windows PC'
+    else if (params.userAgent.includes('Linux')) deviceInfo = 'Linux'
+  }
+
+  const alertContent = `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>New Login Detected</title>
+  <span style="display: none; max-height: 0; overflow: hidden;">New login to your Plaen account</span>
+</head>
+<body style="margin: 0; padding: 0; background-color: #F8F9FA; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;">
+  <table role="presentation" width="100%" style="background-color: #F8F9FA;">
+    <tr>
+      <td align="center" style="padding: 40px 20px;">
+        <table role="presentation" width="600" style="max-width: 600px; background-color: #FFFFFF; border-radius: 12px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.08);">
+          
+          <!-- Header -->
+          <tr>
+            <td style="padding: 48px 48px 24px;">
+              <table role="presentation" cellpadding="0" cellspacing="0" style="border-collapse: collapse; margin-bottom: 24px;">
+                <tr>
+                  <td style="width: 14px; height: 14px; background-color: #14462a;"></td>
+                  <td style="width: 2px;"></td>
+                  <td style="width: 10px; height: 14px; background-color: #14462a;"></td>
+                </tr>
+                <tr><td colspan="3" style="height: 2px;"></td></tr>
+                <tr>
+                  <td style="width: 14px; height: 10px;"></td>
+                  <td style="width: 2px;"></td>
+                  <td style="width: 10px; height: 10px; background-color: #14462a;"></td>
+                </tr>
+              </table>
+              <h1 style="margin: 0 0 8px; color: #2D2D2D; font-size: 22px; font-weight: 700; letter-spacing: -0.3px;">🔔 New Login Detected</h1>
+              <p style="margin: 0; color: #B0B3B8; font-size: 14px;">Security notification</p>
+            </td>
+          </tr>
+          
+          <!-- Content -->
+          <tr>
+            <td style="padding: 0 48px 24px;">
+              <p style="margin: 0 0 16px; color: #2D2D2D; font-size: 15px; line-height: 1.6;">
+                Hi${params.name ? ` <strong>${params.name}</strong>` : ''},
+              </p>
+              <p style="margin: 0 0 20px; color: #6B7280; font-size: 15px; line-height: 1.6;">
+                We detected a new login to your Plaen account.
+              </p>
+            </td>
+          </tr>
+          
+          <!-- Details Box -->
+          <tr>
+            <td style="padding: 0 48px 32px;">
+              <table role="presentation" width="100%" style="background-color: #F8F9FA; border-radius: 12px;">
+                <tr>
+                  <td style="padding: 20px 24px;">
+                    <p style="margin: 0 0 8px; color: #B0B3B8; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">When</p>
+                    <p style="margin: 0 0 16px; color: #2D2D2D; font-size: 14px;">${formattedTime}</p>
+                    
+                    <p style="margin: 0 0 8px; color: #B0B3B8; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Device</p>
+                    <p style="margin: 0 0 16px; color: #2D2D2D; font-size: 14px;">${deviceInfo}</p>
+                    
+                    ${params.ipAddress ? `
+                    <p style="margin: 0 0 8px; color: #B0B3B8; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">IP Address</p>
+                    <p style="margin: 0 0 ${params.location ? '16px' : '0'}; color: #2D2D2D; font-size: 14px;">${params.ipAddress}</p>
+                    ` : ''}
+                    
+                    ${params.location ? `
+                    <p style="margin: 0 0 8px; color: #B0B3B8; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Location</p>
+                    <p style="margin: 0; color: #2D2D2D; font-size: 14px;">${params.location}</p>
+                    ` : ''}
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          
+          <!-- Warning -->
+          <tr>
+            <td style="padding: 0 48px 32px;">
+              <table role="presentation" width="100%" style="background-color: #FEE2E2; border-radius: 12px; border-left: 4px solid #EF4444;">
+                <tr>
+                  <td style="padding: 16px 20px;">
+                    <p style="margin: 0; color: #991B1B; font-size: 14px; line-height: 1.5;">
+                      <strong>Wasn't you?</strong><br>
+                      If you didn't log in, someone may have access to your account. <a href="${APP_URL}/forgot-password" style="color: #991B1B; font-weight: 600;">Reset your password now</a> to secure your account.
+                    </p>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          
+          <!-- Footer -->
+          <tr>
+            <td style="padding: 24px 48px 32px; border-top: 1px solid #E5E7EB;">
+              <p style="margin: 0; color: #B0B3B8; font-size: 12px; text-align: center;">
+                This is an automated security alert from Plaen.<br>
+                <a href="${APP_URL}" style="color: #14462a; text-decoration: none;">plaen.tech</a>
+              </p>
+            </td>
+          </tr>
+          
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
+`
+
+  const text = `
+NEW LOGIN DETECTED
+
+Hi${params.name ? ` ${params.name}` : ''},
+
+We detected a new login to your Plaen account.
+
+When: ${formattedTime}
+Device: ${deviceInfo}
+${params.ipAddress ? `IP Address: ${params.ipAddress}` : ''}
+${params.location ? `Location: ${params.location}` : ''}
+
+Wasn't you?
+If you didn't log in, someone may have access to your account.
+Reset your password now: ${APP_URL}/forgot-password
+
+—
+Plaen Security
+`
+
+  return sendEmail({
+    to: params.email,
+    toName: params.name,
+    subject: '🔔 New login to your Plaen account',
+    html: alertContent,
+    text,
+    customId: `login-alert-${Date.now()}`,
+  })
+}

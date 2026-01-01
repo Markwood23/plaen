@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, Suspense } from "react";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { MarketingHeader } from "@/components/marketing/marketing-header";
 import { MarketingFooter } from "@/components/marketing/marketing-footer";
@@ -10,11 +10,13 @@ import { Label } from "@/components/ui/label";
 import { SmartButton } from "@/components/ui/smart-button";
 import { Badge } from "@/components/ui/badge";
 import { Lock1, Notification, Danger, TickCircle } from "iconsax-react";
-import { signIn } from "@/lib/auth/actions";
+import { createClient } from "@/lib/supabase/client";
 
 function LoginForm() {
   const searchParams = useSearchParams();
+  const router = useRouter();
   const verified = searchParams.get("verified") === "true";
+  const redirectTo = searchParams.get("redirect") || "/dashboard";
   const urlError = searchParams.get("error");
   const [error, setError] = useState<string | null>(() => {
     if (urlError === "invalid_link") return "Invalid or expired link. Please try again.";
@@ -29,18 +31,37 @@ function LoginForm() {
     setLoading(true);
 
     const formData = new FormData(e.currentTarget);
+    const email = formData.get('email') as string;
+    const password = formData.get('password') as string;
 
     try {
-      const result = await signIn(formData);
-      
-      // If we get here without redirect, there was an error
-      if (result?.error) {
-        setError(result.error);
+      // Use API route for login - this captures IP/user-agent for security alerts
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        setError(result.error || 'Login failed');
+        setLoading(false);
+        return;
       }
+
+      // Set session on client-side Supabase
+      const supabase = createClient();
+      await supabase.auth.setSession({
+        access_token: result.session.access_token,
+        refresh_token: result.session.refresh_token,
+      });
+
+      // Redirect to dashboard
+      router.push(redirectTo);
+      router.refresh();
     } catch {
-      // Redirect happened (success) or unexpected error
-      // signIn redirects on success, so this may not execute
-    } finally {
+      setError('An unexpected error occurred. Please try again.');
       setLoading(false);
     }
   };
