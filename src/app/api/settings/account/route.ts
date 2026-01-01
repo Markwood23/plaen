@@ -1,5 +1,6 @@
 import { createClient, createAdminClient } from '@/lib/supabase/server'
 import { NextRequest, NextResponse } from 'next/server'
+import { sendAccountDeletedEmail, isEmailConfigured } from '@/lib/email/mailjet'
 
 /**
  * DELETE /api/settings/account
@@ -30,6 +31,16 @@ export async function DELETE(request: NextRequest) {
 
     // Use admin client for deletion operations
     const adminClient = createAdminClient()
+    
+    // Get user profile for email notification before deletion
+    const { data: userProfile } = await adminClient
+      .from('users')
+      .select('full_name, email')
+      .eq('id', user.id)
+      .single()
+    
+    const userEmail = user.email || userProfile?.email
+    const userName = userProfile?.full_name
 
     // Delete in order (respecting foreign key constraints):
     
@@ -147,6 +158,14 @@ export async function DELETE(request: NextRequest) {
 
     // 12. Delete auth user (requires admin API)
     await adminClient.auth.admin.deleteUser(user.id)
+
+    // 13. Send account deletion confirmation email
+    if (userEmail && isEmailConfigured()) {
+      sendAccountDeletedEmail({
+        email: userEmail,
+        name: userName || undefined,
+      }).catch(err => console.error('Failed to send account deletion email:', err))
+    }
 
     return NextResponse.json({
       success: true,

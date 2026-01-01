@@ -1928,3 +1928,159 @@ Plaen Security
     customId: `login-alert-${Date.now()}`,
   })
 }
+/**
+ * Send account deletion confirmation email
+ */
+export async function sendAccountDeletedEmail(params: {
+  email: string
+  name?: string
+}): Promise<boolean> {
+  const deletionContent = `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Account Deleted</title>
+</head>
+<body style="margin: 0; padding: 0; background-color: #f3f4f6; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;">
+  <table role="presentation" width="100%" style="background-color: #f3f4f6;">
+    <tr>
+      <td align="center" style="padding: 40px 16px;">
+        <table role="presentation" width="100%" style="max-width: 520px; background-color: #ffffff; border-radius: 16px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);">
+          
+          <!-- Header -->
+          <tr>
+            <td style="padding: 32px 48px 24px; text-align: center;">
+              ${logoMarkup()}
+            </td>
+          </tr>
+          
+          <!-- Icon -->
+          <tr>
+            <td style="padding: 0 48px 24px; text-align: center;">
+              <div style="display: inline-block; width: 64px; height: 64px; background-color: #FEE2E2; border-radius: 50%; line-height: 64px; text-align: center;">
+                <span style="font-size: 28px;">👋</span>
+              </div>
+            </td>
+          </tr>
+          
+          <!-- Title -->
+          <tr>
+            <td style="padding: 0 48px 16px; text-align: center;">
+              <h1 style="margin: 0; color: #1f2937; font-size: 24px; font-weight: 700;">Account Deleted</h1>
+            </td>
+          </tr>
+          
+          <!-- Message -->
+          <tr>
+            <td style="padding: 0 48px 32px;">
+              <p style="margin: 0 0 16px; color: #4b5563; font-size: 15px; line-height: 1.6; text-align: center;">
+                Hi${params.name ? ` ${params.name}` : ''},
+              </p>
+              <p style="margin: 0 0 16px; color: #4b5563; font-size: 15px; line-height: 1.6; text-align: center;">
+                Your Plaen account has been permanently deleted as requested. All your data, including invoices, contacts, and payment records, has been removed from our systems.
+              </p>
+              <p style="margin: 0; color: #4b5563; font-size: 15px; line-height: 1.6; text-align: center;">
+                We're sorry to see you go. If you ever want to come back, you're always welcome to create a new account.
+              </p>
+            </td>
+          </tr>
+          
+          <!-- Info Box -->
+          <tr>
+            <td style="padding: 0 48px 32px;">
+              <table role="presentation" width="100%" style="background-color: #F9FAFB; border-radius: 12px;">
+                <tr>
+                  <td style="padding: 20px;">
+                    <p style="margin: 0 0 8px; color: #6B7280; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">What's been deleted</p>
+                    <ul style="margin: 0; padding-left: 20px; color: #4b5563; font-size: 14px; line-height: 1.8;">
+                      <li>Your account and profile information</li>
+                      <li>All invoices and receipts</li>
+                      <li>Customer and contact data</li>
+                      <li>Payment records</li>
+                      <li>Notes and attachments</li>
+                    </ul>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          
+          <!-- Warning -->
+          <tr>
+            <td style="padding: 0 48px 32px;">
+              <table role="presentation" width="100%" style="background-color: #FEF3C7; border-radius: 12px; border-left: 4px solid #F59E0B;">
+                <tr>
+                  <td style="padding: 16px 20px;">
+                    <p style="margin: 0; color: #92400E; font-size: 14px; line-height: 1.5;">
+                      <strong>Didn't request this?</strong><br>
+                      If you didn't delete your account, please contact us immediately at <a href="mailto:support@plaen.tech" style="color: #92400E; font-weight: 600;">support@plaen.tech</a>
+                    </p>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          
+          <!-- CTA -->
+          <tr>
+            <td style="padding: 0 48px 32px; text-align: center;">
+              <a href="${APP_URL}/signup" style="display: inline-block; padding: 14px 32px; background-color: ${BRAND.primary}; color: #ffffff; text-decoration: none; border-radius: 10px; font-weight: 600; font-size: 15px;">
+                Create New Account
+              </a>
+            </td>
+          </tr>
+          
+          <!-- Footer -->
+          <tr>
+            <td style="padding: 24px 48px 32px; border-top: 1px solid #E5E7EB;">
+              <p style="margin: 0; color: #9CA3AF; font-size: 12px; text-align: center;">
+                Thank you for using Plaen. We hope to see you again!<br>
+                <a href="${APP_URL}" style="color: #14462a; text-decoration: none;">plaen.tech</a>
+              </p>
+            </td>
+          </tr>
+          
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
+`
+
+  const text = `
+ACCOUNT DELETED
+
+Hi${params.name ? ` ${params.name}` : ''},
+
+Your Plaen account has been permanently deleted as requested.
+
+All your data, including invoices, contacts, and payment records, has been removed from our systems.
+
+What's been deleted:
+- Your account and profile information
+- All invoices and receipts
+- Customer and contact data
+- Payment records
+- Notes and attachments
+
+Didn't request this?
+If you didn't delete your account, please contact us immediately at support@plaen.tech
+
+We're sorry to see you go. If you ever want to come back, you're always welcome to create a new account at ${APP_URL}/signup
+
+—
+The Plaen Team
+`
+
+  return sendEmail({
+    to: params.email,
+    toName: params.name,
+    subject: 'Your Plaen account has been deleted',
+    html: deletionContent,
+    text,
+    customId: `account-deleted-${Date.now()}`,
+  })
+}
