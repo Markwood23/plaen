@@ -157,6 +157,18 @@ export async function POST(request: NextRequest) {
     // Generate public ID if sending immediately
     const publicId = body.status === 'sent' ? await generatePublicId(supabase) : null
     
+    // Calculate totals from line items if provided
+    let subtotal = 0
+    if (body.items && body.items.length > 0) {
+      subtotal = body.items.reduce((sum: number, item: { quantity?: number; unit_price: number }) => {
+        return sum + (item.quantity || 1) * item.unit_price
+      }, 0)
+    }
+    
+    const taxAmount = body.tax_amount || 0
+    const discountAmount = body.discount_amount || 0
+    const total = subtotal + taxAmount - discountAmount
+    
     // Prepare invoice data
     const invoiceData: InvoiceInsert = {
       user_id: user.id,
@@ -170,8 +182,13 @@ export async function POST(request: NextRequest) {
       terms: body.terms || null,
       footer: body.footer || null,
       tax_rate: body.tax_rate || 0,
+      tax_amount: taxAmount,
       discount_type: body.discount_type || null,
       discount_value: body.discount_value || 0,
+      discount_amount: discountAmount,
+      subtotal: subtotal,
+      total: total,
+      balance_due: total, // Initially full amount is due
       payment_instructions: body.payment_instructions || {},
       public_id: publicId,
       sent_at: body.status === 'sent' ? new Date().toISOString() : null,

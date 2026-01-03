@@ -179,11 +179,12 @@ async function processSuccessfulPayment(
       return;
     }
 
-    const [{ data: customer }, { data: userProfile }] = await Promise.all([
+    const [{ data: customer }, { data: userProfile }, { data: lineItems }] = await Promise.all([
       invoice.customer_id
         ? supabase.from('customers').select('*').eq('id', invoice.customer_id).single()
         : Promise.resolve({ data: null } as any),
       supabase.from('users').select('*').eq('id', invoice.user_id).single(),
+      supabase.from('invoice_line_items').select('*').eq('invoice_id', invoiceId).order('sort_order'),
     ]);
 
     // Create payment record
@@ -236,8 +237,10 @@ async function processSuccessfulPayment(
       .eq('id', invoiceId)
       .single();
 
-    // Create receipt snapshot
-    const receiptNumber = `REC-${Date.now().toString(36).toUpperCase()}-${payment.id.substring(0, 4).toUpperCase()}`;
+    // Generate clean receipt number using database function
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { data: receiptNumber } = await (supabase.rpc as any)('generate_receipt_number', { p_user_id: invoice.user_id });
+    const finalReceiptNumber = receiptNumber || `REC-${Date.now().toString().slice(-6)}`;
 
     const baseSnapshotData = {
       provider: 'flutterwave',
@@ -259,7 +262,7 @@ async function processSuccessfulPayment(
     await supabase.from('receipt_snapshots').insert({
       payment_id: payment.id,
       invoice_id: invoiceId,
-      receipt_number: receiptNumber,
+      receipt_number: finalReceiptNumber,
       snapshot_data: {
         ...baseSnapshotData,
         verification: {
@@ -279,6 +282,16 @@ async function processSuccessfulPayment(
     // Send confirmation email
     if (isEmailConfigured() && customer?.email) {
       try {
+        // Format line items for email
+        const emailLineItems = lineItems && lineItems.length > 0 
+          ? lineItems.map((item: { description: string; quantity: number; unit_price: number; amount: number }) => ({
+              description: item.description,
+              quantity: item.quantity || 1,
+              unitPrice: (item.unit_price || 0) / 100,
+              total: (item.amount || 0) / 100,
+            }))
+          : undefined;
+
         await sendPaymentConfirmationEmail({
           recipientEmail: customer.email,
           recipientName: customer.name || 'Customer',
@@ -297,9 +310,10 @@ async function processSuccessfulPayment(
           receiptLink: `${process.env.NEXT_PUBLIC_APP_URL}/receipts`,
           businessName,
           businessEmail: userProfile?.email || undefined,
-          receiptNumber: receiptNumber,
+          receiptNumber: finalReceiptNumber,
           reference: paymentData.flw_ref || paymentData.tx_ref || undefined,
           payerName: paymentData.customer?.name || customer?.name || undefined,
+          lineItems: emailLineItems,
         });
       } catch (emailError) {
         console.error('Failed to send payment confirmation:', emailError);

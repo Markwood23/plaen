@@ -300,6 +300,9 @@ export default function CreateInvoicePage() {
         customerId = selectedContact;
       }
       
+      // Calculate totals for invoice-level storage
+      const calculatedTotals = calculateTotals();
+      
       // Prepare invoice data
       const invoiceData = {
         customer_id: customerId,
@@ -307,6 +310,9 @@ export default function CreateInvoicePage() {
         due_date: format(dueDate, 'yyyy-MM-dd'),
         currency: primaryCurrency.toUpperCase(),
         notes: customerData.notes || undefined,
+        // Store tax and discount at invoice level (in minor units)
+        tax_amount: Math.round(calculatedTotals.totalTax * 100),
+        discount_amount: Math.round(calculatedTotals.totalDiscount * 100),
         line_items: lineItems.map(item => ({
           description: item.description,
           quantity: item.quantity,

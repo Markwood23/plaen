@@ -229,6 +229,8 @@ export interface CreateInvoiceData {
   due_date?: string
   currency?: string
   notes?: string
+  tax_amount?: number
+  discount_amount?: number
   line_items: {
     description: string
     quantity: number

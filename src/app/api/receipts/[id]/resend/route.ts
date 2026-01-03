@@ -53,6 +53,7 @@ export async function POST(
     // Get invoice and customer details
     let invoice = null;
     let customer = null;
+    let lineItems: { description: string; quantity: number | null; unit_price: number; amount: number }[] = [];
     if (receipt.invoice_id) {
       const { data: invoiceData } = await supabase
         .from("invoices")
@@ -68,6 +69,17 @@ export async function POST(
       
       if (invoiceData) {
         invoice = invoiceData;
+        
+        // Fetch line items
+        const { data: lineItemsData } = await supabase
+          .from("invoice_line_items")
+          .select("description, quantity, unit_price, amount")
+          .eq("invoice_id", receipt.invoice_id)
+          .order("sort_order");
+        if (lineItemsData) {
+          lineItems = lineItemsData;
+        }
+        
         if (invoiceData.customer_id) {
           const { data: customerData } = await supabase
             .from("customers")
@@ -108,6 +120,16 @@ export async function POST(
     const remainingMinor = invoice?.balance_due || 0;
     const remainingMajor = (remainingMinor / 100).toFixed(2);
 
+    // Format line items for email
+    const emailLineItems = lineItems.length > 0 
+      ? lineItems.map(item => ({
+          description: item.description,
+          quantity: item.quantity || 1,
+          unitPrice: (item.unit_price || 0) / 100,
+          total: (item.amount || 0) / 100,
+        }))
+      : undefined;
+
     // Send the receipt email
     await sendPaymentConfirmationEmail({
       recipientEmail: customerEmail,
@@ -136,6 +158,7 @@ export async function POST(
       businessName,
       businessEmail: userProfile?.email || undefined,
       receiptNumber: receipt.receipt_number,
+      lineItems: emailLineItems,
     });
 
     return NextResponse.json({ success: true, message: "Receipt sent successfully" });

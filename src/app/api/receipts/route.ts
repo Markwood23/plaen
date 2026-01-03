@@ -182,15 +182,17 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Payment not found" }, { status: 404 });
     }
 
-    // Generate receipt number
-    const receiptNumber = `REC-${Date.now().toString(36).toUpperCase()}-${payment_id.substring(0, 4).toUpperCase()}`;
+    // Generate clean receipt number using database function
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { data: receiptNumber } = await (supabase.rpc as any)('generate_receipt_number', { p_user_id: user.id });
+    const finalReceiptNumber = receiptNumber || `REC-${Date.now().toString().slice(-6)}`;
 
     const { data: receipt, error } = await supabase
       .from("receipt_snapshots")
       .insert({
         payment_id,
         invoice_id: invoice_id || null,
-        receipt_number: receiptNumber,
+        receipt_number: finalReceiptNumber,
         snapshot_data: snapshot_data || {},
       })
       .select()

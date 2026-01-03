@@ -93,12 +93,13 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Invoice not found' }, { status: 404 });
     }
 
-    // Fetch customer + user profile separately (no implicit relationships)
-    const [{ data: customer }, { data: userProfile }] = await Promise.all([
+    // Fetch customer + user profile + line items separately (no implicit relationships)
+    const [{ data: customer }, { data: userProfile }, { data: lineItems }] = await Promise.all([
       invoice.customer_id
         ? supabase.from('customers').select('*').eq('id', invoice.customer_id).single()
         : Promise.resolve({ data: null } as any),
       supabase.from('users').select('*').eq('id', invoice.user_id).single(),
+      supabase.from('invoice_line_items').select('*').eq('invoice_id', invoiceId).order('sort_order'),
     ]);
 
     // Create payment record
@@ -184,6 +185,16 @@ export async function POST(request: NextRequest) {
     // Send payment confirmation email
     if (isEmailConfigured() && customer?.email) {
       try {
+        // Format line items for email
+        const emailLineItems = lineItems && lineItems.length > 0 
+          ? lineItems.map((item: { description: string; quantity: number; unit_price: number; amount: number }) => ({
+              description: item.description,
+              quantity: item.quantity || 1,
+              unitPrice: (item.unit_price || 0) / 100,
+              total: (item.amount || 0) / 100,
+            }))
+          : undefined;
+
         await sendPaymentConfirmationEmail({
           recipientEmail: customer.email,
           recipientName: customer.name || 'Customer',
@@ -204,6 +215,7 @@ export async function POST(request: NextRequest) {
           businessEmail: userProfile?.email || undefined,
           reference: flwRef || txRef || undefined,
           payerName: verifiedData.customer?.name || customer?.name || undefined,
+          lineItems: emailLineItems,
         });
       } catch (emailError) {
         console.error('Failed to send payment confirmation email:', emailError);
@@ -272,7 +284,10 @@ async function createReceiptSnapshot(args: {
   meta: Record<string, unknown>
 }) {
   try {
-    const receiptNumber = `REC-${Date.now().toString(36).toUpperCase()}-${args.paymentId.substring(0, 4).toUpperCase()}`;
+    // Generate clean receipt number using database function
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { data: receiptNumber } = await (args.supabase.rpc as any)('generate_receipt_number', { p_user_id: args.userId });
+    const finalReceiptNumber = receiptNumber || `REC-${Date.now().toString().slice(-6)}`;
 
     const baseSnapshotData = {
       provider: args.provider,
@@ -291,7 +306,7 @@ async function createReceiptSnapshot(args: {
     await args.supabase.from('receipt_snapshots').insert({
       payment_id: args.paymentId,
       invoice_id: args.invoiceId,
-      receipt_number: receiptNumber,
+      receipt_number: finalReceiptNumber,
       snapshot_data: {
         ...baseSnapshotData,
         verification: {

@@ -195,11 +195,13 @@ export default function ReceiptDetailPage({ params }: { params: Promise<{ id: st
     }
   };
 
-  // Format receipt number for display (shorten if too long)
+  // Format receipt number for display
   const formatReceiptNumber = (receiptNumber: string) => {
-    if (receiptNumber.length <= 12) return receiptNumber;
-    // Show first 4 and last 8 characters
-    return `${receiptNumber.slice(0, 4)}...${receiptNumber.slice(-8)}`;
+    // Clean receipt numbers like REC-000001 don't need truncation
+    // Only truncate legacy ugly numbers if they exist
+    if (receiptNumber.length <= 15) return receiptNumber;
+    // For legacy long numbers, show more characters
+    return `${receiptNumber.slice(0, 4)}...${receiptNumber.slice(-6)}`;
   };
 
   // Loading state
