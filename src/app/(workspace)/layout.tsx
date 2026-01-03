@@ -200,23 +200,23 @@ export default function WorkspaceLayout({
       {/* Main column */}
       <div className="flex-1 min-w-0 flex flex-col h-screen">
         {/* Topbar */}
-        <header className="h-16 flex items-center gap-4 px-6 shrink-0 backdrop-blur-sm" style={{ borderBottom: '1px solid #E4E6EB', backgroundColor: 'rgba(255, 255, 255, 0.95)' }}>
+        <header className="h-14 md:h-16 flex items-center gap-2 md:gap-4 px-3 md:px-6 shrink-0 backdrop-blur-sm" style={{ borderBottom: '1px solid #E4E6EB', backgroundColor: 'rgba(255, 255, 255, 0.95)' }}>
           {/* Mobile: menu trigger */}
-          <div className="md:hidden">
+          <div className="md:hidden shrink-0">
             <MobileNav nav={nav} pathname={pathname} />
           </div>
           
           {/* Search - more prominent */}
-          <div className="flex-1 max-w-2xl">
+          <div className="flex-1 min-w-0 max-w-2xl">
             <div className="relative group">
               <SearchNormal1 
                 size={18}
                 color="#B0B3B8"
-                className="absolute left-4 top-1/2 -translate-y-1/2 transition-colors" 
+                className="absolute left-3 md:left-4 top-1/2 -translate-y-1/2 transition-colors" 
               />
               <Input 
-                placeholder="Search invoices, contacts, payments..." 
-                className="h-11 pl-11 pr-4 rounded-2xl border-2 transition-all focus:border-[#14462a] focus:shadow-lg" 
+                placeholder="Search..." 
+                className="h-9 md:h-11 pl-9 md:pl-11 pr-2 md:pr-4 rounded-xl md:rounded-2xl border-2 transition-all focus:border-[#14462a] focus:shadow-lg text-sm md:text-base" 
                 style={{ 
                   backgroundColor: 'rgba(247, 249, 250, 0.8)', 
                   border: '2px solid #E4E6EB',
@@ -224,7 +224,7 @@ export default function WorkspaceLayout({
                   fontWeight: 500
                 }}
               />
-              <div className="absolute right-3 top-1/2 -translate-y-1/2 hidden md:flex items-center gap-1">
+              <div className="absolute right-3 top-1/2 -translate-y-1/2 hidden lg:flex items-center gap-1">
                 <kbd className="px-2 py-0.5 rounded text-xs font-semibold" style={{ backgroundColor: 'rgba(0,0,0,0.05)', color: '#B0B3B8' }}>⌘</kbd>
                 <kbd className="px-2 py-0.5 rounded text-xs font-semibold" style={{ backgroundColor: 'rgba(0,0,0,0.05)', color: '#B0B3B8' }}>K</kbd>
               </div>
@@ -232,8 +232,8 @@ export default function WorkspaceLayout({
           </div>
           
           {/* Right side actions */}
-          <div className="ml-auto flex items-center gap-2">
-            {/* Quick Actions */}
+          <div className="flex items-center gap-1 md:gap-2 shrink-0">
+            {/* Quick Actions - Desktop only */}
             <Link 
               href="/invoices/new"
               className="hidden lg:flex items-center gap-2 px-4 py-2 rounded-full font-semibold text-base transition-all hover:scale-105 hover:shadow-md"
@@ -243,13 +243,25 @@ export default function WorkspaceLayout({
               New Invoice
             </Link>
             
+            {/* Mobile: Quick Add FAB */}
+            <Link 
+              href="/invoices/new"
+              className="lg:hidden h-9 w-9 rounded-full flex items-center justify-center transition-all hover:scale-105"
+              style={{ backgroundColor: '#14462a' }}
+              aria-label="New Invoice"
+            >
+              <Add size={18} color="white" />
+            </Link>
+            
             {/* Notifications */}
             <NotificationsDropdown />
             
-            {/* Balance Visibility Toggle */}
-            <BalanceToggleButton />
+            {/* Balance Visibility Toggle - Hidden on smallest screens */}
+            <div className="hidden sm:block">
+              <BalanceToggleButton />
+            </div>
             
-            <div className="h-8 w-px mx-1" style={{ backgroundColor: '#E4E6EB' }} />
+            <div className="hidden sm:block h-8 w-px mx-1" style={{ backgroundColor: '#E4E6EB' }} />
             
             <UserMenu />
           </div>
@@ -377,12 +389,12 @@ function NotificationsDropdown() {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <button 
-          className="relative h-10 w-10 rounded-full flex items-center justify-center transition-all hover:bg-[rgba(240,242,245,0.8)] hover:scale-105"
+          className="relative h-9 w-9 md:h-10 md:w-10 rounded-full flex items-center justify-center transition-all hover:bg-[rgba(240,242,245,0.8)] hover:scale-105"
           aria-label="Notifications"
         >
           <Notification size={20} color="#2D2D2D" />
           {unreadCount > 0 && (
-            <span className="absolute top-1.5 right-1.5 h-2 w-2 rounded-full" style={{ backgroundColor: '#EF4444' }}>
+            <span className="absolute top-1 right-1 md:top-1.5 md:right-1.5 h-2 w-2 rounded-full" style={{ backgroundColor: '#EF4444' }}>
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75" style={{ backgroundColor: '#EF4444' }} />
             </span>
           )}
@@ -390,16 +402,16 @@ function NotificationsDropdown() {
       </DropdownMenuTrigger>
       <DropdownMenuContent 
         align="end" 
-        className="w-96 rounded-2xl p-0 overflow-hidden" 
+        className="w-[calc(100vw-1rem)] sm:w-96 max-w-96 rounded-2xl p-0 overflow-hidden" 
         style={{ boxShadow: '0 4px 20px rgba(0, 0, 0, 0.15)', border: '1px solid rgba(0, 0, 0, 0.06)' }}
       >
         {/* Header */}
-        <div className="px-4 py-3 flex items-center justify-between" style={{ borderBottom: '1px solid #E4E6EB' }}>
-          <h3 className="font-semibold text-base" style={{ color: '#2D2D2D' }}>Notifications</h3>
+        <div className="px-3 sm:px-4 py-3 flex items-center justify-between" style={{ borderBottom: '1px solid #E4E6EB' }}>
+          <h3 className="font-semibold text-sm sm:text-base" style={{ color: '#2D2D2D' }}>Notifications</h3>
           {unreadCount > 0 && (
             <button 
               onClick={(e) => { e.preventDefault(); markAllAsRead(); }}
-              className="text-sm font-medium hover:underline"
+              className="text-xs sm:text-sm font-medium hover:underline"
               style={{ color: '#14462a' }}
             >
               Mark all as read
@@ -408,7 +420,7 @@ function NotificationsDropdown() {
         </div>
 
         {/* Notifications List */}
-        <div className="max-h-[400px] overflow-y-auto">
+        <div className="max-h-[60vh] sm:max-h-[400px] overflow-y-auto">
           {isLoading ? (
             <div className="p-8 text-center">
               <div className="animate-spin h-6 w-6 border-2 border-[#14462a] border-t-transparent rounded-full mx-auto"></div>

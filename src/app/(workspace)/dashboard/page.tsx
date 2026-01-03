@@ -261,7 +261,7 @@ export default function DashboardPage() {
       {/* Top row: KPIs and Quick Pay */}
       <section className="grid grid-cols-1 gap-4 lg:grid-cols-3">
         {/* KPI Cards */}
-        <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4">
           {loading ? (
             <>
               <KPISkeleton />
@@ -269,17 +269,18 @@ export default function DashboardPage() {
             </>
           ) : (
             kpis.map((kpi) => (
-              <div key={kpi.label} className="group relative rounded-2xl p-6 transition-all duration-300 hover:scale-[1.02]" style={{ backgroundColor: `${kpi.iconColor}0A` }}>
-                <div className="flex items-center justify-between mb-4">
+              <div key={kpi.label} className="group relative rounded-2xl p-4 sm:p-6 transition-all duration-300 hover:scale-[1.02]" style={{ backgroundColor: `${kpi.iconColor}0A` }}>
+                <div className="flex items-center justify-between mb-3 sm:mb-4">
                   <div 
-                    className="h-12 w-12 rounded-full flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110"
+                    className="h-10 w-10 sm:h-12 sm:w-12 rounded-full flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110"
                     style={{ backgroundColor: kpi.iconBg }}
                   >
-                    <kpi.icon size={24} color={kpi.iconColor} variant="Bulk" />
+                    <kpi.icon size={20} color={kpi.iconColor} variant="Bulk" className="sm:hidden" />
+                    <kpi.icon size={24} color={kpi.iconColor} variant="Bulk" className="hidden sm:block" />
                   </div>
                   {data && data.metrics.total_invoices > 0 && (
                     <div
-                      className="inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-semibold"
+                      className="inline-flex items-center gap-1 rounded-full px-2 py-0.5 sm:px-2.5 sm:py-1 text-xs font-semibold"
                       style={kpi.isNew 
                         ? { backgroundColor: 'rgba(20, 70, 42, 0.12)', color: '#14462a' }
                         : kpi.up 
@@ -291,13 +292,13 @@ export default function DashboardPage() {
                     </div>
                   )}
                 </div>
-                <p className="text-sm mb-2" style={{ color: '#65676B', fontWeight: 500 }}>{kpi.label}</p>
+                <p className="text-xs sm:text-sm mb-1 sm:mb-2" style={{ color: '#65676B', fontWeight: 500 }}>{kpi.label}</p>
                 <div className="flex items-end justify-between">
-                  <div className="text-3xl tracking-tight" style={{ color: '#2D2D2D', fontWeight: 700 }}>
+                  <div className="text-2xl sm:text-3xl tracking-tight" style={{ color: '#2D2D2D', fontWeight: 700 }}>
                     {maskAmount(kpi.value)}
                   </div>
                   {data && data.metrics.total_invoices > 0 && (
-                    <svg className="h-10 w-24 opacity-40" viewBox="0 0 64 32" fill="none">
+                    <svg className="h-8 w-16 sm:h-10 sm:w-24 opacity-40" viewBox="0 0 64 32" fill="none">
                       <defs>
                         <linearGradient id={`gradient-${kpi.label}`} x1="0%" y1="0%" x2="100%" y2="0%">
                           <stop offset="0%" stopColor={kpi.iconColor} stopOpacity={0.3} />
@@ -310,7 +311,7 @@ export default function DashboardPage() {
                   )}
                 </div>
                 {data && data.metrics.total_invoices > 0 && (
-                  <p className="text-xs mt-3" style={{ color: '#B0B3B8' }}>{kpi.isNew ? 'First month' : 'vs last month'}</p>
+                  <p className="text-xs mt-2 sm:mt-3" style={{ color: '#B0B3B8' }}>{kpi.isNew ? 'First month' : 'vs last month'}</p>
                 )}
               </div>
             ))
@@ -318,7 +319,7 @@ export default function DashboardPage() {
         </div>
 
         {/* Quick Pay */}
-        <div className="text-white rounded-lg p-6" style={{ backgroundColor: '#14462a' }}>
+        <div className="text-white rounded-lg p-4 sm:p-6" style={{ backgroundColor: '#14462a' }}>
           <div className="flex items-center justify-between mb-6">
             <h3 className="text-base" style={{ fontWeight: 600 }}>Quick Pay</h3>
             <button
@@ -352,11 +353,11 @@ export default function DashboardPage() {
 
       {/* AR Aging Buckets */}
       <section>
-        <div className="rounded-2xl p-6" style={{ backgroundColor: 'white', boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.05)' }}>
-          <div className="flex items-center justify-between mb-6">
+        <div className="rounded-2xl p-4 sm:p-6" style={{ backgroundColor: 'white', boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.05)' }}>
+          <div className="flex items-center justify-between mb-4 sm:mb-6">
             <div>
-              <h2 className="text-lg" style={{ color: '#2D2D2D', fontWeight: 600 }}>Accounts Receivable Aging</h2>
-              <p className="text-sm mt-1" style={{ color: '#B0B3B8' }}>Track how long unpaid invoices have been outstanding</p>
+              <h2 className="text-base sm:text-lg" style={{ color: '#2D2D2D', fontWeight: 600 }}>Accounts Receivable Aging</h2>
+              <p className="text-xs sm:text-sm mt-1 hidden sm:block" style={{ color: '#B0B3B8' }}>Track how long unpaid invoices have been outstanding</p>
             </div>
             <button
               onClick={() => setIsARAgingExpanded(!isARAgingExpanded)}
@@ -374,66 +375,66 @@ export default function DashboardPage() {
           {isARAgingExpanded && (
             <>
               {loading ? (
-                <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+                <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
                   {[1, 2, 3, 4].map((i) => (
-                    <div key={i} className="rounded-lg p-5 animate-pulse" style={{ backgroundColor: 'rgba(176, 179, 184, 0.05)' }}>
-                      <div className="h-4 w-24 bg-gray-200 rounded mb-3" />
-                      <div className="h-8 w-12 bg-gray-200 rounded mb-2" />
-                      <div className="h-4 w-20 bg-gray-200 rounded" />
+                    <div key={i} className="rounded-lg p-3 sm:p-5 animate-pulse" style={{ backgroundColor: 'rgba(176, 179, 184, 0.05)' }}>
+                      <div className="h-4 w-16 sm:w-24 bg-gray-200 rounded mb-3" />
+                      <div className="h-6 sm:h-8 w-8 sm:w-12 bg-gray-200 rounded mb-2" />
+                      <div className="h-4 w-14 sm:w-20 bg-gray-200 rounded" />
                     </div>
                   ))}
                 </div>
               ) : data && (
                 <>
-                  <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+                  <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
                     {/* 0-30 Days - Current */}
-                    <div className="rounded-lg p-5 hover:shadow-sm transition-shadow" style={{ backgroundColor: 'rgba(20, 70, 42, 0.02)' }}>
-                      <div className="flex items-center justify-between mb-3">
-                        <div className="text-sm" style={{ color: '#2D2D2D', fontWeight: 600 }}>Current</div>
-                        <div className="text-xs px-2 py-1 rounded-full" style={{ color: '#14462a', backgroundColor: 'rgba(20, 70, 42, 0.1)', fontWeight: 500 }}>0-30 days</div>
+                    <div className="rounded-lg p-3 sm:p-5 hover:shadow-sm transition-shadow" style={{ backgroundColor: 'rgba(20, 70, 42, 0.02)' }}>
+                      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2 sm:mb-3 gap-1">
+                        <div className="text-xs sm:text-sm" style={{ color: '#2D2D2D', fontWeight: 600 }}>Current</div>
+                        <div className="text-[10px] sm:text-xs px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full w-fit" style={{ color: '#14462a', backgroundColor: 'rgba(20, 70, 42, 0.1)', fontWeight: 500 }}>0-30 days</div>
                       </div>
-                      <div className="text-3xl font-bold mb-2" style={{ color: '#14462a' }}>{data.arAging.current.count}</div>
-                      <div className="text-sm mb-3" style={{ color: '#2D2D2D', fontWeight: 600 }}>{maskAmount(formatCurrency(data.arAging.current.total))}</div>
-                      <div className="text-xs leading-relaxed" style={{ color: '#B0B3B8' }}>
+                      <div className="text-xl sm:text-3xl font-bold mb-1 sm:mb-2" style={{ color: '#14462a' }}>{data.arAging.current.count}</div>
+                      <div className="text-xs sm:text-sm mb-2 sm:mb-3" style={{ color: '#2D2D2D', fontWeight: 600 }}>{maskAmount(formatCurrency(data.arAging.current.total))}</div>
+                      <div className="text-[10px] sm:text-xs leading-relaxed hidden sm:block" style={{ color: '#B0B3B8' }}>
                         Recently issued invoices. Still within normal payment terms.
                       </div>
                     </div>
 
                     {/* 31-60 Days - Attention */}
-                    <div className="rounded-lg p-5 hover:shadow-sm transition-shadow" style={{ backgroundColor: 'rgba(245, 158, 11, 0.02)' }}>
-                      <div className="flex items-center justify-between mb-3">
-                        <div className="text-sm" style={{ color: '#2D2D2D', fontWeight: 600 }}>Attention</div>
-                        <div className="text-xs px-2 py-1 rounded-full" style={{ color: '#F59E0B', backgroundColor: 'rgba(245, 158, 11, 0.1)', fontWeight: 500 }}>31-60 days</div>
+                    <div className="rounded-lg p-3 sm:p-5 hover:shadow-sm transition-shadow" style={{ backgroundColor: 'rgba(245, 158, 11, 0.02)' }}>
+                      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2 sm:mb-3 gap-1">
+                        <div className="text-xs sm:text-sm" style={{ color: '#2D2D2D', fontWeight: 600 }}>Attention</div>
+                        <div className="text-[10px] sm:text-xs px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full w-fit" style={{ color: '#F59E0B', backgroundColor: 'rgba(245, 158, 11, 0.1)', fontWeight: 500 }}>31-60 days</div>
                       </div>
-                      <div className="text-3xl font-bold mb-2" style={{ color: '#F59E0B' }}>{data.arAging.attention.count}</div>
-                      <div className="text-sm mb-3" style={{ color: '#2D2D2D', fontWeight: 600 }}>{maskAmount(formatCurrency(data.arAging.attention.total))}</div>
-                      <div className="text-xs leading-relaxed" style={{ color: '#B0B3B8' }}>
+                      <div className="text-xl sm:text-3xl font-bold mb-1 sm:mb-2" style={{ color: '#F59E0B' }}>{data.arAging.attention.count}</div>
+                      <div className="text-xs sm:text-sm mb-2 sm:mb-3" style={{ color: '#2D2D2D', fontWeight: 600 }}>{maskAmount(formatCurrency(data.arAging.attention.total))}</div>
+                      <div className="text-[10px] sm:text-xs leading-relaxed hidden sm:block" style={{ color: '#B0B3B8' }}>
                         Slightly overdue. Consider sending a friendly payment reminder.
                       </div>
                     </div>
 
                     {/* 61-90 Days - Concerning */}
-                    <div className="rounded-lg p-5 hover:shadow-sm transition-shadow" style={{ backgroundColor: 'rgba(249, 115, 22, 0.02)' }}>
-                      <div className="flex items-center justify-between mb-3">
-                        <div className="text-sm" style={{ color: '#2D2D2D', fontWeight: 600 }}>Concerning</div>
-                        <div className="text-xs px-2 py-1 rounded-full" style={{ color: '#F97316', backgroundColor: 'rgba(249, 115, 22, 0.1)', fontWeight: 500 }}>61-90 days</div>
+                    <div className="rounded-lg p-3 sm:p-5 hover:shadow-sm transition-shadow" style={{ backgroundColor: 'rgba(249, 115, 22, 0.02)' }}>
+                      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2 sm:mb-3 gap-1">
+                        <div className="text-xs sm:text-sm" style={{ color: '#2D2D2D', fontWeight: 600 }}>Concerning</div>
+                        <div className="text-[10px] sm:text-xs px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full w-fit" style={{ color: '#F97316', backgroundColor: 'rgba(249, 115, 22, 0.1)', fontWeight: 500 }}>61-90 days</div>
                       </div>
-                      <div className="text-3xl font-bold mb-2" style={{ color: '#F97316' }}>{data.arAging.concerning.count}</div>
-                      <div className="text-sm mb-3" style={{ color: '#2D2D2D', fontWeight: 600 }}>{maskAmount(formatCurrency(data.arAging.concerning.total))}</div>
-                      <div className="text-xs leading-relaxed" style={{ color: '#B0B3B8' }}>
+                      <div className="text-xl sm:text-3xl font-bold mb-1 sm:mb-2" style={{ color: '#F97316' }}>{data.arAging.concerning.count}</div>
+                      <div className="text-xs sm:text-sm mb-2 sm:mb-3" style={{ color: '#2D2D2D', fontWeight: 600 }}>{maskAmount(formatCurrency(data.arAging.concerning.total))}</div>
+                      <div className="text-[10px] sm:text-xs leading-relaxed hidden sm:block" style={{ color: '#B0B3B8' }}>
                         Significantly overdue. Follow up urgently with the customer.
                       </div>
                     </div>
 
                     {/* 90+ Days - Critical */}
-                    <div className="rounded-lg p-5 hover:shadow-sm transition-shadow" style={{ backgroundColor: 'rgba(220, 38, 38, 0.02)' }}>
-                      <div className="flex items-center justify-between mb-3">
-                        <div className="text-sm" style={{ color: '#2D2D2D', fontWeight: 600 }}>Critical</div>
-                        <div className="text-xs px-2 py-1 rounded-full" style={{ color: '#DC2626', backgroundColor: 'rgba(220, 38, 38, 0.1)', fontWeight: 500 }}>90+ days</div>
+                    <div className="rounded-lg p-3 sm:p-5 hover:shadow-sm transition-shadow" style={{ backgroundColor: 'rgba(220, 38, 38, 0.02)' }}>
+                      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2 sm:mb-3 gap-1">
+                        <div className="text-xs sm:text-sm" style={{ color: '#2D2D2D', fontWeight: 600 }}>Critical</div>
+                        <div className="text-[10px] sm:text-xs px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full w-fit" style={{ color: '#DC2626', backgroundColor: 'rgba(220, 38, 38, 0.1)', fontWeight: 500 }}>90+ days</div>
                       </div>
-                      <div className="text-3xl font-bold mb-2" style={{ color: '#DC2626' }}>{data.arAging.critical.count}</div>
-                      <div className="text-sm mb-3" style={{ color: '#2D2D2D', fontWeight: 600 }}>{maskAmount(formatCurrency(data.arAging.critical.total))}</div>
-                      <div className="text-xs leading-relaxed" style={{ color: '#B0B3B8' }}>
+                      <div className="text-xl sm:text-3xl font-bold mb-1 sm:mb-2" style={{ color: '#DC2626' }}>{data.arAging.critical.count}</div>
+                      <div className="text-xs sm:text-sm mb-2 sm:mb-3" style={{ color: '#2D2D2D', fontWeight: 600 }}>{maskAmount(formatCurrency(data.arAging.critical.total))}</div>
+                      <div className="text-[10px] sm:text-xs leading-relaxed hidden sm:block" style={{ color: '#B0B3B8' }}>
                         Severely overdue. May require debt collection or write-off.
                       </div>
                     </div>
@@ -511,9 +512,9 @@ export default function DashboardPage() {
       {/* Recent Invoices */}
       <section className="space-y-4">
         <div className="flex items-center justify-between">
-          <h2 className="text-lg" style={{ color: '#2D2D2D', fontWeight: 600 }}>Recent Invoices</h2>
+          <h2 className="text-base sm:text-lg" style={{ color: '#2D2D2D', fontWeight: 600 }}>Recent Invoices</h2>
           {data && data.recentInvoices.length > 0 && (
-            <Button variant="ghost" size="sm" asChild>
+            <Button variant="ghost" size="sm" asChild className="text-sm">
               <Link href="/invoices">View all</Link>
             </Button>
           )}
@@ -523,59 +524,93 @@ export default function DashboardPage() {
           {loading ? (
             <TableSkeleton rows={3} />
           ) : data && data.recentInvoices.length > 0 ? (
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>ID</TableHead>
-                  <TableHead>Date</TableHead>
-                  <TableHead>Contact</TableHead>
-                  <TableHead>Amount</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead className="w-12"></TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
+            <>
+              {/* Desktop Table */}
+              <div className="hidden sm:block overflow-x-auto">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>ID</TableHead>
+                      <TableHead>Date</TableHead>
+                      <TableHead>Contact</TableHead>
+                      <TableHead>Amount</TableHead>
+                      <TableHead>Status</TableHead>
+                      <TableHead className="w-12"></TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {data.recentInvoices.map((invoice) => (
+                      <TableRow 
+                        key={invoice.id}
+                        className="cursor-pointer"
+                        onClick={() => window.location.href = `/invoices/${invoice.id}`}
+                      >
+                        <TableCell className="font-medium">{invoice.invoice_number}</TableCell>
+                        <TableCell>{new Date(invoice.issue_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</TableCell>
+                        <TableCell>{invoice.customer?.name || 'Unknown'}</TableCell>
+                        <TableCell className="font-medium">{maskAmount(formatCurrency(invoice.total, invoice.currency))}</TableCell>
+                        <TableCell>{getStatusBadge(invoice.status)}</TableCell>
+                        <TableCell onClick={(e) => e.stopPropagation()}>
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <button className="inline-flex items-center rounded-full p-1.5 transition-all hover:bg-[rgba(20,70,42,0.06)]">
+                                <More size={16} color="#B0B3B8" />
+                              </button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end" className="rounded-2xl w-48 p-2">
+                              <DropdownMenuItem asChild className="gap-3 rounded-xl p-3 cursor-pointer">
+                                <Link href={`/invoices/${invoice.id}`} className="flex items-center gap-2">
+                                  <Eye size={16} color="#14462a" />
+                                  <span>View</span>
+                                </Link>
+                              </DropdownMenuItem>
+                              <DropdownMenuItem className="gap-3 rounded-xl p-3 cursor-pointer">
+                                <Copy size={16} color="#14462a" />
+                                <span>Copy link</span>
+                              </DropdownMenuItem>
+                              <DropdownMenuSeparator className="my-2" />
+                              <DropdownMenuItem className="gap-3 rounded-xl p-3 cursor-pointer text-red-600">
+                                <Trash size={16} color="#DC2626" />
+                                <span>Delete</span>
+                              </DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+              
+              {/* Mobile Card List */}
+              <div className="sm:hidden divide-y" style={{ borderColor: '#E4E6EB' }}>
                 {data.recentInvoices.map((invoice) => (
-                  <TableRow 
-                    key={invoice.id}
-                    className="cursor-pointer"
-                    onClick={() => window.location.href = `/invoices/${invoice.id}`}
+                  <Link 
+                    key={invoice.id} 
+                    href={`/invoices/${invoice.id}`}
+                    className="block p-4 hover:bg-gray-50 transition-colors"
                   >
-                    <TableCell className="font-medium">{invoice.invoice_number}</TableCell>
-                    <TableCell>{new Date(invoice.issue_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</TableCell>
-                    <TableCell>{invoice.customer?.name || 'Unknown'}</TableCell>
-                    <TableCell className="font-medium">{maskAmount(formatCurrency(invoice.total, invoice.currency))}</TableCell>
-                    <TableCell>{getStatusBadge(invoice.status)}</TableCell>
-                    <TableCell onClick={(e) => e.stopPropagation()}>
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <button className="inline-flex items-center rounded-full p-1.5 transition-all hover:bg-[rgba(20,70,42,0.06)]">
-                            <More size={16} color="#B0B3B8" />
-                          </button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end" className="rounded-2xl w-48 p-2">
-                          <DropdownMenuItem asChild className="gap-3 rounded-xl p-3 cursor-pointer">
-                            <Link href={`/invoices/${invoice.id}`} className="flex items-center gap-2">
-                              <Eye size={16} color="#14462a" />
-                              <span>View</span>
-                            </Link>
-                          </DropdownMenuItem>
-                          <DropdownMenuItem className="gap-3 rounded-xl p-3 cursor-pointer">
-                            <Copy size={16} color="#14462a" />
-                            <span>Copy link</span>
-                          </DropdownMenuItem>
-                          <DropdownMenuSeparator className="my-2" />
-                          <DropdownMenuItem className="gap-3 rounded-xl p-3 cursor-pointer text-red-600">
-                            <Trash size={16} color="#DC2626" />
-                            <span>Delete</span>
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </TableCell>
-                  </TableRow>
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="min-w-0 flex-1">
+                        <div className="flex items-center gap-2 mb-1">
+                          <span className="font-semibold text-sm" style={{ color: '#2D2D2D' }}>{invoice.invoice_number}</span>
+                          {getStatusBadge(invoice.status)}
+                        </div>
+                        <p className="text-sm truncate" style={{ color: '#65676B' }}>{invoice.customer?.name || 'Unknown'}</p>
+                        <p className="text-xs mt-1" style={{ color: '#B0B3B8' }}>
+                          {new Date(invoice.issue_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                        </p>
+                      </div>
+                      <div className="text-right shrink-0">
+                        <span className="font-semibold text-sm" style={{ color: '#2D2D2D' }}>
+                          {maskAmount(formatCurrency(invoice.total, invoice.currency))}
+                        </span>
+                      </div>
+                    </div>
+                  </Link>
                 ))}
-              </TableBody>
-            </Table>
+              </div>
+            </>
           ) : (
             <EmptyState
               icon={Receipt21}

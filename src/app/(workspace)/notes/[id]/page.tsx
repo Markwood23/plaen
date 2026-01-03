@@ -196,17 +196,17 @@ export default function NoteDetailPage({
   // Loading state
   if (loading) {
     return (
-      <div className="max-w-4xl mx-auto pb-12">
-        <div className="flex items-center gap-3 mb-6">
-          <Skeleton className="h-9 w-9 rounded-full" />
-          <Skeleton className="h-6 w-32" />
+      <div className="max-w-4xl mx-auto pb-12 px-0">
+        <div className="flex items-center gap-3 mb-4 sm:mb-6">
+          <Skeleton className="h-8 w-8 sm:h-9 sm:w-9 rounded-full" />
+          <Skeleton className="h-5 sm:h-6 w-28 sm:w-32" />
         </div>
-        <Skeleton className="h-12 w-3/4 mb-6" />
-        <div className="flex gap-2 mb-6">
-          <Skeleton className="h-6 w-16 rounded-full" />
-          <Skeleton className="h-6 w-20 rounded-full" />
+        <Skeleton className="h-8 sm:h-12 w-3/4 mb-4 sm:mb-6" />
+        <div className="flex gap-2 mb-4 sm:mb-6">
+          <Skeleton className="h-5 sm:h-6 w-14 sm:w-16 rounded-full" />
+          <Skeleton className="h-5 sm:h-6 w-16 sm:w-20 rounded-full" />
         </div>
-        <Skeleton className="h-96 w-full rounded-xl" />
+        <Skeleton className="h-72 sm:h-96 w-full rounded-xl" />
       </div>
     );
   }
@@ -214,26 +214,26 @@ export default function NoteDetailPage({
   // Error state
   if (error || !note) {
     return (
-      <div className="max-w-4xl mx-auto pb-12">
-        <div className="flex items-center gap-3 mb-6">
+      <div className="max-w-4xl mx-auto pb-12 px-0">
+        <div className="flex items-center gap-3 mb-4 sm:mb-6">
           <Link href="/notes">
             <Button
               variant="ghost"
               size="sm"
-              className="h-9 w-9 p-0 rounded-full"
+              className="h-8 w-8 sm:h-9 sm:w-9 p-0 rounded-full"
             >
               <ArrowLeft2 size={16} color="#2D2D2D" variant="Linear" />
             </Button>
           </Link>
         </div>
-        <div className="text-center py-16">
-          <h2 className="text-xl font-semibold text-gray-900 mb-2">
+        <div className="text-center py-10 sm:py-16 px-4">
+          <h2 className="text-lg sm:text-xl font-semibold text-gray-900 mb-2">
             Note Not Found
           </h2>
-          <p className="text-gray-500 mb-6">
+          <p className="text-sm sm:text-base text-gray-500 mb-4 sm:mb-6">
             {error || "This note could not be found."}
           </p>
-          <Button asChild className="bg-[#14462a] hover:bg-[#0d3520] rounded-xl">
+          <Button asChild className="bg-[#14462a] hover:bg-[#0d3520] rounded-xl h-9 sm:h-10 text-sm">
             <Link href="/notes">Back to Notes</Link>
           </Button>
         </div>
@@ -244,33 +244,35 @@ export default function NoteDetailPage({
   // Edit Mode
   if (isEditMode) {
     return (
-      <div className="max-w-4xl mx-auto pb-12">
+      <div className="max-w-4xl mx-auto pb-12 px-0">
         {/* Header */}
-        <div className="flex items-center justify-between mb-6 print:hidden">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-0 mb-4 sm:mb-6 print:hidden">
           <div className="flex items-center gap-3">
             <Button
               variant="ghost"
               size="sm"
-              className="h-9 w-9 p-0 rounded-full"
+              className="h-8 w-8 sm:h-9 sm:w-9 p-0 rounded-full"
               onClick={() => setIsEditMode(false)}
             >
               <ArrowLeft2 size={16} color="#2D2D2D" variant="Linear" />
             </Button>
             <div>
-              <h1 className="text-lg font-semibold text-[#2D2D2D]">
+              <h1 className="text-base sm:text-lg font-semibold text-[#2D2D2D]">
                 Editing Note
               </h1>
               {/* Save Status Indicator */}
-              <div className="flex items-center gap-2 text-sm text-[#B0B3B8]">
+              <div className="flex items-center gap-2 text-xs sm:text-sm text-[#B0B3B8]">
                 {saveStatus === "saving" && (
                   <>
-                    <Refresh size={14} color="#B0B3B8" className="animate-spin" />
+                    <Refresh size={12} color="#B0B3B8" className="animate-spin sm:hidden" />
+                    <Refresh size={14} color="#B0B3B8" className="animate-spin hidden sm:block" />
                     <span>Saving...</span>
                   </>
                 )}
                 {saveStatus === "saved" && (
                   <>
-                    <Cloud size={14} color="#14462a" />
+                    <Cloud size={12} color="#14462a" className="sm:hidden" />
+                    <Cloud size={14} color="#14462a" className="hidden sm:block" />
                     <span className="text-[#14462a]">
                       Saved {formatLastSaved()}
                     </span>
@@ -278,7 +280,8 @@ export default function NoteDetailPage({
                 )}
                 {saveStatus === "error" && (
                   <>
-                    <CloudCross size={14} color="#EF4444" />
+                    <CloudCross size={12} color="#EF4444" className="sm:hidden" />
+                    <CloudCross size={14} color="#EF4444" className="hidden sm:block" />
                     <span className="text-red-500">Failed to save</span>
                   </>
                 )}
@@ -286,10 +289,10 @@ export default function NoteDetailPage({
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 pl-11 sm:pl-0">
             <Button
               variant="outline"
-              className="rounded-full h-9 px-4 border-[#E4E6EB]"
+              className="rounded-full h-8 sm:h-9 px-3 sm:px-4 border-[#E4E6EB] text-xs sm:text-sm"
               onClick={() => {
                 setIsEditMode(false);
                 // Reset to original values
@@ -301,7 +304,7 @@ export default function NoteDetailPage({
               Cancel
             </Button>
             <Button
-              className="rounded-full h-9 px-4 bg-[#14462a] hover:bg-[#0d3520] text-white"
+              className="rounded-full h-8 sm:h-9 px-3 sm:px-4 bg-[#14462a] hover:bg-[#0d3520] text-white text-xs sm:text-sm"
               onClick={async () => {
                 await performSave();
                 setIsEditMode(false);
@@ -315,35 +318,36 @@ export default function NoteDetailPage({
         </div>
 
         {/* Title Input */}
-        <div className="mb-6">
+        <div className="mb-4 sm:mb-6">
           <input
             type="text"
             placeholder="Note Title..."
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="w-full text-3xl font-bold border-0 px-0 focus:outline-none focus:ring-0 placeholder:text-gray-300 text-[#2D2D2D]"
+            className="w-full text-xl sm:text-3xl font-bold border-0 px-0 focus:outline-none focus:ring-0 placeholder:text-gray-300 text-[#2D2D2D]"
           />
         </div>
 
         {/* Tags */}
-        <div className="flex flex-wrap gap-2 mb-6">
+        <div className="flex flex-wrap gap-1.5 sm:gap-2 mb-4 sm:mb-6">
           {tags.map((tag) => (
             <Badge
               key={tag}
               variant="secondary"
-              className="rounded-full px-3 py-1 text-xs flex items-center gap-1.5 bg-[rgba(20,70,42,0.08)] text-[#14462a] border-0"
+              className="rounded-full px-2 sm:px-3 py-0.5 sm:py-1 text-[10px] sm:text-xs flex items-center gap-1 sm:gap-1.5 bg-[rgba(20,70,42,0.08)] text-[#14462a] border-0"
             >
               {tag}
               <button
                 onClick={() => handleRemoveTag(tag)}
                 className="hover:opacity-70"
               >
-                <CloseCircle size={12} color="#14462a" variant="Linear" />
+                <CloseCircle size={10} color="#14462a" variant="Linear" className="sm:hidden" />
+                <CloseCircle size={12} color="#14462a" variant="Linear" className="hidden sm:block" />
               </button>
             </Badge>
           ))}
           {isAddingTag ? (
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1.5 sm:gap-2">
               <input
                 type="text"
                 placeholder="Tag name..."
@@ -358,35 +362,38 @@ export default function NoteDetailPage({
                     setNewTag("");
                   }
                 }}
-                className="h-7 w-32 text-xs rounded-full px-3 border border-[#E4E6EB] focus:outline-none focus:ring-2 focus:ring-[#14462a]/20 focus:border-[#14462a]"
+                className="h-6 sm:h-7 w-24 sm:w-32 text-[10px] sm:text-xs rounded-full px-2 sm:px-3 border border-[#E4E6EB] focus:outline-none focus:ring-2 focus:ring-[#14462a]/20 focus:border-[#14462a]"
                 autoFocus
               />
               <Button
                 size="sm"
                 variant="ghost"
-                className="h-7 w-7 p-0 rounded-full"
+                className="h-6 w-6 sm:h-7 sm:w-7 p-0 rounded-full"
                 onClick={handleAddTag}
               >
-                <TickCircle size={14} color="#14462a" variant="Linear" />
+                <TickCircle size={12} color="#14462a" variant="Linear" className="sm:hidden" />
+                <TickCircle size={14} color="#14462a" variant="Linear" className="hidden sm:block" />
               </Button>
               <Button
                 size="sm"
                 variant="ghost"
-                className="h-7 w-7 p-0 rounded-full"
+                className="h-6 w-6 sm:h-7 sm:w-7 p-0 rounded-full"
                 onClick={() => {
                   setIsAddingTag(false);
                   setNewTag("");
                 }}
               >
-                <CloseCircle size={14} color="#B0B3B8" variant="Linear" />
+                <CloseCircle size={12} color="#B0B3B8" variant="Linear" className="sm:hidden" />
+                <CloseCircle size={14} color="#B0B3B8" variant="Linear" className="hidden sm:block" />
               </Button>
             </div>
           ) : (
             <button
               onClick={() => setIsAddingTag(true)}
-              className="px-3 py-1 rounded-full text-xs flex items-center gap-1 transition-colors bg-[rgba(176,179,184,0.08)] text-[#B0B3B8] hover:bg-[rgba(176,179,184,0.12)]"
+              className="px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-[10px] sm:text-xs flex items-center gap-1 transition-colors bg-[rgba(176,179,184,0.08)] text-[#B0B3B8] hover:bg-[rgba(176,179,184,0.12)]"
             >
-              <Add size={12} color="#B0B3B8" variant="Linear" />
+              <Add size={10} color="#B0B3B8" variant="Linear" className="sm:hidden" />
+              <Add size={12} color="#B0B3B8" variant="Linear" className="hidden sm:block" />
               Add Tag
             </button>
           )}
@@ -405,41 +412,41 @@ export default function NoteDetailPage({
 
   // View Mode
   return (
-    <div className="max-w-4xl mx-auto pb-12">
+    <div className="max-w-4xl mx-auto pb-12 px-0">
       {/* Header */}
-      <div className="flex items-center justify-between mb-6 print:hidden">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-0 mb-4 sm:mb-6 print:hidden">
         <div className="flex items-center gap-3">
           <Link href="/notes">
             <Button
               variant="ghost"
               size="sm"
-              className="h-9 w-9 p-0 rounded-full"
+              className="h-8 w-8 sm:h-9 sm:w-9 p-0 rounded-full"
             >
               <ArrowLeft2 size={16} color="#2D2D2D" variant="Linear" />
             </Button>
           </Link>
           <div>
-            <h1 className="text-lg font-semibold text-[#2D2D2D]">View Note</h1>
-            <p className="text-sm text-[#B0B3B8]">
-              Last updated {formatDate(note.updated_at)}
+            <h1 className="text-base sm:text-lg font-semibold text-[#2D2D2D]">View Note</h1>
+            <p className="text-xs sm:text-sm text-[#B0B3B8]">
+              Updated {formatDate(note.updated_at)}
             </p>
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 pl-11 sm:pl-0">
           <Button
             variant="outline"
-            className="rounded-full h-9 px-4 border-[#E4E6EB]"
+            className="rounded-full h-8 sm:h-9 px-3 sm:px-4 border-[#E4E6EB] text-xs sm:text-sm hidden sm:flex"
             onClick={handlePrint}
           >
-            <Printer size={16} color="#2D2D2D" variant="Linear" className="mr-2" />
+            <Printer size={14} color="#2D2D2D" variant="Linear" className="mr-1.5 sm:mr-2" />
             Print
           </Button>
           <Button
-            className="rounded-full h-9 px-4 bg-[#14462a] hover:bg-[#0d3520] text-white"
+            className="rounded-full h-8 sm:h-9 px-3 sm:px-4 bg-[#14462a] hover:bg-[#0d3520] text-white text-xs sm:text-sm"
             onClick={() => setIsEditMode(true)}
           >
-            <Edit2 size={16} color="white" variant="Linear" className="mr-2" />
+            <Edit2 size={14} color="white" variant="Linear" className="mr-1.5 sm:mr-2" />
             Edit
           </Button>
           <DropdownMenu>
@@ -447,70 +454,79 @@ export default function NoteDetailPage({
               <Button
                 variant="ghost"
                 size="sm"
-                className="h-9 w-9 p-0 rounded-full hover:bg-[rgba(20,70,42,0.06)]"
+                className="h-8 w-8 sm:h-9 sm:w-9 p-0 rounded-full hover:bg-[rgba(20,70,42,0.06)]"
               >
                 <More size={16} color="#B0B3B8" variant="Linear" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent
               align="end"
-              className="rounded-2xl p-2"
+              className="rounded-2xl p-2 w-40 sm:w-auto"
               style={{
                 boxShadow: "0 4px 20px rgba(0, 0, 0, 0.12)",
                 border: "1px solid rgba(0, 0, 0, 0.06)",
               }}
             >
               <DropdownMenuItem
-                className="rounded-xl px-3 py-2.5 cursor-pointer hover:bg-[rgba(20,70,42,0.06)] group transition-all"
+                className="rounded-xl px-3 py-2 sm:py-2.5 cursor-pointer hover:bg-[rgba(20,70,42,0.06)] group transition-all"
                 onClick={handleTogglePin}
               >
                 <Star
-                  size={16}
+                  size={14}
                   color={note.is_pinned ? "#F59E0B" : "#2D2D2D"}
                   variant={note.is_pinned ? "Bold" : "Linear"}
                   className="mr-2"
                 />
-                <span>{note.is_pinned ? "Unpin Note" : "Pin Note"}</span>
+                <span className="text-sm">{note.is_pinned ? "Unpin" : "Pin"}</span>
               </DropdownMenuItem>
-              <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer hover:bg-[rgba(20,70,42,0.06)] group transition-all">
+              <DropdownMenuItem className="rounded-xl px-3 py-2 sm:py-2.5 cursor-pointer hover:bg-[rgba(20,70,42,0.06)] group transition-all sm:hidden" onClick={handlePrint}>
+                <Printer
+                  size={14}
+                  color="#2D2D2D"
+                  variant="Linear"
+                  className="mr-2"
+                />
+                <span className="text-sm">Print</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem className="rounded-xl px-3 py-2 sm:py-2.5 cursor-pointer hover:bg-[rgba(20,70,42,0.06)] group transition-all">
                 <Share
-                  size={16}
+                  size={14}
                   color="#2D2D2D"
                   variant="Linear"
                   className="mr-2"
                 />
-                <span>Share</span>
+                <span className="text-sm">Share</span>
               </DropdownMenuItem>
-              <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer hover:bg-[rgba(20,70,42,0.06)] group transition-all">
+              <DropdownMenuItem className="rounded-xl px-3 py-2 sm:py-2.5 cursor-pointer hover:bg-[rgba(20,70,42,0.06)] group transition-all">
                 <DocumentDownload
-                  size={16}
+                  size={14}
                   color="#2D2D2D"
                   variant="Linear"
                   className="mr-2"
                 />
-                <span>Export PDF</span>
+                <span className="text-sm">Export PDF</span>
               </DropdownMenuItem>
               <DropdownMenuSeparator className="my-1" />
-              <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer hover:bg-[rgba(20,70,42,0.06)] group transition-all">
+              <DropdownMenuItem className="rounded-xl px-3 py-2 sm:py-2.5 cursor-pointer hover:bg-[rgba(20,70,42,0.06)] group transition-all">
                 <Archive
-                  size={16}
+                  size={14}
                   color="#2D2D2D"
                   variant="Linear"
                   className="mr-2"
                 />
-                <span>Archive</span>
+                <span className="text-sm">Archive</span>
               </DropdownMenuItem>
               <DropdownMenuItem
-                className="rounded-xl px-3 py-2.5 cursor-pointer hover:bg-red-50 group transition-all"
+                className="rounded-xl px-3 py-2 sm:py-2.5 cursor-pointer hover:bg-red-50 group transition-all"
                 onClick={handleDelete}
               >
                 <Trash
-                  size={16}
+                  size={14}
                   color="#DC2626"
                   variant="Linear"
                   className="mr-2"
                 />
-                <span className="text-red-600">Delete</span>
+                <span className="text-sm text-red-600">Delete</span>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -518,21 +534,22 @@ export default function NoteDetailPage({
       </div>
 
       {/* Note Title */}
-      <div className="mb-6">
-        <div className="flex items-center gap-3">
-          <h1 className="text-3xl font-bold text-[#2D2D2D]">{note.title}</h1>
-          {note.is_pinned && <Star size={24} color="#F59E0B" variant="Bold" />}
+      <div className="mb-4 sm:mb-6">
+        <div className="flex items-center gap-2 sm:gap-3">
+          <h1 className="text-xl sm:text-3xl font-bold text-[#2D2D2D]">{note.title}</h1>
+          {note.is_pinned && <Star size={18} color="#F59E0B" variant="Bold" className="sm:hidden" />}
+          {note.is_pinned && <Star size={24} color="#F59E0B" variant="Bold" className="hidden sm:block" />}
         </div>
       </div>
 
       {/* Tags */}
       {note.tags && note.tags.length > 0 && (
-        <div className="flex flex-wrap gap-2 mb-6">
+        <div className="flex flex-wrap gap-1.5 sm:gap-2 mb-4 sm:mb-6">
           {note.tags.map((tag) => (
             <Badge
               key={tag}
               variant="secondary"
-              className="rounded-full px-3 py-1 text-xs bg-[rgba(20,70,42,0.08)] text-[#14462a] border-0"
+              className="rounded-full px-2 sm:px-3 py-0.5 sm:py-1 text-[10px] sm:text-xs bg-[rgba(20,70,42,0.08)] text-[#14462a] border-0"
             >
               {tag}
             </Badge>
@@ -550,7 +567,7 @@ export default function NoteDetailPage({
       </div>
 
       {/* Metadata */}
-      <div className="mt-12 pt-6 border-t border-gray-100 text-sm text-[#B0B3B8]">
+      <div className="mt-8 sm:mt-12 pt-4 sm:pt-6 border-t border-gray-100 text-xs sm:text-sm text-[#B0B3B8]">
         <p>Created {formatDate(note.created_at)}</p>
         <p>{note.word_count || 0} words</p>
       </div>

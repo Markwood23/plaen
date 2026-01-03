@@ -152,40 +152,43 @@ export default function NewNotePage() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto pb-12">
+    <div className="max-w-4xl mx-auto pb-12 px-0">
       {/* Header */}
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-0 mb-4 sm:mb-6">
         <div className="flex items-center gap-3">
           <Link href="/notes">
             <Button
               variant="ghost"
               size="sm"
-              className="h-9 w-9 p-0 rounded-full"
+              className="h-8 w-8 sm:h-9 sm:w-9 p-0 rounded-full"
             >
               <ArrowLeft2 size={16} color="#2D2D2D" variant="Linear" />
             </Button>
           </Link>
           <div>
-            <h1 className="text-lg font-semibold text-[#2D2D2D]">
+            <h1 className="text-base sm:text-lg font-semibold text-[#2D2D2D]">
               {noteId ? "Editing Note" : "New Note"}
             </h1>
             {/* Save Status Indicator */}
-            <div className="flex items-center gap-2 text-sm text-[#B0B3B8]">
+            <div className="flex items-center gap-2 text-xs sm:text-sm text-[#B0B3B8]">
               {saveStatus === "saving" && (
                 <>
-                  <Refresh size={14} color="#B0B3B8" className="animate-spin" />
+                  <Refresh size={12} color="#B0B3B8" className="animate-spin sm:hidden" />
+                  <Refresh size={14} color="#B0B3B8" className="animate-spin hidden sm:block" />
                   <span>Saving...</span>
                 </>
               )}
               {saveStatus === "saved" && (
                 <>
-                  <Cloud size={14} color="#14462a" />
+                  <Cloud size={12} color="#14462a" className="sm:hidden" />
+                  <Cloud size={14} color="#14462a" className="hidden sm:block" />
                   <span className="text-[#14462a]">Saved {formatLastSaved()}</span>
                 </>
               )}
               {saveStatus === "error" && (
                 <>
-                  <CloudCross size={14} color="#EF4444" />
+                  <CloudCross size={12} color="#EF4444" className="sm:hidden" />
+                  <CloudCross size={14} color="#EF4444" className="hidden sm:block" />
                   <span className="text-red-500">Failed to save</span>
                 </>
               )}
@@ -198,61 +201,61 @@ export default function NewNotePage() {
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 pl-11 sm:pl-0">
           <Button
             variant="outline"
-            className="rounded-full h-9 px-4 border-[#E4E6EB]"
+            className="rounded-full h-8 sm:h-9 px-3 sm:px-4 border-[#E4E6EB] text-xs sm:text-sm"
             onClick={() => router.push("/notes")}
           >
             Cancel
           </Button>
           <Button
-            className="rounded-full h-9 px-4 bg-[#14462a] hover:bg-[#0d3520] text-white"
+            className="rounded-full h-8 sm:h-9 px-3 sm:px-4 bg-[#14462a] hover:bg-[#0d3520] text-white text-xs sm:text-sm"
             onClick={handleSave}
             disabled={!title.trim() || saveStatus === "saving"}
           >
-            {saveStatus === "saving" ? "Saving..." : "Save Note"}
+            {saveStatus === "saving" ? "Saving..." : "Save"}
           </Button>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
                 variant="ghost"
                 size="sm"
-                className="h-9 w-9 p-0 rounded-full hover:bg-[rgba(20,70,42,0.06)]"
+                className="h-8 w-8 sm:h-9 sm:w-9 p-0 rounded-full hover:bg-[rgba(20,70,42,0.06)]"
               >
                 <More size={16} color="#B0B3B8" variant="Linear" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent
               align="end"
-              className="rounded-2xl p-2"
+              className="rounded-2xl p-2 w-40 sm:w-auto"
               style={{
                 boxShadow: "0 4px 20px rgba(0, 0, 0, 0.12)",
                 border: "1px solid rgba(0, 0, 0, 0.06)",
               }}
             >
-              <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer hover:bg-[rgba(20,70,42,0.06)] group transition-all">
+              <DropdownMenuItem className="rounded-xl px-3 py-2 sm:py-2.5 cursor-pointer hover:bg-[rgba(20,70,42,0.06)] group transition-all">
                 <Paperclip
-                  size={16}
+                  size={14}
                   color="#2D2D2D"
                   variant="Linear"
                   className="mr-2 group-hover:text-[#14462a]"
                 />
-                <span className="group-hover:text-[#14462a]">Pin Note</span>
+                <span className="text-sm group-hover:text-[#14462a]">Pin Note</span>
               </DropdownMenuItem>
               <DropdownMenuSeparator className="my-1" />
-              <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer hover:bg-[rgba(20,70,42,0.06)] group transition-all">
+              <DropdownMenuItem className="rounded-xl px-3 py-2 sm:py-2.5 cursor-pointer hover:bg-[rgba(20,70,42,0.06)] group transition-all">
                 <Archive
-                  size={16}
+                  size={14}
                   color="#2D2D2D"
                   variant="Linear"
                   className="mr-2 group-hover:text-[#14462a]"
                 />
-                <span className="group-hover:text-[#14462a]">Archive</span>
+                <span className="text-sm group-hover:text-[#14462a]">Archive</span>
               </DropdownMenuItem>
-              <DropdownMenuItem className="rounded-xl px-3 py-2.5 cursor-pointer hover:bg-red-50 group transition-all">
-                <Trash size={16} color="#DC2626" variant="Linear" className="mr-2" />
-                <span className="text-red-600">Delete</span>
+              <DropdownMenuItem className="rounded-xl px-3 py-2 sm:py-2.5 cursor-pointer hover:bg-red-50 group transition-all">
+                <Trash size={14} color="#DC2626" variant="Linear" className="mr-2" />
+                <span className="text-sm text-red-600">Delete</span>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -260,32 +263,33 @@ export default function NewNotePage() {
       </div>
 
       {/* Title Input */}
-      <div className="mb-6">
+      <div className="mb-4 sm:mb-6">
         <input
           type="text"
           placeholder="Note Title..."
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          className="w-full text-3xl font-bold border-0 px-0 focus:outline-none focus:ring-0 placeholder:text-gray-300 text-[#2D2D2D]"
+          className="w-full text-xl sm:text-3xl font-bold border-0 px-0 focus:outline-none focus:ring-0 placeholder:text-gray-300 text-[#2D2D2D]"
         />
       </div>
 
       {/* Tags */}
-      <div className="flex flex-wrap gap-2 mb-6">
+      <div className="flex flex-wrap gap-1.5 sm:gap-2 mb-4 sm:mb-6">
         {tags.map((tag) => (
           <Badge
             key={tag}
             variant="secondary"
-            className="rounded-full px-3 py-1 text-xs flex items-center gap-1.5 bg-[rgba(20,70,42,0.08)] text-[#14462a] border-0"
+            className="rounded-full px-2 sm:px-3 py-0.5 sm:py-1 text-[10px] sm:text-xs flex items-center gap-1 sm:gap-1.5 bg-[rgba(20,70,42,0.08)] text-[#14462a] border-0"
           >
             {tag}
             <button onClick={() => handleRemoveTag(tag)} className="hover:opacity-70">
-              <CloseCircle size={12} color="#14462a" variant="Linear" />
+              <CloseCircle size={10} color="#14462a" variant="Linear" className="sm:hidden" />
+              <CloseCircle size={12} color="#14462a" variant="Linear" className="hidden sm:block" />
             </button>
           </Badge>
         ))}
         {isAddingTag ? (
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2">
             <input
               type="text"
               placeholder="Tag name..."
@@ -300,35 +304,38 @@ export default function NewNotePage() {
                   setNewTag("");
                 }
               }}
-              className="h-7 w-32 text-xs rounded-full px-3 border border-[#E4E6EB] focus:outline-none focus:ring-2 focus:ring-[#14462a]/20 focus:border-[#14462a]"
+              className="h-6 sm:h-7 w-24 sm:w-32 text-[10px] sm:text-xs rounded-full px-2 sm:px-3 border border-[#E4E6EB] focus:outline-none focus:ring-2 focus:ring-[#14462a]/20 focus:border-[#14462a]"
               autoFocus
             />
             <Button
               size="sm"
               variant="ghost"
-              className="h-7 w-7 p-0 rounded-full"
+              className="h-6 w-6 sm:h-7 sm:w-7 p-0 rounded-full"
               onClick={handleAddTag}
             >
-              <TickCircle size={14} color="#14462a" variant="Linear" />
+              <TickCircle size={12} color="#14462a" variant="Linear" className="sm:hidden" />
+              <TickCircle size={14} color="#14462a" variant="Linear" className="hidden sm:block" />
             </Button>
             <Button
               size="sm"
               variant="ghost"
-              className="h-7 w-7 p-0 rounded-full"
+              className="h-6 w-6 sm:h-7 sm:w-7 p-0 rounded-full"
               onClick={() => {
                 setIsAddingTag(false);
                 setNewTag("");
               }}
             >
-              <CloseCircle size={14} color="#B0B3B8" variant="Linear" />
+              <CloseCircle size={12} color="#B0B3B8" variant="Linear" className="sm:hidden" />
+              <CloseCircle size={14} color="#B0B3B8" variant="Linear" className="hidden sm:block" />
             </Button>
           </div>
         ) : (
           <button
             onClick={() => setIsAddingTag(true)}
-            className="px-3 py-1 rounded-full text-xs flex items-center gap-1 transition-colors bg-[rgba(176,179,184,0.08)] text-[#B0B3B8] hover:bg-[rgba(176,179,184,0.12)]"
+            className="px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-[10px] sm:text-xs flex items-center gap-1 transition-colors bg-[rgba(176,179,184,0.08)] text-[#B0B3B8] hover:bg-[rgba(176,179,184,0.12)]"
           >
-            <Add size={12} color="#B0B3B8" variant="Linear" />
+            <Add size={10} color="#B0B3B8" variant="Linear" className="sm:hidden" />
+            <Add size={12} color="#B0B3B8" variant="Linear" className="hidden sm:block" />
             Add Tag
           </button>
         )}
@@ -342,8 +349,9 @@ export default function NewNotePage() {
       />
 
       {/* Helper Text */}
-      <div className="text-sm text-center py-8 text-[#B0B3B8]">
-        💡 Tip: Select text to reveal formatting options, or use keyboard shortcuts (Ctrl+B for bold, Ctrl+I for italic)
+      <div className="text-xs sm:text-sm text-center py-4 sm:py-8 text-[#B0B3B8] px-4">
+        💡 <span className="hidden sm:inline">Tip: Select text to reveal formatting options, or use keyboard shortcuts (Ctrl+B for bold, Ctrl+I for italic)</span>
+        <span className="sm:hidden">Tip: Select text to format</span>
       </div>
     </div>
   );

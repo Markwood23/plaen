@@ -176,38 +176,38 @@ export default function PaymentsPage() {
   const isNewUser = !loading && payments.length === 0 && methodFilter === 'all';
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h1 className="text-2xl" style={{ color: '#2D2D2D', fontWeight: 600 }}>Payment Allocations</h1>
-          <p className="text-sm" style={{ color: '#B0B3B8' }}>Track how payments are allocated to invoices and monitor collection performance</p>
+          <h1 className="text-xl sm:text-2xl" style={{ color: '#2D2D2D', fontWeight: 600 }}>Payment Allocations</h1>
+          <p className="text-xs sm:text-sm hidden sm:block" style={{ color: '#B0B3B8' }}>Track how payments are allocated to invoices and monitor collection performance</p>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3">
           <Button
             variant="outline"
             size="sm"
-            className="rounded-xl border-0 shadow-sm transition-all hover:shadow-md hover:scale-105"
+            className="rounded-xl border-0 shadow-sm transition-all hover:shadow-md hover:scale-105 h-8 sm:h-9"
             style={{ backgroundColor: 'white' }}
             onClick={() => refetch()}
           >
-            <RefreshCircle size={16} color="#65676B" className="mr-2" />
-            Refresh
+            <RefreshCircle size={14} color="#65676B" className="sm:mr-2" />
+            <span className="hidden sm:inline">Refresh</span>
           </Button>
           <Button
             variant="outline"
             size="sm"
-            className="rounded-xl border-0 shadow-sm transition-all hover:shadow-md hover:scale-105"
+            className="rounded-xl border-0 shadow-sm transition-all hover:shadow-md hover:scale-105 h-8 sm:h-9"
             style={{ backgroundColor: 'white' }}
           >
-            <DocumentDownload size={16} color="#65676B" className="mr-2" />
-            Export
+            <DocumentDownload size={14} color="#65676B" className="sm:mr-2" />
+            <span className="hidden sm:inline">Export</span>
           </Button>
         </div>
       </div>
 
       {/* Stats Card */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         {loading ? (
           <>
             <KPISkeleton />
@@ -218,66 +218,70 @@ export default function PaymentsPage() {
         ) : (
           <>
             {/* Total Collected */}
-            <div className="group relative rounded-2xl p-6 transition-all duration-300 hover:scale-[1.02]" style={{ backgroundColor: 'rgba(13, 148, 136, 0.04)' }}>
-              <div className="flex items-center justify-between mb-4">
-                <div className="h-12 w-12 rounded-full flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110" style={{ backgroundColor: 'rgba(13, 148, 136, 0.12)' }}>
-                  <Coin1 size={24} color="#14462a" variant="Bulk" />
+            <div className="group relative rounded-xl sm:rounded-2xl p-3 sm:p-6 transition-all duration-300 hover:scale-[1.02]" style={{ backgroundColor: 'rgba(13, 148, 136, 0.04)' }}>
+              <div className="flex items-center justify-between mb-2 sm:mb-4">
+                <div className="h-8 w-8 sm:h-12 sm:w-12 rounded-full flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110" style={{ backgroundColor: 'rgba(13, 148, 136, 0.12)' }}>
+                  <Coin1 size={16} color="#14462a" variant="Bulk" className="sm:hidden" />
+                  <Coin1 size={24} color="#14462a" variant="Bulk" className="hidden sm:block" />
                 </div>
-                <div className="flex items-center gap-1 px-2 py-1 rounded-full" style={{ backgroundColor: 'rgba(13, 148, 136, 0.12)' }}>
-                  <span className="text-xs font-semibold" style={{ color: '#14462a' }}>{pagination.total}</span>
+                <div className="flex items-center gap-1 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full" style={{ backgroundColor: 'rgba(13, 148, 136, 0.12)' }}>
+                  <span className="text-[10px] sm:text-xs font-semibold" style={{ color: '#14462a' }}>{pagination.total}</span>
                 </div>
               </div>
-              <p className="text-sm mb-2" style={{ color: '#65676B', fontWeight: 500 }}>Total Collected</p>
-              <p className="text-3xl tracking-tight" style={{ color: '#2D2D2D', fontWeight: 700 }}>
+              <p className="text-xs sm:text-sm mb-1 sm:mb-2" style={{ color: '#65676B', fontWeight: 500 }}>Collected</p>
+              <p className="text-lg sm:text-3xl tracking-tight" style={{ color: '#2D2D2D', fontWeight: 700 }}>
                 {maskAmount(formatCurrency(totalCollected))}
               </p>
-              <p className="text-xs mt-2" style={{ color: '#B0B3B8' }}>From {paidPayments} payments</p>
+              <p className="text-[10px] sm:text-xs mt-1 sm:mt-2 hidden sm:block" style={{ color: '#B0B3B8' }}>From {paidPayments} payments</p>
             </div>
 
             {/* Payments Count */}
-            <div className="group relative rounded-2xl p-6 transition-all duration-300 hover:scale-[1.02]" style={{ backgroundColor: 'rgba(20, 70, 42, 0.04)' }}>
-              <div className="flex items-center justify-between mb-4">
-                <div className="h-12 w-12 rounded-full flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110" style={{ backgroundColor: 'rgba(20, 70, 42, 0.12)' }}>
-                  <MoneyRecive size={24} color="#14462a" variant="Bulk" />
+            <div className="group relative rounded-xl sm:rounded-2xl p-3 sm:p-6 transition-all duration-300 hover:scale-[1.02]" style={{ backgroundColor: 'rgba(20, 70, 42, 0.04)' }}>
+              <div className="flex items-center justify-between mb-2 sm:mb-4">
+                <div className="h-8 w-8 sm:h-12 sm:w-12 rounded-full flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110" style={{ backgroundColor: 'rgba(20, 70, 42, 0.12)' }}>
+                  <MoneyRecive size={16} color="#14462a" variant="Bulk" className="sm:hidden" />
+                  <MoneyRecive size={24} color="#14462a" variant="Bulk" className="hidden sm:block" />
                 </div>
               </div>
-              <p className="text-sm mb-2" style={{ color: '#65676B', fontWeight: 500 }}>Total Payments</p>
-              <p className="text-3xl tracking-tight" style={{ color: '#2D2D2D', fontWeight: 700 }}>
+              <p className="text-xs sm:text-sm mb-1 sm:mb-2" style={{ color: '#65676B', fontWeight: 500 }}>Payments</p>
+              <p className="text-lg sm:text-3xl tracking-tight" style={{ color: '#2D2D2D', fontWeight: 700 }}>
                 {pagination.total}
               </p>
-              <p className="text-xs mt-2" style={{ color: '#B0B3B8' }}>All time</p>
+              <p className="text-[10px] sm:text-xs mt-1 sm:mt-2 hidden sm:block" style={{ color: '#B0B3B8' }}>All time</p>
             </div>
 
             {/* Average Payment */}
-            <div className="group relative rounded-2xl p-6 transition-all duration-300 hover:scale-[1.02]" style={{ backgroundColor: 'rgba(20, 70, 42, 0.04)' }}>
-              <div className="flex items-center justify-between mb-4">
-                <div className="h-12 w-12 rounded-full flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110" style={{ backgroundColor: 'rgba(20, 70, 42, 0.12)' }}>
-                  <Receipt21 size={24} color="#14462a" variant="Bulk" />
+            <div className="group relative rounded-xl sm:rounded-2xl p-3 sm:p-6 transition-all duration-300 hover:scale-[1.02]" style={{ backgroundColor: 'rgba(20, 70, 42, 0.04)' }}>
+              <div className="flex items-center justify-between mb-2 sm:mb-4">
+                <div className="h-8 w-8 sm:h-12 sm:w-12 rounded-full flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110" style={{ backgroundColor: 'rgba(20, 70, 42, 0.12)' }}>
+                  <Receipt21 size={16} color="#14462a" variant="Bulk" className="sm:hidden" />
+                  <Receipt21 size={24} color="#14462a" variant="Bulk" className="hidden sm:block" />
                 </div>
               </div>
-              <p className="text-sm mb-2" style={{ color: '#65676B', fontWeight: 500 }}>Avg Payment</p>
-              <p className="text-3xl tracking-tight" style={{ color: '#2D2D2D', fontWeight: 700 }}>
+              <p className="text-xs sm:text-sm mb-1 sm:mb-2" style={{ color: '#65676B', fontWeight: 500 }}>Average</p>
+              <p className="text-lg sm:text-3xl tracking-tight" style={{ color: '#2D2D2D', fontWeight: 700 }}>
                 {maskAmount(formatCurrency(payments.length > 0 ? totalCollected / payments.length : 0))}
               </p>
-              <p className="text-xs mt-2" style={{ color: '#B0B3B8' }}>Per transaction</p>
+              <p className="text-[10px] sm:text-xs mt-1 sm:mt-2 hidden sm:block" style={{ color: '#B0B3B8' }}>Per transaction</p>
             </div>
 
             {/* Recent Activity */}
-            <div className="group relative rounded-2xl p-6 transition-all duration-300 hover:scale-[1.02]" style={{ backgroundColor: 'rgba(13, 148, 136, 0.04)' }}>
-              <div className="flex items-center justify-between mb-4">
-                <div className="h-12 w-12 rounded-full flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110" style={{ backgroundColor: 'rgba(13, 148, 136, 0.12)' }}>
-                  <Clock size={24} color="#14462a" variant="Bulk" />
+            <div className="group relative rounded-xl sm:rounded-2xl p-3 sm:p-6 transition-all duration-300 hover:scale-[1.02]" style={{ backgroundColor: 'rgba(13, 148, 136, 0.04)' }}>
+              <div className="flex items-center justify-between mb-2 sm:mb-4">
+                <div className="h-8 w-8 sm:h-12 sm:w-12 rounded-full flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110" style={{ backgroundColor: 'rgba(13, 148, 136, 0.12)' }}>
+                  <Clock size={16} color="#14462a" variant="Bulk" className="sm:hidden" />
+                  <Clock size={24} color="#14462a" variant="Bulk" className="hidden sm:block" />
                 </div>
               </div>
-              <p className="text-sm mb-2" style={{ color: '#65676B', fontWeight: 500 }}>This Month</p>
-              <p className="text-3xl tracking-tight" style={{ color: '#2D2D2D', fontWeight: 700 }}>
+              <p className="text-xs sm:text-sm mb-1 sm:mb-2" style={{ color: '#65676B', fontWeight: 500 }}>This Month</p>
+              <p className="text-lg sm:text-3xl tracking-tight" style={{ color: '#2D2D2D', fontWeight: 700 }}>
                 {payments.filter(p => {
                   const paymentDate = new Date(p.payment_date);
                   const now = new Date();
                   return paymentDate.getMonth() === now.getMonth() && paymentDate.getFullYear() === now.getFullYear();
                 }).length}
               </p>
-              <p className="text-xs mt-2" style={{ color: '#B0B3B8' }}>Payments received</p>
+              <p className="text-[10px] sm:text-xs mt-1 sm:mt-2 hidden sm:block" style={{ color: '#B0B3B8' }}>Payments received</p>
             </div>
           </>
         )}
@@ -285,32 +289,32 @@ export default function PaymentsPage() {
 
       {/* Search and Filter Card - Only show if user has payments */}
       {!isNewUser && (
-        <div className="rounded-2xl p-6" style={{ backgroundColor: '#FAFBFC' }}>
-          <div className="flex items-center justify-between mb-5">
+        <div className="rounded-xl sm:rounded-2xl p-3 sm:p-6" style={{ backgroundColor: '#FAFBFC' }}>
+          <div className="flex items-center justify-between mb-3 sm:mb-5">
             <div>
-              <h3 className="text-sm font-semibold" style={{ color: '#2D2D2D' }}>Filter Payments</h3>
-              <p className="text-xs mt-0.5" style={{ color: '#B0B3B8' }}>Refine your search results</p>
+              <h3 className="text-xs sm:text-sm font-semibold" style={{ color: '#2D2D2D' }}>Filter Payments</h3>
+              <p className="text-[10px] sm:text-xs mt-0.5 hidden sm:block" style={{ color: '#B0B3B8' }}>Refine your search results</p>
             </div>
             <button 
               onClick={() => { setSearchQuery(''); setMethodFilter('all'); }}
-              className="text-xs font-medium px-3 py-1.5 rounded-full transition-all hover:bg-white" 
+              className="text-[10px] sm:text-xs font-medium px-2 sm:px-3 py-1 sm:py-1.5 rounded-full transition-all hover:bg-white" 
               style={{ color: '#14462a' }}
             >
-              Clear all
+              Clear
             </button>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
             {/* Search */}
-            <div className="md:col-span-2">
-              <label className="text-xs mb-2 block font-medium" style={{ color: '#65676B' }}>Search</label>
+            <div className="sm:col-span-2">
+              <label className="text-[10px] sm:text-xs mb-1.5 sm:mb-2 block font-medium" style={{ color: '#65676B' }}>Search</label>
               <div className="relative group">
-                <SearchNormal1 size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 transition-colors" style={{ color: '#B0B3B8' }} />
+                <SearchNormal1 size={14} className="absolute left-3 top-1/2 -translate-y-1/2 transition-colors" style={{ color: '#B0B3B8' }} />
                 <Input
-                  placeholder="Invoice, contact, reference..."
+                  placeholder="Invoice, contact..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-10 h-11 rounded-xl border-0 shadow-sm transition-all focus:shadow-md"
+                  className="pl-8 sm:pl-10 h-9 sm:h-11 rounded-lg sm:rounded-xl border-0 shadow-sm transition-all focus:shadow-md text-sm"
                   style={{ backgroundColor: 'white', color: '#2D2D2D' }}
                 />
               </div>
@@ -318,9 +322,9 @@ export default function PaymentsPage() {
 
             {/* Method Filter */}
             <div>
-              <label className="text-xs mb-2 block font-medium" style={{ color: '#65676B' }}>Payment Method</label>
+              <label className="text-[10px] sm:text-xs mb-1.5 sm:mb-2 block font-medium" style={{ color: '#65676B' }}>Method</label>
               <Select value={methodFilter} onValueChange={setMethodFilter}>
-                <SelectTrigger className="h-11 rounded-xl border-0 shadow-sm transition-all hover:shadow-md" style={{ backgroundColor: 'white' }}>
+                <SelectTrigger className="h-9 sm:h-11 rounded-lg sm:rounded-xl border-0 shadow-sm transition-all hover:shadow-md text-sm" style={{ backgroundColor: 'white' }}>
                   <SelectValue placeholder="All methods" />
                 </SelectTrigger>
                 <SelectContent className="rounded-xl">

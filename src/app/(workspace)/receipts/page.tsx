@@ -186,40 +186,41 @@ export default function ReceiptsPage() {
   const isNewUser = !loading && receipts.length === 0 && !searchQuery && selectedStatus === 'all' && selectedCategory === 'all' && !dateRange;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-0">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight" style={{ color: '#2D2D2D' }}>Receipts</h1>
-          <p className="text-sm mt-1" style={{ color: '#B0B3B8' }}>Track and manage expense receipts</p>
+          <h1 className="text-xl sm:text-2xl font-semibold tracking-tight" style={{ color: '#2D2D2D' }}>Receipts</h1>
+          <p className="text-xs sm:text-sm mt-0.5 sm:mt-1" style={{ color: '#B0B3B8' }}>Track and manage expense receipts</p>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3">
           <Button
             variant="outline"
             size="sm"
-            className="rounded-xl border-0 shadow-sm transition-all hover:shadow-md hover:scale-105"
+            className="rounded-xl border-0 shadow-sm transition-all hover:shadow-md hover:scale-105 h-8 sm:h-9 text-xs sm:text-sm"
             style={{ backgroundColor: 'white' }}
             onClick={() => refetch()}
           >
-            <RefreshCircle size={16} color="#65676B" className="mr-2" />
-            Refresh
+            <RefreshCircle size={14} color="#65676B" className="mr-1.5 sm:mr-2" />
+            <span className="hidden sm:inline">Refresh</span>
           </Button>
           <Button
             size="sm"
-            className="rounded-full shadow-sm transition-all hover:shadow-md hover:scale-105"
+            className="rounded-full shadow-sm transition-all hover:shadow-md hover:scale-105 h-8 sm:h-9 text-xs sm:text-sm"
             style={{ backgroundColor: '#14462a', color: 'white' }}
             asChild
           >
             <Link href="/receipts/new">
-              <Add size={16} color="white" className="mr-2" />
-              Add Receipt
+              <Add size={14} color="white" className="mr-1.5 sm:mr-2" />
+              <span className="hidden sm:inline">Add Receipt</span>
+              <span className="sm:hidden">Add</span>
             </Link>
           </Button>
         </div>
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         {loading ? (
           <>
             <KPISkeleton />
@@ -229,47 +230,51 @@ export default function ReceiptsPage() {
           </>
         ) : (
           <>
-            <div className="group relative rounded-2xl p-6 transition-all duration-300 hover:scale-[1.02]" style={{ backgroundColor: 'rgba(20, 70, 42, 0.04)' }}>
-              <div className="flex items-center justify-between mb-4">
-                <div className="h-12 w-12 rounded-full flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110" style={{ backgroundColor: 'rgba(20, 70, 42, 0.12)' }}>
-                  <ReceiptText size={24} color="#14462a" variant="Bulk" />
+            <div className="group relative rounded-xl sm:rounded-2xl p-3 sm:p-6 transition-all duration-300 hover:scale-[1.02]" style={{ backgroundColor: 'rgba(20, 70, 42, 0.04)' }}>
+              <div className="flex items-center justify-between mb-2 sm:mb-4">
+                <div className="h-8 w-8 sm:h-12 sm:w-12 rounded-full flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110" style={{ backgroundColor: 'rgba(20, 70, 42, 0.12)' }}>
+                  <ReceiptText size={16} color="#14462a" variant="Bulk" className="sm:hidden" />
+                  <ReceiptText size={24} color="#14462a" variant="Bulk" className="hidden sm:block" />
                 </div>
-                <div className="flex items-center gap-1 px-2 py-1 rounded-full" style={{ backgroundColor: 'rgba(20, 70, 42, 0.12)' }}>
-                  <span className="text-xs font-semibold" style={{ color: '#14462a' }}>{totalReceipts}</span>
+                <div className="flex items-center gap-1 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full" style={{ backgroundColor: 'rgba(20, 70, 42, 0.12)' }}>
+                  <span className="text-[10px] sm:text-xs font-semibold" style={{ color: '#14462a' }}>{totalReceipts}</span>
                 </div>
               </div>
-              <p className="text-sm mb-2" style={{ color: '#65676B', fontWeight: 500 }}>Total Receipts</p>
-              <p className="text-3xl tracking-tight" style={{ color: '#2D2D2D', fontWeight: 700 }}>{totalReceipts}</p>
+              <p className="text-xs sm:text-sm mb-1 sm:mb-2" style={{ color: '#65676B', fontWeight: 500 }}>Total Receipts</p>
+              <p className="text-lg sm:text-3xl tracking-tight" style={{ color: '#2D2D2D', fontWeight: 700 }}>{totalReceipts}</p>
             </div>
 
-            <div className="group relative rounded-2xl p-6 transition-all duration-300 hover:scale-[1.02]" style={{ backgroundColor: 'rgba(20, 70, 42, 0.04)' }}>
-              <div className="flex items-center justify-between mb-4">
-                <div className="h-12 w-12 rounded-full flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110" style={{ backgroundColor: 'rgba(20, 70, 42, 0.12)' }}>
-                  <TickCircle size={24} color="#14462a" variant="Bulk" />
+            <div className="group relative rounded-xl sm:rounded-2xl p-3 sm:p-6 transition-all duration-300 hover:scale-[1.02]" style={{ backgroundColor: 'rgba(20, 70, 42, 0.04)' }}>
+              <div className="flex items-center justify-between mb-2 sm:mb-4">
+                <div className="h-8 w-8 sm:h-12 sm:w-12 rounded-full flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110" style={{ backgroundColor: 'rgba(20, 70, 42, 0.12)' }}>
+                  <TickCircle size={16} color="#14462a" variant="Bulk" className="sm:hidden" />
+                  <TickCircle size={24} color="#14462a" variant="Bulk" className="hidden sm:block" />
                 </div>
               </div>
-              <p className="text-sm mb-2" style={{ color: '#65676B', fontWeight: 500 }}>Verified</p>
-              <p className="text-3xl tracking-tight" style={{ color: '#2D2D2D', fontWeight: 700 }}>{verifiedCount}</p>
+              <p className="text-xs sm:text-sm mb-1 sm:mb-2" style={{ color: '#65676B', fontWeight: 500 }}>Verified</p>
+              <p className="text-lg sm:text-3xl tracking-tight" style={{ color: '#2D2D2D', fontWeight: 700 }}>{verifiedCount}</p>
             </div>
 
-            <div className="group relative rounded-2xl p-6 transition-all duration-300 hover:scale-[1.02]" style={{ backgroundColor: 'rgba(217, 119, 6, 0.04)' }}>
-              <div className="flex items-center justify-between mb-4">
-                <div className="h-12 w-12 rounded-full flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110" style={{ backgroundColor: 'rgba(217, 119, 6, 0.12)' }}>
-                  <Clock size={24} color="#D97706" variant="Bulk" />
+            <div className="group relative rounded-xl sm:rounded-2xl p-3 sm:p-6 transition-all duration-300 hover:scale-[1.02]" style={{ backgroundColor: 'rgba(217, 119, 6, 0.04)' }}>
+              <div className="flex items-center justify-between mb-2 sm:mb-4">
+                <div className="h-8 w-8 sm:h-12 sm:w-12 rounded-full flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110" style={{ backgroundColor: 'rgba(217, 119, 6, 0.12)' }}>
+                  <Clock size={16} color="#D97706" variant="Bulk" className="sm:hidden" />
+                  <Clock size={24} color="#D97706" variant="Bulk" className="hidden sm:block" />
                 </div>
               </div>
-              <p className="text-sm mb-2" style={{ color: '#65676B', fontWeight: 500 }}>Pending</p>
-              <p className="text-3xl tracking-tight" style={{ color: '#2D2D2D', fontWeight: 700 }}>{pendingCount}</p>
+              <p className="text-xs sm:text-sm mb-1 sm:mb-2" style={{ color: '#65676B', fontWeight: 500 }}>Pending</p>
+              <p className="text-lg sm:text-3xl tracking-tight" style={{ color: '#2D2D2D', fontWeight: 700 }}>{pendingCount}</p>
             </div>
 
-            <div className="group relative rounded-2xl p-6 transition-all duration-300 hover:scale-[1.02]" style={{ backgroundColor: 'rgba(220, 38, 38, 0.04)' }}>
-              <div className="flex items-center justify-between mb-4">
-                <div className="h-12 w-12 rounded-full flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110" style={{ backgroundColor: 'rgba(220, 38, 38, 0.12)' }}>
-                  <Danger size={24} color="#DC2626" variant="Bulk" />
+            <div className="group relative rounded-xl sm:rounded-2xl p-3 sm:p-6 transition-all duration-300 hover:scale-[1.02]" style={{ backgroundColor: 'rgba(220, 38, 38, 0.04)' }}>
+              <div className="flex items-center justify-between mb-2 sm:mb-4">
+                <div className="h-8 w-8 sm:h-12 sm:w-12 rounded-full flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110" style={{ backgroundColor: 'rgba(220, 38, 38, 0.12)' }}>
+                  <Danger size={16} color="#DC2626" variant="Bulk" className="sm:hidden" />
+                  <Danger size={24} color="#DC2626" variant="Bulk" className="hidden sm:block" />
                 </div>
               </div>
-              <p className="text-sm mb-2" style={{ color: '#65676B', fontWeight: 500 }}>Flagged</p>
-              <p className="text-3xl tracking-tight" style={{ color: '#2D2D2D', fontWeight: 700 }}>{flaggedCount}</p>
+              <p className="text-xs sm:text-sm mb-1 sm:mb-2" style={{ color: '#65676B', fontWeight: 500 }}>Flagged</p>
+              <p className="text-lg sm:text-3xl tracking-tight" style={{ color: '#2D2D2D', fontWeight: 700 }}>{flaggedCount}</p>
             </div>
           </>
         )}
@@ -277,11 +282,11 @@ export default function ReceiptsPage() {
 
       {/* Search and Filters - Only show if user has receipts */}
       {!isNewUser && (
-        <div className="rounded-2xl p-6" style={{ backgroundColor: '#FAFBFC' }}>
-          <div className="flex items-center justify-between mb-5">
+        <div className="rounded-xl sm:rounded-2xl p-3 sm:p-6" style={{ backgroundColor: '#FAFBFC' }}>
+          <div className="flex items-center justify-between mb-3 sm:mb-5">
             <div>
-              <h3 className="text-sm font-semibold" style={{ color: '#2D2D2D' }}>Filter Receipts</h3>
-              <p className="text-xs mt-0.5" style={{ color: '#B0B3B8' }}>Search and filter your receipts</p>
+              <h3 className="text-xs sm:text-sm font-semibold" style={{ color: '#2D2D2D' }}>Filter Receipts</h3>
+              <p className="text-[10px] sm:text-xs mt-0.5 hidden sm:block" style={{ color: '#B0B3B8' }}>Search and filter your receipts</p>
             </div>
             <button
               onClick={() => {
@@ -290,32 +295,32 @@ export default function ReceiptsPage() {
                 setSelectedCategory('all');
                 setDateRange(undefined);
               }}
-              className="text-xs font-medium px-3 py-1.5 rounded-full transition-all hover:bg-white"
+              className="text-[10px] sm:text-xs font-medium px-2 sm:px-3 py-1 sm:py-1.5 rounded-full transition-all hover:bg-white"
               style={{ color: '#14462a' }}
             >
-              Clear all
+              Clear
             </button>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <div className="md:col-span-2">
-              <label className="text-xs mb-2 block font-medium" style={{ color: '#65676B' }}>Search</label>
+          <div className="grid grid-cols-1 sm:grid-cols-4 gap-3 sm:gap-4">
+            <div className="sm:col-span-2">
+              <label className="text-[10px] sm:text-xs mb-1.5 sm:mb-2 block font-medium" style={{ color: '#65676B' }}>Search</label>
               <div className="relative">
-                <SearchNormal1 size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2" style={{ color: '#B0B3B8' }} />
+                <SearchNormal1 size={14} className="absolute left-3 top-1/2 -translate-y-1/2" style={{ color: '#B0B3B8' }} />
                 <Input
-                  placeholder="Search by vendor, receipt ID..."
+                  placeholder="Search receipts..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-10 h-11 rounded-xl border-0 shadow-sm transition-all focus:shadow-md"
+                  className="pl-8 sm:pl-10 h-9 sm:h-11 rounded-lg sm:rounded-xl border-0 shadow-sm transition-all focus:shadow-md text-sm"
                   style={{ backgroundColor: 'white', color: '#2D2D2D' }}
                 />
               </div>
             </div>
 
             <div>
-              <label className="text-xs mb-2 block font-medium" style={{ color: '#65676B' }}>Status</label>
+              <label className="text-[10px] sm:text-xs mb-1.5 sm:mb-2 block font-medium" style={{ color: '#65676B' }}>Status</label>
               <Select value={selectedStatus} onValueChange={setSelectedStatus}>
-                <SelectTrigger className="h-11 rounded-xl border-0 shadow-sm transition-all hover:shadow-md" style={{ backgroundColor: 'white' }}>
+                <SelectTrigger className="h-9 sm:h-11 rounded-lg sm:rounded-xl border-0 shadow-sm transition-all hover:shadow-md text-sm" style={{ backgroundColor: 'white' }}>
                   <SelectValue placeholder="All statuses" />
                 </SelectTrigger>
                 <SelectContent className="rounded-xl">
@@ -328,9 +333,9 @@ export default function ReceiptsPage() {
             </div>
 
             <div>
-              <label className="text-xs mb-2 block font-medium" style={{ color: '#65676B' }}>Category</label>
+              <label className="text-[10px] sm:text-xs mb-1.5 sm:mb-2 block font-medium" style={{ color: '#65676B' }}>Category</label>
               <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-                <SelectTrigger className="h-11 rounded-xl border-0 shadow-sm transition-all hover:shadow-md" style={{ backgroundColor: 'white' }}>
+                <SelectTrigger className="h-9 sm:h-11 rounded-lg sm:rounded-xl border-0 shadow-sm transition-all hover:shadow-md text-sm" style={{ backgroundColor: 'white' }}>
                   <SelectValue placeholder="All categories" />
                 </SelectTrigger>
                 <SelectContent className="rounded-xl">
@@ -349,7 +354,7 @@ export default function ReceiptsPage() {
       )}
 
       {/* Receipts Table */}
-      <div className="rounded-2xl overflow-hidden" style={{ backgroundColor: 'white', boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.05)' }}>
+      <div className="rounded-xl sm:rounded-2xl overflow-hidden" style={{ backgroundColor: 'white', boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.05)' }}>
         {loading ? (
           <TableSkeleton rows={5} />
         ) : isNewUser ? (
@@ -370,144 +375,230 @@ export default function ReceiptsPage() {
           />
         ) : (
           <>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead className="w-12">
-                    <Checkbox
-                      checked={allSelected}
-                      {...(someSelected && { 'data-state': 'indeterminate' })}
-                      onCheckedChange={toggleSelectAll}
-                      aria-label="Select all"
-                    />
-                  </TableHead>
-                  <TableHead>Receipt ID</TableHead>
-                  <TableHead>Date</TableHead>
-                  <TableHead>Vendor</TableHead>
-                  <TableHead>Category</TableHead>
-                  <TableHead>Amount</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Payment Method</TableHead>
-                  <TableHead className="w-12"></TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {receipts.map((receipt) => (
-                  <TableRow
-                    key={receipt.id}
-                    className="cursor-pointer hover:bg-gray-50"
-                    onClick={() => window.location.href = `/receipts/${receipt.id}`}
-                  >
-                    <TableCell onClick={(e) => e.stopPropagation()}>
+            {/* Desktop Table View */}
+            <div className="hidden md:block">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className="w-12">
                       <Checkbox
-                        checked={selectedRows.includes(receipt.id)}
-                        onCheckedChange={() => toggleSelectRow(receipt.id)}
-                        aria-label={`Select ${receipt.receipt_id}`}
+                        checked={allSelected}
+                        {...(someSelected && { 'data-state': 'indeterminate' })}
+                        onCheckedChange={toggleSelectAll}
+                        aria-label="Select all"
                       />
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex items-center gap-3">
-                        <div
-                          className="h-9 w-9 rounded-full flex items-center justify-center shrink-0"
-                          style={{ backgroundColor: 'rgba(20, 70, 42, 0.08)' }}
-                        >
-                          <ReceiptText size={16} color="#14462a" />
-                        </div>
-                        <span className="font-medium" style={{ color: '#2D2D2D' }}>
-                          {receipt.receipt_id}
-                        </span>
-                      </div>
-                    </TableCell>
-                    <TableCell className="text-sm" style={{ color: '#65676B' }}>
-                      {formatDate(receipt.date)}
-                    </TableCell>
-                    <TableCell className="font-medium" style={{ color: '#2D2D2D' }}>
-                      {receipt.vendor}
-                    </TableCell>
-                    <TableCell>
-                      <Badge variant="outline" className="rounded-full capitalize">
-                        {receipt.category?.replace(/_/g, ' ') || 'Uncategorized'}
-                      </Badge>
-                    </TableCell>
-                    <TableCell className="font-semibold" style={{ color: '#2D2D2D' }}>
-                      {formatAmount(receipt.amount, receipt.currency)}
-                    </TableCell>
-                    <TableCell>{getStatusBadge(receipt.status)}</TableCell>
-                    <TableCell className="text-sm" style={{ color: '#65676B' }}>
-                      {receipt.payment_method}
-                    </TableCell>
-                    <TableCell onClick={(e) => e.stopPropagation()}>
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <button className="inline-flex items-center rounded-full p-1.5 transition-all hover:bg-[rgba(20,70,42,0.06)]">
-                            <More size={16} color="#B0B3B8" />
-                          </button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end" className="rounded-2xl w-48 p-2">
-                          <DropdownMenuItem asChild className="rounded-xl p-3 cursor-pointer">
-                            <Link href={`/receipts/${receipt.id}`}>
-                              <Eye size={16} color="#14462a" className="mr-2" />
-                              <span>View</span>
-                            </Link>
-                          </DropdownMenuItem>
-                          <DropdownMenuItem asChild className="rounded-xl p-3 cursor-pointer">
-                            <Link href={`/receipts/${receipt.id}/edit`}>
-                              <Edit2 size={16} color="#14462a" className="mr-2" />
-                              <span>Edit</span>
-                            </Link>
-                          </DropdownMenuItem>
-                          {receipt.status === 'pending' && (
-                            <DropdownMenuItem
-                              className="rounded-xl p-3 cursor-pointer"
-                              onClick={() => handleVerify(receipt.id)}
-                            >
-                              <TickCircle size={16} color="#14462a" className="mr-2" />
-                              <span>Verify</span>
-                            </DropdownMenuItem>
-                          )}
-                          <DropdownMenuSeparator className="my-2" />
-                          <DropdownMenuItem
-                            className="rounded-xl p-3 cursor-pointer text-red-600"
-                            onClick={() => handleDelete(receipt.id)}
-                          >
-                            <Trash size={16} color="#DC2626" className="mr-2" />
-                            <span>Delete</span>
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </TableCell>
+                    </TableHead>
+                    <TableHead>Receipt ID</TableHead>
+                    <TableHead>Date</TableHead>
+                    <TableHead>Vendor</TableHead>
+                    <TableHead>Category</TableHead>
+                    <TableHead>Amount</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead>Payment Method</TableHead>
+                    <TableHead className="w-12"></TableHead>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                </TableHeader>
+                <TableBody>
+                  {receipts.map((receipt) => (
+                    <TableRow
+                      key={receipt.id}
+                      className="cursor-pointer hover:bg-gray-50"
+                      onClick={() => window.location.href = `/receipts/${receipt.id}`}
+                    >
+                      <TableCell onClick={(e) => e.stopPropagation()}>
+                        <Checkbox
+                          checked={selectedRows.includes(receipt.id)}
+                          onCheckedChange={() => toggleSelectRow(receipt.id)}
+                          aria-label={`Select ${receipt.receipt_id}`}
+                        />
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex items-center gap-3">
+                          <div
+                            className="h-9 w-9 rounded-full flex items-center justify-center shrink-0"
+                            style={{ backgroundColor: 'rgba(20, 70, 42, 0.08)' }}
+                          >
+                            <ReceiptText size={16} color="#14462a" />
+                          </div>
+                          <span className="font-medium" style={{ color: '#2D2D2D' }}>
+                            {receipt.receipt_id}
+                          </span>
+                        </div>
+                      </TableCell>
+                      <TableCell className="text-sm" style={{ color: '#65676B' }}>
+                        {formatDate(receipt.date)}
+                      </TableCell>
+                      <TableCell className="font-medium" style={{ color: '#2D2D2D' }}>
+                        {receipt.vendor}
+                      </TableCell>
+                      <TableCell>
+                        <Badge variant="outline" className="rounded-full capitalize">
+                          {receipt.category?.replace(/_/g, ' ') || 'Uncategorized'}
+                        </Badge>
+                      </TableCell>
+                      <TableCell className="font-semibold" style={{ color: '#2D2D2D' }}>
+                        {formatAmount(receipt.amount, receipt.currency)}
+                      </TableCell>
+                      <TableCell>{getStatusBadge(receipt.status)}</TableCell>
+                      <TableCell className="text-sm" style={{ color: '#65676B' }}>
+                        {receipt.payment_method}
+                      </TableCell>
+                      <TableCell onClick={(e) => e.stopPropagation()}>
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <button className="inline-flex items-center rounded-full p-1.5 transition-all hover:bg-[rgba(20,70,42,0.06)]">
+                              <More size={16} color="#B0B3B8" />
+                            </button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end" className="rounded-2xl w-48 p-2">
+                            <DropdownMenuItem asChild className="rounded-xl p-3 cursor-pointer">
+                              <Link href={`/receipts/${receipt.id}`}>
+                                <Eye size={16} color="#14462a" className="mr-2" />
+                                <span>View</span>
+                              </Link>
+                            </DropdownMenuItem>
+                            <DropdownMenuItem asChild className="rounded-xl p-3 cursor-pointer">
+                              <Link href={`/receipts/${receipt.id}/edit`}>
+                                <Edit2 size={16} color="#14462a" className="mr-2" />
+                                <span>Edit</span>
+                              </Link>
+                            </DropdownMenuItem>
+                            {receipt.status === 'pending' && (
+                              <DropdownMenuItem
+                                className="rounded-xl p-3 cursor-pointer"
+                                onClick={() => handleVerify(receipt.id)}
+                              >
+                                <TickCircle size={16} color="#14462a" className="mr-2" />
+                                <span>Verify</span>
+                              </DropdownMenuItem>
+                            )}
+                            <DropdownMenuSeparator className="my-2" />
+                            <DropdownMenuItem
+                              className="rounded-xl p-3 cursor-pointer text-red-600"
+                              onClick={() => handleDelete(receipt.id)}
+                            >
+                              <Trash size={16} color="#DC2626" className="mr-2" />
+                              <span>Delete</span>
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+
+            {/* Mobile Card View */}
+            <div className="md:hidden p-3 space-y-3">
+              {receipts.map((receipt) => (
+                <div
+                  key={receipt.id}
+                  onClick={() => window.location.href = `/receipts/${receipt.id}`}
+                  className="p-4 rounded-xl cursor-pointer transition-all hover:shadow-md"
+                  style={{ backgroundColor: '#FAFBFC' }}
+                >
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="flex items-start gap-3 min-w-0 flex-1">
+                      <div
+                        className="h-9 w-9 rounded-full flex items-center justify-center shrink-0"
+                        style={{ backgroundColor: 'rgba(20, 70, 42, 0.08)' }}
+                      >
+                        <ReceiptText size={16} color="#14462a" />
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <div className="font-medium text-sm truncate" style={{ color: "#2D2D2D" }}>
+                          {receipt.vendor}
+                        </div>
+                        <div className="text-xs mt-0.5" style={{ color: "#B0B3B8" }}>
+                          {receipt.receipt_id} • {formatDate(receipt.date)}
+                        </div>
+                        <div className="flex flex-wrap items-center gap-1.5 mt-2">
+                          <Badge variant="outline" className="rounded-full text-[10px] px-2 py-0 capitalize">
+                            {receipt.category?.replace(/_/g, ' ') || 'Uncategorized'}
+                          </Badge>
+                          {getStatusBadge(receipt.status)}
+                        </div>
+                        <div className="flex items-center justify-between mt-2">
+                          <span className="font-semibold text-sm" style={{ color: '#2D2D2D' }}>
+                            {formatAmount(receipt.amount, receipt.currency)}
+                          </span>
+                          <span className="text-[10px]" style={{ color: "#B0B3B8" }}>
+                            {receipt.payment_method}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
+                        <button className="inline-flex items-center rounded-full p-1.5 transition-all hover:bg-[rgba(20,70,42,0.06)]">
+                          <More size={16} color="#B0B3B8" />
+                        </button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end" className="rounded-2xl w-44 p-2">
+                        <DropdownMenuItem asChild className="rounded-xl p-2.5 cursor-pointer">
+                          <Link href={`/receipts/${receipt.id}`}>
+                            <Eye size={14} color="#14462a" className="mr-2" />
+                            <span className="text-sm">View</span>
+                          </Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem asChild className="rounded-xl p-2.5 cursor-pointer">
+                          <Link href={`/receipts/${receipt.id}/edit`}>
+                            <Edit2 size={14} color="#14462a" className="mr-2" />
+                            <span className="text-sm">Edit</span>
+                          </Link>
+                        </DropdownMenuItem>
+                        {receipt.status === 'pending' && (
+                          <DropdownMenuItem
+                            className="rounded-xl p-2.5 cursor-pointer"
+                            onClick={(e) => { e.stopPropagation(); handleVerify(receipt.id); }}
+                          >
+                            <TickCircle size={14} color="#14462a" className="mr-2" />
+                            <span className="text-sm">Verify</span>
+                          </DropdownMenuItem>
+                        )}
+                        <DropdownMenuSeparator className="my-1" />
+                        <DropdownMenuItem
+                          className="rounded-xl p-2.5 cursor-pointer text-red-600"
+                          onClick={(e) => { e.stopPropagation(); handleDelete(receipt.id); }}
+                        >
+                          <Trash size={14} color="#DC2626" className="mr-2" />
+                          <span className="text-sm">Delete</span>
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </div>
+                </div>
+              ))}
+            </div>
 
             {/* Pagination */}
             {pagination.totalPages > 1 && (
-              <div className="flex items-center justify-between px-6 py-4 border-t">
-                <p className="text-sm" style={{ color: '#65676B' }}>
-                  Showing {((pagination.page - 1) * pagination.limit) + 1} to {Math.min(pagination.page * pagination.limit, pagination.total)} of {pagination.total} receipts
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-3 px-3 sm:px-6 py-3 sm:py-4 border-t">
+                <p className="text-xs sm:text-sm" style={{ color: '#65676B' }}>
+                  Showing {((pagination.page - 1) * pagination.limit) + 1} to {Math.min(pagination.page * pagination.limit, pagination.total)} of {pagination.total}
                 </p>
                 <div className="flex items-center gap-2">
                   <Button
                     variant="outline"
                     size="sm"
-                    className="rounded-xl"
+                    className="rounded-xl h-8 sm:h-9"
                     disabled={pagination.page <= 1}
                     onClick={() => setFilters({ ...filters, page: pagination.page - 1 })}
                   >
-                    <ArrowLeft2 size={16} color="#65676B" />
+                    <ArrowLeft2 size={14} color="#65676B" />
                   </Button>
-                  <span className="text-sm px-3" style={{ color: '#2D2D2D' }}>
-                    Page {pagination.page} of {pagination.totalPages}
+                  <span className="text-xs sm:text-sm px-2 sm:px-3" style={{ color: '#2D2D2D' }}>
+                    {pagination.page} / {pagination.totalPages}
                   </span>
                   <Button
                     variant="outline"
                     size="sm"
-                    className="rounded-xl"
+                    className="rounded-xl h-8 sm:h-9"
                     disabled={pagination.page >= pagination.totalPages}
                     onClick={() => setFilters({ ...filters, page: pagination.page + 1 })}
                   >
-                    <ArrowRight2 size={16} color="#65676B" />
+                    <ArrowRight2 size={14} color="#65676B" />
                   </Button>
                 </div>
               </div>

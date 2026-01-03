@@ -244,77 +244,77 @@ export default function InvoicesPage() {
   const isNewUser = !loading && invoices.length === 0 && !searchQuery && statusFilter === 'all';
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight" style={{ color: '#2D2D2D' }}>Invoices</h1>
-          <p className="text-sm mt-1" style={{ color: '#B0B3B8' }}>Create and manage all invoices</p>
+          <h1 className="text-xl sm:text-2xl font-semibold tracking-tight" style={{ color: '#2D2D2D' }}>Invoices</h1>
+          <p className="text-xs sm:text-sm mt-1" style={{ color: '#B0B3B8' }}>Create and manage all invoices</p>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
           {/* Bulk Actions (shown when items selected) */}
           {selectedRows.length > 0 && (
             <>
-              <span className="text-sm text-gray-500">{selectedRows.length} selected</span>
+              <span className="text-xs sm:text-sm text-gray-500">{selectedRows.length} selected</span>
               <Button
                 variant="outline"
                 size="sm"
-                className="rounded-xl border-0 shadow-sm transition-all hover:shadow-md hover:scale-105"
+                className="rounded-xl border-0 shadow-sm transition-all hover:shadow-md hover:scale-105 h-8 sm:h-9 text-xs sm:text-sm"
                 style={{ backgroundColor: 'white' }}
                 onClick={handleBulkSend}
               >
-                <Send2 size={16} color="#14462a" className="mr-2" />
-                Send
+                <Send2 size={14} color="#14462a" className="mr-1 sm:mr-2" />
+                <span className="hidden sm:inline">Send</span>
               </Button>
               <Button
                 variant="outline"
                 size="sm"
-                className="rounded-xl border-0 shadow-sm transition-all hover:shadow-md hover:scale-105 text-red-600"
+                className="rounded-xl border-0 shadow-sm transition-all hover:shadow-md hover:scale-105 text-red-600 h-8 sm:h-9 text-xs sm:text-sm"
                 style={{ backgroundColor: 'white' }}
                 onClick={handleBulkDelete}
               >
-                <Trash size={16} color="#DC2626" className="mr-2" />
-                Delete
+                <Trash size={14} color="#DC2626" className="mr-1 sm:mr-2" />
+                <span className="hidden sm:inline">Delete</span>
               </Button>
             </>
           )}
           <Button
             variant="outline"
             size="sm"
-            className="rounded-xl border-0 shadow-sm transition-all hover:shadow-md hover:scale-105"
+            className="rounded-xl border-0 shadow-sm transition-all hover:shadow-md hover:scale-105 h-8 sm:h-9 text-xs sm:text-sm"
             style={{ backgroundColor: 'white' }}
             onClick={handleExportCSV}
             title={selectedRows.length > 0 ? `Export ${selectedRows.length} selected` : 'Export all'}
           >
-            <DocumentDownload size={16} color="#65676B" className="mr-2" />
-            Export CSV
+            <DocumentDownload size={14} color="#65676B" className="mr-1 sm:mr-2" />
+            <span className="hidden sm:inline">Export</span>
           </Button>
           <Button
             variant="outline"
             size="sm"
-            className="rounded-xl border-0 shadow-sm transition-all hover:shadow-md hover:scale-105"
+            className="rounded-xl border-0 shadow-sm transition-all hover:shadow-md hover:scale-105 h-8 sm:h-9"
             style={{ backgroundColor: 'white' }}
             onClick={() => refetch()}
           >
-            <RefreshCircle size={16} color="#65676B" className="mr-2" />
-            Refresh
+            <RefreshCircle size={14} color="#65676B" />
           </Button>
           <Button
             size="sm"
-            className="rounded-full shadow-sm transition-all hover:shadow-md hover:scale-105"
+            className="rounded-full shadow-sm transition-all hover:shadow-md hover:scale-105 h-8 sm:h-9 text-xs sm:text-sm"
             style={{ backgroundColor: '#14462a', color: 'white' }}
             asChild
           >
             <Link href="/invoices/new">
-              <Add size={16} color="white" className="mr-2" />
-              New Invoice
+              <Add size={14} color="white" className="mr-1 sm:mr-2" />
+              <span className="hidden sm:inline">New Invoice</span>
+              <span className="sm:hidden">New</span>
             </Link>
           </Button>
         </div>
       </div>
 
       {/* KPI Cards */}
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
+      <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-4">
         {loading ? (
           <>
             <KPISkeleton />
@@ -324,84 +324,88 @@ export default function InvoicesPage() {
           </>
         ) : (
           <>
-            <div className="group relative rounded-2xl p-6 transition-all duration-300 hover:scale-[1.02]" style={{ backgroundColor: 'rgba(220, 38, 38, 0.04)' }}>
-              <div className="flex items-center justify-between mb-4">
+            <div className="group relative rounded-xl sm:rounded-2xl p-3 sm:p-6 transition-all duration-300 hover:scale-[1.02]" style={{ backgroundColor: 'rgba(220, 38, 38, 0.04)' }}>
+              <div className="flex items-center justify-between mb-2 sm:mb-4">
                 <div 
-                  className="h-12 w-12 rounded-xl flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110"
+                  className="h-8 w-8 sm:h-12 sm:w-12 rounded-lg sm:rounded-xl flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110"
                   style={{ backgroundColor: 'rgba(220, 38, 38, 0.12)' }}
                 >
-                  <Clock size={24} color="#DC2626" variant="Bulk" />
+                  <Clock size={16} color="#DC2626" variant="Bulk" className="sm:hidden" />
+                  <Clock size={24} color="#DC2626" variant="Bulk" className="hidden sm:block" />
                 </div>
                 <div
-                  className="inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-semibold"
+                  className="inline-flex items-center gap-1 rounded-full px-1.5 sm:px-2.5 py-0.5 sm:py-1 text-[10px] sm:text-xs font-semibold"
                   style={{ backgroundColor: 'rgba(220, 38, 38, 0.12)', color: '#DC2626' }}
                 >
                   {stats.overdue.length}
                 </div>
               </div>
-              <p className="text-sm mb-2" style={{ color: '#65676B', fontWeight: 500 }}>Overdue</p>
-              <div className="text-3xl tracking-tight" style={{ color: '#2D2D2D', fontWeight: 700 }}>{maskAmount(formatCurrency(overdueTotal))}</div>
-              <p className="text-xs mt-3" style={{ color: '#B0B3B8' }}>Needs attention</p>
+              <p className="text-xs sm:text-sm mb-1 sm:mb-2" style={{ color: '#65676B', fontWeight: 500 }}>Overdue</p>
+              <div className="text-lg sm:text-3xl tracking-tight" style={{ color: '#2D2D2D', fontWeight: 700 }}>{maskAmount(formatCurrency(overdueTotal))}</div>
+              <p className="text-[10px] sm:text-xs mt-1 sm:mt-3 hidden sm:block" style={{ color: '#B0B3B8' }}>Needs attention</p>
             </div>
 
-            <div className="group relative rounded-2xl p-6 transition-all duration-300 hover:scale-[1.02]" style={{ backgroundColor: 'rgba(245, 158, 11, 0.04)' }}>
-              <div className="flex items-center justify-between mb-4">
+            <div className="group relative rounded-xl sm:rounded-2xl p-3 sm:p-6 transition-all duration-300 hover:scale-[1.02]" style={{ backgroundColor: 'rgba(245, 158, 11, 0.04)' }}>
+              <div className="flex items-center justify-between mb-2 sm:mb-4">
                 <div 
-                  className="h-12 w-12 rounded-xl flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110"
+                  className="h-8 w-8 sm:h-12 sm:w-12 rounded-lg sm:rounded-xl flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110"
                   style={{ backgroundColor: 'rgba(245, 158, 11, 0.12)' }}
                 >
-                  <Receipt21 size={24} color="#F59E0B" variant="Bulk" />
+                  <Receipt21 size={16} color="#F59E0B" variant="Bulk" className="sm:hidden" />
+                  <Receipt21 size={24} color="#F59E0B" variant="Bulk" className="hidden sm:block" />
                 </div>
                 <div
-                  className="inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-semibold"
+                  className="inline-flex items-center gap-1 rounded-full px-1.5 sm:px-2.5 py-0.5 sm:py-1 text-[10px] sm:text-xs font-semibold"
                   style={{ backgroundColor: 'rgba(245, 158, 11, 0.12)', color: '#F59E0B' }}
                 >
                   {stats.pending.length}
                 </div>
               </div>
-              <p className="text-sm mb-2" style={{ color: '#65676B', fontWeight: 500 }}>Pending</p>
-              <div className="text-3xl tracking-tight" style={{ color: '#2D2D2D', fontWeight: 700 }}>{maskAmount(formatCurrency(pendingTotal))}</div>
-              <p className="text-xs mt-3" style={{ color: '#B0B3B8' }}>Awaiting payment</p>
+              <p className="text-xs sm:text-sm mb-1 sm:mb-2" style={{ color: '#65676B', fontWeight: 500 }}>Pending</p>
+              <div className="text-lg sm:text-3xl tracking-tight" style={{ color: '#2D2D2D', fontWeight: 700 }}>{maskAmount(formatCurrency(pendingTotal))}</div>
+              <p className="text-[10px] sm:text-xs mt-1 sm:mt-3 hidden sm:block" style={{ color: '#B0B3B8' }}>Awaiting payment</p>
             </div>
 
-            <div className="group relative rounded-2xl p-6 transition-all duration-300 hover:scale-[1.02]" style={{ backgroundColor: 'rgba(13, 148, 136, 0.04)' }}>
-              <div className="flex items-center justify-between mb-4">
+            <div className="group relative rounded-xl sm:rounded-2xl p-3 sm:p-6 transition-all duration-300 hover:scale-[1.02]" style={{ backgroundColor: 'rgba(13, 148, 136, 0.04)' }}>
+              <div className="flex items-center justify-between mb-2 sm:mb-4">
                 <div 
-                  className="h-12 w-12 rounded-xl flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110"
+                  className="h-8 w-8 sm:h-12 sm:w-12 rounded-lg sm:rounded-xl flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110"
                   style={{ backgroundColor: 'rgba(13, 148, 136, 0.12)' }}
                 >
-                  <TickCircle size={24} color="#14462a" variant="Bulk" />
+                  <TickCircle size={16} color="#14462a" variant="Bulk" className="sm:hidden" />
+                  <TickCircle size={24} color="#14462a" variant="Bulk" className="hidden sm:block" />
                 </div>
                 <div
-                  className="inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-semibold"
+                  className="inline-flex items-center gap-1 rounded-full px-1.5 sm:px-2.5 py-0.5 sm:py-1 text-[10px] sm:text-xs font-semibold"
                   style={{ backgroundColor: 'rgba(13, 148, 136, 0.12)', color: '#14462a' }}
                 >
                   {stats.paid.length}
                 </div>
               </div>
-              <p className="text-sm mb-2" style={{ color: '#65676B', fontWeight: 500 }}>Paid</p>
-              <div className="text-3xl tracking-tight" style={{ color: '#2D2D2D', fontWeight: 700 }}>{maskAmount(formatCurrency(paidTotal))}</div>
-              <p className="text-xs mt-3" style={{ color: '#B0B3B8' }}>This period</p>
+              <p className="text-xs sm:text-sm mb-1 sm:mb-2" style={{ color: '#65676B', fontWeight: 500 }}>Paid</p>
+              <div className="text-lg sm:text-3xl tracking-tight" style={{ color: '#2D2D2D', fontWeight: 700 }}>{maskAmount(formatCurrency(paidTotal))}</div>
+              <p className="text-[10px] sm:text-xs mt-1 sm:mt-3 hidden sm:block" style={{ color: '#B0B3B8' }}>This period</p>
             </div>
 
-            <div className="group relative rounded-2xl p-6 transition-all duration-300 hover:scale-[1.02]" style={{ backgroundColor: 'rgba(20, 70, 42, 0.04)' }}>
-              <div className="flex items-center justify-between mb-4">
+            <div className="group relative rounded-xl sm:rounded-2xl p-3 sm:p-6 transition-all duration-300 hover:scale-[1.02]" style={{ backgroundColor: 'rgba(20, 70, 42, 0.04)' }}>
+              <div className="flex items-center justify-between mb-2 sm:mb-4">
                 <div 
-                  className="h-12 w-12 rounded-xl flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110"
+                  className="h-8 w-8 sm:h-12 sm:w-12 rounded-lg sm:rounded-xl flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110"
                   style={{ backgroundColor: 'rgba(20, 70, 42, 0.12)' }}
                 >
-                  <Coin1 size={24} color="#14462a" variant="Bulk" />
+                  <Coin1 size={16} color="#14462a" variant="Bulk" className="sm:hidden" />
+                  <Coin1 size={24} color="#14462a" variant="Bulk" className="hidden sm:block" />
                 </div>
                 <div
-                  className="inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-semibold"
+                  className="inline-flex items-center gap-1 rounded-full px-1.5 sm:px-2.5 py-0.5 sm:py-1 text-[10px] sm:text-xs font-semibold"
                   style={{ backgroundColor: 'rgba(20, 70, 42, 0.12)', color: '#14462a' }}
                 >
                   {pagination.total}
                 </div>
               </div>
-              <p className="text-sm mb-2" style={{ color: '#65676B', fontWeight: 500 }}>Total Invoices</p>
-              <div className="text-3xl tracking-tight" style={{ color: '#2D2D2D', fontWeight: 700 }}>{maskAmount(formatCurrency(totalAmount))}</div>
-              <p className="text-xs mt-3" style={{ color: '#B0B3B8' }}>All time</p>
+              <p className="text-xs sm:text-sm mb-1 sm:mb-2" style={{ color: '#65676B', fontWeight: 500 }}>Total</p>
+              <div className="text-lg sm:text-3xl tracking-tight" style={{ color: '#2D2D2D', fontWeight: 700 }}>{maskAmount(formatCurrency(totalAmount))}</div>
+              <p className="text-[10px] sm:text-xs mt-1 sm:mt-3 hidden sm:block" style={{ color: '#B0B3B8' }}>All time</p>
             </div>
           </>
         )}
@@ -409,35 +413,35 @@ export default function InvoicesPage() {
 
       {/* Search and Filters */}
       {!isNewUser && (
-        <div className="rounded-2xl p-6" style={{ backgroundColor: '#FAFBFC' }}>
-          <div className="flex items-center justify-between mb-5">
+        <div className="rounded-xl sm:rounded-2xl p-3 sm:p-6" style={{ backgroundColor: '#FAFBFC' }}>
+          <div className="flex items-center justify-between mb-3 sm:mb-5">
             <div>
-              <h3 className="text-sm font-semibold" style={{ color: '#2D2D2D' }}>Filter Invoices</h3>
-              <p className="text-xs mt-0.5" style={{ color: '#B0B3B8' }}>Refine your search results</p>
+              <h3 className="text-xs sm:text-sm font-semibold" style={{ color: '#2D2D2D' }}>Filter Invoices</h3>
+              <p className="text-[10px] sm:text-xs mt-0.5 hidden sm:block" style={{ color: '#B0B3B8' }}>Refine your search results</p>
             </div>
             <button 
               onClick={() => { setSearchQuery(''); setStatusFilter('all'); }}
-              className="text-xs font-medium px-3 py-1.5 rounded-full transition-all hover:bg-white" 
+              className="text-[10px] sm:text-xs font-medium px-2 sm:px-3 py-1 sm:py-1.5 rounded-full transition-all hover:bg-white" 
               style={{ color: '#14462a' }}
             >
-              Clear all
+              Clear
             </button>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 gap-3 sm:gap-4 sm:grid-cols-2 md:grid-cols-3">
             {/* Search */}
             <div>
-              <label className="block text-xs mb-2 font-medium" style={{ color: '#65676B' }}>
+              <label className="block text-[10px] sm:text-xs mb-1.5 sm:mb-2 font-medium" style={{ color: '#65676B' }}>
                 Search
               </label>
               <div className="relative group">
-                <SearchNormal1 size={16} color="#B0B3B8" className="absolute left-3.5 top-1/2 -translate-y-1/2 transition-colors" />
+                <SearchNormal1 size={14} color="#B0B3B8" className="absolute left-3 top-1/2 -translate-y-1/2 transition-colors" />
                 <Input
                   type="text"
-                  placeholder="Search invoices or contacts..."
+                  placeholder="Search..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-10 h-11 rounded-xl border-0 shadow-sm transition-all focus:shadow-md"
+                  className="pl-8 sm:pl-10 h-9 sm:h-11 rounded-lg sm:rounded-xl border-0 shadow-sm transition-all focus:shadow-md text-sm"
                   style={{ backgroundColor: 'white', color: '#2D2D2D' }}
                 />
               </div>
@@ -445,27 +449,27 @@ export default function InvoicesPage() {
 
             {/* Status Filter */}
             <div>
-              <label className="block text-xs mb-2 font-medium" style={{ color: '#65676B' }}>
+              <label className="block text-[10px] sm:text-xs mb-1.5 sm:mb-2 font-medium" style={{ color: '#65676B' }}>
                 Status
               </label>
               <Select value={statusFilter} onValueChange={setStatusFilter}>
-                <SelectTrigger className="h-11 rounded-xl border-0 shadow-sm transition-all hover:shadow-md" style={{ backgroundColor: 'white', color: '#2D2D2D' }}>
+                <SelectTrigger className="h-9 sm:h-11 rounded-lg sm:rounded-xl border-0 shadow-sm transition-all hover:shadow-md text-sm" style={{ backgroundColor: 'white', color: '#2D2D2D' }}>
                   <SelectValue placeholder="All statuses" />
                 </SelectTrigger>
-                <SelectContent className="rounded-2xl">
-                  <SelectItem value="all" className="rounded-xl">All Statuses</SelectItem>
-                  <SelectItem value="draft" className="rounded-xl">Draft</SelectItem>
-                  <SelectItem value="sent" className="rounded-xl">Sent</SelectItem>
-                  <SelectItem value="paid" className="rounded-xl">Paid</SelectItem>
-                  <SelectItem value="partially_paid" className="rounded-xl">Partially Paid</SelectItem>
-                  <SelectItem value="overdue" className="rounded-xl">Overdue</SelectItem>
-                  <SelectItem value="cancelled" className="rounded-xl">Cancelled</SelectItem>
+                <SelectContent className="rounded-xl sm:rounded-2xl">
+                  <SelectItem value="all" className="rounded-lg sm:rounded-xl text-sm">All Statuses</SelectItem>
+                  <SelectItem value="draft" className="rounded-lg sm:rounded-xl text-sm">Draft</SelectItem>
+                  <SelectItem value="sent" className="rounded-lg sm:rounded-xl text-sm">Sent</SelectItem>
+                  <SelectItem value="paid" className="rounded-lg sm:rounded-xl text-sm">Paid</SelectItem>
+                  <SelectItem value="partially_paid" className="rounded-lg sm:rounded-xl text-sm">Partially Paid</SelectItem>
+                  <SelectItem value="overdue" className="rounded-lg sm:rounded-xl text-sm">Overdue</SelectItem>
+                  <SelectItem value="cancelled" className="rounded-lg sm:rounded-xl text-sm">Cancelled</SelectItem>
                 </SelectContent>
               </Select>
             </div>
 
-            {/* Date Range */}
-            <div>
+            {/* Date Range - Hidden on mobile */}
+            <div className="hidden md:block">
               <label className="block text-xs mb-2 font-medium" style={{ color: '#65676B' }}>
                 Date Range
               </label>
@@ -474,7 +478,7 @@ export default function InvoicesPage() {
                   <Button variant="outline" className="w-full h-11 justify-start text-left font-normal rounded-xl border-0 shadow-sm" style={{ backgroundColor: 'white' }}>
                     {dateRange?.from ? (
                       dateRange.to ? (
-                        `\${format(dateRange.from, "MMM d")} - \${format(dateRange.to, "MMM d, yyyy")}`
+                        `${format(dateRange.from, "MMM d")} - ${format(dateRange.to, "MMM d, yyyy")}`
                       ) : (
                         format(dateRange.from, "MMM d, yyyy")
                       )
@@ -498,7 +502,7 @@ export default function InvoicesPage() {
       )}
 
       {/* Invoices Table */}
-      <div className="rounded-2xl overflow-hidden" style={{ backgroundColor: 'white', boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.05)' }}>
+      <div className="rounded-xl sm:rounded-2xl overflow-hidden" style={{ backgroundColor: 'white', boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.05)' }}>
         {loading ? (
           <TableSkeleton rows={5} />
         ) : isNewUser ? (
@@ -514,149 +518,219 @@ export default function InvoicesPage() {
           <EmptyState
             icon={SearchNormal1}
             title="No results found"
-            description={searchQuery ? `No invoices matching "\${searchQuery}"` : "No invoices match your filters. Try adjusting your search criteria."}
+            description={searchQuery ? `No invoices matching "${searchQuery}"` : "No invoices match your filters. Try adjusting your search criteria."}
             size="sm"
           />
         ) : (
           <>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead className="w-12">
-                    <Checkbox
-                      checked={allSelected}
-                      onCheckedChange={toggleSelectAll}
-                      aria-label="Select all"
-                      className="rounded"
-                    />
-                  </TableHead>
-                  <TableHead 
-                    className="cursor-pointer select-none hover:bg-gray-50 transition-colors"
-                    onClick={() => handleSort("invoice_number")}
-                  >
-                    <div className="flex items-center gap-1.5">
-                      Invoice
-                      {sortBy === "invoice_number" && (
-                        sortOrder === "asc" ? <ArrowUp2 size={14} color="#14462a" /> : <ArrowDown2 size={14} color="#14462a" />
-                      )}
-                    </div>
-                  </TableHead>
-                  <TableHead 
-                    className="cursor-pointer select-none hover:bg-gray-50 transition-colors"
-                    onClick={() => handleSort("issue_date")}
-                  >
-                    <div className="flex items-center gap-1.5">
-                      Date
-                      {sortBy === "issue_date" && (
-                        sortOrder === "asc" ? <ArrowUp2 size={14} color="#14462a" /> : <ArrowDown2 size={14} color="#14462a" />
-                      )}
-                    </div>
-                  </TableHead>
-                  <TableHead>Contact</TableHead>
-                  <TableHead>Purpose</TableHead>
-                  <TableHead 
-                    className="cursor-pointer select-none hover:bg-gray-50 transition-colors"
-                    onClick={() => handleSort("total")}
-                  >
-                    <div className="flex items-center gap-1.5">
-                      Amount
-                      {sortBy === "total" && (
-                        sortOrder === "asc" ? <ArrowUp2 size={14} color="#14462a" /> : <ArrowDown2 size={14} color="#14462a" />
-                      )}
-                    </div>
-                  </TableHead>
-                  <TableHead 
-                    className="cursor-pointer select-none hover:bg-gray-50 transition-colors"
-                    onClick={() => handleSort("status")}
-                  >
-                    <div className="flex items-center gap-1.5">
-                      Status
-                      {sortBy === "status" && (
-                        sortOrder === "asc" ? <ArrowUp2 size={14} color="#14462a" /> : <ArrowDown2 size={14} color="#14462a" />
-                      )}
-                    </div>
-                  </TableHead>
-                  <TableHead className="w-12"></TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {invoices.map((invoice) => (
-                  <TableRow
-                    key={invoice.id}
-                    className="cursor-pointer hover:bg-gray-50"
-                    onClick={() => window.location.href = `/invoices/${invoice.id}`}
-                  >
-                    <TableCell onClick={(e) => e.stopPropagation()}>
+            {/* Desktop Table */}
+            <div className="hidden md:block overflow-x-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className="w-12">
                       <Checkbox
-                        checked={selectedRows.includes(invoice.id)}
-                        onCheckedChange={() => toggleSelectRow(invoice.id)}
-                        aria-label={`Select ${invoice.invoice_number}`}
+                        checked={allSelected}
+                        onCheckedChange={toggleSelectAll}
+                        aria-label="Select all"
                         className="rounded"
                       />
-                    </TableCell>
-                    <TableCell className="font-medium">{invoice.invoice_number}</TableCell>
-                    <TableCell>{new Date(invoice.issue_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</TableCell>
-                    <TableCell>{invoice.customer?.name || 'No contact'}</TableCell>
-                    <TableCell className="text-[#65676B] max-w-[200px] truncate">{invoice.notes || '-'}</TableCell>
-                    <TableCell className="font-medium">{maskAmount(formatCurrency(invoice.total, invoice.currency))}</TableCell>
-                    <TableCell>{getStatusBadge(invoice.status)}</TableCell>
-                    <TableCell onClick={(e) => e.stopPropagation()}>
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <button className="inline-flex items-center rounded-full p-1.5 transition-all hover:bg-[rgba(20,70,42,0.06)]">
-                            <More size={16} color="#B0B3B8" />
-                          </button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end" className="rounded-2xl w-48 p-2">
-                          <DropdownMenuItem asChild className="rounded-xl p-3 cursor-pointer">
-                            <Link href={`/invoices/${invoice.id}`} className="flex items-center gap-2">
-                              <Eye size={16} color="#14462a" />
-                              <span>View</span>
-                            </Link>
-                          </DropdownMenuItem>
-                          <DropdownMenuSeparator className="my-2" />
-                          <DropdownMenuItem 
-                            className="rounded-xl p-3 cursor-pointer text-red-600"
-                            onClick={() => handleDelete(invoice.id)}
-                          >
-                            <Trash size={16} color="#DC2626" className="mr-2" />
-                            <span>Delete</span>
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </TableCell>
+                    </TableHead>
+                    <TableHead 
+                      className="cursor-pointer select-none hover:bg-gray-50 transition-colors"
+                      onClick={() => handleSort("invoice_number")}
+                    >
+                      <div className="flex items-center gap-1.5">
+                        Invoice
+                        {sortBy === "invoice_number" && (
+                          sortOrder === "asc" ? <ArrowUp2 size={14} color="#14462a" /> : <ArrowDown2 size={14} color="#14462a" />
+                        )}
+                      </div>
+                    </TableHead>
+                    <TableHead 
+                      className="cursor-pointer select-none hover:bg-gray-50 transition-colors"
+                      onClick={() => handleSort("issue_date")}
+                    >
+                      <div className="flex items-center gap-1.5">
+                        Date
+                        {sortBy === "issue_date" && (
+                          sortOrder === "asc" ? <ArrowUp2 size={14} color="#14462a" /> : <ArrowDown2 size={14} color="#14462a" />
+                        )}
+                      </div>
+                    </TableHead>
+                    <TableHead>Contact</TableHead>
+                    <TableHead>Purpose</TableHead>
+                    <TableHead 
+                      className="cursor-pointer select-none hover:bg-gray-50 transition-colors"
+                      onClick={() => handleSort("total")}
+                    >
+                      <div className="flex items-center gap-1.5">
+                        Amount
+                        {sortBy === "total" && (
+                          sortOrder === "asc" ? <ArrowUp2 size={14} color="#14462a" /> : <ArrowDown2 size={14} color="#14462a" />
+                        )}
+                      </div>
+                    </TableHead>
+                    <TableHead 
+                      className="cursor-pointer select-none hover:bg-gray-50 transition-colors"
+                      onClick={() => handleSort("status")}
+                    >
+                      <div className="flex items-center gap-1.5">
+                        Status
+                        {sortBy === "status" && (
+                          sortOrder === "asc" ? <ArrowUp2 size={14} color="#14462a" /> : <ArrowDown2 size={14} color="#14462a" />
+                        )}
+                      </div>
+                    </TableHead>
+                    <TableHead className="w-12"></TableHead>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                </TableHeader>
+                <TableBody>
+                  {invoices.map((invoice) => (
+                    <TableRow
+                      key={invoice.id}
+                      className="cursor-pointer hover:bg-gray-50"
+                      onClick={() => window.location.href = `/invoices/${invoice.id}`}
+                    >
+                      <TableCell onClick={(e) => e.stopPropagation()}>
+                        <Checkbox
+                          checked={selectedRows.includes(invoice.id)}
+                          onCheckedChange={() => toggleSelectRow(invoice.id)}
+                          aria-label={`Select ${invoice.invoice_number}`}
+                          className="rounded"
+                        />
+                      </TableCell>
+                      <TableCell className="font-medium">{invoice.invoice_number}</TableCell>
+                      <TableCell>{new Date(invoice.issue_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</TableCell>
+                      <TableCell>{invoice.customer?.name || 'No contact'}</TableCell>
+                      <TableCell className="text-[#65676B] max-w-[200px] truncate">{invoice.notes || '-'}</TableCell>
+                      <TableCell className="font-medium">{maskAmount(formatCurrency(invoice.total, invoice.currency))}</TableCell>
+                      <TableCell>{getStatusBadge(invoice.status)}</TableCell>
+                      <TableCell onClick={(e) => e.stopPropagation()}>
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <button className="inline-flex items-center rounded-full p-1.5 transition-all hover:bg-[rgba(20,70,42,0.06)]">
+                              <More size={16} color="#B0B3B8" />
+                            </button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end" className="rounded-2xl w-48 p-2">
+                            <DropdownMenuItem asChild className="rounded-xl p-3 cursor-pointer">
+                              <Link href={`/invoices/${invoice.id}`} className="flex items-center gap-2">
+                                <Eye size={16} color="#14462a" />
+                                <span>View</span>
+                              </Link>
+                            </DropdownMenuItem>
+                            <DropdownMenuSeparator className="my-2" />
+                            <DropdownMenuItem 
+                              className="rounded-xl p-3 cursor-pointer text-red-600"
+                              onClick={() => handleDelete(invoice.id)}
+                            >
+                              <Trash size={16} color="#DC2626" className="mr-2" />
+                              <span>Delete</span>
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+            
+            {/* Mobile Card List */}
+            <div className="md:hidden divide-y" style={{ borderColor: '#E4E6EB' }}>
+              {invoices.map((invoice) => (
+                <div 
+                  key={invoice.id}
+                  className="p-3 sm:p-4 hover:bg-gray-50 transition-colors"
+                >
+                  <div className="flex items-start gap-3">
+                    <Checkbox
+                      checked={selectedRows.includes(invoice.id)}
+                      onCheckedChange={() => toggleSelectRow(invoice.id)}
+                      aria-label={`Select ${invoice.invoice_number}`}
+                      className="rounded mt-0.5"
+                    />
+                    <Link 
+                      href={`/invoices/${invoice.id}`}
+                      className="flex-1 min-w-0"
+                    >
+                      <div className="flex items-start justify-between gap-2 mb-1.5">
+                        <div className="min-w-0">
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <span className="font-semibold text-sm" style={{ color: '#2D2D2D' }}>{invoice.invoice_number}</span>
+                            {getStatusBadge(invoice.status)}
+                          </div>
+                          <p className="text-sm truncate mt-0.5" style={{ color: '#65676B' }}>{invoice.customer?.name || 'No contact'}</p>
+                        </div>
+                        <div className="text-right shrink-0">
+                          <span className="font-semibold text-sm" style={{ color: '#2D2D2D' }}>
+                            {maskAmount(formatCurrency(invoice.total, invoice.currency))}
+                          </span>
+                          <p className="text-xs mt-0.5" style={{ color: '#B0B3B8' }}>
+                            {new Date(invoice.issue_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                          </p>
+                        </div>
+                      </div>
+                      {invoice.notes && (
+                        <p className="text-xs truncate" style={{ color: '#B0B3B8' }}>{invoice.notes}</p>
+                      )}
+                    </Link>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <button className="inline-flex items-center rounded-full p-1.5 transition-all hover:bg-[rgba(20,70,42,0.06)] shrink-0">
+                          <More size={16} color="#B0B3B8" />
+                        </button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end" className="rounded-xl w-40 p-1.5">
+                        <DropdownMenuItem asChild className="rounded-lg p-2.5 cursor-pointer text-sm">
+                          <Link href={`/invoices/${invoice.id}`} className="flex items-center gap-2">
+                            <Eye size={14} color="#14462a" />
+                            <span>View</span>
+                          </Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuSeparator className="my-1" />
+                        <DropdownMenuItem 
+                          className="rounded-lg p-2.5 cursor-pointer text-red-600 text-sm"
+                          onClick={() => handleDelete(invoice.id)}
+                        >
+                          <Trash size={14} color="#DC2626" className="mr-2" />
+                          <span>Delete</span>
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </div>
+                </div>
+              ))}
+            </div>
             
             {/* Pagination */}
             {pagination.totalPages > 1 && (
-              <div className="flex items-center justify-between px-6 py-4 border-t">
-                <p className="text-sm" style={{ color: '#65676B' }}>
-                  Showing {((pagination.page - 1) * pagination.limit) + 1} to {Math.min(pagination.page * pagination.limit, pagination.total)} of {pagination.total} invoices
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 px-3 sm:px-6 py-3 sm:py-4 border-t">
+                <p className="text-xs sm:text-sm text-center sm:text-left" style={{ color: '#65676B' }}>
+                  Showing {((pagination.page - 1) * pagination.limit) + 1}-{Math.min(pagination.page * pagination.limit, pagination.total)} of {pagination.total}
                 </p>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center justify-center gap-2">
                   <Button
                     variant="outline"
                     size="sm"
-                    className="rounded-xl"
+                    className="rounded-lg sm:rounded-xl h-8 sm:h-9"
                     disabled={pagination.page <= 1}
                     onClick={() => setFilters({ ...filters, page: pagination.page - 1 })}
                   >
-                    <ArrowLeft2 size={16} color="#65676B" />
+                    <ArrowLeft2 size={14} color="#65676B" />
                   </Button>
-                  <span className="text-sm px-3" style={{ color: '#2D2D2D' }}>
-                    Page {pagination.page} of {pagination.totalPages}
+                  <span className="text-xs sm:text-sm px-2 sm:px-3" style={{ color: '#2D2D2D' }}>
+                    {pagination.page} / {pagination.totalPages}
                   </span>
                   <Button
                     variant="outline"
                     size="sm"
-                    className="rounded-xl"
+                    className="rounded-lg sm:rounded-xl h-8 sm:h-9"
                     disabled={pagination.page >= pagination.totalPages}
                     onClick={() => setFilters({ ...filters, page: pagination.page + 1 })}
                   >
-                    <ArrowRight2 size={16} color="#65676B" />
+                    <ArrowRight2 size={14} color="#65676B" />
                   </Button>
                 </div>
               </div>

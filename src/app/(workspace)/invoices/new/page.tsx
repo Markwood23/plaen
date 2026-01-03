@@ -667,97 +667,104 @@ export default function CreateInvoicePage() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       {/* Page Header */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="flex items-center gap-3 sm:gap-4">
           <Button 
             variant="ghost" 
             size="sm"
             asChild 
-            className="rounded-full h-9 w-9 p-0 hover:bg-[rgba(240,242,245,0.8)]"
+            className="rounded-full h-8 w-8 sm:h-9 sm:w-9 p-0 hover:bg-[rgba(240,242,245,0.8)] shrink-0"
           >
             <Link href="/invoices">
-              <ArrowLeft2 size={18} color="#2D2D2D" />
+              <ArrowLeft2 size={16} color="#2D2D2D" />
             </Link>
           </Button>
           <div>
-            <h1 className="text-2xl font-semibold tracking-tight" style={{ color: '#2D2D2D' }}>New Invoice</h1>
-            <p className="text-sm mt-0.5" style={{ color: '#B0B3B8' }}>Create a professional invoice for your client</p>
+            <h1 className="text-xl sm:text-2xl font-semibold tracking-tight" style={{ color: '#2D2D2D' }}>New Invoice</h1>
+            <p className="text-xs sm:text-sm mt-0.5 hidden sm:block" style={{ color: '#B0B3B8' }}>Create a professional invoice for your client</p>
           </div>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3">
           {errors.general && (
-            <p className="text-sm text-red-500 flex items-center gap-1.5 mr-2">
-              <Warning2 size={16} />
-              {errors.general}
+            <p className="text-xs sm:text-sm text-red-500 flex items-center gap-1 sm:gap-1.5 mr-1 sm:mr-2">
+              <Warning2 size={14} />
+              <span className="hidden sm:inline">{errors.general}</span>
+              <span className="sm:hidden">Error</span>
             </p>
           )}
           {submitError && (
-            <p className="text-sm text-red-500 flex items-center gap-1.5 mr-2">
-              <Warning2 size={16} />
-              {submitError}
+            <p className="text-xs sm:text-sm text-red-500 flex items-center gap-1 sm:gap-1.5 mr-1 sm:mr-2">
+              <Warning2 size={14} />
+              <span className="hidden sm:inline">{submitError}</span>
+              <span className="sm:hidden">Error</span>
             </p>
           )}
           <Button 
             variant="outline" 
             size="sm"
-            className="rounded-full px-5 h-10 border-[#E4E6EB] hover:bg-[rgba(240,242,245,0.5)] hover:border-[#B0B3B8]"
+            className="rounded-full px-3 sm:px-5 h-8 sm:h-10 border-[#E4E6EB] hover:bg-[rgba(240,242,245,0.5)] hover:border-[#B0B3B8] text-xs sm:text-sm"
             disabled={submitting}
           >
-            <Note size={16} color="currentColor" className="mr-2" />
-            Save Draft
+            <Note size={14} color="currentColor" className="sm:mr-2" />
+            <span className="hidden sm:inline">Save Draft</span>
           </Button>
           <Button 
             size="sm"
-            className="rounded-full px-5 h-10 shadow-sm transition-all hover:shadow-md hover:scale-105"
+            className="rounded-full px-3 sm:px-5 h-8 sm:h-10 shadow-sm transition-all hover:shadow-md hover:scale-105 text-xs sm:text-sm"
             style={{ backgroundColor: '#14462a', color: 'white', fontWeight: 500 }}
             onClick={handleSubmit}
             disabled={submitting}
           >
-            <Send2 size={16} color="currentColor" className="mr-2" />
-            {submitting ? 'Creating...' : 'Preview Invoice'}
+            <Send2 size={14} color="currentColor" className="sm:mr-2" />
+            <span className="hidden sm:inline">{submitting ? 'Creating...' : 'Preview'}</span>
           </Button>
         </div>
       </div>
 
       {/* Tabs Navigation */}
       <Tabs defaultValue="details" className="w-full">
-        <TabsList>
-          <TabsTrigger value="details">
-            <Receipt21 size={16} color="currentColor" />
-            Invoice Details
+        <TabsList className="flex-wrap h-auto gap-1 p-1">
+          <TabsTrigger value="details" className="text-xs sm:text-sm px-2 sm:px-3 py-1.5 sm:py-2">
+            <Receipt21 size={14} color="currentColor" className="sm:mr-1" />
+            <span className="hidden sm:inline">Invoice Details</span>
+            <span className="sm:hidden">Details</span>
           </TabsTrigger>
-          <TabsTrigger value="parties">
-            <User size={16} color="currentColor" />
-            Parties
+          <TabsTrigger value="parties" className="text-xs sm:text-sm px-2 sm:px-3 py-1.5 sm:py-2">
+            <User size={14} color="currentColor" className="sm:mr-1" />
+            <span className="hidden sm:inline">Parties</span>
+            <span className="sm:hidden">Parties</span>
           </TabsTrigger>
-          <TabsTrigger value="items">
-            <Note size={16} color="currentColor" />
-            Line Items
+          <TabsTrigger value="items" className="text-xs sm:text-sm px-2 sm:px-3 py-1.5 sm:py-2">
+            <Note size={14} color="currentColor" className="sm:mr-1" />
+            <span className="hidden sm:inline">Line Items</span>
+            <span className="sm:hidden">Items</span>
           </TabsTrigger>
-          <TabsTrigger value="payment">
-            <Card size={16} color="currentColor" />
-            Payment & Currency
+          <TabsTrigger value="payment" className="text-xs sm:text-sm px-2 sm:px-3 py-1.5 sm:py-2">
+            <Card size={14} color="currentColor" className="sm:mr-1" />
+            <span className="hidden sm:inline">Payment</span>
+            <span className="sm:hidden">Pay</span>
           </TabsTrigger>
-          <TabsTrigger value="additional">
-            <InfoCircle size={16} color="currentColor" />
-            Additional Info
+          <TabsTrigger value="additional" className="text-xs sm:text-sm px-2 sm:px-3 py-1.5 sm:py-2">
+            <InfoCircle size={14} color="currentColor" className="sm:mr-1" />
+            <span className="hidden sm:inline">Additional</span>
+            <span className="sm:hidden">More</span>
           </TabsTrigger>
         </TabsList>
 
           {/* Tab 1: Details - Enhanced */}
-          <TabsContent value="details" className="space-y-8 mt-8">
+          <TabsContent value="details" className="space-y-6 sm:space-y-8 mt-4 sm:mt-8">
             {/* Template Selection */}
-            <div className="rounded-2xl p-6 transition-all duration-300" style={{ backgroundColor: 'rgba(20, 70, 42, 0.03)' }}>
-              <div className="mb-5 flex items-start justify-between">
+            <div className="rounded-xl sm:rounded-2xl p-4 sm:p-6 transition-all duration-300" style={{ backgroundColor: 'rgba(20, 70, 42, 0.03)' }}>
+              <div className="mb-4 sm:mb-5 flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
                 <div>
-                  <h2 className="text-base font-semibold text-[#2D2D2D] mb-1">Invoice Template</h2>
-                  <p className="text-sm text-[#B0B3B8]">Choose a professional template that matches your brand</p>
+                  <h2 className="text-sm sm:text-base font-semibold text-[#2D2D2D] mb-1">Invoice Template</h2>
+                  <p className="text-xs sm:text-sm text-[#B0B3B8]">Choose a professional template that matches your brand</p>
                 </div>
-                <div className="w-72">
+                <div className="w-full sm:w-72">
                   <Select value={template} onValueChange={(v) => setTemplate(v as InvoiceTemplateType)}>
-                    <SelectTrigger className="border-[#E4E6EB] h-11 rounded-xl bg-white hover:border-[#14462a] transition-colors">
+                    <SelectTrigger className="border-[#E4E6EB] h-10 sm:h-11 rounded-lg sm:rounded-xl bg-white hover:border-[#14462a] transition-colors text-sm">
                       <SelectValue>
                         <div className="flex flex-col items-start gap-0.5">
                           <span className="font-medium text-sm">
@@ -802,25 +809,25 @@ export default function CreateInvoicePage() {
             </div>
 
             {/* Invoice Details */}
-            <div className="rounded-2xl p-6" style={{ backgroundColor: 'rgba(247, 249, 250, 0.5)' }}>
-              <div className="mb-5">
-                <h2 className="text-base font-semibold text-[#2D2D2D] mb-1">Invoice Information</h2>
-                <p className="text-sm text-[#B0B3B8]">Basic details about this invoice</p>
+            <div className="rounded-xl sm:rounded-2xl p-4 sm:p-6" style={{ backgroundColor: 'rgba(247, 249, 250, 0.5)' }}>
+              <div className="mb-4 sm:mb-5">
+                <h2 className="text-sm sm:text-base font-semibold text-[#2D2D2D] mb-1">Invoice Information</h2>
+                <p className="text-xs sm:text-sm text-[#B0B3B8]">Basic details about this invoice</p>
               </div>
-              <div className="grid grid-cols-2 gap-5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
                 <div>
-                  <Label className="text-sm text-[#2D2D2D] font-medium mb-2 block">Invoice Number</Label>
+                  <Label className="text-xs sm:text-sm text-[#2D2D2D] font-medium mb-1.5 sm:mb-2 block">Invoice Number</Label>
                   <Input 
                     value={invoiceNumberPreview}
                     readOnly
-                    className="h-11 font-mono rounded-xl border-[#E4E6EB] bg-gray-50 text-[#65676B] cursor-not-allowed"
+                    className="h-10 sm:h-11 font-mono rounded-lg sm:rounded-xl border-[#E4E6EB] bg-gray-50 text-[#65676B] cursor-not-allowed text-sm"
                   />
-                  <p className="text-xs text-[#B0B3B8] mt-1.5">Auto-generated when saved</p>
+                  <p className="text-[10px] sm:text-xs text-[#B0B3B8] mt-1 sm:mt-1.5">Auto-generated when saved</p>
                 </div>
                 <div>
-                  <Label className="text-sm text-[#2D2D2D] font-medium mb-2 block">Payment Terms*</Label>
+                  <Label className="text-xs sm:text-sm text-[#2D2D2D] font-medium mb-1.5 sm:mb-2 block">Payment Terms*</Label>
                   <Select defaultValue="net_30">
-                    <SelectTrigger className="border-[#E4E6EB] h-11 rounded-xl hover:border-[#14462a] transition-colors">
+                    <SelectTrigger className="border-[#E4E6EB] h-10 sm:h-11 rounded-lg sm:rounded-xl hover:border-[#14462a] transition-colors text-sm">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -831,17 +838,17 @@ export default function CreateInvoicePage() {
                       <SelectItem value="net_90">Net 90 days</SelectItem>
                     </SelectContent>
                   </Select>
-                  <p className="text-xs text-[#B0B3B8] mt-1.5">When payment is due</p>
+                  <p className="text-[10px] sm:text-xs text-[#B0B3B8] mt-1 sm:mt-1.5">When payment is due</p>
                 </div>
                 <div>
-                  <Label className="text-sm text-[#2D2D2D] font-medium mb-2 block">Issue Date*</Label>
+                  <Label className="text-xs sm:text-sm text-[#2D2D2D] font-medium mb-1.5 sm:mb-2 block">Issue Date*</Label>
                   <Popover>
                     <PopoverTrigger asChild>
                       <Button 
                         variant="outline" 
-                        className="w-full h-11 justify-start text-left border-[#E4E6EB] font-normal rounded-xl hover:border-[#14462a] transition-colors bg-white"
+                        className="w-full h-10 sm:h-11 justify-start text-left border-[#E4E6EB] font-normal rounded-lg sm:rounded-xl hover:border-[#14462a] transition-colors bg-white text-sm"
                       >
-                        <Calendar size={16} color="#B0B3B8" className="mr-2" />
+                        <Calendar size={14} color="#B0B3B8" className="mr-2" />
                         {issueDate ? format(issueDate, "MMM d, yyyy") : "Select date"}
                       </Button>
                     </PopoverTrigger>
@@ -870,17 +877,17 @@ export default function CreateInvoicePage() {
                       />
                     </PopoverContent>
                   </Popover>
-                  <p className="text-xs text-[#B0B3B8] mt-1.5">Date invoice was created (up to 30 days back)</p>
+                  <p className="text-[10px] sm:text-xs text-[#B0B3B8] mt-1 sm:mt-1.5">Date invoice was created (up to 30 days back)</p>
                 </div>
                 <div>
-                  <Label className="text-sm text-[#2D2D2D] font-medium mb-2 block">Due Date*</Label>
+                  <Label className="text-xs sm:text-sm text-[#2D2D2D] font-medium mb-1.5 sm:mb-2 block">Due Date*</Label>
                   <Popover>
                     <PopoverTrigger asChild>
                       <Button 
                         variant="outline" 
-                        className="w-full h-11 justify-start text-left border-[#E4E6EB] font-normal rounded-xl hover:border-[#14462a] transition-colors bg-white"
+                        className="w-full h-10 sm:h-11 justify-start text-left border-[#E4E6EB] font-normal rounded-lg sm:rounded-xl hover:border-[#14462a] transition-colors bg-white text-sm"
                       >
-                        <Calendar size={16} color="#B0B3B8" className="mr-2" />
+                        <Calendar size={14} color="#B0B3B8" className="mr-2" />
                         {dueDate ? format(dueDate, "MMM d, yyyy") : "Select date"}
                       </Button>
                     </PopoverTrigger>
@@ -895,7 +902,7 @@ export default function CreateInvoicePage() {
                       />
                     </PopoverContent>
                   </Popover>
-                  <p className="text-xs text-[#B0B3B8] mt-1.5">Must be on or after issue date</p>
+                  <p className="text-[10px] sm:text-xs text-[#B0B3B8] mt-1 sm:mt-1.5">Must be on or after issue date</p>
                 </div>
               </div>
             </div>

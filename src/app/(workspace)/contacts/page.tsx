@@ -142,36 +142,36 @@ export default function ContactsPage() {
   const isNewUser = !loading && contacts.length === 0 && !searchQuery;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h1 className="text-2xl tracking-tight" style={{ color: '#2D2D2D', fontWeight: 600 }}>Contacts</h1>
-          <p className="text-sm" style={{ color: '#B0B3B8' }}>Manage your clients and customers</p>
+          <h1 className="text-xl sm:text-2xl tracking-tight" style={{ color: '#2D2D2D', fontWeight: 600 }}>Contacts</h1>
+          <p className="text-xs sm:text-sm" style={{ color: '#B0B3B8' }}>Manage your clients and customers</p>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3">
           <Button
             variant="outline"
             size="sm"
-            className="rounded-xl border-0 shadow-sm transition-all hover:shadow-md hover:scale-105"
+            className="rounded-xl border-0 shadow-sm transition-all hover:shadow-md hover:scale-105 h-8 sm:h-9"
             style={{ backgroundColor: 'white' }}
             onClick={() => refetch()}
           >
-            <RefreshCircle size={16} color="#65676B" className="mr-2" />
-            Refresh
+            <RefreshCircle size={14} color="#65676B" className="sm:mr-2" />
+            <span className="hidden sm:inline">Refresh</span>
           </Button>
           <Button 
             onClick={() => openContactModal(null, "create")}
-            className="rounded-full px-6 py-2.5 h-auto shadow-sm transition-all hover:shadow-md"
+            className="rounded-full px-4 sm:px-6 py-2 h-8 sm:h-auto shadow-sm transition-all hover:shadow-md text-xs sm:text-sm"
             style={{ backgroundColor: '#14462a', color: 'white', fontWeight: 500 }}
           >
-            + New Contact
+            + <span className="hidden sm:inline ml-1">New</span> Contact
           </Button>
         </div>
       </div>
 
       {/* Stats Card */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         {loading ? (
           <>
             <KPISkeleton />
@@ -182,76 +182,79 @@ export default function ContactsPage() {
         ) : (
           <>
             {/* Total Contacts */}
-            <div className="group relative rounded-2xl p-6 transition-all duration-300 hover:scale-[1.02]" style={{ backgroundColor: 'rgba(20, 70, 42, 0.04)' }}>
-              <div className="flex items-center justify-between mb-4">
-                <div className="h-12 w-12 rounded-full flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110" style={{ backgroundColor: 'rgba(20, 70, 42, 0.12)' }}>
-                  <Profile2User size={24} color="#14462a" variant="Bulk" />
+            <div className="group relative rounded-xl sm:rounded-2xl p-3 sm:p-6 transition-all duration-300 hover:scale-[1.02]" style={{ backgroundColor: 'rgba(20, 70, 42, 0.04)' }}>
+              <div className="flex items-center justify-between mb-2 sm:mb-4">
+                <div className="h-8 w-8 sm:h-12 sm:w-12 rounded-full flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110" style={{ backgroundColor: 'rgba(20, 70, 42, 0.12)' }}>
+                  <Profile2User size={16} color="#14462a" variant="Bulk" className="sm:hidden" />
+                  <Profile2User size={24} color="#14462a" variant="Bulk" className="hidden sm:block" />
                 </div>
-                <div className="flex items-center gap-1 px-2 py-1 rounded-full" style={{ backgroundColor: 'rgba(20, 70, 42, 0.12)' }}>
-                  <span className="text-xs font-semibold" style={{ color: '#14462a' }}>{pagination.total}</span>
+                <div className="flex items-center gap-1 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full" style={{ backgroundColor: 'rgba(20, 70, 42, 0.12)' }}>
+                  <span className="text-[10px] sm:text-xs font-semibold" style={{ color: '#14462a' }}>{pagination.total}</span>
                 </div>
               </div>
-              <p className="text-sm mb-2" style={{ color: '#65676B', fontWeight: 500 }}>Total Contacts</p>
-              <p className="text-3xl tracking-tight" style={{ color: '#2D2D2D', fontWeight: 700 }}>
+              <p className="text-xs sm:text-sm mb-1 sm:mb-2" style={{ color: '#65676B', fontWeight: 500 }}>Contacts</p>
+              <p className="text-lg sm:text-3xl tracking-tight" style={{ color: '#2D2D2D', fontWeight: 700 }}>
                 {pagination.total}
               </p>
-              <p className="text-xs mt-2" style={{ color: '#B0B3B8' }}>All registered contacts</p>
+              <p className="text-[10px] sm:text-xs mt-1 sm:mt-2 hidden sm:block" style={{ color: '#B0B3B8' }}>All registered contacts</p>
             </div>
 
             {/* Active Contacts */}
-            <div className="group relative rounded-2xl p-6 transition-all duration-300 hover:scale-[1.02]" style={{ backgroundColor: 'rgba(13, 148, 136, 0.04)' }}>
-              <div className="flex items-center justify-between mb-4">
-                <div className="h-12 w-12 rounded-xl flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110" style={{ backgroundColor: 'rgba(13, 148, 136, 0.12)' }}>
-                  <TickCircle size={24} color="#14462a" variant="Bulk" />
+            <div className="group relative rounded-xl sm:rounded-2xl p-3 sm:p-6 transition-all duration-300 hover:scale-[1.02]" style={{ backgroundColor: 'rgba(13, 148, 136, 0.04)' }}>
+              <div className="flex items-center justify-between mb-2 sm:mb-4">
+                <div className="h-8 w-8 sm:h-12 sm:w-12 rounded-lg sm:rounded-xl flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110" style={{ backgroundColor: 'rgba(13, 148, 136, 0.12)' }}>
+                  <TickCircle size={16} color="#14462a" variant="Bulk" className="sm:hidden" />
+                  <TickCircle size={24} color="#14462a" variant="Bulk" className="hidden sm:block" />
                 </div>
-                <div className="flex items-center gap-1 px-2 py-1 rounded-full" style={{ backgroundColor: 'rgba(13, 148, 136, 0.12)' }}>
-                  <span className="text-xs font-semibold" style={{ color: '#14462a' }}>
+                <div className="flex items-center gap-1 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full" style={{ backgroundColor: 'rgba(13, 148, 136, 0.12)' }}>
+                  <span className="text-[10px] sm:text-xs font-semibold" style={{ color: '#14462a' }}>
                     {pagination.total > 0 ? Math.round((activeContacts.length / contacts.length) * 100) : 0}%
                   </span>
                 </div>
               </div>
-              <p className="text-sm mb-2" style={{ color: '#65676B', fontWeight: 500 }}>Active Contacts</p>
-              <p className="text-3xl tracking-tight" style={{ color: '#2D2D2D', fontWeight: 700 }}>
+              <p className="text-xs sm:text-sm mb-1 sm:mb-2" style={{ color: '#65676B', fontWeight: 500 }}>Active</p>
+              <p className="text-lg sm:text-3xl tracking-tight" style={{ color: '#2D2D2D', fontWeight: 700 }}>
                 {activeContacts.length}
               </p>
-              <p className="text-xs mt-2" style={{ color: '#B0B3B8' }}>
+              <p className="text-[10px] sm:text-xs mt-1 sm:mt-2 hidden sm:block" style={{ color: '#B0B3B8' }}>
                 With recent activity
               </p>
             </div>
 
             {/* Total Invoices */}
-            <div className="group relative rounded-2xl p-6 transition-all duration-300 hover:scale-[1.02]" style={{ backgroundColor: 'rgba(20, 70, 42, 0.04)' }}>
-              <div className="flex items-center justify-between mb-4">
-                <div className="h-12 w-12 rounded-full flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110" style={{ backgroundColor: 'rgba(20, 70, 42, 0.12)' }}>
-                  <Receipt21 size={24} color="#14462a" variant="Bulk" />
+            <div className="group relative rounded-xl sm:rounded-2xl p-3 sm:p-6 transition-all duration-300 hover:scale-[1.02]" style={{ backgroundColor: 'rgba(20, 70, 42, 0.04)' }}>
+              <div className="flex items-center justify-between mb-2 sm:mb-4">
+                <div className="h-8 w-8 sm:h-12 sm:w-12 rounded-full flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110" style={{ backgroundColor: 'rgba(20, 70, 42, 0.12)' }}>
+                  <Receipt21 size={16} color="#14462a" variant="Bulk" className="sm:hidden" />
+                  <Receipt21 size={24} color="#14462a" variant="Bulk" className="hidden sm:block" />
                 </div>
-                <div className="flex items-center gap-1 px-2 py-1 rounded-full" style={{ backgroundColor: 'rgba(20, 70, 42, 0.12)' }}>
-                  <span className="text-xs font-semibold" style={{ color: '#14462a' }}>{totalInvoices}</span>
+                <div className="flex items-center gap-1 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full" style={{ backgroundColor: 'rgba(20, 70, 42, 0.12)' }}>
+                  <span className="text-[10px] sm:text-xs font-semibold" style={{ color: '#14462a' }}>{totalInvoices}</span>
                 </div>
               </div>
-              <p className="text-sm mb-2" style={{ color: '#65676B', fontWeight: 500 }}>Total Invoices</p>
-              <p className="text-3xl tracking-tight" style={{ color: '#2D2D2D', fontWeight: 700 }}>
+              <p className="text-xs sm:text-sm mb-1 sm:mb-2" style={{ color: '#65676B', fontWeight: 500 }}>Invoices</p>
+              <p className="text-lg sm:text-3xl tracking-tight" style={{ color: '#2D2D2D', fontWeight: 700 }}>
                 {totalInvoices}
               </p>
-              <p className="text-xs mt-2" style={{ color: '#B0B3B8' }}>
+              <p className="text-[10px] sm:text-xs mt-1 sm:mt-2 hidden sm:block" style={{ color: '#B0B3B8' }}>
                 Avg {contacts.length > 0 ? Math.round(totalInvoices / contacts.length) : 0} per contact
               </p>
             </div>
 
             {/* Total Revenue */}
-            <div className="group relative rounded-2xl p-6 transition-all duration-300 hover:scale-[1.02]" style={{ backgroundColor: 'rgba(13, 148, 136, 0.04)' }}>
-              <div className="flex items-center justify-between mb-4">
-                <div className="h-12 w-12 rounded-xl flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110" style={{ backgroundColor: 'rgba(13, 148, 136, 0.12)' }}>
-                  <svg className="h-6 w-6" style={{ color: '#14462a' }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+            <div className="group relative rounded-xl sm:rounded-2xl p-3 sm:p-6 transition-all duration-300 hover:scale-[1.02]" style={{ backgroundColor: 'rgba(13, 148, 136, 0.04)' }}>
+              <div className="flex items-center justify-between mb-2 sm:mb-4">
+                <div className="h-8 w-8 sm:h-12 sm:w-12 rounded-lg sm:rounded-xl flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110" style={{ backgroundColor: 'rgba(13, 148, 136, 0.12)' }}>
+                  <svg className="h-4 w-4 sm:h-6 sm:w-6" style={{ color: '#14462a' }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                 </div>
               </div>
-              <p className="text-sm mb-2" style={{ color: '#65676B', fontWeight: 500 }}>Total Revenue</p>
-              <p className="text-3xl tracking-tight" style={{ color: '#2D2D2D', fontWeight: 700 }}>
+              <p className="text-xs sm:text-sm mb-1 sm:mb-2" style={{ color: '#65676B', fontWeight: 500 }}>Revenue</p>
+              <p className="text-lg sm:text-3xl tracking-tight" style={{ color: '#2D2D2D', fontWeight: 700 }}>
                 {maskAmount(formatCurrency(totalRevenue))}
               </p>
-              <p className="text-xs mt-2" style={{ color: '#B0B3B8' }}>From all contacts</p>
+              <p className="text-[10px] sm:text-xs mt-1 sm:mt-2 hidden sm:block" style={{ color: '#B0B3B8' }}>From all contacts</p>
             </div>
           </>
         )}
@@ -259,43 +262,43 @@ export default function ContactsPage() {
 
       {/* Search and Filter Card - Only show if user has contacts */}
       {!isNewUser && (
-        <div className="rounded-2xl p-6" style={{ backgroundColor: '#FAFBFC' }}>
-          <div className="flex items-center justify-between mb-5">
+        <div className="rounded-xl sm:rounded-2xl p-3 sm:p-6" style={{ backgroundColor: '#FAFBFC' }}>
+          <div className="flex items-center justify-between mb-3 sm:mb-5">
             <div>
-              <h3 className="text-sm font-semibold" style={{ color: '#2D2D2D' }}>Filter Contacts</h3>
-              <p className="text-xs mt-0.5" style={{ color: '#B0B3B8' }}>Refine your search results</p>
+              <h3 className="text-xs sm:text-sm font-semibold" style={{ color: '#2D2D2D' }}>Filter Contacts</h3>
+              <p className="text-[10px] sm:text-xs mt-0.5 hidden sm:block" style={{ color: '#B0B3B8' }}>Refine your search results</p>
             </div>
             <button 
               onClick={() => { setSearchQuery(''); setStatusFilter('all'); }}
-              className="text-xs font-medium px-3 py-1.5 rounded-full transition-all hover:bg-white" 
+              className="text-[10px] sm:text-xs font-medium px-2 sm:px-3 py-1 sm:py-1.5 rounded-full transition-all hover:bg-white" 
               style={{ color: '#14462a' }}
             >
-              Clear all
+              Clear
             </button>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
             {/* Search */}
-            <div className="md:col-span-2">
-              <label htmlFor="search" className="block text-xs mb-2 font-medium" style={{ color: '#65676B' }}>
+            <div className="sm:col-span-2">
+              <label htmlFor="search" className="block text-[10px] sm:text-xs mb-1.5 sm:mb-2 font-medium" style={{ color: '#65676B' }}>
                 Search
               </label>
               <div className="relative group">
-                <SearchNormal1 size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 transition-colors" style={{ color: '#B0B3B8' }} />
+                <SearchNormal1 size={14} className="absolute left-3 top-1/2 -translate-y-1/2 transition-colors" style={{ color: '#B0B3B8' }} />
                 <Input
                   id="search"
                   type="text"
-                  placeholder="Search name, email or company..."
+                  placeholder="Search name, email..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-10 h-11 rounded-xl border-0 shadow-sm transition-all focus:shadow-md"
+                  className="pl-8 sm:pl-10 h-9 sm:h-11 rounded-lg sm:rounded-xl border-0 shadow-sm transition-all focus:shadow-md text-sm"
                   style={{ backgroundColor: 'white', color: '#2D2D2D' }}
                 />
               </div>
             </div>
 
-            {/* Category Filter */}
-            <div>
+            {/* Category Filter - Hidden on mobile */}
+            <div className="hidden md:block">
               <label htmlFor="category" className="block text-xs mb-2 font-medium" style={{ color: '#65676B' }}>
                 Category
               </label>
@@ -331,21 +334,21 @@ export default function ContactsPage() {
 
             {/* Status Filter */}
             <div>
-              <label htmlFor="status" className="block text-xs mb-2 font-medium" style={{ color: '#65676B' }}>
+              <label htmlFor="status" className="block text-[10px] sm:text-xs mb-1.5 sm:mb-2 font-medium" style={{ color: '#65676B' }}>
                 Status
               </label>
               <Select value={statusFilter} onValueChange={setStatusFilter}>
-                <SelectTrigger id="status" className="h-11 w-full rounded-xl border-0 shadow-sm transition-all hover:shadow-md" style={{ backgroundColor: 'white' }}>
+                <SelectTrigger id="status" className="h-9 sm:h-11 w-full rounded-lg sm:rounded-xl border-0 shadow-sm transition-all hover:shadow-md text-sm" style={{ backgroundColor: 'white' }}>
                   <SelectValue placeholder="All statuses" />
                 </SelectTrigger>
-                <SelectContent className="rounded-2xl p-2">
-                  <SelectItem value="all" className="rounded-xl px-3 py-2.5 cursor-pointer">
-                    <span className="font-medium" style={{ color: '#2D2D2D' }}>All statuses</span>
+                <SelectContent className="rounded-xl sm:rounded-2xl p-1 sm:p-2">
+                  <SelectItem value="all" className="rounded-lg sm:rounded-xl px-2 sm:px-3 py-2 sm:py-2.5 cursor-pointer">
+                    <span className="font-medium text-sm" style={{ color: '#2D2D2D' }}>All statuses</span>
                   </SelectItem>
-                  <SelectItem value="active" className="rounded-xl px-3 py-2.5 cursor-pointer">
-                    <div className="flex items-center gap-3">
-                      <div className="h-2.5 w-2.5 rounded-full ring-2 ring-offset-1" style={{ backgroundColor: '#14462a' }}></div>
-                      <span className="font-medium" style={{ color: '#2D2D2D' }}>Active</span>
+                  <SelectItem value="active" className="rounded-lg sm:rounded-xl px-2 sm:px-3 py-2 sm:py-2.5 cursor-pointer">
+                    <div className="flex items-center gap-2 sm:gap-3">
+                      <div className="h-2 w-2 sm:h-2.5 sm:w-2.5 rounded-full ring-2 ring-offset-1" style={{ backgroundColor: '#14462a' }}></div>
+                      <span className="font-medium text-sm" style={{ color: '#2D2D2D' }}>Active</span>
                     </div>
                   </SelectItem>
                   <SelectItem value="inactive" className="rounded-xl px-3 py-2.5 cursor-pointer">
@@ -362,47 +365,50 @@ export default function ContactsPage() {
       )}
 
       {/* Contact Table */}
-      <div className="rounded-2xl overflow-hidden" style={{ backgroundColor: 'white', boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.05)' }}>
+      <div className="rounded-xl sm:rounded-2xl overflow-hidden" style={{ backgroundColor: 'white', boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.05)' }}>
         {/* Bulk Actions Bar */}
         {selectedRows.length > 0 && (
-          <div className="flex items-center justify-between px-6 py-4 border-b" style={{ backgroundColor: 'rgba(20, 70, 42, 0.04)', borderColor: 'rgba(20, 70, 42, 0.1)' }}>
-            <div className="flex items-center gap-3">
-              <div className="h-8 w-8 rounded-full flex items-center justify-center" style={{ backgroundColor: 'rgba(20, 70, 42, 0.12)' }}>
-                <TickCircle size={16} color="#14462a" />
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between px-3 sm:px-6 py-3 sm:py-4 border-b gap-3" style={{ backgroundColor: 'rgba(20, 70, 42, 0.04)', borderColor: 'rgba(20, 70, 42, 0.1)' }}>
+            <div className="flex items-center gap-2 sm:gap-3">
+              <div className="h-7 w-7 sm:h-8 sm:w-8 rounded-full flex items-center justify-center shrink-0" style={{ backgroundColor: 'rgba(20, 70, 42, 0.12)' }}>
+                <TickCircle size={14} color="#14462a" className="sm:hidden" />
+                <TickCircle size={16} color="#14462a" className="hidden sm:block" />
               </div>
               <div>
-                <p className="text-sm font-semibold" style={{ color: '#2D2D2D' }}>
-                  {selectedRows.length} {selectedRows.length === 1 ? 'contact' : 'contacts'} selected
+                <p className="text-xs sm:text-sm font-semibold" style={{ color: '#2D2D2D' }}>
+                  {selectedRows.length} selected
                 </p>
-                <p className="text-xs" style={{ color: '#65676B' }}>
+                <p className="text-[10px] sm:text-xs hidden sm:block" style={{ color: '#65676B' }}>
                   Choose an action to apply
                 </p>
               </div>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 flex-wrap">
               <Button 
                 variant="outline" 
                 size="sm" 
-                className="rounded-xl border-0 shadow-sm transition-all hover:shadow-md hover:scale-105" 
+                className="rounded-lg sm:rounded-xl border-0 shadow-sm transition-all hover:shadow-md hover:scale-105 h-7 sm:h-8 text-xs" 
                 style={{ backgroundColor: 'white' }}
               >
-                <Sms size={16} color="currentColor" className="mr-2" /> Email Selected
+                <Sms size={14} color="currentColor" className="sm:mr-2" />
+                <span className="hidden sm:inline">Email</span>
               </Button>
               <Button 
                 variant="outline" 
                 size="sm" 
-                className="rounded-xl border-0 shadow-sm transition-all hover:shadow-md hover:scale-105" 
+                className="rounded-lg sm:rounded-xl border-0 shadow-sm transition-all hover:shadow-md hover:scale-105 h-7 sm:h-8 text-xs" 
                 style={{ backgroundColor: 'white' }}
               >
-                <DocumentDownload size={16} color="currentColor" className="mr-2" /> Export
+                <DocumentDownload size={14} color="currentColor" className="sm:mr-2" />
+                <span className="hidden sm:inline">Export</span>
               </Button>
               <Button 
                 variant="ghost" 
                 size="sm" 
-                className="rounded-xl transition-all hover:bg-white"
+                className="rounded-lg sm:rounded-xl transition-all hover:bg-white h-7 sm:h-8 text-xs"
                 onClick={() => setSelectedRows([])}
               >
-                Clear Selection
+                Clear
               </Button>
             </div>
           </div>
@@ -429,132 +435,238 @@ export default function ContactsPage() {
           />
         ) : (
           <>
-            <Table>
-              <TableHeader>
-                <TableRow style={{ borderColor: '#E4E6EB' }}>
-                  <TableHead className="w-12">
-                    <Checkbox 
-                      checked={allSelected}
-                      {...(someSelected && { 'data-state': 'indeterminate' })}
-                      onCheckedChange={toggleSelectAll}
-                      aria-label="Select all"
-                    />
-                  </TableHead>
-                  <TableHead>Contact</TableHead>
-                  <TableHead>Email</TableHead>
-                  <TableHead>Phone</TableHead>
-                  <TableHead>Total Paid</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead className="w-12"></TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {contacts.map((contact) => (
-                  <TableRow 
-                    key={contact.id} 
-                    data-state={selectedRows.includes(contact.id) ? "selected" : undefined}
-                    className="cursor-pointer hover:bg-gray-50" 
-                    style={{ borderColor: '#E4E6EB' }}
-                    onClick={() => openContactModal(contact.id, "view")}
-                  >
-                    <TableCell onClick={(e) => e.stopPropagation()}>
+            {/* Desktop Table */}
+            <div className="hidden md:block">
+              <Table>
+                <TableHeader>
+                  <TableRow style={{ borderColor: '#E4E6EB' }}>
+                    <TableHead className="w-12">
+                      <Checkbox 
+                        checked={allSelected}
+                        {...(someSelected && { 'data-state': 'indeterminate' })}
+                        onCheckedChange={toggleSelectAll}
+                        aria-label="Select all"
+                      />
+                    </TableHead>
+                    <TableHead>Contact</TableHead>
+                    <TableHead>Email</TableHead>
+                    <TableHead>Phone</TableHead>
+                    <TableHead>Total Paid</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead className="w-12"></TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {contacts.map((contact) => (
+                    <TableRow 
+                      key={contact.id} 
+                      data-state={selectedRows.includes(contact.id) ? "selected" : undefined}
+                      className="cursor-pointer hover:bg-gray-50" 
+                      style={{ borderColor: '#E4E6EB' }}
+                      onClick={() => openContactModal(contact.id, "view")}
+                    >
+                      <TableCell onClick={(e) => e.stopPropagation()}>
+                        <Checkbox 
+                          checked={selectedRows.includes(contact.id)}
+                          onCheckedChange={() => toggleSelectRow(contact.id)}
+                          aria-label={`Select ${contact.name}`}
+                        />
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex items-center gap-3">
+                          <Avatar className="h-8 w-8 shrink-0">
+                            <AvatarFallback className="text-xs" style={{ backgroundColor: '#14462a', color: 'white', fontWeight: 600 }}>
+                              {getInitials(contact.name)}
+                            </AvatarFallback>
+                          </Avatar>
+                          <div>
+                            <div className="font-medium">{contact.name}</div>
+                            <div className="text-xs text-[#65676B]">{contact.company || '-'}</div>
+                          </div>
+                        </div>
+                      </TableCell>
+                      <TableCell className="text-[#65676B]">{contact.email || '-'}</TableCell>
+                      <TableCell className="text-[#65676B]">{contact.phone || '-'}</TableCell>
+                      <TableCell className="font-medium">
+                        {maskAmount(formatCurrency(contact.totalPaid || 0))}
+                      </TableCell>
+                      <TableCell>
+                        <Badge variant={contact.status === 'Active' ? "success" : "outline"}>
+                          {contact.status || 'Unknown'}
+                        </Badge>
+                      </TableCell>
+                      <TableCell onClick={(e) => e.stopPropagation()}>
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <button className="inline-flex items-center rounded-full p-1.5 transition-all hover:bg-[rgba(20,70,42,0.06)]">
+                              <More size={16} color="#B0B3B8" />
+                            </button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end" className="rounded-2xl w-48 p-2">
+                            <DropdownMenuItem 
+                              className="rounded-xl p-3 cursor-pointer"
+                              onClick={() => openContactModal(contact.id, "view")}
+                            >
+                              <Profile2User size={16} color="#14462a" className="mr-2" />
+                              <span>View Details</span>
+                            </DropdownMenuItem>
+                            <DropdownMenuItem 
+                              className="rounded-xl p-3 cursor-pointer"
+                              onClick={() => openContactModal(contact.id, "edit")}
+                            >
+                              <Edit2 size={16} color="#14462a" className="mr-2" />
+                              <span>Edit</span>
+                            </DropdownMenuItem>
+                            {contact.email && (
+                              <DropdownMenuItem className="rounded-xl p-3 cursor-pointer">
+                                <Sms size={16} color="#14462a" className="mr-2" />
+                                <span>Send Email</span>
+                              </DropdownMenuItem>
+                            )}
+                            <DropdownMenuSeparator className="my-2" />
+                            <DropdownMenuItem className="rounded-xl p-3 cursor-pointer text-red-600">
+                              <Trash size={16} color="#DC2626" className="mr-2" />
+                              <span>Delete</span>
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+
+            {/* Mobile Card List */}
+            <div className="md:hidden divide-y" style={{ borderColor: '#E4E6EB' }}>
+              {contacts.map((contact) => (
+                <div
+                  key={contact.id}
+                  className="p-3 cursor-pointer hover:bg-gray-50 transition-colors"
+                  onClick={() => openContactModal(contact.id, "view")}
+                >
+                  <div className="flex items-start gap-3">
+                    {/* Checkbox */}
+                    <div className="pt-1" onClick={(e) => e.stopPropagation()}>
                       <Checkbox 
                         checked={selectedRows.includes(contact.id)}
                         onCheckedChange={() => toggleSelectRow(contact.id)}
                         aria-label={`Select ${contact.name}`}
                       />
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex items-center gap-3">
-                        <Avatar className="h-8 w-8 shrink-0">
-                          <AvatarFallback className="text-xs" style={{ backgroundColor: '#14462a', color: 'white', fontWeight: 600 }}>
-                            {getInitials(contact.name)}
-                          </AvatarFallback>
-                        </Avatar>
-                        <div>
-                          <div className="font-medium">{contact.name}</div>
-                          <div className="text-xs text-[#65676B]">{contact.company || '-'}</div>
+                    </div>
+
+                    {/* Avatar */}
+                    <Avatar className="h-10 w-10 shrink-0">
+                      <AvatarFallback className="text-xs" style={{ backgroundColor: '#14462a', color: 'white', fontWeight: 600 }}>
+                        {getInitials(contact.name)}
+                      </AvatarFallback>
+                    </Avatar>
+
+                    {/* Contact Info */}
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-start justify-between gap-2">
+                        <div className="min-w-0 flex-1">
+                          <p className="font-medium text-sm truncate" style={{ color: '#2D2D2D' }}>{contact.name}</p>
+                          {contact.company && (
+                            <p className="text-xs truncate" style={{ color: '#65676B' }}>{contact.company}</p>
+                          )}
+                        </div>
+                        <Badge variant={contact.status === 'Active' ? "success" : "outline"} className="text-[10px] shrink-0">
+                          {contact.status || 'Unknown'}
+                        </Badge>
+                      </div>
+                      
+                      <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs" style={{ color: '#65676B' }}>
+                        {contact.email && (
+                          <span className="flex items-center gap-1 truncate max-w-[140px]">
+                            <Sms size={12} />
+                            {contact.email}
+                          </span>
+                        )}
+                        {contact.phone && (
+                          <span className="flex items-center gap-1">
+                            <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                            </svg>
+                            {contact.phone}
+                          </span>
+                        )}
+                      </div>
+
+                      <div className="mt-2 flex items-center justify-between">
+                        <span className="text-xs font-medium" style={{ color: '#14462a' }}>
+                          {maskAmount(formatCurrency(contact.totalPaid || 0))} paid
+                        </span>
+                        <div onClick={(e) => e.stopPropagation()}>
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <button className="inline-flex items-center rounded-full p-1 transition-all hover:bg-[rgba(20,70,42,0.06)]">
+                                <More size={16} color="#B0B3B8" />
+                              </button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end" className="rounded-xl w-44 p-1.5">
+                              <DropdownMenuItem 
+                                className="rounded-lg p-2.5 cursor-pointer text-sm"
+                                onClick={() => openContactModal(contact.id, "view")}
+                              >
+                                <Profile2User size={14} color="#14462a" className="mr-2" />
+                                <span>View</span>
+                              </DropdownMenuItem>
+                              <DropdownMenuItem 
+                                className="rounded-lg p-2.5 cursor-pointer text-sm"
+                                onClick={() => openContactModal(contact.id, "edit")}
+                              >
+                                <Edit2 size={14} color="#14462a" className="mr-2" />
+                                <span>Edit</span>
+                              </DropdownMenuItem>
+                              {contact.email && (
+                                <DropdownMenuItem className="rounded-lg p-2.5 cursor-pointer text-sm">
+                                  <Sms size={14} color="#14462a" className="mr-2" />
+                                  <span>Email</span>
+                                </DropdownMenuItem>
+                              )}
+                              <DropdownMenuSeparator className="my-1" />
+                              <DropdownMenuItem className="rounded-lg p-2.5 cursor-pointer text-sm text-red-600">
+                                <Trash size={14} color="#DC2626" className="mr-2" />
+                                <span>Delete</span>
+                              </DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
                         </div>
                       </div>
-                    </TableCell>
-                    <TableCell className="text-[#65676B]">{contact.email || '-'}</TableCell>
-                    <TableCell className="text-[#65676B]">{contact.phone || '-'}</TableCell>
-                    <TableCell className="font-medium">
-                      {maskAmount(formatCurrency(contact.totalPaid || 0))}
-                    </TableCell>
-                    <TableCell>
-                      <Badge variant={contact.status === 'Active' ? "success" : "outline"}>
-                        {contact.status || 'Unknown'}
-                      </Badge>
-                    </TableCell>
-                    <TableCell onClick={(e) => e.stopPropagation()}>
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <button className="inline-flex items-center rounded-full p-1.5 transition-all hover:bg-[rgba(20,70,42,0.06)]">
-                            <More size={16} color="#B0B3B8" />
-                          </button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end" className="rounded-2xl w-48 p-2">
-                          <DropdownMenuItem 
-                            className="rounded-xl p-3 cursor-pointer"
-                            onClick={() => openContactModal(contact.id, "view")}
-                          >
-                            <Profile2User size={16} color="#14462a" className="mr-2" />
-                            <span>View Details</span>
-                          </DropdownMenuItem>
-                          <DropdownMenuItem 
-                            className="rounded-xl p-3 cursor-pointer"
-                            onClick={() => openContactModal(contact.id, "edit")}
-                          >
-                            <Edit2 size={16} color="#14462a" className="mr-2" />
-                            <span>Edit</span>
-                          </DropdownMenuItem>
-                          {contact.email && (
-                            <DropdownMenuItem className="rounded-xl p-3 cursor-pointer">
-                              <Sms size={16} color="#14462a" className="mr-2" />
-                              <span>Send Email</span>
-                            </DropdownMenuItem>
-                          )}
-                          <DropdownMenuSeparator className="my-2" />
-                          <DropdownMenuItem className="rounded-xl p-3 cursor-pointer text-red-600">
-                            <Trash size={16} color="#DC2626" className="mr-2" />
-                            <span>Delete</span>
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
 
             {/* Pagination */}
             {pagination.totalPages > 1 && (
-              <div className="flex items-center justify-between px-6 py-4 border-t">
-                <p className="text-sm" style={{ color: '#65676B' }}>
-                  Showing {((pagination.page - 1) * pagination.limit) + 1} to {Math.min(pagination.page * pagination.limit, pagination.total)} of {pagination.total} contacts
+              <div className="flex flex-col sm:flex-row items-center justify-between px-3 sm:px-6 py-3 sm:py-4 border-t gap-3" style={{ borderColor: '#E4E6EB' }}>
+                <p className="text-xs sm:text-sm order-2 sm:order-1" style={{ color: '#65676B' }}>
+                  {((pagination.page - 1) * pagination.limit) + 1}-{Math.min(pagination.page * pagination.limit, pagination.total)} of {pagination.total}
                 </p>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 order-1 sm:order-2">
                   <Button
                     variant="outline"
                     size="sm"
-                    className="rounded-xl"
+                    className="rounded-lg sm:rounded-xl h-8"
                     disabled={pagination.page <= 1}
                     onClick={() => setFilters({ ...filters, page: pagination.page - 1 })}
                   >
-                    <ArrowLeft2 size={16} color="#65676B" />
+                    <ArrowLeft2 size={14} color="#65676B" />
                   </Button>
-                  <span className="text-sm px-3" style={{ color: '#2D2D2D' }}>
-                    Page {pagination.page} of {pagination.totalPages}
+                  <span className="text-xs sm:text-sm px-2 sm:px-3" style={{ color: '#2D2D2D' }}>
+                    {pagination.page} / {pagination.totalPages}
                   </span>
                   <Button
                     variant="outline"
                     size="sm"
-                    className="rounded-xl"
+                    className="rounded-lg sm:rounded-xl h-8"
                     disabled={pagination.page >= pagination.totalPages}
                     onClick={() => setFilters({ ...filters, page: pagination.page + 1 })}
                   >
-                    <ArrowRight2 size={16} color="#65676B" />
+                    <ArrowRight2 size={14} color="#65676B" />
                   </Button>
                 </div>
               </div>

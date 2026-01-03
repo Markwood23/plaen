@@ -468,96 +468,101 @@ export default function SettingsPage() {
   }
 
   return (
-    <div className="py-8 px-4">
-      <div className="mb-8">
-        <h1 className="text-2xl font-semibold text-gray-900">Settings</h1>
-        <p className="text-sm text-gray-500 mt-1">Manage your account and preferences</p>
+    <div className="py-4 sm:py-8 px-0 sm:px-4">
+      <div className="mb-4 sm:mb-8">
+        <h1 className="text-xl sm:text-2xl font-semibold text-gray-900">Settings</h1>
+        <p className="text-xs sm:text-sm text-gray-500 mt-1">Manage your account and preferences</p>
       </div>
 
-      <Tabs defaultValue="profile" className="space-y-8">
-        <TabsList className="mb-8 flex flex-wrap gap-2 bg-transparent p-0 h-auto">
-          <TabsTrigger value="profile" className="rounded-full border border-gray-200 bg-white data-[state=active]:bg-[#14462a] data-[state=active]:text-white data-[state=active]:border-[#14462a] px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors">
-            <User size={16} color="currentColor" className="mr-2" />
+      <Tabs defaultValue="profile" className="space-y-4 sm:space-y-8">
+        <TabsList className="mb-4 sm:mb-8 flex flex-wrap gap-1.5 sm:gap-2 bg-transparent p-0 h-auto">
+          <TabsTrigger value="profile" className="rounded-full border border-gray-200 bg-white data-[state=active]:bg-[#14462a] data-[state=active]:text-white data-[state=active]:border-[#14462a] px-2.5 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors">
+            <User size={14} color="currentColor" className="mr-1 sm:mr-2 hidden xs:inline-block" />
             Profile
           </TabsTrigger>
-          <TabsTrigger value="business" className="rounded-full border border-gray-200 bg-white data-[state=active]:bg-[#14462a] data-[state=active]:text-white data-[state=active]:border-[#14462a] px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors">
-            <Building size={16} color="currentColor" className="mr-2" />
+          <TabsTrigger value="business" className="rounded-full border border-gray-200 bg-white data-[state=active]:bg-[#14462a] data-[state=active]:text-white data-[state=active]:border-[#14462a] px-2.5 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors">
+            <Building size={14} color="currentColor" className="mr-1 sm:mr-2 hidden xs:inline-block" />
             Business
           </TabsTrigger>
-          <TabsTrigger value="payments" className="rounded-full border border-gray-200 bg-white data-[state=active]:bg-[#14462a] data-[state=active]:text-white data-[state=active]:border-[#14462a] px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors">
-            <Bank size={16} color="currentColor" className="mr-2" />
+          <TabsTrigger value="payments" className="rounded-full border border-gray-200 bg-white data-[state=active]:bg-[#14462a] data-[state=active]:text-white data-[state=active]:border-[#14462a] px-2.5 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors">
+            <Bank size={14} color="currentColor" className="mr-1 sm:mr-2 hidden xs:inline-block" />
             Payments
           </TabsTrigger>
-          <TabsTrigger value="invoices" className="rounded-full border border-gray-200 bg-white data-[state=active]:bg-[#14462a] data-[state=active]:text-white data-[state=active]:border-[#14462a] px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors">
-            <DocumentDownload size={16} color="currentColor" className="mr-2" />
+          <TabsTrigger value="invoices" className="rounded-full border border-gray-200 bg-white data-[state=active]:bg-[#14462a] data-[state=active]:text-white data-[state=active]:border-[#14462a] px-2.5 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors">
+            <DocumentDownload size={14} color="currentColor" className="mr-1 sm:mr-2 hidden xs:inline-block" />
             Invoices
           </TabsTrigger>
-          <TabsTrigger value="branding" className="rounded-full border border-gray-200 bg-white data-[state=active]:bg-[#14462a] data-[state=active]:text-white data-[state=active]:border-[#14462a] px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors">
-            <Brush2 size={16} color="currentColor" className="mr-2" />
+          <TabsTrigger value="branding" className="rounded-full border border-gray-200 bg-white data-[state=active]:bg-[#14462a] data-[state=active]:text-white data-[state=active]:border-[#14462a] px-2.5 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors">
+            <Brush2 size={14} color="currentColor" className="mr-1 sm:mr-2 hidden xs:inline-block" />
             Branding
           </TabsTrigger>
-          <TabsTrigger value="notifications" className="rounded-full border border-gray-200 bg-white data-[state=active]:bg-[#14462a] data-[state=active]:text-white data-[state=active]:border-[#14462a] px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors">
-            <Notification size={16} color="currentColor" className="mr-2" />
-            Notifications
+          <TabsTrigger value="notifications" className="rounded-full border border-gray-200 bg-white data-[state=active]:bg-[#14462a] data-[state=active]:text-white data-[state=active]:border-[#14462a] px-2.5 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors">
+            <Notification size={14} color="currentColor" className="mr-1 sm:mr-2 hidden xs:inline-block" />
+            <span className="hidden sm:inline">Notifications</span>
+            <span className="sm:hidden">Notifs</span>
           </TabsTrigger>
-          <TabsTrigger value="security" className="rounded-full border border-gray-200 bg-white data-[state=active]:bg-[#14462a] data-[state=active]:text-white data-[state=active]:border-[#14462a] px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors">
-            <ShieldTick size={16} color="currentColor" className="mr-2" />
+          <TabsTrigger value="security" className="rounded-full border border-gray-200 bg-white data-[state=active]:bg-[#14462a] data-[state=active]:text-white data-[state=active]:border-[#14462a] px-2.5 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors">
+            <ShieldTick size={14} color="currentColor" className="mr-1 sm:mr-2 hidden xs:inline-block" />
             Security
           </TabsTrigger>
-          <TabsTrigger value="billing" className="rounded-full border border-gray-200 bg-white data-[state=active]:bg-[#14462a] data-[state=active]:text-white data-[state=active]:border-[#14462a] px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors">
-            <Wallet size={16} color="currentColor" className="mr-2" />
+          <TabsTrigger value="billing" className="rounded-full border border-gray-200 bg-white data-[state=active]:bg-[#14462a] data-[state=active]:text-white data-[state=active]:border-[#14462a] px-2.5 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors">
+            <Wallet size={14} color="currentColor" className="mr-1 sm:mr-2 hidden xs:inline-block" />
             Billing
           </TabsTrigger>
-          <TabsTrigger value="data" className="rounded-full border border-gray-200 bg-white data-[state=active]:bg-[#14462a] data-[state=active]:text-white data-[state=active]:border-[#14462a] px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors">
-            <Data size={16} color="currentColor" className="mr-2" />
+          <TabsTrigger value="data" className="rounded-full border border-gray-200 bg-white data-[state=active]:bg-[#14462a] data-[state=active]:text-white data-[state=active]:border-[#14462a] px-2.5 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors">
+            <Data size={14} color="currentColor" className="mr-1 sm:mr-2 hidden xs:inline-block" />
             Data
           </TabsTrigger>
         </TabsList>
 
         {/* Profile Tab */}
-        <TabsContent value="profile" className="space-y-8">
+        <TabsContent value="profile" className="space-y-6 sm:space-y-8">
           <div>
-            <h2 className="text-lg font-semibold text-gray-900 mb-1">Personal Information</h2>
-            <p className="text-sm text-gray-500 mb-6">Your personal details</p>
+            <h2 className="text-base sm:text-lg font-semibold text-gray-900 mb-1">Personal Information</h2>
+            <p className="text-xs sm:text-sm text-gray-500 mb-4 sm:mb-6">Your personal details</p>
 
-            <div className="grid grid-cols-2 gap-6">
-              <div className="space-y-2">
-                <Label htmlFor="firstName">First Name</Label>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+              <div className="space-y-1.5 sm:space-y-2">
+                <Label htmlFor="firstName" className="text-xs sm:text-sm">First Name</Label>
                 <Input 
                   id="firstName" 
                   value={firstName}
                   onChange={(e) => setFirstName(e.target.value)}
-                  placeholder="John" 
+                  placeholder="John"
+                  className="h-9 sm:h-10 text-sm"
                 />
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="lastName">Last Name</Label>
+              <div className="space-y-1.5 sm:space-y-2">
+                <Label htmlFor="lastName" className="text-xs sm:text-sm">Last Name</Label>
                 <Input 
                   id="lastName" 
                   value={lastName}
                   onChange={(e) => setLastName(e.target.value)}
-                  placeholder="Doe" 
+                  placeholder="Doe"
+                  className="h-9 sm:h-10 text-sm"
                 />
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="email">Email Address</Label>
-                <div className="flex items-center gap-3 h-10 px-3 rounded-lg border border-gray-200 bg-gray-50">
-                  <span className="text-gray-700">{apiSettings?.email || "Not set"}</span>
-                  <Badge variant="paid" className="ml-auto">
-                    <TickCircle size={12} color="#14462a" />
-                    Verified
+              <div className="space-y-1.5 sm:space-y-2">
+                <Label htmlFor="email" className="text-xs sm:text-sm">Email Address</Label>
+                <div className="flex items-center gap-2 sm:gap-3 h-9 sm:h-10 px-3 rounded-lg border border-gray-200 bg-gray-50">
+                  <span className="text-gray-700 text-xs sm:text-sm truncate">{apiSettings?.email || "Not set"}</span>
+                  <Badge variant="paid" className="ml-auto text-[10px] sm:text-xs shrink-0">
+                    <TickCircle size={10} color="#14462a" className="sm:hidden" />
+                    <TickCircle size={12} color="#14462a" className="hidden sm:block" />
+                    <span className="hidden sm:inline ml-1">Verified</span>
                   </Badge>
                 </div>
-                <p className="text-xs text-gray-500">Contact support to change your email</p>
+                <p className="text-[10px] sm:text-xs text-gray-500">Contact support to change your email</p>
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="phone">Phone Number</Label>
+              <div className="space-y-1.5 sm:space-y-2">
+                <Label htmlFor="phone" className="text-xs sm:text-sm">Phone Number</Label>
                 <div className="relative">
-                  <Call size={16} color="#9CA3AF" className="absolute left-3 top-1/2 -translate-y-1/2" />
+                  <Call size={14} color="#9CA3AF" className="absolute left-3 top-1/2 -translate-y-1/2 sm:hidden" />
+                  <Call size={16} color="#9CA3AF" className="absolute left-3 top-1/2 -translate-y-1/2 hidden sm:block" />
                   <Input 
                     id="phone" 
                     type="tel" 
-                    className="pl-10" 
+                    className="pl-9 sm:pl-10 h-9 sm:h-10 text-sm" 
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
                     placeholder="+233 24 123 4567" 
@@ -566,10 +571,10 @@ export default function SettingsPage() {
               </div>
             </div>
 
-            <div className="flex justify-end gap-3 pt-8">
+            <div className="flex flex-col sm:flex-row justify-end gap-2 sm:gap-3 pt-6 sm:pt-8">
               <Button 
                 variant="outline" 
-                className="rounded-xl"
+                className="rounded-xl h-9 sm:h-10 text-sm order-2 sm:order-1"
                 onClick={() => {
                   const nameParts = (apiSettings?.full_name || "").split(" ");
                   setFirstName(nameParts[0] || "");
@@ -580,7 +585,7 @@ export default function SettingsPage() {
                 Cancel
               </Button>
               <Button 
-                className="rounded-xl bg-[#14462a] hover:bg-[#14462a]/90"
+                className="rounded-xl bg-[#14462a] hover:bg-[#14462a]/90 h-9 sm:h-10 text-sm order-1 sm:order-2"
                 onClick={handleSaveProfile}
                 disabled={savingProfile}
               >
@@ -591,25 +596,26 @@ export default function SettingsPage() {
         </TabsContent>
 
         {/* Business Tab */}
-        <TabsContent value="business" className="space-y-8">
+        <TabsContent value="business" className="space-y-6 sm:space-y-8">
           <div>
-            <h2 className="text-lg font-semibold text-gray-900 mb-1">Business Details</h2>
-            <p className="text-sm text-gray-500 mb-6">Information shown on your invoices</p>
+            <h2 className="text-base sm:text-lg font-semibold text-gray-900 mb-1">Business Details</h2>
+            <p className="text-xs sm:text-sm text-gray-500 mb-4 sm:mb-6">Information shown on your invoices</p>
 
-            <div className="grid grid-cols-2 gap-6">
-              <div className="space-y-2">
-                <Label htmlFor="businessName">Business Name</Label>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+              <div className="space-y-1.5 sm:space-y-2">
+                <Label htmlFor="businessName" className="text-xs sm:text-sm">Business Name</Label>
                 <Input 
                   id="businessName" 
                   value={businessName}
                   onChange={(e) => setBusinessName(e.target.value)}
-                  placeholder="Your company name" 
+                  placeholder="Your company name"
+                  className="h-9 sm:h-10 text-sm"
                 />
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="businessType">Business Type</Label>
+              <div className="space-y-1.5 sm:space-y-2">
+                <Label htmlFor="businessType" className="text-xs sm:text-sm">Business Type</Label>
                 <Select value={businessType} onValueChange={setBusinessType}>
-                  <SelectTrigger>
+                  <SelectTrigger className="h-9 sm:h-10 text-sm">
                     <SelectValue placeholder="Select type" />
                   </SelectTrigger>
                   <SelectContent>
@@ -621,63 +627,68 @@ export default function SettingsPage() {
                   </SelectContent>
                 </Select>
               </div>
-              <div className="col-span-2 space-y-2">
-                <Label htmlFor="taxId">Tax ID / VAT Number (Optional)</Label>
+              <div className="sm:col-span-2 space-y-1.5 sm:space-y-2">
+                <Label htmlFor="taxId" className="text-xs sm:text-sm">Tax ID / VAT Number (Optional)</Label>
                 <Input 
                   id="taxId" 
                   value={taxId}
                   onChange={(e) => setTaxId(e.target.value)}
-                  placeholder="Tax identification number" 
+                  placeholder="Tax identification number"
+                  className="h-9 sm:h-10 text-sm"
                 />
               </div>
             </div>
           </div>
 
           <div>
-            <h2 className="text-lg font-semibold text-gray-900 mb-1">Business Address</h2>
-            <p className="text-sm text-gray-500 mb-6">Your business location</p>
+            <h2 className="text-base sm:text-lg font-semibold text-gray-900 mb-1">Business Address</h2>
+            <p className="text-xs sm:text-sm text-gray-500 mb-4 sm:mb-6">Your business location</p>
 
-            <div className="grid grid-cols-2 gap-6">
-              <div className="col-span-2 space-y-2">
-                <Label htmlFor="street">Street Address</Label>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+              <div className="sm:col-span-2 space-y-1.5 sm:space-y-2">
+                <Label htmlFor="street" className="text-xs sm:text-sm">Street Address</Label>
                 <Input 
                   id="street" 
                   value={streetAddress}
                   onChange={(e) => setStreetAddress(e.target.value)}
-                  placeholder="123 Main Street" 
+                  placeholder="123 Main Street"
+                  className="h-9 sm:h-10 text-sm"
                 />
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="city">City</Label>
+              <div className="space-y-1.5 sm:space-y-2">
+                <Label htmlFor="city" className="text-xs sm:text-sm">City</Label>
                 <Input 
                   id="city" 
                   value={city}
                   onChange={(e) => setCity(e.target.value)}
-                  placeholder="Accra" 
+                  placeholder="Accra"
+                  className="h-9 sm:h-10 text-sm"
                 />
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="region">State/Region</Label>
+              <div className="space-y-1.5 sm:space-y-2">
+                <Label htmlFor="region" className="text-xs sm:text-sm">State/Region</Label>
                 <Input 
                   id="region" 
                   value={region}
                   onChange={(e) => setRegion(e.target.value)}
-                  placeholder="Greater Accra" 
+                  placeholder="Greater Accra"
+                  className="h-9 sm:h-10 text-sm"
                 />
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="postal">Postal Code</Label>
+              <div className="space-y-1.5 sm:space-y-2">
+                <Label htmlFor="postal" className="text-xs sm:text-sm">Postal Code</Label>
                 <Input 
                   id="postal" 
                   value={postalCode}
                   onChange={(e) => setPostalCode(e.target.value)}
-                  placeholder="00233" 
+                  placeholder="00233"
+                  className="h-9 sm:h-10 text-sm"
                 />
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="country">Country</Label>
+              <div className="space-y-1.5 sm:space-y-2">
+                <Label htmlFor="country" className="text-xs sm:text-sm">Country</Label>
                 <Select value={country} onValueChange={setCountry}>
-                  <SelectTrigger>
+                  <SelectTrigger className="h-9 sm:h-10 text-sm">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -692,10 +703,10 @@ export default function SettingsPage() {
               </div>
             </div>
 
-            <div className="flex justify-end gap-3 pt-8">
+            <div className="flex flex-col sm:flex-row justify-end gap-2 sm:gap-3 pt-6 sm:pt-8">
               <Button 
                 variant="outline" 
-                className="rounded-xl"
+                className="rounded-xl h-9 sm:h-10 text-sm order-2 sm:order-1"
                 onClick={() => {
                   setBusinessName(apiSettings?.business_name || "");
                   setBusinessType(apiSettings?.business_type || "llc");
@@ -710,7 +721,7 @@ export default function SettingsPage() {
                 Cancel
               </Button>
               <Button 
-                className="rounded-xl bg-[#14462a] hover:bg-[#14462a]/90"
+                className="rounded-xl bg-[#14462a] hover:bg-[#14462a]/90 h-9 sm:h-10 text-sm order-1 sm:order-2"
                 onClick={handleSaveBusiness}
                 disabled={savingBusiness}
               >
@@ -721,32 +732,34 @@ export default function SettingsPage() {
         </TabsContent>
 
         {/* Payments Tab */}
-        <TabsContent value="payments" className="space-y-8">
-          <div className="rounded-xl border border-blue-200 bg-blue-50/50 p-4 flex items-start gap-3">
-            <Bank size={20} color="#2563EB" className="flex-shrink-0 mt-0.5" />
+        <TabsContent value="payments" className="space-y-6 sm:space-y-8">
+          <div className="rounded-lg sm:rounded-xl border border-blue-200 bg-blue-50/50 p-3 sm:p-4 flex items-start gap-2 sm:gap-3">
+            <Bank size={16} color="#2563EB" className="flex-shrink-0 mt-0.5 sm:hidden" />
+            <Bank size={20} color="#2563EB" className="flex-shrink-0 mt-0.5 hidden sm:block" />
             <div>
-              <p className="text-sm font-medium text-blue-800">Payment Details</p>
-              <p className="text-xs text-blue-700 mt-1">
-                These details will be shown on your invoices so clients know where to send payment. Online payments are processed through Flutterwave.
+              <p className="text-xs sm:text-sm font-medium text-blue-800">Payment Details</p>
+              <p className="text-[10px] sm:text-xs text-blue-700 mt-1">
+                These details will be shown on your invoices so clients know where to send payment.
               </p>
             </div>
           </div>
 
           <div>
-            <h2 className="text-lg font-semibold text-gray-900 mb-1">Payment Methods</h2>
-            <p className="text-sm text-gray-500 mb-6">Choose which payment options to show on your invoices</p>
+            <h2 className="text-base sm:text-lg font-semibold text-gray-900 mb-1">Payment Methods</h2>
+            <p className="text-xs sm:text-sm text-gray-500 mb-4 sm:mb-6">Choose which payment options to show on your invoices</p>
 
-            <div className="rounded-2xl border border-gray-200 divide-y divide-gray-100">
+            <div className="rounded-xl sm:rounded-2xl border border-gray-200 divide-y divide-gray-100">
               {/* Bank Transfer */}
-              <div className="p-5">
+              <div className="p-3 sm:p-5">
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className="h-10 w-10 rounded-full bg-[#14462a]/10 flex items-center justify-center">
-                      <Bank size={18} color="#14462a" />
+                  <div className="flex items-center gap-2 sm:gap-3">
+                    <div className="h-8 w-8 sm:h-10 sm:w-10 rounded-full bg-[#14462a]/10 flex items-center justify-center shrink-0">
+                      <Bank size={16} color="#14462a" className="sm:hidden" />
+                      <Bank size={18} color="#14462a" className="hidden sm:block" />
                     </div>
                     <div>
-                      <p className="text-sm font-medium text-gray-900">Bank Transfer</p>
-                      <p className="text-xs text-gray-500">Show bank account details on invoices</p>
+                      <p className="text-xs sm:text-sm font-medium text-gray-900">Bank Transfer</p>
+                      <p className="text-[10px] sm:text-xs text-gray-500 hidden sm:block">Show bank account details on invoices</p>
                     </div>
                   </div>
                   <Switch
@@ -755,32 +768,32 @@ export default function SettingsPage() {
                   />
                 </div>
                 {paymentMethods.bankTransferEnabled && (
-                  <div className="space-y-4 mt-4 pl-13">
-                    <div className="grid grid-cols-2 gap-4">
-                      <div className="space-y-2">
-                        <Label className="text-xs">Bank Name</Label>
+                  <div className="space-y-3 sm:space-y-4 mt-3 sm:mt-4 sm:pl-13">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                      <div className="space-y-1.5 sm:space-y-2">
+                        <Label className="text-[10px] sm:text-xs">Bank Name</Label>
                         <Input 
                           placeholder="e.g., Ghana Commercial Bank" 
-                          className="h-10"
+                          className="h-9 sm:h-10 text-sm"
                           value={bankDetails.bankName}
                           onChange={(e) => setBankDetails(prev => ({ ...prev, bankName: e.target.value }))}
                         />
                       </div>
-                      <div className="space-y-2">
-                        <Label className="text-xs">Account Number</Label>
+                      <div className="space-y-1.5 sm:space-y-2">
+                        <Label className="text-[10px] sm:text-xs">Account Number</Label>
                         <Input 
                           placeholder="0123456789" 
-                          className="h-10"
+                          className="h-9 sm:h-10 text-sm"
                           value={bankDetails.accountNumber}
                           onChange={(e) => setBankDetails(prev => ({ ...prev, accountNumber: e.target.value }))}
                         />
                       </div>
                     </div>
-                    <div className="space-y-2">
-                      <Label className="text-xs">Account Name</Label>
+                    <div className="space-y-1.5 sm:space-y-2">
+                      <Label className="text-[10px] sm:text-xs">Account Name</Label>
                       <Input 
                         placeholder="Name on bank account" 
-                        className="h-10"
+                        className="h-9 sm:h-10 text-sm"
                         value={bankDetails.accountName}
                         onChange={(e) => setBankDetails(prev => ({ ...prev, accountName: e.target.value }))}
                       />
@@ -790,15 +803,16 @@ export default function SettingsPage() {
               </div>
 
               {/* Mobile Money */}
-              <div className="p-5">
+              <div className="p-3 sm:p-5">
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className="h-10 w-10 rounded-full bg-[#14462a]/10 flex items-center justify-center">
-                      <Mobile size={18} color="#14462a" />
+                  <div className="flex items-center gap-2 sm:gap-3">
+                    <div className="h-8 w-8 sm:h-10 sm:w-10 rounded-full bg-[#14462a]/10 flex items-center justify-center shrink-0">
+                      <Mobile size={16} color="#14462a" className="sm:hidden" />
+                      <Mobile size={18} color="#14462a" className="hidden sm:block" />
                     </div>
                     <div>
-                      <p className="text-sm font-medium text-gray-900">Mobile Money</p>
-                      <p className="text-xs text-gray-500">Show MoMo number on invoices</p>
+                      <p className="text-xs sm:text-sm font-medium text-gray-900">Mobile Money</p>
+                      <p className="text-[10px] sm:text-xs text-gray-500 hidden sm:block">Show MoMo number on invoices</p>
                     </div>
                   </div>
                   <Switch
@@ -807,15 +821,15 @@ export default function SettingsPage() {
                   />
                 </div>
                 {paymentMethods.momoEnabled && (
-                  <div className="space-y-4 mt-4 pl-13">
-                    <div className="grid grid-cols-2 gap-4">
-                      <div className="space-y-2">
-                        <Label className="text-xs">Provider</Label>
+                  <div className="space-y-3 sm:space-y-4 mt-3 sm:mt-4 sm:pl-13">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                      <div className="space-y-1.5 sm:space-y-2">
+                        <Label className="text-[10px] sm:text-xs">Provider</Label>
                         <Select 
                           value={momoDetails.provider} 
                           onValueChange={(value) => setMomoDetails(prev => ({ ...prev, provider: value }))}
                         >
-                          <SelectTrigger className="h-10">
+                          <SelectTrigger className="h-9 sm:h-10 text-sm">
                             <SelectValue />
                           </SelectTrigger>
                           <SelectContent>
@@ -825,22 +839,22 @@ export default function SettingsPage() {
                           </SelectContent>
                         </Select>
                       </div>
-                      <div className="space-y-2">
-                        <Label className="text-xs">Phone Number</Label>
+                      <div className="space-y-1.5 sm:space-y-2">
+                        <Label className="text-[10px] sm:text-xs">Phone Number</Label>
                         <Input 
                           type="tel" 
                           placeholder="+233 24 123 4567" 
-                          className="h-10"
+                          className="h-9 sm:h-10 text-sm"
                           value={momoDetails.phoneNumber}
                           onChange={(e) => setMomoDetails(prev => ({ ...prev, phoneNumber: e.target.value }))}
                         />
                       </div>
                     </div>
-                    <div className="space-y-2">
-                      <Label className="text-xs">Registered Name</Label>
+                    <div className="space-y-1.5 sm:space-y-2">
+                      <Label className="text-[10px] sm:text-xs">Registered Name</Label>
                       <Input 
                         placeholder="Name on mobile money account" 
-                        className="h-10"
+                        className="h-9 sm:h-10 text-sm"
                         value={momoDetails.registeredName}
                         onChange={(e) => setMomoDetails(prev => ({ ...prev, registeredName: e.target.value }))}
                       />
@@ -850,15 +864,16 @@ export default function SettingsPage() {
               </div>
 
               {/* Cryptocurrency */}
-              <div className="p-5">
+              <div className="p-3 sm:p-5">
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className="h-10 w-10 rounded-full bg-[#14462a]/10 flex items-center justify-center">
-                      <Bitcoin size={18} color="#14462a" />
+                  <div className="flex items-center gap-2 sm:gap-3">
+                    <div className="h-8 w-8 sm:h-10 sm:w-10 rounded-full bg-[#14462a]/10 flex items-center justify-center shrink-0">
+                      <Bitcoin size={16} color="#14462a" className="sm:hidden" />
+                      <Bitcoin size={18} color="#14462a" className="hidden sm:block" />
                     </div>
                     <div>
-                      <p className="text-sm font-medium text-gray-900">Cryptocurrency</p>
-                      <p className="text-xs text-gray-500">Accept USDT, Bitcoin payments</p>
+                      <p className="text-xs sm:text-sm font-medium text-gray-900">Cryptocurrency</p>
+                      <p className="text-[10px] sm:text-xs text-gray-500 hidden sm:block">Accept USDT, Bitcoin payments</p>
                     </div>
                   </div>
                   <Switch
@@ -867,21 +882,21 @@ export default function SettingsPage() {
                   />
                 </div>
                 {paymentMethods.cryptoEnabled && (
-                  <div className="space-y-4 mt-4 pl-13">
-                    <div className="space-y-2">
-                      <Label className="text-xs">USDT (TRC20) Address</Label>
+                  <div className="space-y-3 sm:space-y-4 mt-3 sm:mt-4 sm:pl-13">
+                    <div className="space-y-1.5 sm:space-y-2">
+                      <Label className="text-[10px] sm:text-xs">USDT (TRC20) Address</Label>
                       <Input 
                         placeholder="TRC20 wallet address" 
-                        className="h-10"
+                        className="h-9 sm:h-10 text-sm"
                         value={cryptoDetails.usdtAddress}
                         onChange={(e) => setCryptoDetails(prev => ({ ...prev, usdtAddress: e.target.value }))}
                       />
                     </div>
-                    <div className="space-y-2">
-                      <Label className="text-xs">Bitcoin Address</Label>
+                    <div className="space-y-1.5 sm:space-y-2">
+                      <Label className="text-[10px] sm:text-xs">Bitcoin Address</Label>
                       <Input 
                         placeholder="BTC wallet address" 
-                        className="h-10"
+                        className="h-9 sm:h-10 text-sm"
                         value={cryptoDetails.btcAddress}
                         onChange={(e) => setCryptoDetails(prev => ({ ...prev, btcAddress: e.target.value }))}
                       />
@@ -891,10 +906,10 @@ export default function SettingsPage() {
               </div>
             </div>
 
-            <div className="flex justify-end gap-3 pt-8">
-              <Button variant="outline" className="rounded-xl">Cancel</Button>
+            <div className="flex flex-col sm:flex-row justify-end gap-2 sm:gap-3 pt-6 sm:pt-8">
+              <Button variant="outline" className="rounded-xl h-9 sm:h-10 text-sm order-2 sm:order-1">Cancel</Button>
               <Button 
-                className="rounded-xl bg-[#14462a] hover:bg-[#14462a]/90"
+                className="rounded-xl bg-[#14462a] hover:bg-[#14462a]/90 h-9 sm:h-10 text-sm order-1 sm:order-2"
                 onClick={handleSavePaymentMethods}
                 disabled={savingPayments}
               >
@@ -905,29 +920,29 @@ export default function SettingsPage() {
         </TabsContent>
 
         {/* Invoices Tab */}
-        <TabsContent value="invoices" className="space-y-8">
+        <TabsContent value="invoices" className="space-y-6 sm:space-y-8">
           <div>
-            <h2 className="text-lg font-semibold text-gray-900 mb-1">Invoice Defaults</h2>
-            <p className="text-sm text-gray-500 mb-6">Configure default invoice settings</p>
+            <h2 className="text-base sm:text-lg font-semibold text-gray-900 mb-1">Invoice Defaults</h2>
+            <p className="text-xs sm:text-sm text-gray-500 mb-4 sm:mb-6">Configure default invoice settings</p>
 
-            <div className="grid grid-cols-2 gap-6">
-              <div className="space-y-2">
-                <Label htmlFor="invoicePrefix">Invoice Number Prefix</Label>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+              <div className="space-y-1.5 sm:space-y-2">
+                <Label htmlFor="invoicePrefix" className="text-xs sm:text-sm">Invoice Number Prefix</Label>
                 <Input 
                   id="invoicePrefix" 
                   value={apiSettings?.invoice_prefix || "INV"} 
                   readOnly 
-                  className="bg-gray-50" 
+                  className="bg-gray-50 h-9 sm:h-10 text-sm" 
                 />
-                <p className="text-xs text-gray-500">Format: {apiSettings?.invoice_prefix || "INV"}-0001</p>
+                <p className="text-[10px] sm:text-xs text-gray-500">Format: {apiSettings?.invoice_prefix || "INV"}-0001</p>
               </div>
-              <div className="space-y-2">
-                <Label>Default Due Date</Label>
+              <div className="space-y-1.5 sm:space-y-2">
+                <Label className="text-xs sm:text-sm">Default Due Date</Label>
                 <Select 
                   value={String(invoiceDefaults.dueDateDays)} 
                   onValueChange={(value) => handleInvoiceDefaultChange("dueDateDays", parseInt(value))}
                 >
-                  <SelectTrigger>
+                  <SelectTrigger className="h-9 sm:h-10 text-sm">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -940,8 +955,8 @@ export default function SettingsPage() {
                   </SelectContent>
                 </Select>
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="taxRate">Default Tax Rate</Label>
+              <div className="space-y-1.5 sm:space-y-2">
+                <Label htmlFor="taxRate" className="text-xs sm:text-sm">Default Tax Rate</Label>
                 <div className="flex items-center gap-2">
                   <Input 
                     id="taxRate" 
@@ -949,18 +964,18 @@ export default function SettingsPage() {
                     placeholder="0" 
                     value={invoiceDefaults.taxRate}
                     onChange={(e) => handleInvoiceDefaultChange("taxRate", parseFloat(e.target.value) || 0)}
-                    className="flex-1" 
+                    className="flex-1 h-9 sm:h-10 text-sm" 
                   />
-                  <span className="text-sm text-gray-500">%</span>
+                  <span className="text-xs sm:text-sm text-gray-500">%</span>
                 </div>
               </div>
-              <div className="space-y-2">
-                <Label>On-Time Threshold</Label>
+              <div className="space-y-1.5 sm:space-y-2">
+                <Label className="text-xs sm:text-sm">On-Time Threshold</Label>
                 <Select 
                   value={String(invoiceDefaults.onTimeThreshold)} 
                   onValueChange={(value) => handleInvoiceDefaultChange("onTimeThreshold", parseInt(value))}
                 >
-                  <SelectTrigger>
+                  <SelectTrigger className="h-9 sm:h-10 text-sm">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -970,52 +985,55 @@ export default function SettingsPage() {
                     <SelectItem value="7">≤7 days</SelectItem>
                   </SelectContent>
                 </Select>
-                <p className="text-xs text-gray-500">For on-time rate calculation</p>
+                <p className="text-[10px] sm:text-xs text-gray-500">For on-time rate calculation</p>
               </div>
             </div>
           </div>
 
           <div>
-            <h2 className="text-lg font-semibold text-gray-900 mb-6">Additional Options</h2>
+            <h2 className="text-base sm:text-lg font-semibold text-gray-900 mb-4 sm:mb-6">Additional Options</h2>
 
-            <div className="rounded-2xl border border-gray-200 divide-y divide-gray-100">
-              <div className="p-5 flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-900">Late Fees</p>
-                  <p className="text-xs text-gray-500">Automatically add late fees to overdue invoices</p>
+            <div className="rounded-xl sm:rounded-2xl border border-gray-200 divide-y divide-gray-100">
+              <div className="p-3 sm:p-5 flex items-center justify-between gap-3">
+                <div className="min-w-0">
+                  <p className="text-xs sm:text-sm font-medium text-gray-900">Late Fees</p>
+                  <p className="text-[10px] sm:text-xs text-gray-500 truncate">Automatically add late fees to overdue invoices</p>
                 </div>
                 <Switch
                   checked={invoiceDefaults.lateFeeEnabled}
                   onCheckedChange={(checked) => handleInvoiceDefaultChange("lateFeeEnabled", checked)}
+                  className="shrink-0"
                 />
               </div>
-              <div className="p-5 flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-900">Automatic Reminders</p>
-                  <p className="text-xs text-gray-500">Send payment reminders for overdue invoices</p>
+              <div className="p-3 sm:p-5 flex items-center justify-between gap-3">
+                <div className="min-w-0">
+                  <p className="text-xs sm:text-sm font-medium text-gray-900">Automatic Reminders</p>
+                  <p className="text-[10px] sm:text-xs text-gray-500 truncate">Send payment reminders for overdue invoices</p>
                 </div>
                 <Switch
                   checked={invoiceDefaults.autoReminders}
                   onCheckedChange={(checked) => handleInvoiceDefaultChange("autoReminders", checked)}
+                  className="shrink-0"
                 />
               </div>
             </div>
           </div>
 
           <div>
-            <h2 className="text-lg font-semibold text-gray-900 mb-1">Default Footer</h2>
-            <p className="text-sm text-gray-500 mb-4">This text appears at the bottom of all invoices</p>
+            <h2 className="text-base sm:text-lg font-semibold text-gray-900 mb-1">Default Footer</h2>
+            <p className="text-xs sm:text-sm text-gray-500 mb-3 sm:mb-4">This text appears at the bottom of all invoices</p>
             <Textarea
               placeholder="Thank you for your business. Payment is due within 30 days."
               value={invoiceDefaults.footerText}
               onChange={(e) => handleInvoiceDefaultChange("footerText", e.target.value)}
+              className="text-sm"
             />
           </div>
 
-          <div className="flex justify-end gap-3 pt-4">
-            <Button variant="outline" className="rounded-xl">Cancel</Button>
+          <div className="flex flex-col sm:flex-row justify-end gap-2 sm:gap-3 pt-4">
+            <Button variant="outline" className="rounded-xl h-9 sm:h-10 text-sm order-2 sm:order-1">Cancel</Button>
             <Button 
-              className="rounded-xl bg-[#14462a] hover:bg-[#14462a]/90"
+              className="rounded-xl bg-[#14462a] hover:bg-[#14462a]/90 h-9 sm:h-10 text-sm order-1 sm:order-2"
               onClick={handleSaveInvoiceDefaults}
               disabled={savingInvoice}
             >
@@ -1025,10 +1043,10 @@ export default function SettingsPage() {
         </TabsContent>
 
         {/* Branding Tab */}
-        <TabsContent value="branding" className="space-y-8">
+        <TabsContent value="branding" className="space-y-6 sm:space-y-8">
           <div>
-            <h2 className="text-lg font-semibold text-gray-900 mb-1">Business Logo</h2>
-            <p className="text-sm text-gray-500 mb-6">Upload your company logo for invoices and emails</p>
+            <h2 className="text-base sm:text-lg font-semibold text-gray-900 mb-1">Business Logo</h2>
+            <p className="text-xs sm:text-sm text-gray-500 mb-4 sm:mb-6">Upload your company logo for invoices and emails</p>
 
             <LogoUpload
               currentUrl={apiSettings?.logo_url || null}
@@ -1043,11 +1061,11 @@ export default function SettingsPage() {
           </div>
 
           <div>
-            <h2 className="text-lg font-semibold text-gray-900 mb-6">Invoice Appearance</h2>
-            <div className="max-w-sm space-y-2">
-              <Label>Invoice Template</Label>
+            <h2 className="text-base sm:text-lg font-semibold text-gray-900 mb-4 sm:mb-6">Invoice Appearance</h2>
+            <div className="max-w-sm space-y-1.5 sm:space-y-2">
+              <Label className="text-xs sm:text-sm">Invoice Template</Label>
               <Select defaultValue="modern">
-                <SelectTrigger>
+                <SelectTrigger className="h-9 sm:h-10 text-sm">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -1060,19 +1078,20 @@ export default function SettingsPage() {
           </div>
 
           <div>
-            <h2 className="text-lg font-semibold text-gray-900 mb-1">Email Signature</h2>
-            <p className="text-sm text-gray-500 mb-4">Appears in all outgoing invoice emails</p>
+            <h2 className="text-base sm:text-lg font-semibold text-gray-900 mb-1">Email Signature</h2>
+            <p className="text-xs sm:text-sm text-gray-500 mb-3 sm:mb-4">Appears in all outgoing invoice emails</p>
             <Textarea
               id="emailSignature"
               placeholder="Best regards,&#10;Your Name&#10;Your Company"
               defaultValue={`Best regards,\n${apiSettings?.full_name || "Your Name"}\n${apiSettings?.business_name || "Your Business"}`}
+              className="text-sm"
             />
           </div>
 
-          <div className="flex justify-end gap-3 pt-4">
-            <Button variant="outline" className="rounded-xl">Cancel</Button>
+          <div className="flex flex-col sm:flex-row justify-end gap-2 sm:gap-3 pt-4">
+            <Button variant="outline" className="rounded-xl h-9 sm:h-10 text-sm order-2 sm:order-1">Cancel</Button>
             <Button 
-              className="rounded-xl bg-[#14462a] hover:bg-[#14462a]/90"
+              className="rounded-xl bg-[#14462a] hover:bg-[#14462a]/90 h-9 sm:h-10 text-sm order-1 sm:order-2"
               onClick={() => {
                 const textarea = document.getElementById("emailSignature") as HTMLTextAreaElement;
                 handleSaveBranding(textarea?.value || "");
@@ -1085,12 +1104,12 @@ export default function SettingsPage() {
         </TabsContent>
 
         {/* Notifications Tab */}
-        <TabsContent value="notifications" className="space-y-8">
+        <TabsContent value="notifications" className="space-y-6 sm:space-y-8">
           <div>
-            <h2 className="text-lg font-semibold text-gray-900 mb-1">Email Notifications</h2>
-            <p className="text-sm text-gray-500 mb-6">Configure which notifications you receive</p>
+            <h2 className="text-base sm:text-lg font-semibold text-gray-900 mb-1">Email Notifications</h2>
+            <p className="text-xs sm:text-sm text-gray-500 mb-4 sm:mb-6">Configure which notifications you receive</p>
 
-            <div className="rounded-2xl border border-gray-200 divide-y divide-gray-100">
+            <div className="rounded-xl sm:rounded-2xl border border-gray-200 divide-y divide-gray-100">
               {[
                 { key: "invoicePaid", label: "Invoice Paid", description: "Notify when an invoice is marked as paid" },
                 { key: "paymentReceived", label: "Payment Received", description: "Notify when a payment is received" },
@@ -1100,24 +1119,25 @@ export default function SettingsPage() {
                 { key: "weeklyReport", label: "Weekly Report", description: "Receive weekly AR summary reports" },
                 { key: "monthlyReport", label: "Monthly Report", description: "Receive monthly financial reports" },
               ].map((item) => (
-                <div key={item.key} className="p-5 flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-medium text-gray-900">{item.label}</p>
-                    <p className="text-xs text-gray-500">{item.description}</p>
+                <div key={item.key} className="p-3 sm:p-5 flex items-center justify-between gap-3">
+                  <div className="min-w-0">
+                    <p className="text-xs sm:text-sm font-medium text-gray-900">{item.label}</p>
+                    <p className="text-[10px] sm:text-xs text-gray-500 truncate">{item.description}</p>
                   </div>
                   <Switch
                     checked={notifications[item.key as keyof typeof notifications]}
                     onCheckedChange={(checked) => handleNotificationChange(item.key, checked)}
+                    className="shrink-0"
                   />
                 </div>
               ))}
             </div>
           </div>
 
-          <div className="flex justify-end gap-3 pt-4">
-            <Button variant="outline" className="rounded-xl">Cancel</Button>
+          <div className="flex flex-col sm:flex-row justify-end gap-2 sm:gap-3 pt-4">
+            <Button variant="outline" className="rounded-xl h-9 sm:h-10 text-sm order-2 sm:order-1">Cancel</Button>
             <Button 
-              className="rounded-xl bg-[#14462a] hover:bg-[#14462a]/90"
+              className="rounded-xl bg-[#14462a] hover:bg-[#14462a]/90 h-9 sm:h-10 text-sm order-1 sm:order-2"
               onClick={handleSaveNotifications}
               disabled={savingNotifications}
             >
@@ -1127,24 +1147,25 @@ export default function SettingsPage() {
         </TabsContent>
 
         {/* Security Tab */}
-        <TabsContent value="security" className="space-y-8">
-          <div className="rounded-xl border border-[#14462a]/20 bg-[#14462a]/5 p-4 flex items-start gap-3">
-            <ShieldTick size={20} color="#14462a" className="flex-shrink-0 mt-0.5" />
+        <TabsContent value="security" className="space-y-6 sm:space-y-8">
+          <div className="rounded-lg sm:rounded-xl border border-[#14462a]/20 bg-[#14462a]/5 p-3 sm:p-4 flex items-start gap-2 sm:gap-3">
+            <ShieldTick size={16} color="#14462a" className="flex-shrink-0 mt-0.5 sm:hidden" />
+            <ShieldTick size={20} color="#14462a" className="flex-shrink-0 mt-0.5 hidden sm:block" />
             <div>
-              <p className="text-sm font-medium text-[#14462a]">Account Security</p>
-              <p className="text-xs text-[#14462a]/70 mt-1">
+              <p className="text-xs sm:text-sm font-medium text-[#14462a]">Account Security</p>
+              <p className="text-[10px] sm:text-xs text-[#14462a]/70 mt-1">
                 Keep your account secure with a strong password and two-factor authentication.
               </p>
             </div>
           </div>
 
           <div>
-            <h2 className="text-lg font-semibold text-gray-900 mb-1">Change Password</h2>
-            <p className="text-sm text-gray-500 mb-6">Update your account password</p>
+            <h2 className="text-base sm:text-lg font-semibold text-gray-900 mb-1">Change Password</h2>
+            <p className="text-xs sm:text-sm text-gray-500 mb-4 sm:mb-6">Update your account password</p>
 
-            <div className="space-y-4 max-w-md">
-              <div className="space-y-2">
-                <Label htmlFor="currentPassword">Current Password</Label>
+            <div className="space-y-3 sm:space-y-4 max-w-md">
+              <div className="space-y-1.5 sm:space-y-2">
+                <Label htmlFor="currentPassword" className="text-xs sm:text-sm">Current Password</Label>
                 <div className="relative">
                   <Input
                     id="currentPassword"
@@ -1152,18 +1173,19 @@ export default function SettingsPage() {
                     placeholder="Enter current password"
                     value={currentPassword}
                     onChange={(e) => setCurrentPassword(e.target.value)}
+                    className="h-9 sm:h-10 text-sm pr-10"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPasswords(p => ({ ...p, current: !p.current }))}
                     className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
                   >
-                    {showPasswords.current ? <EyeSlash size={18} color="#9CA3AF" /> : <Eye size={18} color="#9CA3AF" />}
+                    {showPasswords.current ? <EyeSlash size={16} color="#9CA3AF" /> : <Eye size={16} color="#9CA3AF" />}
                   </button>
                 </div>
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="newPassword">New Password</Label>
+              <div className="space-y-1.5 sm:space-y-2">
+                <Label htmlFor="newPassword" className="text-xs sm:text-sm">New Password</Label>
                 <div className="relative">
                   <Input
                     id="newPassword"
@@ -1171,20 +1193,21 @@ export default function SettingsPage() {
                     placeholder="Enter new password"
                     value={newPassword}
                     onChange={(e) => setNewPassword(e.target.value)}
+                    className="h-9 sm:h-10 text-sm pr-10"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPasswords(p => ({ ...p, new: !p.new }))}
                     className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
                   >
-                    {showPasswords.new ? <EyeSlash size={18} color="#9CA3AF" /> : <Eye size={18} color="#9CA3AF" />}
+                    {showPasswords.new ? <EyeSlash size={16} color="#9CA3AF" /> : <Eye size={16} color="#9CA3AF" />}
                   </button>
                 </div>
                 {/* Password requirements */}
                 {newPassword && (
-                  <div className="mt-2 p-3 rounded-lg bg-gray-50 border border-gray-100">
-                    <p className="text-xs font-medium text-gray-600 mb-2">Password requirements:</p>
-                    <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-xs">
+                  <div className="mt-2 p-2 sm:p-3 rounded-lg bg-gray-50 border border-gray-100">
+                    <p className="text-[10px] sm:text-xs font-medium text-gray-600 mb-1.5 sm:mb-2">Password requirements:</p>
+                    <div className="grid grid-cols-2 gap-x-2 sm:gap-x-4 gap-y-0.5 sm:gap-y-1 text-[10px] sm:text-xs">
                       <span className={newPassword.length >= 8 ? "text-green-600" : "text-gray-400"}>
                         {newPassword.length >= 8 ? "✓" : "○"} 8+ characters
                       </span>
@@ -1198,14 +1221,14 @@ export default function SettingsPage() {
                         {/\d/.test(newPassword) ? "✓" : "○"} Number
                       </span>
                       <span className={/[!@#$%^&*(),.?":{}|<>]/.test(newPassword) ? "text-green-600" : "text-gray-400"}>
-                        {/[!@#$%^&*(),.?":{}|<>]/.test(newPassword) ? "✓" : "○"} Special character
+                        {/[!@#$%^&*(),.?":{}|<>]/.test(newPassword) ? "✓" : "○"} Special char
                       </span>
                     </div>
                   </div>
                 )}
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="confirmPassword">Confirm New Password</Label>
+              <div className="space-y-1.5 sm:space-y-2">
+                <Label htmlFor="confirmPassword" className="text-xs sm:text-sm">Confirm New Password</Label>
                 <div className="relative">
                   <Input
                     id="confirmPassword"
@@ -1213,24 +1236,25 @@ export default function SettingsPage() {
                     placeholder="Confirm new password"
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
+                    className="h-9 sm:h-10 text-sm pr-10"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPasswords(p => ({ ...p, confirm: !p.confirm }))}
                     className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
                   >
-                    {showPasswords.confirm ? <EyeSlash size={18} color="#9CA3AF" /> : <Eye size={18} color="#9CA3AF" />}
+                    {showPasswords.confirm ? <EyeSlash size={16} color="#9CA3AF" /> : <Eye size={16} color="#9CA3AF" />}
                   </button>
                 </div>
               </div>
               {passwordError && (
-                <p className="text-xs text-red-600 flex items-center gap-1">
+                <p className="text-[10px] sm:text-xs text-red-600 flex items-center gap-1">
                   <Warning2 size={12} color="#DC2626" />
                   {passwordError}
                 </p>
               )}
               <Button 
-                className="rounded-xl bg-[#14462a] hover:bg-[#14462a]/90"
+                className="rounded-xl bg-[#14462a] hover:bg-[#14462a]/90 h-9 sm:h-10 text-sm w-full sm:w-auto"
                 onClick={handleChangePassword}
                 disabled={savingPassword || !currentPassword || !newPassword || !confirmPassword}
               >
@@ -1240,21 +1264,22 @@ export default function SettingsPage() {
           </div>
 
           <div>
-            <h2 className="text-lg font-semibold text-gray-900 mb-1">Two-Factor Authentication</h2>
-            <p className="text-sm text-gray-500 mb-6">Add an extra layer of security</p>
+            <h2 className="text-base sm:text-lg font-semibold text-gray-900 mb-1">Two-Factor Authentication</h2>
+            <p className="text-xs sm:text-sm text-gray-500 mb-4 sm:mb-6">Add an extra layer of security</p>
 
-            <div className="rounded-2xl border border-gray-200 p-5 flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                <div className="h-12 w-12 rounded-full bg-gray-100 flex items-center justify-center">
-                  <FingerScan size={24} color="#14462a" />
+            <div className="rounded-xl sm:rounded-2xl border border-gray-200 p-3 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+              <div className="flex items-center gap-3 sm:gap-4">
+                <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-full bg-gray-100 flex items-center justify-center shrink-0">
+                  <FingerScan size={20} color="#14462a" className="sm:hidden" />
+                  <FingerScan size={24} color="#14462a" className="hidden sm:block" />
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-gray-900">Two-Factor Authentication</p>
-                  <p className="text-xs text-gray-500">Protect your account with 2FA</p>
+                  <p className="text-xs sm:text-sm font-medium text-gray-900">Two-Factor Authentication</p>
+                  <p className="text-[10px] sm:text-xs text-gray-500">Protect your account with 2FA</p>
                 </div>
               </div>
               <Button 
-                className="rounded-xl bg-[#14462a] hover:bg-[#14462a]/90"
+                className="rounded-xl bg-[#14462a] hover:bg-[#14462a]/90 h-9 sm:h-10 text-sm w-full sm:w-auto"
                 onClick={() => setShow2FAModal(true)}
               >
                 Enable 2FA
@@ -1263,26 +1288,32 @@ export default function SettingsPage() {
           </div>
 
           <div>
-            <h2 className="text-lg font-semibold text-gray-900 mb-1">Active Sessions</h2>
-            <p className="text-sm text-gray-500 mb-6">Devices where you&apos;re logged in</p>
+            <h2 className="text-base sm:text-lg font-semibold text-gray-900 mb-1">Active Sessions</h2>
+            <p className="text-xs sm:text-sm text-gray-500 mb-4 sm:mb-6">Devices where you&apos;re logged in</p>
 
-            <div className="rounded-2xl border border-gray-200 divide-y divide-gray-100">
-              <div className="p-4 flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="h-10 w-10 rounded-full bg-gray-100 flex items-center justify-center">
-                    <Setting2 size={18} color="#2D2D2D" />
+            <div className="rounded-xl sm:rounded-2xl border border-gray-200 divide-y divide-gray-100">
+              <div className="p-3 sm:p-4 flex items-center justify-between">
+                <div className="flex items-center gap-2 sm:gap-3">
+                  <div className="h-8 w-8 sm:h-10 sm:w-10 rounded-full bg-gray-100 flex items-center justify-center shrink-0">
+                    <Setting2 size={16} color="#2D2D2D" className="sm:hidden" />
+                    <Setting2 size={18} color="#2D2D2D" className="hidden sm:block" />
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-gray-900">Current Device</p>
-                    <p className="text-xs text-gray-500 flex items-center gap-2">
-                      <Location size={12} color="#9CA3AF" /> Current session
-                      <Clock size={12} color="#9CA3AF" /> Now
+                    <p className="text-xs sm:text-sm font-medium text-gray-900">Current Device</p>
+                    <p className="text-[10px] sm:text-xs text-gray-500 flex items-center gap-1 sm:gap-2">
+                      <Location size={10} color="#9CA3AF" className="sm:hidden" />
+                      <Location size={12} color="#9CA3AF" className="hidden sm:block" /> 
+                      <span>Current session</span>
+                      <Clock size={10} color="#9CA3AF" className="sm:hidden" />
+                      <Clock size={12} color="#9CA3AF" className="hidden sm:block" /> 
+                      <span>Now</span>
                     </p>
                   </div>
                 </div>
-                <Badge variant="paid">
-                  <TickCircle size={14} color="#14462a" variant="Bold" />
-                  Current
+                <Badge variant="paid" className="text-[10px] sm:text-xs">
+                  <TickCircle size={12} color="#14462a" variant="Bold" className="sm:hidden" />
+                  <TickCircle size={14} color="#14462a" variant="Bold" className="hidden sm:block" />
+                  <span className="ml-1">Current</span>
                 </Badge>
               </div>
             </div>
@@ -1290,142 +1321,149 @@ export default function SettingsPage() {
         </TabsContent>
 
         {/* Billing Tab */}
-        <TabsContent value="billing" className="space-y-8">
+        <TabsContent value="billing" className="space-y-6 sm:space-y-8">
           <div>
-            <div className="flex items-center justify-between mb-6">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 sm:mb-6 gap-3">
               <div>
-                <h2 className="text-lg font-semibold text-gray-900 mb-1">Current Plan</h2>
-                <p className="text-sm text-gray-500">Your subscription details</p>
+                <h2 className="text-base sm:text-lg font-semibold text-gray-900 mb-1">Current Plan</h2>
+                <p className="text-xs sm:text-sm text-gray-500">Your subscription details</p>
               </div>
-              <Button variant="outline" className="rounded-xl" onClick={() => setShowChangePlanModal(true)}>
+              <Button variant="outline" className="rounded-xl h-9 sm:h-10 text-sm" onClick={() => setShowChangePlanModal(true)}>
                 Change Plan
               </Button>
             </div>
 
-            <div className="rounded-2xl border border-gray-200 p-5 flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                <div className="h-12 w-12 rounded-full bg-[#14462a]/10 flex items-center justify-center">
-                  <Wallet size={24} color="#14462a" />
+            <div className="rounded-xl sm:rounded-2xl border border-gray-200 p-3 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div className="flex items-center gap-3 sm:gap-4">
+                <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-full bg-[#14462a]/10 flex items-center justify-center shrink-0">
+                  <Wallet size={20} color="#14462a" className="sm:hidden" />
+                  <Wallet size={24} color="#14462a" className="hidden sm:block" />
                 </div>
                 <div>
-                  <div className="flex items-center gap-2">
-                    <p className="text-lg font-semibold text-gray-900">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <p className="text-sm sm:text-lg font-semibold text-gray-900">
                       {currentPlan === "free" ? "Free Plan" : currentPlan === "pro" ? "Plaen Pro" : "Enterprise"}
                     </p>
-                    <Badge variant="paid">
-                      <TickCircle size={14} color="#14462a" variant="Bold" />
-                      Active
+                    <Badge variant="paid" className="text-[10px] sm:text-xs">
+                      <TickCircle size={12} color="#14462a" variant="Bold" className="sm:hidden" />
+                      <TickCircle size={14} color="#14462a" variant="Bold" className="hidden sm:block" />
+                      <span className="ml-1">Active</span>
                     </Badge>
                   </div>
-                  <p className="text-sm text-gray-500">
+                  <p className="text-xs sm:text-sm text-gray-500">
                     {currentPlan === "free" ? "Basic features included" : "Full access to all features"}
                   </p>
                 </div>
               </div>
-              <p className="text-2xl font-bold text-gray-900">
+              <p className="text-xl sm:text-2xl font-bold text-gray-900">
                 {currentPlan === "free" ? "Free" : currentPlan === "pro" ? "₵99" : "Custom"}
                 {currentPlan !== "free" && currentPlan !== "enterprise" && (
-                  <span className="text-sm font-normal text-gray-500">/mo</span>
+                  <span className="text-xs sm:text-sm font-normal text-gray-500">/mo</span>
                 )}
               </p>
             </div>
           </div>
 
           <div>
-            <div className="flex items-center justify-between mb-6">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 sm:mb-6 gap-3">
               <div>
-                <h2 className="text-lg font-semibold text-gray-900 mb-1">Payment Method</h2>
-                <p className="text-sm text-gray-500">Manage your payment method</p>
+                <h2 className="text-base sm:text-lg font-semibold text-gray-900 mb-1">Payment Method</h2>
+                <p className="text-xs sm:text-sm text-gray-500">Manage your payment method</p>
               </div>
-              <Button variant="outline" className="rounded-xl" onClick={() => setShowPaymentMethodModal(true)}>
+              <Button variant="outline" className="rounded-xl h-9 sm:h-10 text-sm" onClick={() => setShowPaymentMethodModal(true)}>
                 Update
               </Button>
             </div>
 
-            <div className="rounded-2xl border border-gray-200 p-5 flex items-center gap-4">
-              <div className="h-10 w-10 rounded-full bg-gray-100 flex items-center justify-center">
-                <Card size={18} color="#2D2D2D" />
+            <div className="rounded-xl sm:rounded-2xl border border-gray-200 p-3 sm:p-5 flex items-center gap-3 sm:gap-4">
+              <div className="h-8 w-8 sm:h-10 sm:w-10 rounded-full bg-gray-100 flex items-center justify-center shrink-0">
+                <Card size={16} color="#2D2D2D" className="sm:hidden" />
+                <Card size={18} color="#2D2D2D" className="hidden sm:block" />
               </div>
               <div>
-                <p className="text-sm font-medium text-gray-900">No payment method added</p>
-                <p className="text-xs text-gray-500">Add a card or mobile money for Pro plan</p>
+                <p className="text-xs sm:text-sm font-medium text-gray-900">No payment method added</p>
+                <p className="text-[10px] sm:text-xs text-gray-500">Add a card or mobile money for Pro plan</p>
               </div>
             </div>
           </div>
 
           <div>
-            <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center justify-between mb-4 sm:mb-6">
               <div>
-                <h2 className="text-lg font-semibold text-gray-900 mb-1">Billing History</h2>
-                <p className="text-sm text-gray-500">View past invoices</p>
+                <h2 className="text-base sm:text-lg font-semibold text-gray-900 mb-1">Billing History</h2>
+                <p className="text-xs sm:text-sm text-gray-500">View past invoices</p>
               </div>
             </div>
 
-            <div className="rounded-2xl border border-gray-200 p-8 text-center">
-              <Calendar size={32} color="#9CA3AF" className="mx-auto mb-3" />
-              <p className="text-sm text-gray-500">No billing history yet</p>
-              <p className="text-xs text-gray-400 mt-1">Upgrade to Pro to see your invoices here</p>
+            <div className="rounded-xl sm:rounded-2xl border border-gray-200 p-6 sm:p-8 text-center">
+              <Calendar size={24} color="#9CA3AF" className="mx-auto mb-3 sm:hidden" />
+              <Calendar size={32} color="#9CA3AF" className="mx-auto mb-3 hidden sm:block" />
+              <p className="text-xs sm:text-sm text-gray-500">No billing history yet</p>
+              <p className="text-[10px] sm:text-xs text-gray-400 mt-1">Upgrade to Pro to see your invoices here</p>
             </div>
           </div>
         </TabsContent>
 
         {/* Data Tab */}
-        <TabsContent value="data" className="space-y-8">
+        <TabsContent value="data" className="space-y-6 sm:space-y-8">
           <div>
-            <h2 className="text-lg font-semibold text-gray-900 mb-1">Export Data</h2>
-            <p className="text-sm text-gray-500 mb-6">Download your data in various formats</p>
+            <h2 className="text-base sm:text-lg font-semibold text-gray-900 mb-1">Export Data</h2>
+            <p className="text-xs sm:text-sm text-gray-500 mb-4 sm:mb-6">Download your data in various formats</p>
 
-            <div className="grid grid-cols-3 gap-4">
-              <Button variant="outline" className="rounded-2xl h-20 flex-col gap-2">
-                <DocumentDownload size={20} color="#14462a" />
-                <span className="text-sm">Export Invoices</span>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
+              <Button variant="outline" className="rounded-xl sm:rounded-2xl h-16 sm:h-20 flex-col gap-1.5 sm:gap-2">
+                <DocumentDownload size={18} color="#14462a" className="sm:hidden" />
+                <DocumentDownload size={20} color="#14462a" className="hidden sm:block" />
+                <span className="text-xs sm:text-sm">Export Invoices</span>
               </Button>
-              <Button variant="outline" className="rounded-2xl h-20 flex-col gap-2">
-                <DocumentDownload size={20} color="#14462a" />
-                <span className="text-sm">Export Payments</span>
+              <Button variant="outline" className="rounded-xl sm:rounded-2xl h-16 sm:h-20 flex-col gap-1.5 sm:gap-2">
+                <DocumentDownload size={18} color="#14462a" className="sm:hidden" />
+                <DocumentDownload size={20} color="#14462a" className="hidden sm:block" />
+                <span className="text-xs sm:text-sm">Export Payments</span>
               </Button>
-              <Button variant="outline" className="rounded-2xl h-20 flex-col gap-2">
-                <DocumentDownload size={20} color="#14462a" />
-                <span className="text-sm">Export Contacts</span>
+              <Button variant="outline" className="rounded-xl sm:rounded-2xl h-16 sm:h-20 flex-col gap-1.5 sm:gap-2">
+                <DocumentDownload size={18} color="#14462a" className="sm:hidden" />
+                <DocumentDownload size={20} color="#14462a" className="hidden sm:block" />
+                <span className="text-xs sm:text-sm">Export Contacts</span>
               </Button>
             </div>
           </div>
 
           <div>
-            <h2 className="text-lg font-semibold text-gray-900 mb-1">Data Retention</h2>
-            <p className="text-sm text-gray-500 mb-6">Control how long your data is stored</p>
+            <h2 className="text-base sm:text-lg font-semibold text-gray-900 mb-1">Data Retention</h2>
+            <p className="text-xs sm:text-sm text-gray-500 mb-4 sm:mb-6">Control how long your data is stored</p>
 
-            <div className="rounded-2xl border border-gray-200 divide-y divide-gray-100">
-              <div className="p-5 flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-900">Auto-delete old drafts</p>
-                  <p className="text-xs text-gray-500">Automatically remove draft invoices older than 90 days</p>
+            <div className="rounded-xl sm:rounded-2xl border border-gray-200 divide-y divide-gray-100">
+              <div className="p-3 sm:p-5 flex items-center justify-between gap-3">
+                <div className="min-w-0">
+                  <p className="text-xs sm:text-sm font-medium text-gray-900">Auto-delete old drafts</p>
+                  <p className="text-[10px] sm:text-xs text-gray-500 truncate">Automatically remove draft invoices older than 90 days</p>
                 </div>
-                <Switch />
+                <Switch className="shrink-0" />
               </div>
-              <div className="p-5 flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-900">Archive paid invoices</p>
-                  <p className="text-xs text-gray-500">Move fully paid invoices to archive after 1 year</p>
+              <div className="p-3 sm:p-5 flex items-center justify-between gap-3">
+                <div className="min-w-0">
+                  <p className="text-xs sm:text-sm font-medium text-gray-900">Archive paid invoices</p>
+                  <p className="text-[10px] sm:text-xs text-gray-500 truncate">Move fully paid invoices to archive after 1 year</p>
                 </div>
-                <Switch defaultChecked />
+                <Switch defaultChecked className="shrink-0" />
               </div>
             </div>
           </div>
 
           <div>
-            <h2 className="text-lg font-semibold text-gray-900 mb-1">Danger Zone</h2>
-            <p className="text-sm text-gray-500 mb-6">Irreversible and destructive actions</p>
+            <h2 className="text-base sm:text-lg font-semibold text-gray-900 mb-1">Danger Zone</h2>
+            <p className="text-xs sm:text-sm text-gray-500 mb-4 sm:mb-6">Irreversible and destructive actions</p>
 
-            <div className="rounded-2xl border border-red-200 bg-red-50/30 p-5">
-              <div className="flex items-center justify-between">
+            <div className="rounded-xl sm:rounded-2xl border border-red-200 bg-red-50/30 p-3 sm:p-5">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <div>
-                  <p className="text-sm font-medium text-gray-900">Delete Account</p>
-                  <p className="text-xs text-gray-500">Permanently delete your account and all data</p>
+                  <p className="text-xs sm:text-sm font-medium text-gray-900">Delete Account</p>
+                  <p className="text-[10px] sm:text-xs text-gray-500">Permanently delete your account and all data</p>
                 </div>
                 <Button 
                   variant="outline" 
-                  className="rounded-xl border-red-300 text-red-600 hover:bg-red-50"
+                  className="rounded-xl border-red-300 text-red-600 hover:bg-red-50 h-9 sm:h-10 text-xs sm:text-sm"
                   onClick={() => setShowDeleteModal(true)}
                 >
                   <Trash size={14} color="#DC2626" className="mr-2" />
@@ -1439,32 +1477,34 @@ export default function SettingsPage() {
 
       {/* Delete Account Modal */}
       {showDeleteModal && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" onClick={() => setShowDeleteModal(false)}>
-          <div className="bg-white rounded-2xl p-8 max-w-md w-full mx-4" onClick={(e) => e.stopPropagation()}>
-            <div className="text-center mb-6">
-              <div className="h-16 w-16 rounded-full bg-red-100 flex items-center justify-center mx-auto mb-4">
-                <Warning2 size={32} color="#DC2626" />
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onClick={() => setShowDeleteModal(false)}>
+          <div className="bg-white rounded-xl sm:rounded-2xl p-4 sm:p-8 max-w-md w-full" onClick={(e) => e.stopPropagation()}>
+            <div className="text-center mb-4 sm:mb-6">
+              <div className="h-12 w-12 sm:h-16 sm:w-16 rounded-full bg-red-100 flex items-center justify-center mx-auto mb-3 sm:mb-4">
+                <Warning2 size={24} color="#DC2626" className="sm:hidden" />
+                <Warning2 size={32} color="#DC2626" className="hidden sm:block" />
               </div>
-              <h2 className="text-xl font-semibold text-gray-900">Delete Your Account?</h2>
-              <p className="text-sm text-gray-500 mt-2">
+              <h2 className="text-lg sm:text-xl font-semibold text-gray-900">Delete Your Account?</h2>
+              <p className="text-xs sm:text-sm text-gray-500 mt-2">
                 This action is permanent and cannot be undone. All your data will be deleted.
               </p>
             </div>
 
-            <div className="bg-red-50 rounded-xl p-4 mb-6">
-              <p className="text-xs font-medium text-red-800 mb-2">This will delete:</p>
-              <ul className="space-y-1">
+            <div className="bg-red-50 rounded-lg sm:rounded-xl p-3 sm:p-4 mb-4 sm:mb-6">
+              <p className="text-[10px] sm:text-xs font-medium text-red-800 mb-1.5 sm:mb-2">This will delete:</p>
+              <ul className="space-y-0.5 sm:space-y-1">
                 {["All invoices and payment records", "All contacts", "Your business profile", "All settings and preferences"].map((item, idx) => (
-                  <li key={idx} className="flex items-center gap-2 text-xs text-red-700">
-                    <CloseCircle size={12} color="#DC2626" />
+                  <li key={idx} className="flex items-center gap-1.5 sm:gap-2 text-[10px] sm:text-xs text-red-700">
+                    <CloseCircle size={10} color="#DC2626" className="sm:hidden shrink-0" />
+                    <CloseCircle size={12} color="#DC2626" className="hidden sm:block shrink-0" />
                     {item}
                   </li>
                 ))}
               </ul>
             </div>
 
-            <div className="space-y-2 mb-6">
-              <Label htmlFor="deletePassword">Enter your password to confirm</Label>
+            <div className="space-y-1.5 sm:space-y-2 mb-4 sm:mb-6">
+              <Label htmlFor="deletePassword" className="text-xs sm:text-sm">Enter your password to confirm</Label>
               <div className="relative">
                 <Input
                   id="deletePassword"

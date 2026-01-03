@@ -295,40 +295,40 @@ export default function FinanceNotesPage() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h1 className="text-2xl" style={{ color: '#2D2D2D', fontWeight: 600 }}>Finance Notes</h1>
-          <p className="text-sm" style={{ color: '#B0B3B8' }}>Document AR insights, client notes, and financial observations</p>
+          <h1 className="text-xl sm:text-2xl" style={{ color: '#2D2D2D', fontWeight: 600 }}>Finance Notes</h1>
+          <p className="text-xs sm:text-sm" style={{ color: '#B0B3B8' }}>Document AR insights, client notes, and financial observations</p>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3">
           <Button
             variant="outline"
             size="sm"
-            className="rounded-xl border-0 shadow-sm transition-all hover:shadow-md hover:scale-105"
+            className="rounded-xl border-0 shadow-sm transition-all hover:shadow-md hover:scale-105 h-8 sm:h-9"
             style={{ backgroundColor: 'white' }}
             onClick={() => refetch()}
           >
-            <RefreshCircle size={16} color="#65676B" className="mr-2" />
-            Refresh
+            <RefreshCircle size={14} color="#65676B" className="sm:mr-2" />
+            <span className="hidden sm:inline">Refresh</span>
           </Button>
           <Button
             size="sm"
-            className="rounded-full shadow-sm transition-all hover:shadow-md hover:scale-105"
+            className="rounded-full shadow-sm transition-all hover:shadow-md hover:scale-105 h-8 sm:h-9 px-3 sm:px-4"
             style={{ backgroundColor: '#14462a', color: 'white' }}
             asChild
           >
             <Link href="/notes/new">
-              <Add size={16} color="white" className="mr-2" />
-              New Note
+              <Add size={14} color="white" className="sm:mr-2" />
+              <span className="hidden sm:inline">New</span> Note
             </Link>
           </Button>
         </div>
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         {loading ? (
           <>
             <KPISkeleton />
@@ -338,51 +338,55 @@ export default function FinanceNotesPage() {
           </>
         ) : (
           <>
-            <div className="group relative rounded-2xl p-6 transition-all duration-300 hover:scale-[1.02]" style={{ backgroundColor: 'rgba(20, 70, 42, 0.04)' }}>
-              <div className="flex items-center justify-between mb-4">
-                <div className="h-12 w-12 rounded-full flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110" style={{ backgroundColor: 'rgba(20, 70, 42, 0.12)' }}>
-                  <Note size={24} color="#14462a" variant="Bulk" />
+            <div className="group relative rounded-xl sm:rounded-2xl p-3 sm:p-6 transition-all duration-300 hover:scale-[1.02]" style={{ backgroundColor: 'rgba(20, 70, 42, 0.04)' }}>
+              <div className="flex items-center justify-between mb-2 sm:mb-4">
+                <div className="h-8 w-8 sm:h-12 sm:w-12 rounded-full flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110" style={{ backgroundColor: 'rgba(20, 70, 42, 0.12)' }}>
+                  <Note size={16} color="#14462a" variant="Bulk" className="sm:hidden" />
+                  <Note size={24} color="#14462a" variant="Bulk" className="hidden sm:block" />
                 </div>
-                <div className="flex items-center gap-1 px-2 py-1 rounded-full" style={{ backgroundColor: 'rgba(20, 70, 42, 0.12)' }}>
-                  <span className="text-xs font-semibold" style={{ color: '#14462a' }}>{totalNotes}</span>
+                <div className="flex items-center gap-1 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full" style={{ backgroundColor: 'rgba(20, 70, 42, 0.12)' }}>
+                  <span className="text-[10px] sm:text-xs font-semibold" style={{ color: '#14462a' }}>{totalNotes}</span>
                 </div>
               </div>
-              <p className="text-sm mb-2" style={{ color: '#65676B', fontWeight: 500 }}>Total Notes</p>
-              <p className="text-3xl tracking-tight" style={{ color: '#2D2D2D', fontWeight: 700 }}>{totalNotes}</p>
-              <p className="text-xs mt-2" style={{ color: '#B0B3B8' }}>All your notes</p>
+              <p className="text-xs sm:text-sm mb-1 sm:mb-2" style={{ color: '#65676B', fontWeight: 500 }}>Total Notes</p>
+              <p className="text-lg sm:text-3xl tracking-tight" style={{ color: '#2D2D2D', fontWeight: 700 }}>{totalNotes}</p>
+              <p className="text-[10px] sm:text-xs mt-1 sm:mt-2 hidden sm:block" style={{ color: '#B0B3B8' }}>All your notes</p>
             </div>
 
-            <div className="group relative rounded-2xl p-6 transition-all duration-300 hover:scale-[1.02]" style={{ backgroundColor: 'rgba(245, 158, 11, 0.04)' }}>
-              <div className="flex items-center justify-between mb-4">
-                <div className="h-12 w-12 rounded-full flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110" style={{ backgroundColor: 'rgba(245, 158, 11, 0.12)' }}>
-                  <Star size={24} color="#F59E0B" variant="Bulk" />
+            <div className="group relative rounded-xl sm:rounded-2xl p-3 sm:p-6 transition-all duration-300 hover:scale-[1.02]" style={{ backgroundColor: 'rgba(245, 158, 11, 0.04)' }}>
+              <div className="flex items-center justify-between mb-2 sm:mb-4">
+                <div className="h-8 w-8 sm:h-12 sm:w-12 rounded-full flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110" style={{ backgroundColor: 'rgba(245, 158, 11, 0.12)' }}>
+                  <Star size={16} color="#F59E0B" variant="Bulk" className="sm:hidden" />
+                  <Star size={24} color="#F59E0B" variant="Bulk" className="hidden sm:block" />
                 </div>
               </div>
-              <p className="text-sm mb-2" style={{ color: '#65676B', fontWeight: 500 }}>Pinned</p>
-              <p className="text-3xl tracking-tight" style={{ color: '#2D2D2D', fontWeight: 700 }}>{pinnedNotes}</p>
-              <p className="text-xs mt-2" style={{ color: '#B0B3B8' }}>Important notes</p>
+              <p className="text-xs sm:text-sm mb-1 sm:mb-2" style={{ color: '#65676B', fontWeight: 500 }}>Pinned</p>
+              <p className="text-lg sm:text-3xl tracking-tight" style={{ color: '#2D2D2D', fontWeight: 700 }}>{pinnedNotes}</p>
+              <p className="text-[10px] sm:text-xs mt-1 sm:mt-2 hidden sm:block" style={{ color: '#B0B3B8' }}>Important notes</p>
             </div>
 
-            <div className="group relative rounded-2xl p-6 transition-all duration-300 hover:scale-[1.02]" style={{ backgroundColor: 'rgba(13, 148, 136, 0.04)' }}>
-              <div className="flex items-center justify-between mb-4">
-                <div className="h-12 w-12 rounded-full flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110" style={{ backgroundColor: 'rgba(13, 148, 136, 0.12)' }}>
-                  <Clock size={24} color="#14462a" variant="Bulk" />
+            <div className="group relative rounded-xl sm:rounded-2xl p-3 sm:p-6 transition-all duration-300 hover:scale-[1.02]" style={{ backgroundColor: 'rgba(13, 148, 136, 0.04)' }}>
+              <div className="flex items-center justify-between mb-2 sm:mb-4">
+                <div className="h-8 w-8 sm:h-12 sm:w-12 rounded-full flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110" style={{ backgroundColor: 'rgba(13, 148, 136, 0.12)' }}>
+                  <Clock size={16} color="#14462a" variant="Bulk" className="sm:hidden" />
+                  <Clock size={24} color="#14462a" variant="Bulk" className="hidden sm:block" />
                 </div>
               </div>
-              <p className="text-sm mb-2" style={{ color: '#65676B', fontWeight: 500 }}>This Month</p>
-              <p className="text-3xl tracking-tight" style={{ color: '#2D2D2D', fontWeight: 700 }}>{notesThisMonth}</p>
-              <p className="text-xs mt-2" style={{ color: '#B0B3B8' }}>Notes created</p>
+              <p className="text-xs sm:text-sm mb-1 sm:mb-2" style={{ color: '#65676B', fontWeight: 500 }}>This Month</p>
+              <p className="text-lg sm:text-3xl tracking-tight" style={{ color: '#2D2D2D', fontWeight: 700 }}>{notesThisMonth}</p>
+              <p className="text-[10px] sm:text-xs mt-1 sm:mt-2 hidden sm:block" style={{ color: '#B0B3B8' }}>Notes created</p>
             </div>
 
-            <div className="group relative rounded-2xl p-6 transition-all duration-300 hover:scale-[1.02]" style={{ backgroundColor: 'rgba(20, 70, 42, 0.04)' }}>
-              <div className="flex items-center justify-between mb-4">
-                <div className="h-12 w-12 rounded-full flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110" style={{ backgroundColor: 'rgba(20, 70, 42, 0.12)' }}>
-                  <Paperclip size={24} color="#14462a" variant="Bulk" />
+            <div className="group relative rounded-xl sm:rounded-2xl p-3 sm:p-6 transition-all duration-300 hover:scale-[1.02]" style={{ backgroundColor: 'rgba(20, 70, 42, 0.04)' }}>
+              <div className="flex items-center justify-between mb-2 sm:mb-4">
+                <div className="h-8 w-8 sm:h-12 sm:w-12 rounded-full flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110" style={{ backgroundColor: 'rgba(20, 70, 42, 0.12)' }}>
+                  <Paperclip size={16} color="#14462a" variant="Bulk" className="sm:hidden" />
+                  <Paperclip size={24} color="#14462a" variant="Bulk" className="hidden sm:block" />
                 </div>
               </div>
-              <p className="text-sm mb-2" style={{ color: '#65676B', fontWeight: 500 }}>Attachments</p>
-              <p className="text-3xl tracking-tight" style={{ color: '#2D2D2D', fontWeight: 700 }}>{totalAttachments}</p>
-              <p className="text-xs mt-2" style={{ color: '#B0B3B8' }}>Files attached</p>
+              <p className="text-xs sm:text-sm mb-1 sm:mb-2" style={{ color: '#65676B', fontWeight: 500 }}>Attachments</p>
+              <p className="text-lg sm:text-3xl tracking-tight" style={{ color: '#2D2D2D', fontWeight: 700 }}>{totalAttachments}</p>
+              <p className="text-[10px] sm:text-xs mt-1 sm:mt-2 hidden sm:block" style={{ color: '#B0B3B8' }}>Files attached</p>
             </div>
           </>
         )}
@@ -390,56 +394,56 @@ export default function FinanceNotesPage() {
 
       {/* Search and Filters - Only show if user has notes */}
       {!isNewUser && (
-        <div className="rounded-2xl p-6" style={{ backgroundColor: '#FAFBFC' }}>
-          <div className="flex items-center justify-between mb-5">
+        <div className="rounded-xl sm:rounded-2xl p-3 sm:p-6" style={{ backgroundColor: '#FAFBFC' }}>
+          <div className="flex items-center justify-between mb-3 sm:mb-5">
             <div>
-              <h3 className="text-sm font-semibold" style={{ color: '#2D2D2D' }}>Filter Notes</h3>
-              <p className="text-xs mt-0.5" style={{ color: '#B0B3B8' }}>Search and filter your notes</p>
+              <h3 className="text-xs sm:text-sm font-semibold" style={{ color: '#2D2D2D' }}>Filter Notes</h3>
+              <p className="text-[10px] sm:text-xs mt-0.5 hidden sm:block" style={{ color: '#B0B3B8' }}>Search and filter your notes</p>
             </div>
             <div className="flex items-center gap-2">
               <button 
                 onClick={() => { setSearchQuery(''); setSelectedCategory('all'); }}
-                className="text-xs font-medium px-3 py-1.5 rounded-full transition-all hover:bg-white" 
+                className="text-[10px] sm:text-xs font-medium px-2 sm:px-3 py-1 sm:py-1.5 rounded-full transition-all hover:bg-white" 
                 style={{ color: '#14462a' }}
               >
-                Clear all
+                Clear
               </button>
-              <div className="flex items-center border rounded-xl overflow-hidden" style={{ backgroundColor: 'white' }}>
+              <div className="flex items-center border rounded-lg sm:rounded-xl overflow-hidden" style={{ backgroundColor: 'white' }}>
                 <button
                   onClick={() => setViewMode("grid")}
-                  className={`p-2 transition-all ${viewMode === "grid" ? "bg-[rgba(20,70,42,0.08)]" : ""}`}
+                  className={`p-1.5 sm:p-2 transition-all ${viewMode === "grid" ? "bg-[rgba(20,70,42,0.08)]" : ""}`}
                 >
-                  <Category2 size={16} color={viewMode === "grid" ? "#14462a" : "#B0B3B8"} />
+                  <Category2 size={14} color={viewMode === "grid" ? "#14462a" : "#B0B3B8"} />
                 </button>
                 <button
                   onClick={() => setViewMode("table")}
-                  className={`p-2 transition-all ${viewMode === "table" ? "bg-[rgba(20,70,42,0.08)]" : ""}`}
+                  className={`p-1.5 sm:p-2 transition-all ${viewMode === "table" ? "bg-[rgba(20,70,42,0.08)]" : ""}`}
                 >
-                  <Element3 size={16} color={viewMode === "table" ? "#14462a" : "#B0B3B8"} />
+                  <Element3 size={14} color={viewMode === "table" ? "#14462a" : "#B0B3B8"} />
                 </button>
               </div>
             </div>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="md:col-span-2">
-              <label className="text-xs mb-2 block font-medium" style={{ color: '#65676B' }}>Search</label>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
+            <div className="sm:col-span-2">
+              <label className="text-[10px] sm:text-xs mb-1.5 sm:mb-2 block font-medium" style={{ color: '#65676B' }}>Search</label>
               <div className="relative">
-                <SearchNormal1 size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2" style={{ color: '#B0B3B8' }} />
+                <SearchNormal1 size={14} className="absolute left-3 top-1/2 -translate-y-1/2" style={{ color: '#B0B3B8' }} />
                 <Input
-                  placeholder="Search notes by title, content, or tags..."
+                  placeholder="Search notes..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-10 h-11 rounded-xl border-0 shadow-sm transition-all focus:shadow-md"
+                  className="pl-8 sm:pl-10 h-9 sm:h-11 rounded-lg sm:rounded-xl border-0 shadow-sm transition-all focus:shadow-md text-sm"
                   style={{ backgroundColor: 'white', color: '#2D2D2D' }}
                 />
               </div>
             </div>
 
             <div>
-              <label className="text-xs mb-2 block font-medium" style={{ color: '#65676B' }}>Category</label>
+              <label className="text-[10px] sm:text-xs mb-1.5 sm:mb-2 block font-medium" style={{ color: '#65676B' }}>Category</label>
               <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-                <SelectTrigger className="h-11 rounded-xl border-0 shadow-sm transition-all hover:shadow-md" style={{ backgroundColor: 'white' }}>
+                <SelectTrigger className="h-9 sm:h-11 rounded-lg sm:rounded-xl border-0 shadow-sm transition-all hover:shadow-md text-sm" style={{ backgroundColor: 'white' }}>
                   <SelectValue placeholder="All categories" />
                 </SelectTrigger>
                 <SelectContent className="rounded-xl">
@@ -477,156 +481,243 @@ export default function FinanceNotesPage() {
             size="sm"
           />
         ) : viewMode === "grid" ? (
-          <div className="p-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="p-3 sm:p-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
               {notes.map(renderNoteCard)}
             </div>
           </div>
         ) : (
           <>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead className="w-12">
-                    <Checkbox 
-                      checked={allSelected}
-                      {...(someSelected && { 'data-state': 'indeterminate' })}
-                      onCheckedChange={toggleSelectAll}
-                      aria-label="Select all"
-                    />
-                  </TableHead>
-                  <TableHead>Title</TableHead>
-                  <TableHead>Category</TableHead>
-                  <TableHead>Tags</TableHead>
-                  <TableHead>Updated</TableHead>
-                  <TableHead>Words</TableHead>
-                  <TableHead className="w-12"></TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {notes.map((note) => (
-                  <TableRow
-                    key={note.id}
-                    className="cursor-pointer hover:bg-gray-50"
-                    onClick={() => window.location.href = `/notes/${note.id}`}
-                  >
-                    <TableCell onClick={(e) => e.stopPropagation()}>
+            {/* Desktop Table View */}
+            <div className="hidden md:block">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className="w-12">
                       <Checkbox 
-                        checked={selectedRows.includes(note.id)}
-                        onCheckedChange={() => toggleSelectRow(note.id)}
-                        aria-label={`Select ${note.title}`}
+                        checked={allSelected}
+                        {...(someSelected && { 'data-state': 'indeterminate' })}
+                        onCheckedChange={toggleSelectAll}
+                        aria-label="Select all"
                       />
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex items-center gap-3">
-                        <div
-                          className="h-9 w-9 rounded-full flex items-center justify-center shrink-0"
-                          style={{ backgroundColor: 'rgba(20, 70, 42, 0.08)' }}
-                        >
-                          <Note size={16} color="#14462a" />
-                        </div>
-                        <div className="min-w-0">
-                          <div className="font-medium truncate flex items-center gap-2" style={{ color: "#2D2D2D" }}>
-                            {note.title}
-                            {note.is_pinned && <Star size={14} color="#F59E0B" variant="Bold" />}
-                          </div>
-                          <div className="text-xs truncate max-w-[300px]" style={{ color: "#B0B3B8" }}>
-                            {stripHtml(note.preview || note.content || '') || 'No content'}
-                          </div>
-                        </div>
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <Badge variant="outline" className="rounded-full">
-                        {note.category || 'Uncategorized'}
-                      </Badge>
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex flex-wrap gap-1">
-                        {note.tags?.slice(0, 2).map((tag) => (
-                          <Badge
-                            key={tag}
-                            variant="secondary"
-                            className="rounded-full px-2 py-0.5 text-xs"
-                            style={{ backgroundColor: "rgba(20, 70, 42, 0.08)", color: "#14462a" }}
-                          >
-                            {tag}
-                          </Badge>
-                        ))}
-                        {(note.tags?.length || 0) > 2 && (
-                          <span className="text-xs" style={{ color: "#B0B3B8" }}>+{(note.tags?.length || 0) - 2}</span>
-                        )}
-                      </div>
-                    </TableCell>
-                    <TableCell className="text-sm" style={{ color: "#65676B" }}>
-                      {formatDate(note.updated_at)}
-                    </TableCell>
-                    <TableCell className="text-sm" style={{ color: "#65676B" }}>
-                      {note.word_count || 0}
-                    </TableCell>
-                    <TableCell onClick={(e) => e.stopPropagation()}>
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <button className="inline-flex items-center rounded-full p-1.5 transition-all hover:bg-[rgba(20,70,42,0.06)]">
-                            <More size={16} color="#B0B3B8" />
-                          </button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end" className="rounded-2xl w-48 p-2">
-                          <DropdownMenuItem asChild className="rounded-xl p-3 cursor-pointer">
-                            <Link href={`/notes/${note.id}`}>
-                              <Eye size={16} color="#14462a" className="mr-2" />
-                              <span>View</span>
-                            </Link>
-                          </DropdownMenuItem>
-                          <DropdownMenuItem asChild className="rounded-xl p-3 cursor-pointer">
-                            <Link href={`/notes/${note.id}/edit`}>
-                              <Edit2 size={16} color="#14462a" className="mr-2" />
-                              <span>Edit</span>
-                            </Link>
-                          </DropdownMenuItem>
-                          <DropdownMenuSeparator className="my-2" />
-                          <DropdownMenuItem 
-                            className="rounded-xl p-3 cursor-pointer text-red-600"
-                            onClick={() => handleDelete(note.id)}
-                          >
-                            <Trash size={16} color="#DC2626" className="mr-2" />
-                            <span>Delete</span>
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </TableCell>
+                    </TableHead>
+                    <TableHead>Title</TableHead>
+                    <TableHead>Category</TableHead>
+                    <TableHead>Tags</TableHead>
+                    <TableHead>Updated</TableHead>
+                    <TableHead>Words</TableHead>
+                    <TableHead className="w-12"></TableHead>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                </TableHeader>
+                <TableBody>
+                  {notes.map((note) => (
+                    <TableRow
+                      key={note.id}
+                      className="cursor-pointer hover:bg-gray-50"
+                      onClick={() => window.location.href = `/notes/${note.id}`}
+                    >
+                      <TableCell onClick={(e) => e.stopPropagation()}>
+                        <Checkbox 
+                          checked={selectedRows.includes(note.id)}
+                          onCheckedChange={() => toggleSelectRow(note.id)}
+                          aria-label={`Select ${note.title}`}
+                        />
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex items-center gap-3">
+                          <div
+                            className="h-9 w-9 rounded-full flex items-center justify-center shrink-0"
+                            style={{ backgroundColor: 'rgba(20, 70, 42, 0.08)' }}
+                          >
+                            <Note size={16} color="#14462a" />
+                          </div>
+                          <div className="min-w-0">
+                            <div className="font-medium truncate flex items-center gap-2" style={{ color: "#2D2D2D" }}>
+                              {note.title}
+                              {note.is_pinned && <Star size={14} color="#F59E0B" variant="Bold" />}
+                            </div>
+                            <div className="text-xs truncate max-w-[300px]" style={{ color: "#B0B3B8" }}>
+                              {stripHtml(note.preview || note.content || '') || 'No content'}
+                            </div>
+                          </div>
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <Badge variant="outline" className="rounded-full">
+                          {note.category || 'Uncategorized'}
+                        </Badge>
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex flex-wrap gap-1">
+                          {note.tags?.slice(0, 2).map((tag) => (
+                            <Badge
+                              key={tag}
+                              variant="secondary"
+                              className="rounded-full px-2 py-0.5 text-xs"
+                              style={{ backgroundColor: "rgba(20, 70, 42, 0.08)", color: "#14462a" }}
+                            >
+                              {tag}
+                            </Badge>
+                          ))}
+                          {(note.tags?.length || 0) > 2 && (
+                            <span className="text-xs" style={{ color: "#B0B3B8" }}>+{(note.tags?.length || 0) - 2}</span>
+                          )}
+                        </div>
+                      </TableCell>
+                      <TableCell className="text-sm" style={{ color: "#65676B" }}>
+                        {formatDate(note.updated_at)}
+                      </TableCell>
+                      <TableCell className="text-sm" style={{ color: "#65676B" }}>
+                        {note.word_count || 0}
+                      </TableCell>
+                      <TableCell onClick={(e) => e.stopPropagation()}>
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <button className="inline-flex items-center rounded-full p-1.5 transition-all hover:bg-[rgba(20,70,42,0.06)]">
+                              <More size={16} color="#B0B3B8" />
+                            </button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end" className="rounded-2xl w-48 p-2">
+                            <DropdownMenuItem asChild className="rounded-xl p-3 cursor-pointer">
+                              <Link href={`/notes/${note.id}`}>
+                                <Eye size={16} color="#14462a" className="mr-2" />
+                                <span>View</span>
+                              </Link>
+                            </DropdownMenuItem>
+                            <DropdownMenuItem asChild className="rounded-xl p-3 cursor-pointer">
+                              <Link href={`/notes/${note.id}/edit`}>
+                                <Edit2 size={16} color="#14462a" className="mr-2" />
+                                <span>Edit</span>
+                              </Link>
+                            </DropdownMenuItem>
+                            <DropdownMenuSeparator className="my-2" />
+                            <DropdownMenuItem 
+                              className="rounded-xl p-3 cursor-pointer text-red-600"
+                              onClick={() => handleDelete(note.id)}
+                            >
+                              <Trash size={16} color="#DC2626" className="mr-2" />
+                              <span>Delete</span>
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+
+            {/* Mobile Card View for Table Mode */}
+            <div className="md:hidden p-3 space-y-3">
+              {notes.map((note) => (
+                <div
+                  key={note.id}
+                  onClick={() => window.location.href = `/notes/${note.id}`}
+                  className="p-4 rounded-xl cursor-pointer transition-all hover:shadow-md"
+                  style={{ backgroundColor: '#FAFBFC' }}
+                >
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="flex items-start gap-3 min-w-0 flex-1">
+                      <div
+                        className="h-9 w-9 rounded-full flex items-center justify-center shrink-0"
+                        style={{ backgroundColor: 'rgba(20, 70, 42, 0.08)' }}
+                      >
+                        <Note size={16} color="#14462a" />
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <div className="font-medium text-sm truncate flex items-center gap-2" style={{ color: "#2D2D2D" }}>
+                          {note.title}
+                          {note.is_pinned && <Star size={12} color="#F59E0B" variant="Bold" />}
+                        </div>
+                        <div className="text-xs truncate mt-0.5" style={{ color: "#B0B3B8" }}>
+                          {stripHtml(note.preview || note.content || '') || 'No content'}
+                        </div>
+                        <div className="flex flex-wrap items-center gap-1.5 mt-2">
+                          <Badge variant="outline" className="rounded-full text-[10px] px-2 py-0">
+                            {note.category || 'Uncategorized'}
+                          </Badge>
+                          {note.tags?.slice(0, 1).map((tag) => (
+                            <Badge
+                              key={tag}
+                              variant="secondary"
+                              className="rounded-full px-2 py-0 text-[10px]"
+                              style={{ backgroundColor: "rgba(20, 70, 42, 0.08)", color: "#14462a" }}
+                            >
+                              {tag}
+                            </Badge>
+                          ))}
+                          {(note.tags?.length || 0) > 1 && (
+                            <span className="text-[10px]" style={{ color: "#B0B3B8" }}>+{(note.tags?.length || 0) - 1}</span>
+                          )}
+                        </div>
+                        <div className="flex items-center gap-3 mt-2 text-[10px]" style={{ color: "#B0B3B8" }}>
+                          <span>{formatDate(note.updated_at)}</span>
+                          <span>•</span>
+                          <span>{note.word_count || 0} words</span>
+                        </div>
+                      </div>
+                    </div>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
+                        <button className="inline-flex items-center rounded-full p-1.5 transition-all hover:bg-[rgba(20,70,42,0.06)]">
+                          <More size={16} color="#B0B3B8" />
+                        </button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end" className="rounded-2xl w-44 p-2">
+                        <DropdownMenuItem asChild className="rounded-xl p-2.5 cursor-pointer">
+                          <Link href={`/notes/${note.id}`}>
+                            <Eye size={14} color="#14462a" className="mr-2" />
+                            <span className="text-sm">View</span>
+                          </Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem asChild className="rounded-xl p-2.5 cursor-pointer">
+                          <Link href={`/notes/${note.id}/edit`}>
+                            <Edit2 size={14} color="#14462a" className="mr-2" />
+                            <span className="text-sm">Edit</span>
+                          </Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuSeparator className="my-1" />
+                        <DropdownMenuItem 
+                          className="rounded-xl p-2.5 cursor-pointer text-red-600"
+                          onClick={(e) => { e.stopPropagation(); handleDelete(note.id); }}
+                        >
+                          <Trash size={14} color="#DC2626" className="mr-2" />
+                          <span className="text-sm">Delete</span>
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </div>
+                </div>
+              ))}
+            </div>
 
             {/* Pagination */}
             {pagination.totalPages > 1 && (
-              <div className="flex items-center justify-between px-6 py-4 border-t">
-                <p className="text-sm" style={{ color: '#65676B' }}>
-                  Showing {((pagination.page - 1) * pagination.limit) + 1} to {Math.min(pagination.page * pagination.limit, pagination.total)} of {pagination.total} notes
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-3 px-3 sm:px-6 py-3 sm:py-4 border-t">
+                <p className="text-xs sm:text-sm" style={{ color: '#65676B' }}>
+                  Showing {((pagination.page - 1) * pagination.limit) + 1} to {Math.min(pagination.page * pagination.limit, pagination.total)} of {pagination.total}
                 </p>
                 <div className="flex items-center gap-2">
                   <Button
                     variant="outline"
                     size="sm"
-                    className="rounded-xl"
+                    className="rounded-xl h-8 sm:h-9"
                     disabled={pagination.page <= 1}
                     onClick={() => setFilters({ ...filters, page: pagination.page - 1 })}
                   >
-                    <ArrowLeft2 size={16} color="#65676B" />
+                    <ArrowLeft2 size={14} color="#65676B" />
                   </Button>
-                  <span className="text-sm px-3" style={{ color: '#2D2D2D' }}>
-                    Page {pagination.page} of {pagination.totalPages}
+                  <span className="text-xs sm:text-sm px-2 sm:px-3" style={{ color: '#2D2D2D' }}>
+                    {pagination.page} / {pagination.totalPages}
                   </span>
                   <Button
                     variant="outline"
                     size="sm"
-                    className="rounded-xl"
+                    className="rounded-xl h-8 sm:h-9"
                     disabled={pagination.page >= pagination.totalPages}
                     onClick={() => setFilters({ ...filters, page: pagination.page + 1 })}
                   >
-                    <ArrowRight2 size={16} color="#65676B" />
+                    <ArrowRight2 size={14} color="#65676B" />
                   </Button>
                 </div>
               </div>
