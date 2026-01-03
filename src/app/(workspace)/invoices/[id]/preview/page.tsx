@@ -10,7 +10,7 @@ import {
   Setting4
 } from "iconsax-react";
 import Link from "next/link";
-import { use, useEffect, useMemo, useState } from "react";
+import { use, useEffect, useMemo, useState, Suspense } from "react";
 import { useInvoiceDetail } from "@/hooks/useInvoicesData";
 import { SendInvoiceModal } from "@/components/invoices/send-invoice-modal";
 import { useSearchParams } from "next/navigation";
@@ -27,8 +27,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-export default function InvoicePreviewPage({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = use(params);
+function InvoicePreviewContent({ id }: { id: string }) {
   const searchParams = useSearchParams();
   const [sendOpen, setSendOpen] = useState(false);
   
@@ -269,5 +268,41 @@ export default function InvoicePreviewPage({ params }: { params: Promise<{ id: s
         </div>
       </div>
     </div>
+  );
+}
+
+export default function InvoicePreviewPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = use(params);
+  
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-white">
+        <div className="print:hidden" style={{ borderBottom: '1px solid #E4E6EB' }}>
+          <div className="max-w-5xl mx-auto px-6 py-4">
+            <div className="flex items-center justify-between">
+              <Skeleton className="h-8 w-24" />
+              <div className="flex items-center gap-2">
+                <Skeleton className="h-9 w-24" />
+                <Skeleton className="h-9 w-32" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="max-w-5xl mx-auto px-6 py-12">
+          <div className="px-12 py-10">
+            <Skeleton className="h-10 w-64 mb-4" />
+            <Skeleton className="h-6 w-48 mb-8" />
+            <div className="grid grid-cols-3 gap-8 mb-8">
+              <Skeleton className="h-20 w-full" />
+              <Skeleton className="h-20 w-full" />
+              <Skeleton className="h-20 w-full" />
+            </div>
+            <Skeleton className="h-40 w-full" />
+          </div>
+        </div>
+      </div>
+    }>
+      <InvoicePreviewContent id={id} />
+    </Suspense>
   );
 }

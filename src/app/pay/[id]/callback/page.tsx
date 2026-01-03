@@ -1,6 +1,6 @@
 'use client';
 
-import { use, useEffect, useState } from 'react';
+import { use, useEffect, useState, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { Loader2, CheckCircle2, XCircle, AlertCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -14,8 +14,7 @@ interface PaymentResult {
   currency?: string;
 }
 
-export default function PaymentCallbackPage({ params }: { params: Promise<{ id: string }> }) {
-  const { id: invoiceId } = use(params);
+function PaymentCallbackContent({ invoiceId }: { invoiceId: string }) {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [result, setResult] = useState<PaymentResult>({
@@ -215,5 +214,28 @@ export default function PaymentCallbackPage({ params }: { params: Promise<{ id: 
         </p>
       </div>
     </div>
+  );
+}
+
+export default function PaymentCallbackPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id: invoiceId } = use(params);
+  
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-white flex flex-col items-center justify-center p-4">
+        <div className="w-full max-w-md">
+          <div className="flex justify-center mb-8">
+            <LogoIcon className="h-8 w-auto" />
+          </div>
+          <div className="bg-white border border-gray-200 rounded-2xl p-8 text-center shadow-sm">
+            <Loader2 className="h-16 w-16 animate-spin mx-auto mb-4 text-gray-400" />
+            <h1 className="text-xl font-semibold mb-2">Verifying Payment</h1>
+            <p className="text-gray-600">Please wait...</p>
+          </div>
+        </div>
+      </div>
+    }>
+      <PaymentCallbackContent invoiceId={invoiceId} />
+    </Suspense>
   );
 }
