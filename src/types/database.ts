@@ -327,6 +327,71 @@ export type Database = {
         }
         Relationships: []
       }
+      products_services: {
+        Row: {
+          category: string | null
+          created_at: string | null
+          currency: Database["public"]["Enums"]["currency_code"] | null
+          default_discount: number | null
+          default_tax: number | null
+          description: string | null
+          details: string | null
+          discount_type: string | null
+          id: string
+          is_active: boolean | null
+          name: string
+          sku: string | null
+          type: string
+          unit_price: number
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string | null
+          currency?: Database["public"]["Enums"]["currency_code"] | null
+          default_discount?: number | null
+          default_tax?: number | null
+          description?: string | null
+          details?: string | null
+          discount_type?: string | null
+          id?: string
+          is_active?: boolean | null
+          name: string
+          sku?: string | null
+          type: string
+          unit_price?: number
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          category?: string | null
+          created_at?: string | null
+          currency?: Database["public"]["Enums"]["currency_code"] | null
+          default_discount?: number | null
+          default_tax?: number | null
+          description?: string | null
+          details?: string | null
+          discount_type?: string | null
+          id?: string
+          is_active?: boolean | null
+          name?: string
+          sku?: string | null
+          type?: string
+          unit_price?: number
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "products_services_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       receipt_snapshots: {
         Row: {
           created_at: string | null

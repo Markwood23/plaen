@@ -36,7 +36,11 @@ import { useRouter } from "next/navigation";
 import { useBalanceVisibility } from "@/contexts/balance-visibility-context";
 import { useContactsData } from "@/hooks/useContactsData";
 import { useSettingsData } from "@/hooks/useSettingsData";
+import { useProductsServices, type ProductService, type ProductServiceInput } from "@/hooks/useProductsServices";
 import { createInvoice } from "@/hooks/useInvoicesData";
+import { TemplateSelector, InvoiceTemplateType } from "@/components/invoices/templates";
+import { ItemSelector } from "@/components/invoices/item-selector";
+import { ProductServiceModal } from "@/components/invoices/product-service-modal";
 
 // Validation helper functions
 const isValidEmail = (email: string): boolean => {
@@ -64,7 +68,7 @@ const isValidPercentage = (value: number): boolean => {
 
 export default function CreateInvoicePage() {
   const router = useRouter();
-  const [template, setTemplate] = useState("standard");
+  const [template, setTemplate] = useState<InvoiceTemplateType>("modern");
   const [selectedContact, setSelectedContact] = useState<string>("");
   const { maskAmount } = useBalanceVisibility();
   const [submitting, setSubmitting] = useState(false);
@@ -114,6 +118,19 @@ export default function CreateInvoicePage() {
   
   // Fetch user profile/settings for "From" section
   const { settings: userSettings, loading: settingsLoading } = useSettingsData();
+  
+  // Fetch products/services from API
+  const { 
+    products: savedProducts, 
+    loading: productsLoading, 
+    createProduct, 
+    updateProduct,
+    refetch: refetchProducts 
+  } = useProductsServices({ is_active: true });
+  
+  // Product Modal State
+  const [showProductModal, setShowProductModal] = useState(false);
+  const [editingProduct, setEditingProduct] = useState<ProductService | null>(null);
   
   // Add New Customer Modal State
   const [showAddCustomerModal, setShowAddCustomerModal] = useState(false);
@@ -363,65 +380,6 @@ export default function CreateInvoicePage() {
     }
   };
 
-  // Products/services - these could be fetched from an API in the future
-  const savedProductsServices = [
-    { 
-      id: "1", 
-      name: "Website Design & Development", 
-      description: "Complete website design and development service",
-      details: "Includes responsive design, 5 pages, SEO optimization, and 3 months support",
-      type: "service",
-      unitPrice: 2500.00,
-      defaultTax: 15,
-      defaultDiscount: 0,
-      discountType: "percent" as "percent" | "fixed"
-    },
-    { 
-      id: "2", 
-      name: "Logo Design Package", 
-      description: "Professional logo design with 3 revisions",
-      details: "Includes vector files, brand guidelines, and multiple format exports",
-      type: "service",
-      unitPrice: 500.00,
-      defaultTax: 15,
-      defaultDiscount: 0,
-      discountType: "percent" as "percent" | "fixed"
-    },
-    { 
-      id: "3", 
-      name: "Monthly Retainer - Social Media Management", 
-      description: "Monthly social media management and content creation",
-      details: "15 posts per month, analytics reports, community management",
-      type: "service",
-      unitPrice: 800.00,
-      defaultTax: 15,
-      defaultDiscount: 10,
-      discountType: "percent" as "percent" | "fixed"
-    },
-    { 
-      id: "4", 
-      name: "Consulting - Per Hour", 
-      description: "Business consulting services",
-      details: "Strategy, operations, and growth consulting",
-      type: "service",
-      unitPrice: 150.00,
-      defaultTax: 15,
-      defaultDiscount: 0,
-      discountType: "percent" as "percent" | "fixed"
-    },
-    { 
-      id: "5", 
-      name: "Premium Software License", 
-      description: "Annual premium software license",
-      details: "Full access to all features, priority support, unlimited users",
-      type: "product",
-      unitPrice: 1200.00,
-      defaultTax: 15,
-      defaultDiscount: 100,
-      discountType: "fixed" as "percent" | "fixed"
-    },
-  ];
-
   // Handle creating a new customer inline
   const handleCreateCustomer = async () => {
     if (!newCustomerData.name.trim()) {
@@ -520,8 +478,8 @@ export default function CreateInvoicePage() {
   };
 
   // Handle product/service selection for line item
-  const handleProductServiceSelect = (lineItemId: number, productId: string) => {
-    if (productId === "custom") {
+  const handleProductSelect = (lineItemId: number, product: ProductService | null) => {
+    if (product === null) {
       // Clear for manual entry
       setLineItems(lineItems.map(item =>
         item.id === lineItemId
@@ -530,23 +488,35 @@ export default function CreateInvoicePage() {
       ));
     } else {
       // Autofill with selected product/service - populate ALL available fields
-      const product = savedProductsServices.find(p => p.id === productId);
-      if (product) {
-        setLineItems(lineItems.map(item =>
-          item.id === lineItemId
-            ? { 
-                ...item, 
-                description: product.name,
-                details: product.details || product.description,
-                unitPrice: product.unitPrice,
-                tax: product.defaultTax,
-                discount: product.defaultDiscount,
-                discountType: product.discountType
-              }
-            : item
-        ));
-      }
+      setLineItems(lineItems.map(item =>
+        item.id === lineItemId
+          ? { 
+              ...item, 
+              description: product.name,
+              details: product.details || product.description || "",
+              unitPrice: product.unit_price,
+              tax: product.default_tax,
+              discount: product.default_discount,
+              discountType: product.discount_type
+            }
+          : item
+      ));
     }
+  };
+
+  // Handle creating a new product from the modal
+  const handleCreateProduct = async (data: ProductServiceInput): Promise<ProductService> => {
+    const product = await createProduct(data);
+    await refetchProducts();
+    return product;
+  };
+
+  // Handle updating an existing product
+  const handleUpdateProduct = async (data: ProductServiceInput): Promise<ProductService> => {
+    if (!editingProduct) throw new Error("No product to update");
+    const product = await updateProduct(editingProduct.id, data);
+    await refetchProducts();
+    return product;
   };
 
   // Line Item Functions
@@ -780,55 +750,11 @@ export default function CreateInvoicePage() {
           <TabsContent value="details" className="space-y-8 mt-8">
             {/* Template Selection */}
             <div className="rounded-2xl p-6 transition-all duration-300" style={{ backgroundColor: 'rgba(20, 70, 42, 0.03)' }}>
-              <div className="mb-5 flex items-start justify-between">
-                <div>
-                  <h2 className="text-base font-semibold text-[#2D2D2D] mb-1">Invoice Template</h2>
-                  <p className="text-sm text-[#B0B3B8]">Choose a professional template that matches your brand</p>
-                </div>
-                <div className="w-72">
-                  <Select value={template} onValueChange={setTemplate}>
-                    <SelectTrigger className="border-[#E4E6EB] h-11 rounded-xl bg-white hover:border-[#14462a] transition-colors">
-                      <SelectValue>
-                        <div className="flex flex-col items-start gap-0.5">
-                          <span className="font-medium text-sm">
-                            {template === "standard" && "Standard"}
-                            {template === "minimal" && "Minimal"}
-                            {template === "professional" && "Professional"}
-                            {template === "modern" && "Modern"}
-                          </span>
-                        </div>
-                      </SelectValue>
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="standard">
-                        <div className="flex flex-col items-start gap-0.5 py-1">
-                          <span className="font-medium text-sm">Standard</span>
-                          <span className="text-xs text-[#B0B3B8]">Classic business format</span>
-                        </div>
-                      </SelectItem>
-                      <SelectItem value="minimal">
-                        <div className="flex flex-col items-start gap-0.5 py-1">
-                          <span className="font-medium text-sm">Minimal</span>
-                          <span className="text-xs text-[#B0B3B8]">Clean and simple</span>
-                        </div>
-                      </SelectItem>
-                      <SelectItem value="professional">
-                        <div className="flex flex-col items-start gap-0.5 py-1">
-                          <span className="font-medium text-sm">Professional</span>
-                          <span className="text-xs text-[#B0B3B8]">Corporate style</span>
-                        </div>
-                      </SelectItem>
-                      <SelectItem value="modern">
-                        <div className="flex flex-col items-start gap-0.5 py-1">
-                          <span className="font-medium text-sm">Modern</span>
-                          <span className="text-xs text-[#B0B3B8]">Contemporary design</span>
-                        </div>
-                      </SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <p className="text-xs text-[#B0B3B8] mt-1.5">Select the layout style for your invoice</p>
-                </div>
+              <div className="mb-5">
+                <h2 className="text-base font-semibold text-[#2D2D2D] mb-1">Invoice Template</h2>
+                <p className="text-sm text-[#B0B3B8]">Choose a professional template that matches your brand</p>
               </div>
+              <TemplateSelector value={template} onChange={setTemplate} />
             </div>
 
             {/* Invoice Details */}
@@ -1282,32 +1208,21 @@ export default function CreateInvoicePage() {
                 {lineItems.map((item) => (
                   <div key={item.id} className="grid grid-cols-12 gap-4 items-start py-4 border-b border-[#E4E6EB]">
                     <div className="col-span-4 space-y-2">
-                      <Select onValueChange={(value) => handleProductServiceSelect(item.id, value)}>
-                        <SelectTrigger className="border-[#E4E6EB] h-11 w-full rounded-xl hover:border-[#14462a] transition-colors">
-                          <SelectValue placeholder="Select product/service or type manually" />
-                        </SelectTrigger>
-                        <SelectContent align="start" className="w-[400px]">
-                          <SelectItem value="custom">
-                            <div className="flex items-center gap-2">
-                              <Add size={14} color="currentColor" />
-                              <span>Enter manually</span>
-                            </div>
-                          </SelectItem>
-                          <div className="h-px bg-[#E4E6EB] my-1" />
-                          {savedProductsServices.map((product) => (
-                            <SelectItem key={product.id} value={product.id}>
-                              <div className="flex flex-col items-start w-full">
-                                <span className="font-medium text-[#2D2D2D]">{product.name}</span>
-                                <div className="flex items-center gap-2 text-xs text-[#B0B3B8] mt-0.5">
-                                  <span className="font-semibold">{maskAmount(`₵${product.unitPrice.toFixed(2)}`)}</span>
-                                  <span>•</span>
-                                  <span className="capitalize">{product.type}</span>
-                                </div>
-                              </div>
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
+                      <ItemSelector
+                        products={savedProducts}
+                        loading={productsLoading}
+                        onSelect={(product) => handleProductSelect(item.id, product)}
+                        onCreateNew={() => {
+                          setEditingProduct(null);
+                          setShowProductModal(true);
+                        }}
+                        onEdit={(product) => {
+                          setEditingProduct(product);
+                          setShowProductModal(true);
+                        }}
+                        placeholder="Search products/services..."
+                        maskAmount={maskAmount}
+                      />
                       <div>
                         <Input 
                           placeholder="Service or product description *"
@@ -1941,6 +1856,18 @@ export default function CreateInvoicePage() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {/* Product/Service Modal */}
+      <ProductServiceModal
+        open={showProductModal}
+        onClose={() => {
+          setShowProductModal(false);
+          setEditingProduct(null);
+        }}
+        onSave={editingProduct ? handleUpdateProduct : handleCreateProduct}
+        initialData={editingProduct}
+        mode={editingProduct ? 'edit' : 'create'}
+      />
     </div>
   );
 }
