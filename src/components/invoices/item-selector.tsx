@@ -15,6 +15,7 @@ import type { ProductService } from "@/hooks/useProductsServices"
 interface ItemSelectorProps {
   products: ProductService[]
   loading?: boolean
+  value?: string  // Currently selected product name to display
   onSelect: (product: ProductService | null) => void  // null means "enter manually"
   onCreateNew: () => void
   onEdit?: (product: ProductService) => void
@@ -26,6 +27,7 @@ interface ItemSelectorProps {
 export function ItemSelector({
   products,
   loading = false,
+  value = "",
   onSelect,
   onCreateNew,
   onEdit,
@@ -71,6 +73,7 @@ export function ItemSelector({
     const handleClickOutside = (event: MouseEvent) => {
       if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
         setIsOpen(false)
+        setSearch("")
       }
     }
     document.addEventListener('mousedown', handleClickOutside)
@@ -155,19 +158,26 @@ export function ItemSelector({
         } bg-white`}
         onClick={() => {
           setIsOpen(true)
+          setSearch("")
           setTimeout(() => inputRef.current?.focus(), 0)
         }}
       >
         <SearchNormal1 size={18} color="#B0B3B8" className="mr-2 flex-shrink-0" />
-        <input
-          ref={inputRef}
-          type="text"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          onKeyDown={handleKeyDown}
-          placeholder={placeholder}
-          className="flex-1 bg-transparent outline-none text-sm text-[#2D2D2D] placeholder:text-[#B0B3B8]"
-        />
+        {isOpen ? (
+          <input
+            ref={inputRef}
+            type="text"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            onKeyDown={handleKeyDown}
+            placeholder={value || placeholder}
+            className="flex-1 bg-transparent outline-none text-sm text-[#2D2D2D] placeholder:text-[#B0B3B8]"
+          />
+        ) : (
+          <span className={`flex-1 text-sm truncate ${value ? 'text-[#2D2D2D]' : 'text-[#B0B3B8]'}`}>
+            {value || placeholder}
+          </span>
+        )}
         <ArrowDown2 
           size={16} 
           color="#B0B3B8" 

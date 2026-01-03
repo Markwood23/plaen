@@ -38,7 +38,7 @@ import { useContactsData } from "@/hooks/useContactsData";
 import { useSettingsData } from "@/hooks/useSettingsData";
 import { useProductsServices, type ProductService, type ProductServiceInput } from "@/hooks/useProductsServices";
 import { createInvoice } from "@/hooks/useInvoicesData";
-import { TemplateSelector, InvoiceTemplateType } from "@/components/invoices/templates";
+import { InvoiceTemplateType } from "@/components/invoices/templates";
 import { ItemSelector } from "@/components/invoices/item-selector";
 import { ProductServiceModal } from "@/components/invoices/product-service-modal";
 
@@ -750,11 +750,55 @@ export default function CreateInvoicePage() {
           <TabsContent value="details" className="space-y-8 mt-8">
             {/* Template Selection */}
             <div className="rounded-2xl p-6 transition-all duration-300" style={{ backgroundColor: 'rgba(20, 70, 42, 0.03)' }}>
-              <div className="mb-5">
-                <h2 className="text-base font-semibold text-[#2D2D2D] mb-1">Invoice Template</h2>
-                <p className="text-sm text-[#B0B3B8]">Choose a professional template that matches your brand</p>
+              <div className="mb-5 flex items-start justify-between">
+                <div>
+                  <h2 className="text-base font-semibold text-[#2D2D2D] mb-1">Invoice Template</h2>
+                  <p className="text-sm text-[#B0B3B8]">Choose a professional template that matches your brand</p>
+                </div>
+                <div className="w-72">
+                  <Select value={template} onValueChange={(v) => setTemplate(v as InvoiceTemplateType)}>
+                    <SelectTrigger className="border-[#E4E6EB] h-11 rounded-xl bg-white hover:border-[#14462a] transition-colors">
+                      <SelectValue>
+                        <div className="flex flex-col items-start gap-0.5">
+                          <span className="font-medium text-sm">
+                            {template === "standard" && "Standard"}
+                            {template === "minimal" && "Minimal"}
+                            {template === "professional" && "Professional"}
+                            {template === "modern" && "Modern"}
+                          </span>
+                        </div>
+                      </SelectValue>
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="standard">
+                        <div className="flex flex-col items-start gap-0.5 py-1">
+                          <span className="font-medium text-sm">Standard</span>
+                          <span className="text-xs text-[#B0B3B8]">Classic business format</span>
+                        </div>
+                      </SelectItem>
+                      <SelectItem value="minimal">
+                        <div className="flex flex-col items-start gap-0.5 py-1">
+                          <span className="font-medium text-sm">Minimal</span>
+                          <span className="text-xs text-[#B0B3B8]">Clean and simple</span>
+                        </div>
+                      </SelectItem>
+                      <SelectItem value="professional">
+                        <div className="flex flex-col items-start gap-0.5 py-1">
+                          <span className="font-medium text-sm">Professional</span>
+                          <span className="text-xs text-[#B0B3B8]">Corporate style</span>
+                        </div>
+                      </SelectItem>
+                      <SelectItem value="modern">
+                        <div className="flex flex-col items-start gap-0.5 py-1">
+                          <span className="font-medium text-sm">Modern</span>
+                          <span className="text-xs text-[#B0B3B8]">Contemporary design</span>
+                        </div>
+                      </SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <p className="text-xs text-[#B0B3B8] mt-1.5">Select the layout style for your invoice</p>
+                </div>
               </div>
-              <TemplateSelector value={template} onChange={setTemplate} />
             </div>
 
             {/* Invoice Details */}
@@ -1211,6 +1255,7 @@ export default function CreateInvoicePage() {
                       <ItemSelector
                         products={savedProducts}
                         loading={productsLoading}
+                        value={item.description}
                         onSelect={(product) => handleProductSelect(item.id, product)}
                         onCreateNew={() => {
                           setEditingProduct(null);
