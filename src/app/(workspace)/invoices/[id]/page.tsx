@@ -551,7 +551,10 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
                 e.currentTarget.style.color = '#2D2D2D';
               }
             }}
-            onClick={() => setActiveAction('attachment')}
+            onClick={() => {
+              setActiveAction('attachment');
+              handlePickAttachments();
+            }}
           >
             <Document size={14} color="currentColor" className="mr-1.5" />
             Add attachment
@@ -577,7 +580,10 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
                 e.currentTarget.style.color = '#2D2D2D';
               }
             }}
-            onClick={() => setActiveAction('note')}
+            onClick={() => {
+              setActiveAction('note');
+              router.push(`/notes/new?invoice=${id}&invoice_number=${invoiceData.invoice_number}`);
+            }}
           >
             <Message size={14} color="currentColor" className="mr-1.5" />
             Add note

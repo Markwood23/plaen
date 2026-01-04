@@ -207,7 +207,7 @@ export default function WorkspaceLayout({
           </div>
           
           {/* Search - more prominent */}
-          <div className="flex-1 min-w-0 max-w-2xl">
+          <div className="flex-1 min-w-0 max-w-xl">
             <div className="relative group">
               <SearchNormal1 
                 size={18}
