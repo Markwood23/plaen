@@ -38,6 +38,7 @@ import {
   deleteStandaloneNote,
   togglePinNote,
 } from "@/hooks/useStandaloneNotes";
+import { useConfirmDialog } from "@/components/ui/confirm-dialog";
 
 type SaveStatus = "idle" | "saving" | "saved" | "error";
 
@@ -49,6 +50,7 @@ export default function NoteDetailPage({
   const { id } = use(params);
   const router = useRouter();
   const { note, loading, error, refetch } = useStandaloneNote(id);
+  const { confirm, ConfirmDialog } = useConfirmDialog();
 
   const [isEditMode, setIsEditMode] = useState(false);
   const [title, setTitle] = useState("");
@@ -140,9 +142,13 @@ export default function NoteDetailPage({
   const handleDelete = async () => {
     if (!note) return;
 
-    const confirmed = window.confirm(
-      "Are you sure you want to delete this note?"
-    );
+    const confirmed = await confirm({
+      title: 'Delete Note',
+      description: 'Are you sure you want to delete this note? This action cannot be undone.',
+      confirmLabel: 'Delete',
+      cancelLabel: 'Cancel',
+      variant: 'danger',
+    });
     if (!confirmed) return;
 
     const result = await deleteStandaloneNote(note.id);
@@ -571,6 +577,9 @@ export default function NoteDetailPage({
         <p>Created {formatDate(note.created_at)}</p>
         <p>{note.word_count || 0} words</p>
       </div>
+      
+      {/* Confirm Dialog */}
+      {ConfirmDialog}
     </div>
   );
 }

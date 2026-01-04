@@ -39,6 +39,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Checkbox } from "@/components/ui/checkbox";
 import { useStandaloneNotes, deleteStandaloneNote } from "@/hooks/useStandaloneNotes";
 import { EmptyState } from "@/components/ui/empty-state";
+import { useConfirmDialog } from "@/components/ui/confirm-dialog";
 
 // Helper to strip HTML tags from content
 function stripHtml(html: string): string {
@@ -105,6 +106,7 @@ export default function FinanceNotesPage() {
   const [viewMode, setViewMode] = useState<"grid" | "table">("table");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [selectedRows, setSelectedRows] = useState<string[]>([]);
+  const { confirm, ConfirmDialog } = useConfirmDialog();
 
   const { notes, loading, error, pagination, refetch, setFilters, filters } = useStandaloneNotes({
     page: 1,
@@ -169,7 +171,13 @@ export default function FinanceNotesPage() {
   };
 
   const handleDelete = async (noteId: string) => {
-    const confirmed = window.confirm('Are you sure you want to delete this note?');
+    const confirmed = await confirm({
+      title: 'Delete Note',
+      description: 'Are you sure you want to delete this note? This action cannot be undone.',
+      confirmLabel: 'Delete',
+      cancelLabel: 'Cancel',
+      variant: 'danger',
+    });
     if (!confirmed) return;
     
     const result = await deleteStandaloneNote(noteId);
@@ -725,6 +733,9 @@ export default function FinanceNotesPage() {
           </>
         )}
       </div>
+      
+      {/* Confirm Dialog */}
+      {ConfirmDialog}
     </div>
   );
 }

@@ -36,6 +36,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { useBalanceVisibility } from "@/contexts/balance-visibility-context";
 import { useInvoicesData, deleteInvoice, bulkDeleteInvoices, bulkMarkAsSent, exportInvoicesToCSV } from "@/hooks/useInvoicesData";
 import { EmptyState } from "@/components/ui/empty-state";
+import { useConfirmDialog } from "@/components/ui/confirm-dialog";
 
 // Loading skeleton
 function TableSkeleton({ rows = 5 }: { rows?: number }) {
@@ -77,6 +78,7 @@ export default function InvoicesPage() {
   const [sortBy, setSortBy] = useState<string>("created_at");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
   const { isBalanceHidden, maskAmount } = useBalanceVisibility();
+  const { confirm, ConfirmDialog } = useConfirmDialog();
   
   const { invoices, loading, error, pagination, refetch, setFilters, filters } = useInvoicesData({
     page: 1,
@@ -149,7 +151,13 @@ export default function InvoicesPage() {
   };
 
   const handleDelete = async (invoiceId: string) => {
-    const confirmed = window.confirm('Are you sure you want to delete this invoice?');
+    const confirmed = await confirm({
+      title: 'Delete Invoice',
+      description: 'Are you sure you want to delete this invoice? This action cannot be undone.',
+      confirmLabel: 'Delete',
+      cancelLabel: 'Cancel',
+      variant: 'danger',
+    });
     if (!confirmed) return;
     
     const result = await deleteInvoice(invoiceId);
@@ -164,7 +172,13 @@ export default function InvoicesPage() {
   const handleBulkDelete = async () => {
     if (selectedRows.length === 0) return;
     
-    const confirmed = window.confirm(`Are you sure you want to delete ${selectedRows.length} invoice(s)?`);
+    const confirmed = await confirm({
+      title: 'Delete Invoices',
+      description: `Are you sure you want to delete ${selectedRows.length} invoice(s)? This action cannot be undone.`,
+      confirmLabel: 'Delete All',
+      cancelLabel: 'Cancel',
+      variant: 'danger',
+    });
     if (!confirmed) return;
     
     const result = await bulkDeleteInvoices(selectedRows);
@@ -180,7 +194,13 @@ export default function InvoicesPage() {
   const handleBulkSend = async () => {
     if (selectedRows.length === 0) return;
     
-    const confirmed = window.confirm(`Mark ${selectedRows.length} invoice(s) as sent and email customers?`);
+    const confirmed = await confirm({
+      title: 'Send Invoices',
+      description: `Mark ${selectedRows.length} invoice(s) as sent and email customers?`,
+      confirmLabel: 'Send All',
+      cancelLabel: 'Cancel',
+      variant: 'info',
+    });
     if (!confirmed) return;
     
     const result = await bulkMarkAsSent(selectedRows);
@@ -738,6 +758,9 @@ export default function InvoicesPage() {
           </>
         )}
       </div>
+      
+      {/* Confirm Dialog */}
+      {ConfirmDialog}
     </div>
   );
 }

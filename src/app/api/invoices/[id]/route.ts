@@ -115,6 +115,45 @@ export async function PATCH(
     if (body.discount_value !== undefined) updateData.discount_value = body.discount_value
     if (body.payment_instructions !== undefined) updateData.payment_instructions = body.payment_instructions
     
+    // Handle totals recalculation when items or amounts are provided
+    if (body.items || body.tax_amount !== undefined || body.discount_amount !== undefined) {
+      // Fetch current invoice to get existing data
+      const { data: currentInvoice } = await supabase
+        .from('invoices')
+        .select('subtotal, total, balance_due')
+        .eq('id', id)
+        .eq('user_id', user.id)
+        .single()
+      
+      // Calculate subtotal from items if provided, otherwise use existing
+      let subtotal = 0
+      if (body.items && body.items.length > 0) {
+        subtotal = body.items.reduce((sum: number, item: { quantity?: number; unit_price: number }) => {
+          return sum + (item.quantity || 1) * item.unit_price
+        }, 0)
+      } else {
+        subtotal = currentInvoice?.subtotal || 0
+      }
+      
+      const taxAmount = body.tax_amount ?? 0
+      const discountAmount = body.discount_amount ?? 0
+      const total = subtotal + taxAmount - discountAmount
+      
+      // Calculate amount already paid from previous total and balance
+      const oldTotal = currentInvoice?.total || 0
+      const oldBalanceDue = currentInvoice?.balance_due || 0
+      const amountPaid = oldTotal - oldBalanceDue
+      
+      // New balance_due = new total - amount already paid (but never negative)
+      const newBalanceDue = Math.max(0, total - amountPaid)
+      
+      updateData.subtotal = subtotal
+      updateData.tax_amount = taxAmount
+      updateData.discount_amount = discountAmount
+      updateData.total = total
+      updateData.balance_due = newBalanceDue
+    }
+    
     // Update invoice
     const { data: invoice, error } = await supabase
       .from('invoices')

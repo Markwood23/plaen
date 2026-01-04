@@ -37,6 +37,7 @@ import { Calendar } from "@/components/ui/calendar";
 import { useBalanceVisibility } from "@/contexts/balance-visibility-context";
 import { useReceiptsData, deleteReceipt, verifyReceipt } from "@/hooks/useReceiptsData";
 import { EmptyState } from "@/components/ui/empty-state";
+import { useConfirmDialog } from "@/components/ui/confirm-dialog";
 
 // Loading skeletons
 function TableSkeleton({ rows = 5 }: { rows?: number }) {
@@ -77,6 +78,7 @@ export default function ReceiptsPage() {
   const [dateRange, setDateRange] = useState<DateRange | undefined>();
   const [selectedRows, setSelectedRows] = useState<string[]>([]);
   const { maskAmount } = useBalanceVisibility();
+  const { confirm, ConfirmDialog } = useConfirmDialog();
 
   const { receipts, loading, error, pagination, refetch, setFilters, filters } = useReceiptsData({
     page: 1,
@@ -125,7 +127,13 @@ export default function ReceiptsPage() {
   };
 
   const handleDelete = async (receiptId: string) => {
-    const confirmed = window.confirm('Are you sure you want to delete this receipt?');
+    const confirmed = await confirm({
+      title: 'Delete Receipt',
+      description: 'Are you sure you want to delete this receipt? This action cannot be undone.',
+      confirmLabel: 'Delete',
+      cancelLabel: 'Cancel',
+      variant: 'danger',
+    });
     if (!confirmed) return;
 
     const result = await deleteReceipt(receiptId);
@@ -606,6 +614,9 @@ export default function ReceiptsPage() {
           </>
         )}
       </div>
+      
+      {/* Confirm Dialog */}
+      {ConfirmDialog}
     </div>
   );
 }

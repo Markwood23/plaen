@@ -163,6 +163,9 @@ export default function EditInvoicePage({ params }: { params: Promise<{ id: stri
         issue_date: format(issueDate, 'yyyy-MM-dd'),
         due_date: format(dueDate, 'yyyy-MM-dd'),
         notes: notes || undefined,
+        // Include calculated totals in minor units (cents/pesewas)
+        tax_amount: Math.round(totalTax * 100),
+        discount_amount: Math.round(totalDiscount * 100),
         line_items: lineItems.map(item => ({
           description: item.description,
           quantity: item.quantity,
