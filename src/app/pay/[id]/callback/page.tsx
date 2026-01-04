@@ -25,9 +25,9 @@ function PaymentCallbackContent({ invoiceId }: { invoiceId: string }) {
   useEffect(() => {
     const verifyPayment = async () => {
       try {
-        const txRef = searchParams.get('tx_ref');
-        const transactionId = searchParams.get('transaction_id');
-        const status = searchParams.get('status');
+        const txRef = searchParams?.get('tx_ref');
+        const transactionId = searchParams?.get('transaction_id');
+        const status = searchParams?.get('status');
 
         // If Flutterwave returned with status=cancelled
         if (status === 'cancelled') {

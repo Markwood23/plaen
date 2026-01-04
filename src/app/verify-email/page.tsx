@@ -6,13 +6,22 @@ import Link from "next/link";
 import { ArrowLeft, Sms, TickCircle, CloseCircle, RefreshCircle, Danger } from "iconsax-react";
 import { SmartButton } from "@/components/ui/smart-button";
 
+// Loading fallback component
+function LoadingState() {
+  return (
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="animate-spin w-8 h-8 border-2 border-brand border-t-transparent rounded-full" />
+    </div>
+  );
+}
+
 function VerifyEmailContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const email = searchParams.get("email") || "";
-  const userId = searchParams.get("userId") || "";
-  const name = searchParams.get("name") || "";
-  const token = searchParams.get("token"); // For link-based verification
+  const email = searchParams?.get("email") || "";
+  const userId = searchParams?.get("userId") || "";
+  const name = searchParams?.get("name") || "";
+  const token = searchParams?.get("token"); // For link-based verification
 
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const [loading, setLoading] = useState(false);
@@ -370,11 +379,7 @@ function VerifyEmailContent() {
 
 export default function VerifyEmailPage() {
   return (
-    <Suspense fallback={
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="animate-spin w-8 h-8 border-2 border-brand border-t-transparent rounded-full" />
-      </div>
-    }>
+    <Suspense fallback={<LoadingState />}>
       <VerifyEmailContent />
     </Suspense>
   );

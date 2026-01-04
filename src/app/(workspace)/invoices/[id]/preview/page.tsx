@@ -35,7 +35,7 @@ function InvoicePreviewContent({ id }: { id: string }) {
   const { invoice: invoiceData, loading, error, refetch } = useInvoiceDetail(id);
 
   useEffect(() => {
-    if (searchParams.get('send') === '1') {
+    if (searchParams?.get('send') === '1') {
       setSendOpen(true);
     }
   }, [searchParams]);

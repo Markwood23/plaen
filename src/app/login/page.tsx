@@ -15,9 +15,9 @@ import { createClient } from "@/lib/supabase/client";
 function LoginForm() {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const verified = searchParams.get("verified") === "true";
-  const redirectTo = searchParams.get("redirect") || "/dashboard";
-  const urlError = searchParams.get("error");
+  const verified = searchParams?.get("verified") === "true";
+  const redirectTo = searchParams?.get("redirect") || "/dashboard";
+  const urlError = searchParams?.get("error");
   const [error, setError] = useState<string | null>(() => {
     if (urlError === "invalid_link") return "Invalid or expired link. Please try again.";
     if (urlError === "verification_failed") return "Verification failed. Please try again or request a new link.";
