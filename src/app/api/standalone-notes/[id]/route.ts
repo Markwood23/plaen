@@ -60,7 +60,7 @@ export async function PATCH(
     }
 
     const body = await request.json();
-    const { title, content, blocks, tags, category, is_pinned, is_archived } = body;
+    const { title, content, blocks, tags, category, is_pinned, is_archived, linked_invoice_id, embedded_data } = body;
 
     // Build update object
     const updateData: Record<string, unknown> = {};
@@ -75,6 +75,8 @@ export async function PATCH(
     if (category !== undefined) updateData.category = category;
     if (is_pinned !== undefined) updateData.is_pinned = is_pinned;
     if (is_archived !== undefined) updateData.is_archived = is_archived;
+    if (linked_invoice_id !== undefined) updateData.linked_invoice_id = linked_invoice_id;
+    if (embedded_data !== undefined) updateData.embedded_data = embedded_data;
 
     const { data: note, error } = await supabase
       .from("standalone_notes")

@@ -8,7 +8,7 @@ import Underline from "@tiptap/extension-underline";
 import TaskList from "@tiptap/extension-task-list";
 import TaskItem from "@tiptap/extension-task-item";
 import Highlight from "@tiptap/extension-highlight";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, useRef } from "react";
 import {
   TextBold,
   TextItalic,
@@ -24,6 +24,9 @@ import {
   CloseCircle,
   Text,
   QuoteUp,
+  Receipt21,
+  Chart,
+  Wallet2,
 } from "iconsax-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -32,10 +35,23 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  EmbedPicker,
+  InvoiceSelector,
+  InvoiceBlock,
+  MetricBlock,
+  ChartBlock,
+  type EmbeddedBlock,
+  type InvoiceBlockData,
+  type MetricBlockData,
+  type ChartBlockData,
+} from "./embedded-blocks";
 
 interface NoteEditorProps {
   content: string;
   onChange: (html: string, text: string) => void;
+  onEmbeddedBlocksChange?: (blocks: EmbeddedBlock[]) => void;
+  initialEmbeddedBlocks?: EmbeddedBlock[];
   placeholder?: string;
   editable?: boolean;
   className?: string;
@@ -44,12 +60,22 @@ interface NoteEditorProps {
 export function NoteEditor({
   content,
   onChange,
+  onEmbeddedBlocksChange,
+  initialEmbeddedBlocks = [],
   placeholder = "Start writing your note...",
   editable = true,
   className = "",
 }: NoteEditorProps) {
   const [linkUrl, setLinkUrl] = useState("");
   const [showLinkInput, setShowLinkInput] = useState(false);
+  
+  // Embedded blocks state
+  const [embeddedBlocks, setEmbeddedBlocks] = useState<EmbeddedBlock[]>(initialEmbeddedBlocks);
+  const [showEmbedPicker, setShowEmbedPicker] = useState(false);
+  const [showInvoiceSelector, setShowInvoiceSelector] = useState(false);
+  const [showSlashMenu, setShowSlashMenu] = useState(false);
+  const [slashMenuPosition, setSlashMenuPosition] = useState({ top: 0, left: 0 });
+  const slashMenuRef = useRef<HTMLDivElement>(null);
 
   const editor = useEditor({
     extensions: [
@@ -67,7 +93,7 @@ export function NoteEditor({
         },
       }),
       Placeholder.configure({
-        placeholder,
+        placeholder: placeholder + " Type / for commands...",
         emptyEditorClass: "is-editor-empty",
       }),
       Link.configure({
@@ -94,11 +120,33 @@ export function NoteEditor({
       const html = editor.getHTML();
       const text = editor.getText();
       onChange(html, text);
+      
+      // Check for slash command
+      const { selection } = editor.state;
+      const currentNode = selection.$anchor.parent;
+      const nodeText = currentNode.textContent;
+      
+      if (nodeText.endsWith('/')) {
+        // Show slash menu
+        const coords = editor.view.coordsAtPos(selection.anchor);
+        setSlashMenuPosition({ top: coords.bottom + 8, left: coords.left });
+        setShowSlashMenu(true);
+      } else {
+        setShowSlashMenu(false);
+      }
     },
     editorProps: {
       attributes: {
         class:
           "prose prose-sm sm:prose lg:prose-lg max-w-none focus:outline-none min-h-[400px] px-0",
+      },
+      handleKeyDown: (view, event) => {
+        // Close slash menu on escape
+        if (event.key === 'Escape' && showSlashMenu) {
+          setShowSlashMenu(false);
+          return true;
+        }
+        return false;
       },
     },
   });
@@ -109,6 +157,151 @@ export function NoteEditor({
       editor.commands.setContent(content);
     }
   }, [content, editor]);
+  
+  // Notify parent of embedded blocks changes
+  useEffect(() => {
+    onEmbeddedBlocksChange?.(embeddedBlocks);
+  }, [embeddedBlocks, onEmbeddedBlocksChange]);
+  
+  // Handle slash menu item selection
+  const handleSlashCommand = useCallback((command: string) => {
+    if (!editor) return;
+    
+    // Remove the slash character
+    editor.commands.deleteRange({
+      from: editor.state.selection.anchor - 1,
+      to: editor.state.selection.anchor,
+    });
+    
+    setShowSlashMenu(false);
+    
+    switch (command) {
+      case 'invoice':
+        setShowInvoiceSelector(true);
+        break;
+      case 'metric':
+        insertMetric('total_revenue');
+        break;
+      case 'chart':
+        insertChart('revenue_trend');
+        break;
+      case 'h1':
+        editor.chain().focus().toggleHeading({ level: 1 }).run();
+        break;
+      case 'h2':
+        editor.chain().focus().toggleHeading({ level: 2 }).run();
+        break;
+      case 'bullet':
+        editor.chain().focus().toggleBulletList().run();
+        break;
+      case 'task':
+        editor.chain().focus().toggleTaskList().run();
+        break;
+      case 'quote':
+        editor.chain().focus().toggleBlockquote().run();
+        break;
+      case 'divider':
+        editor.chain().focus().setHorizontalRule().run();
+        break;
+    }
+  }, [editor]);
+  
+  // Add invoice block
+  const addInvoiceBlock = useCallback((invoice: InvoiceBlockData) => {
+    const newBlock: EmbeddedBlock = {
+      id: `invoice-${Date.now()}`,
+      type: 'invoice',
+      data: invoice as unknown as Record<string, unknown>,
+      createdAt: new Date().toISOString(),
+    };
+    setEmbeddedBlocks(prev => [...prev, newBlock]);
+    
+    // Insert placeholder in editor
+    if (editor) {
+      editor.chain().focus().insertContent(`<p data-embed-id="${newBlock.id}">[Invoice: ${invoice.invoiceNumber}]</p>`).run();
+    }
+  }, [editor]);
+  
+  // Insert metric block
+  const insertMetric = useCallback(async (metricType: string) => {
+    try {
+      const res = await fetch('/api/dashboard');
+      if (res.ok) {
+        const data = await res.json();
+        let value = 0;
+        let change: number | undefined;
+        
+        switch (metricType) {
+          case 'total_revenue':
+            value = data.totalRevenue || 0;
+            change = data.revenueChange;
+            break;
+          case 'outstanding':
+            value = data.totalOutstanding || 0;
+            change = data.outstandingChange;
+            break;
+          case 'paid_invoices':
+            value = data.paidInvoices || 0;
+            break;
+          case 'overdue_count':
+            value = data.overdueInvoices || 0;
+            break;
+        }
+        
+        const metricData: MetricBlockData = {
+          metricType: metricType as MetricBlockData['metricType'],
+          value,
+          change,
+          period: 'Current',
+        };
+        
+        const newBlock: EmbeddedBlock = {
+          id: `metric-${Date.now()}`,
+          type: 'metric',
+          data: metricData as unknown as Record<string, unknown>,
+          createdAt: new Date().toISOString(),
+        };
+        setEmbeddedBlocks(prev => [...prev, newBlock]);
+      }
+    } catch (error) {
+      console.error('Failed to fetch metrics:', error);
+    }
+  }, []);
+  
+  // Insert chart block
+  const insertChart = useCallback(async (chartType: string) => {
+    try {
+      const res = await fetch('/api/dashboard/chart-data');
+      if (res.ok) {
+        const data = await res.json();
+        
+        const chartData: ChartBlockData = {
+          chartType: chartType as ChartBlockData['chartType'],
+          title: chartType === 'revenue_trend' ? 'Revenue Trend' : 'Invoice Status',
+          data: data.monthlyRevenue || [
+            { label: 'Jan', value: 0 },
+            { label: 'Feb', value: 0 },
+            { label: 'Mar', value: 0 },
+          ],
+        };
+        
+        const newBlock: EmbeddedBlock = {
+          id: `chart-${Date.now()}`,
+          type: 'chart',
+          data: chartData as unknown as Record<string, unknown>,
+          createdAt: new Date().toISOString(),
+        };
+        setEmbeddedBlocks(prev => [...prev, newBlock]);
+      }
+    } catch (error) {
+      console.error('Failed to fetch chart data:', error);
+    }
+  }, []);
+  
+  // Remove embedded block
+  const removeBlock = useCallback((blockId: string) => {
+    setEmbeddedBlocks(prev => prev.filter(b => b.id !== blockId));
+  }, []);
 
   const setLink = useCallback(() => {
     if (!editor) return;
@@ -136,6 +329,105 @@ export function NoteEditor({
 
   return (
     <div className={`note-editor ${className}`}>
+      {/* Slash Command Menu */}
+      {showSlashMenu && (
+        <div
+          ref={slashMenuRef}
+          className="fixed z-50 bg-white rounded-xl shadow-lg border border-gray-100 py-2 w-64"
+          style={{ top: slashMenuPosition.top, left: slashMenuPosition.left }}
+        >
+          <div className="px-3 py-1 text-xs font-medium text-[#B0B3B8]">INSERT</div>
+          <button
+            onClick={() => handleSlashCommand('invoice')}
+            className="w-full flex items-center gap-2 px-3 py-2 hover:bg-[rgba(20,70,42,0.04)] text-left"
+          >
+            <Receipt21 size={16} color="#14462a" />
+            <span className="text-sm">Invoice</span>
+          </button>
+          <button
+            onClick={() => handleSlashCommand('metric')}
+            className="w-full flex items-center gap-2 px-3 py-2 hover:bg-[rgba(20,70,42,0.04)] text-left"
+          >
+            <Wallet2 size={16} color="#14462a" />
+            <span className="text-sm">Metric</span>
+          </button>
+          <button
+            onClick={() => handleSlashCommand('chart')}
+            className="w-full flex items-center gap-2 px-3 py-2 hover:bg-[rgba(20,70,42,0.04)] text-left"
+          >
+            <Chart size={16} color="#14462a" />
+            <span className="text-sm">Chart</span>
+          </button>
+          <div className="border-t border-gray-100 my-1" />
+          <div className="px-3 py-1 text-xs font-medium text-[#B0B3B8]">FORMAT</div>
+          <button
+            onClick={() => handleSlashCommand('h1')}
+            className="w-full flex items-center gap-2 px-3 py-2 hover:bg-[rgba(20,70,42,0.04)] text-left"
+          >
+            <Text size={16} color="#2D2D2D" />
+            <span className="text-sm">Heading 1</span>
+          </button>
+          <button
+            onClick={() => handleSlashCommand('h2')}
+            className="w-full flex items-center gap-2 px-3 py-2 hover:bg-[rgba(20,70,42,0.04)] text-left"
+          >
+            <Text size={16} color="#6B7280" />
+            <span className="text-sm">Heading 2</span>
+          </button>
+          <button
+            onClick={() => handleSlashCommand('bullet')}
+            className="w-full flex items-center gap-2 px-3 py-2 hover:bg-[rgba(20,70,42,0.04)] text-left"
+          >
+            <TextalignLeft size={16} color="#2D2D2D" />
+            <span className="text-sm">Bullet List</span>
+          </button>
+          <button
+            onClick={() => handleSlashCommand('task')}
+            className="w-full flex items-center gap-2 px-3 py-2 hover:bg-[rgba(20,70,42,0.04)] text-left"
+          >
+            <TickSquare size={16} color="#2D2D2D" />
+            <span className="text-sm">Task List</span>
+          </button>
+          <button
+            onClick={() => handleSlashCommand('quote')}
+            className="w-full flex items-center gap-2 px-3 py-2 hover:bg-[rgba(20,70,42,0.04)] text-left"
+          >
+            <QuoteUp size={16} color="#2D2D2D" />
+            <span className="text-sm">Quote</span>
+          </button>
+          <button
+            onClick={() => handleSlashCommand('divider')}
+            className="w-full flex items-center gap-2 px-3 py-2 hover:bg-[rgba(20,70,42,0.04)] text-left"
+          >
+            <Minus size={16} color="#2D2D2D" />
+            <span className="text-sm">Divider</span>
+          </button>
+        </div>
+      )}
+
+      {/* Embed Picker Modal */}
+      <EmbedPicker
+        isOpen={showEmbedPicker}
+        onClose={() => setShowEmbedPicker(false)}
+        onSelect={(type, subType) => {
+          setShowEmbedPicker(false);
+          if (type === 'invoice') {
+            setShowInvoiceSelector(true);
+          } else if (type === 'metric') {
+            insertMetric(subType || 'total_revenue');
+          } else if (type === 'chart') {
+            insertChart(subType || 'revenue_trend');
+          }
+        }}
+      />
+
+      {/* Invoice Selector Modal */}
+      <InvoiceSelector
+        isOpen={showInvoiceSelector}
+        onClose={() => setShowInvoiceSelector(false)}
+        onSelect={addInvoiceBlock}
+      />
+
       {/* Link Input Modal */}
       {showLinkInput && (
         <div className="fixed inset-0 bg-black/20 flex items-center justify-center z-50">
@@ -398,6 +690,94 @@ export function NoteEditor({
           >
             <Minus size={16} color="#2D2D2D" />
           </Button>
+
+          <div className="h-5 w-px bg-gray-200 mx-1" />
+
+          {/* Insert Embeds */}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="h-8 px-3 rounded-full hover:bg-white text-xs font-medium gap-1 bg-[rgba(20,70,42,0.08)]"
+              >
+                <Add size={14} color="#14462a" />
+                Insert
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent
+              align="end"
+              className="rounded-xl p-1.5 min-w-[180px]"
+            >
+              <DropdownMenuItem
+                onClick={() => setShowInvoiceSelector(true)}
+                className="rounded-lg cursor-pointer gap-2"
+              >
+                <Receipt21 size={16} color="#14462a" />
+                <span>Invoice</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => insertMetric('total_revenue')}
+                className="rounded-lg cursor-pointer gap-2"
+              >
+                <Wallet2 size={16} color="#14462a" />
+                <span>Revenue Metric</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => insertMetric('outstanding')}
+                className="rounded-lg cursor-pointer gap-2"
+              >
+                <Wallet2 size={16} color="#F59E0B" />
+                <span>Outstanding Metric</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => insertChart('revenue_trend')}
+                className="rounded-lg cursor-pointer gap-2"
+              >
+                <Chart size={16} color="#14462a" />
+                <span>Revenue Chart</span>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+      )}
+
+      {/* Embedded Blocks - Rendered inline */}
+      {embeddedBlocks.length > 0 && (
+        <div className="embedded-blocks-container my-4 space-y-2">
+          {embeddedBlocks.map((block) => {
+            if (block.type === 'invoice') {
+              return (
+                <InvoiceBlock
+                  key={block.id}
+                  data={block.data as unknown as InvoiceBlockData}
+                  onRemove={() => removeBlock(block.id)}
+                  editable={editable}
+                />
+              );
+            }
+            if (block.type === 'metric') {
+              return (
+                <MetricBlock
+                  key={block.id}
+                  data={block.data as unknown as MetricBlockData}
+                  onRemove={() => removeBlock(block.id)}
+                  editable={editable}
+                />
+              );
+            }
+            if (block.type === 'chart') {
+              return (
+                <ChartBlock
+                  key={block.id}
+                  data={block.data as unknown as ChartBlockData}
+                  onRemove={() => removeBlock(block.id)}
+                  editable={editable}
+                />
+              );
+            }
+            return null;
+          })}
         </div>
       )}
 

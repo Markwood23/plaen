@@ -2,6 +2,13 @@
 
 import { useState, useEffect, useCallback } from "react";
 
+export interface EmbeddedBlock {
+  id: string;
+  type: 'invoice' | 'metric' | 'chart';
+  data: Record<string, unknown>;
+  createdAt: string;
+}
+
 export interface StandaloneNote {
   id: string;
   title: string;
@@ -19,6 +26,8 @@ export interface StandaloneNote {
   is_archived: boolean;
   word_count: number;
   attachment_count: number;
+  linked_invoice_id: string | null;
+  embedded_data: EmbeddedBlock[];
   created_at: string;
   updated_at: string;
 }
@@ -29,6 +38,7 @@ export interface NotesFilters {
   tag?: string;
   pinned?: boolean;
   archived?: boolean;
+  linked_invoice_id?: string;
   page?: number;
   limit?: number;
 }
@@ -73,6 +83,7 @@ export function useStandaloneNotes(
       if (filters.tag) params.append("tag", filters.tag);
       if (filters.pinned) params.append("pinned", "true");
       if (filters.archived) params.append("archived", "true");
+      if (filters.linked_invoice_id) params.append("linked_invoice_id", filters.linked_invoice_id);
       if (filters.page) params.append("page", filters.page.toString());
       if (filters.limit) params.append("limit", filters.limit.toString());
 
@@ -178,6 +189,8 @@ export async function createStandaloneNote(data: {
   blocks?: StandaloneNote["blocks"];
   tags?: string[];
   category?: string;
+  linked_invoice_id?: string;
+  embedded_data?: EmbeddedBlock[];
 }): Promise<{ success: boolean; note?: StandaloneNote; error?: string }> {
   try {
     const response = await fetch("/api/standalone-notes", {
@@ -208,6 +221,8 @@ export async function updateStandaloneNote(
     category: string;
     is_pinned: boolean;
     is_archived: boolean;
+    linked_invoice_id: string | null;
+    embedded_data: EmbeddedBlock[];
   }>
 ): Promise<{ success: boolean; note?: StandaloneNote; error?: string }> {
   try {

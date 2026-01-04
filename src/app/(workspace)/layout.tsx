@@ -200,14 +200,14 @@ export default function WorkspaceLayout({
       {/* Main column */}
       <div className="flex-1 min-w-0 flex flex-col h-screen">
         {/* Topbar */}
-        <header className="h-14 md:h-16 flex items-center gap-2 md:gap-4 px-3 md:px-6 shrink-0 backdrop-blur-sm" style={{ borderBottom: '1px solid #E4E6EB', backgroundColor: 'rgba(255, 255, 255, 0.95)' }}>
+        <header className="h-14 md:h-16 flex items-center justify-between gap-2 md:gap-4 px-3 md:px-6 shrink-0 backdrop-blur-sm" style={{ borderBottom: '1px solid #E4E6EB', backgroundColor: 'rgba(255, 255, 255, 0.95)' }}>
           {/* Mobile: menu trigger */}
           <div className="md:hidden shrink-0">
             <MobileNav nav={nav} pathname={pathname} />
           </div>
           
           {/* Search - more prominent */}
-          <div className="flex-1 min-w-0 max-w-xl">
+          <div className="min-w-0 w-full max-w-md lg:max-w-lg">
             <div className="relative group">
               <SearchNormal1 
                 size={18}

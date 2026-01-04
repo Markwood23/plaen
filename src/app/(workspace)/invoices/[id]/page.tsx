@@ -580,9 +580,24 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
                 e.currentTarget.style.color = '#2D2D2D';
               }
             }}
-            onClick={() => {
+            onClick={async () => {
               setActiveAction('note');
-              router.push(`/notes/new?invoice=${id}&invoice_number=${invoiceData.invoice_number}`);
+              // Check for existing note linked to this invoice
+              try {
+                const res = await fetch(`/api/standalone-notes?linked_invoice_id=${id}&limit=1`);
+                if (res.ok) {
+                  const data = await res.json();
+                  if (data.notes && data.notes.length > 0) {
+                    // Open existing note
+                    router.push(`/notes/${data.notes[0].id}`);
+                    return;
+                  }
+                }
+              } catch (e) {
+                console.error('Failed to check for existing notes:', e);
+              }
+              // Create new note with invoice linked
+              router.push(`/notes/new?invoice=${id}&invoice_number=${invoiceData?.invoice_number || ''}`);
             }}
           >
             <Message size={14} color="currentColor" className="mr-1.5" />

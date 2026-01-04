@@ -23,6 +23,7 @@ export async function GET(request: NextRequest) {
     const pinned = searchParams.get("pinned");
     const archived = searchParams.get("archived");
     const tag = searchParams.get("tag");
+    const linkedInvoiceId = searchParams.get("linked_invoice_id");
 
     const offset = (page - 1) * limit;
 
@@ -52,6 +53,11 @@ export async function GET(request: NextRequest) {
 
     if (tag) {
       query = query.contains("tags", [tag]);
+    }
+
+    // Filter by linked invoice
+    if (linkedInvoiceId) {
+      query = query.eq("linked_invoice_id", linkedInvoiceId);
     }
 
     // Order by pinned first, then by updated_at
@@ -84,6 +90,8 @@ export async function GET(request: NextRequest) {
         is_archived: note.is_archived || false,
         word_count: note.word_count || contentStr.split(/\s+/).filter(Boolean).length,
         attachment_count: 0, // Future feature
+        linked_invoice_id: note.linked_invoice_id || null,
+        embedded_data: note.embedded_data || [],
         created_at: note.created_at,
         updated_at: note.updated_at,
       };
@@ -119,7 +127,7 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { title, content, blocks, tags, category, is_pinned } = body;
+    const { title, content, blocks, tags, category, is_pinned, linked_invoice_id, embedded_data } = body;
 
     // Calculate word count
     const wordCount = (content || "").split(/\s+/).filter(Boolean).length;
@@ -135,6 +143,8 @@ export async function POST(request: NextRequest) {
         category: category || null,
         is_pinned: is_pinned || false,
         word_count: wordCount,
+        linked_invoice_id: linked_invoice_id || null,
+        embedded_data: embedded_data || [],
       })
       .select()
       .single();

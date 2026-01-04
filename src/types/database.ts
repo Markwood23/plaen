@@ -425,9 +425,11 @@ export type Database = {
           category: string | null
           content: string | null
           created_at: string | null
+          embedded_data: Json | null
           id: string
           is_archived: boolean | null
           is_pinned: boolean | null
+          linked_invoice_id: string | null
           tags: string[] | null
           title: string
           updated_at: string | null
@@ -439,9 +441,11 @@ export type Database = {
           category?: string | null
           content?: string | null
           created_at?: string | null
+          embedded_data?: Json | null
           id?: string
           is_archived?: boolean | null
           is_pinned?: boolean | null
+          linked_invoice_id?: string | null
           tags?: string[] | null
           title?: string
           updated_at?: string | null
@@ -453,16 +457,26 @@ export type Database = {
           category?: string | null
           content?: string | null
           created_at?: string | null
+          embedded_data?: Json | null
           id?: string
           is_archived?: boolean | null
           is_pinned?: boolean | null
+          linked_invoice_id?: string | null
           tags?: string[] | null
           title?: string
           updated_at?: string | null
           user_id?: string
           word_count?: number | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "standalone_notes_linked_invoice_id_fkey"
+            columns: ["linked_invoice_id"]
+            isOneToOne: false
+            referencedRelation: "invoices"
+            referencedColumns: ["id"]
+          }
+        ]
       }
       users: {
         Row: {
